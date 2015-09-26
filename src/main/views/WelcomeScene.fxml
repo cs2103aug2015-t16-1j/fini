@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text fontSmoothingType="LCD" layoutX="103.0" layoutY="263.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Fini.">
+         <font>
+            <Font name="Helvetica Neue Light" size="55.0" />
+         </font>
+      </Text>
+      <Text layoutX="195.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Getting things done...fast">
+         <font>
+            <Font name="Helvetica Neue Thin Italic" size="20.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="79.0" fitWidth="76.0" layoutX="379.0" layoutY="281.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../resources/images/check.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
