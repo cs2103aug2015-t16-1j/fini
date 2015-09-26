@@ -3,6 +3,9 @@ Fini is an easy to use task manager that helps to organise your life. It is curr
 
 ## Team Members
 V.Harish
+
 Qiyun
+
 Wang Jie
+
 Joel Jonas
