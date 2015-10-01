@@ -159,30 +159,30 @@ public class FiniParser {
 //	}
 	
 	
-//	private String saveFile() {
-//		File taskFile = getMainApp().getTaskFilePath();
-//		if (taskFile != null) {
-//			return getMainApp().saveTaskDataToFile(taskFile);
-//		} else {
-//			return saveFileAs();
-//		}
-//	}
-//	
-//    private String handleSaveAs() {
-//        FileChooser fileChooser = new FileChooser();
-//        
-//        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-//                "Text files (*.txt)", "*.txt");
-//        fileChooser.getExtensionFilters().add(extFilter);
-//
-//        File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
-//
-//        if (file != null) {
-//            // Make sure it has the correct extension
-//            if (!file.getPath().endsWith(".xml")) {
-//                file = new File(file.getPath() + ".xml");
-//            }
-//            mainApp.savePersonDataToFile(file);
-//        }
-//    }()
+	private String saveFile() {
+		File taskFile = getMainApp().getTaskFilePath();
+		if (taskFile != null) {
+			return getMainApp().saveTaskDataToFile(taskFile);
+		} else {
+			return saveFileAs();
+		}
+	}
+	
+    private String handleSaveAs() {
+        FileChooser fileChooser = new FileChooser();
+        
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                "Text files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
+
+        if (file != null) {
+            // Make sure it has the correct extension
+            if (!file.getPath().endsWith(".xml")) {
+                file = new File(file.getPath() + ".xml");
+            }
+            mainApp.savePersonDataToFile(file);
+        }
+    }()
 }
