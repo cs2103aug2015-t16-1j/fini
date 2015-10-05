@@ -1,9 +1,11 @@
-package onej.t16.fini;
+package fini.main;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.prefs.Preferences;
 
+import fini.main.model.Task;
+import fini.main.view.TaskOverviewController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,8 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import onej.t16.fini.model.Task;
-import onej.t16.fini.view.TaskOverviewController;
 
 public class MainApp extends Application {
  private Stage primaryStage;

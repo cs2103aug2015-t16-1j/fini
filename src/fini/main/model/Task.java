@@ -1,4 +1,4 @@
-package onej.t16.fini.model;
+package fini.main.model;
 
 import java.time.LocalDate;
 

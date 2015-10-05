@@ -1,13 +1,13 @@
-package onej.t16.fini.logic;
+package fini.main.logic;
 
 import java.io.File;
 import java.util.ArrayList;
 
+import fini.main.MainApp;
+import fini.main.model.Task;
+import fini.main.view.TaskOverviewController;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
-import onej.t16.fini.MainApp;
-import onej.t16.fini.model.Task;
-import onej.t16.fini.view.TaskOverviewController;
 
 public class FiniParser {
 	private TaskOverviewController mainController;
@@ -159,7 +159,7 @@ public class FiniParser {
 //	}
 	
 	
-	private String saveFile() {
+	/*private String saveFile() {
 		File taskFile = getMainApp().getTaskFilePath();
 		if (taskFile != null) {
 			return getMainApp().saveTaskDataToFile(taskFile);
@@ -184,5 +184,5 @@ public class FiniParser {
             }
             mainApp.savePersonDataToFile(file);
         }
-    }()
+    }()*/
 }
