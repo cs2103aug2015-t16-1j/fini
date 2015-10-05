@@ -1,8 +1,11 @@
-package onej.t16.fini.view;
+package fini.main.view;
 
 //import java.io.IOException;
 import java.time.LocalDate;
 
+import fini.main.MainApp;
+import fini.main.logic.FiniParser;
+import fini.main.model.Task;
 import javafx.fxml.FXML;
 //import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
@@ -12,10 +15,6 @@ import javafx.scene.control.TextField;
 //import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-
-import onej.t16.fini.MainApp;
-import onej.t16.fini.logic.FiniParser;
-import onej.t16.fini.model.Task;
 
 public class TaskOverviewController {
 	private String userCommand;
