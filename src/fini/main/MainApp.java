@@ -23,11 +23,11 @@ public class MainApp extends Application {
  
  public MainApp() {
   // Add some sample data
-  taskData.add(new Task("banana"));
-  taskData.add(new Task("grape"));
-  taskData.add(new Task("orange"));
-  taskData.add(new Task("apple"));
-  taskData.add(new Task("watermelon"));
+  taskData.add(new Task("Project Meeting"));
+  taskData.add(new Task("Send iPhone for servicing"));
+  taskData.add(new Task("Watch Superman"));
+  taskData.add(new Task("Buy Groceries"));
+  taskData.add(new Task("Do CS2103T Homework :/"));
  }
  
  public ObservableList<Task> getTaskData() {
