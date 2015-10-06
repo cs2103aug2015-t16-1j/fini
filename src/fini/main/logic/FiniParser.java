@@ -89,7 +89,18 @@ public class FiniParser {
 	
 	private String addTask(String userCommand) {
 		String taskToAdd = removeFirstWord(userCommand);
-		Task tempTask = new Task(taskToAdd);
+		Task tempTask;
+		
+		// check if there is a given date
+		int indexOfTaskDetails = taskToAdd.indexOf("@@");
+		if (indexOfTaskDetails > 0) {
+		  String taskDetails = taskToAdd.substring(indexOfTaskDetails + 3);
+		  String taskName = taskToAdd.substring(0, indexOfTaskDetails);
+		  tempTask = new Task(taskName, taskDetails);
+		}
+		else {
+		  tempTask = new Task(taskToAdd);
+		}
 		getMainApp().getTaskData().add(tempTask);
 		boolean isAddSuccess = true;
 		if (isAddSuccess) {
@@ -121,7 +132,7 @@ public class FiniParser {
 		
 		boolean isDeleteSuccess = deletedTask != null;
 		if (isDeleteSuccess) {
-			return "Deleted";
+			return "Deleted " + deletedTask.getTaskTitle();
 		} else {
 			return "Delete Error";
 		}
