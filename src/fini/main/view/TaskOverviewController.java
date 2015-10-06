@@ -47,6 +47,7 @@ public class TaskOverviewController {
 		taskTitleColumn.setCellValueFactory(cellData -> cellData.getValue().taskTitleProperty());
 		taskPriorityColumn.setCellValueFactory(cellData -> cellData.getValue().taskPriorityProperty());
 		taskGroupColumn.setCellValueFactory(cellData -> cellData.getValue().taskGroupProperty());
+		taskDateColumn.setCellValueFactory(cellData -> cellData.getValue().taskDateProperty());
 		
 		outputField.setEditable(false);
 		

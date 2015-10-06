@@ -1,6 +1,9 @@
 package fini.main.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -13,10 +16,12 @@ import javafx.beans.property.StringProperty;
  *
  */
 public class Task {
-	private final StringProperty taskTitle;
-	private final ObjectProperty<LocalDate> taskDate;
+	private StringProperty taskTitle;
+	private SimpleObjectProperty<LocalDate> taskDate;
 	private final StringProperty taskPriority;
 	private final StringProperty taskGroup;
+	
+	DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 	
 	/**
 	 * Default constructor.
@@ -34,11 +39,26 @@ public class Task {
 		
 		// Some initial dummy data, just for convenient testing.
 		this.taskDate = new SimpleObjectProperty<LocalDate>(LocalDate.of(2015, 9, 14));
-		this.taskPriority = new SimpleStringProperty("VERY HIGH");
-		this.taskGroup = new SimpleStringProperty("OUR GROUP");
+		this.taskPriority = new SimpleStringProperty("Normal");
+		this.taskGroup = new SimpleStringProperty("Uncategorized");
 	}
 	
-	public String getTaskTitle() {
+	public Task(String taskTitle, String taskDetails) {
+	  this.taskTitle = new SimpleStringProperty(taskTitle);
+	  setTaskDate(taskDetails);
+	  this.taskGroup = new SimpleStringProperty("Events");
+	  this.taskPriority = new SimpleStringProperty("Normal");
+	}
+	
+	private void setTaskDate(String taskDetails) {
+    String[] dateArray = taskDetails.split("/");
+    int day = Integer.parseInt(dateArray[0]);
+    int month = Integer.parseInt(dateArray[1]);
+    int year = Integer.parseInt(dateArray[2]);
+    this.taskDate = new SimpleObjectProperty<LocalDate>(LocalDate.of(year, month, day));
+  }
+
+  public String getTaskTitle() {
 		return taskTitle.get();
 	}
 	
