@@ -53,7 +53,7 @@ public class TaskOverviewController {
 		
 		initFiniParser();
 		
-		outputField.appendText("Welcome!" + System.lineSeparator());
+		outputField.appendText("Welcome to Fini!" + System.lineSeparator());
 	}
 	
 	public MainApp getMainApp() {
