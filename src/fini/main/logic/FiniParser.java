@@ -92,7 +92,7 @@ public class FiniParser {
 		Task tempTask;
 		
 		// check if there is a given date
-		int indexOfTaskDetails = taskToAdd.indexOf("@@");
+		int indexOfTaskDetails = taskToAdd.indexOf("//");
 		if (indexOfTaskDetails > 0) {
 		  String taskDetails = taskToAdd.substring(indexOfTaskDetails + 3);
 		  String taskName = taskToAdd.substring(0, indexOfTaskDetails);
