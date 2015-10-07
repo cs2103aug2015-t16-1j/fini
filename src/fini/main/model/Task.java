@@ -3,8 +3,6 @@ package fini.main.model;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -38,16 +36,19 @@ public class Task {
 		this.taskTitle = new String(taskTitle);
 		
 		// Some initial dummy data, just for convenient testing.
-		this.startDate = new SimpleObjectProperty<LocalDate>(LocalDate.of(2015, 9, 13));
-		this.endDate = new SimpleObjectProperty<LocalDate>(LocalDate.of(2015, 9, 14));
-		this.taskPriority = new String("Normal");
+		this.startDate = new SimpleObjectProperty<LocalDate>(LocalDate.of(2015, 1, 1));
+		this.endDate = new SimpleObjectProperty<LocalDate>(LocalDate.of(2015, 9, 14));		
 		this.taskGroup = new String("Uncategorized");
+		this.taskPriority = new String("Normal");
 	}
 	
 	public Task(String taskTitle, String taskDetails) {
 		this.taskTitle = new String(taskTitle);
+		
+		// Some initial dummy data, just for convenient testing.
+		this.startDate = new SimpleObjectProperty<LocalDate>(LocalDate.of(2015, 1, 1));
 		setTaskEndDate(taskDetails);
-		this.taskGroup = new String("Events");
+		this.taskGroup = new String("Tasks");
 		this.taskPriority = new String("Normal");
 	}
 	

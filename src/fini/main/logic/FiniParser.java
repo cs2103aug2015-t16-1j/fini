@@ -94,9 +94,17 @@ public class FiniParser {
 		// check if there is a given date
 		int indexOfTaskDetails = taskToAdd.indexOf("@@");
 		if (indexOfTaskDetails > 0) {
-		  String taskDetails = taskToAdd.substring(indexOfTaskDetails + 3);
-		  String taskName = taskToAdd.substring(0, indexOfTaskDetails);
-		  tempTask = new Task(taskName, taskDetails);
+		  String taskDetails = taskToAdd.substring(indexOfTaskDetails + 3).trim();
+		  String taskName = taskToAdd.substring(0, indexOfTaskDetails).trim();
+		  // check if there are two dates or one date
+		  int indexOfSplitTime = taskDetails.indexOf("to");
+		  if (indexOfSplitTime > 0) {
+			  String startDetails = taskDetails.substring(0, indexOfSplitTime).trim();
+			  String endDetails = taskDetails.substring(indexOfSplitTime + 2).trim();
+			  tempTask = new Task(taskName, startDetails, endDetails);
+		  } else {
+			  tempTask = new Task(taskName, taskDetails);
+		  }
 		}
 		else {
 		  tempTask = new Task(taskToAdd);
