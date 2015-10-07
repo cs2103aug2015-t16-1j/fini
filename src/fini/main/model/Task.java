@@ -40,13 +40,13 @@ public class Task {
 		// Some initial dummy data, just for convenient testing.
 		this.taskDate = new SimpleObjectProperty<LocalDate>(LocalDate.of(2015, 9, 14));
 		this.taskPriority = new SimpleStringProperty("Normal");
-		this.taskGroup = new SimpleStringProperty("Uncategorized");
+		this.taskGroup = new SimpleStringProperty("Inbox");
 	}
 	
 	public Task(String taskTitle, String taskDetails) {
 	  this.taskTitle = new SimpleStringProperty(taskTitle);
 	  setTaskDate(taskDetails);
-	  this.taskGroup = new SimpleStringProperty("Events");
+	  this.taskGroup = new SimpleStringProperty("Tasks");
 	  this.taskPriority = new SimpleStringProperty("Normal");
 	}
 	
