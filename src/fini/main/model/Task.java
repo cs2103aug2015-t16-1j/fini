@@ -7,8 +7,7 @@ import java.util.Date;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+
 
 /**
  * Model class for a Task
@@ -16,10 +15,11 @@ import javafx.beans.property.StringProperty;
  *
  */
 public class Task {
-	private StringProperty taskTitle;
-	private SimpleObjectProperty<LocalDate> taskDate;
-	private final StringProperty taskPriority;
-	private final StringProperty taskGroup;
+	private String taskTitle;
+	private SimpleObjectProperty<LocalDate> endDate;
+	private SimpleObjectProperty<LocalDate> startDate;
+	private String taskPriority;
+	private String taskGroup;
 	
 	DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 	
@@ -35,74 +35,103 @@ public class Task {
 	 * @param taskTitle
 	 */
 	public Task(String taskTitle) {
-		this.taskTitle = new SimpleStringProperty(taskTitle);
+		this.taskTitle = new String(taskTitle);
 		
 		// Some initial dummy data, just for convenient testing.
-		this.taskDate = new SimpleObjectProperty<LocalDate>(LocalDate.of(2015, 9, 14));
-		this.taskPriority = new SimpleStringProperty("Normal");
-		this.taskGroup = new SimpleStringProperty("Uncategorized");
+		this.startDate = new SimpleObjectProperty<LocalDate>(LocalDate.of(2015, 9, 13));
+		this.endDate = new SimpleObjectProperty<LocalDate>(LocalDate.of(2015, 9, 14));
+		this.taskPriority = new String("Normal");
+		this.taskGroup = new String("Uncategorized");
 	}
 	
 	public Task(String taskTitle, String taskDetails) {
-	  this.taskTitle = new SimpleStringProperty(taskTitle);
-	  setTaskDate(taskDetails);
-	  this.taskGroup = new SimpleStringProperty("Events");
-	  this.taskPriority = new SimpleStringProperty("Normal");
+		this.taskTitle = new String(taskTitle);
+		setTaskEndDate(taskDetails);
+		this.taskGroup = new String("Events");
+		this.taskPriority = new String("Normal");
 	}
 	
-	private void setTaskDate(String taskDetails) {
-    String[] dateArray = taskDetails.split("/");
-    int day = Integer.parseInt(dateArray[0]);
-    int month = Integer.parseInt(dateArray[1]);
-    int year = Integer.parseInt(dateArray[2]);
-    this.taskDate = new SimpleObjectProperty<LocalDate>(LocalDate.of(year, month, day));
-  }
+	public Task(String taskTitle, String startDetails, String endDetails) {
+		this.taskTitle = new String(taskTitle);
+		setTaskStartDate(startDetails);
+		setTaskEndDate(endDetails);
+		this.taskGroup = new String("Events");
+		this.taskPriority = new String("Normal");
+	}
+	
+	private void setTaskEndDate(String taskDetails) {
+		String[] dateArray = taskDetails.split("/");
+	    int day = Integer.parseInt(dateArray[0]);
+	    int month = Integer.parseInt(dateArray[1]);
+	    int year = Integer.parseInt(dateArray[2]);
+	    this.endDate = new SimpleObjectProperty<LocalDate>(LocalDate.of(year, month, day));
+	}
 
+	private void setTaskStartDate(String taskDetails) {
+		String[] dateArray = taskDetails.split("/");
+	    int day = Integer.parseInt(dateArray[0]);
+	    int month = Integer.parseInt(dateArray[1]);
+	    int year = Integer.parseInt(dateArray[2]);
+	    this.startDate = new SimpleObjectProperty<LocalDate>(LocalDate.of(year, month, day));
+	}
+	
   public String getTaskTitle() {
-		return taskTitle.get();
+		return new String(taskTitle);
 	}
 	
 	public void setTaskTitle(String taskTitle) {
-		this.taskTitle.set(taskTitle);
+		this.taskTitle = new String(taskTitle);
 	}
 	
-	public StringProperty taskTitleProperty() {
+	public String taskTitleProperty() {
 		return taskTitle;
 	}
 	
-	public LocalDate getTaskDate() {
-		return taskDate.get();
+	public LocalDate getStartDate() {
+		return startDate.get();
 	}
 	
-	public void setTaskDate(LocalDate taskDate) {
-		this.taskDate.set(taskDate);
+	public void setStartDate(LocalDate startDate) {
+		this.startDate.set(startDate);
 	}
 	
-	public ObjectProperty<LocalDate> taskDateProperty() {
-		return taskDate;
+	public ObjectProperty<LocalDate> startDateProperty() {
+		return startDate;
+	}
+	
+	public LocalDate getEndDate() {
+		return endDate.get();
+	}
+	
+	public void setEndDate(LocalDate endDate) {
+		this.endDate.set(endDate);
+	}
+	
+	public ObjectProperty<LocalDate> endDateProperty() {
+		return endDate;
 	}
 	
 	public String getTaskPriority() {
-		return taskPriority.get();
+		return new String(taskPriority);
 	}
 	
 	public void setTaskPriority(String taskPriority) {
-		this.taskPriority.set(taskPriority);
+		this.taskPriority = new String(taskPriority);
 	}
 	
-	public StringProperty taskPriorityProperty() {
+	public String taskPriorityProperty() {
 		return taskPriority;
 	}
 	
 	public String getTaskGroup() {
-		return taskGroup.get();
+		return new String(taskGroup);
 	}
 	
 	public void setTaskGroup(String taskGroup) {
-		this.taskGroup.set(taskGroup);
+		this.taskGroup = new String(taskGroup);
 	}
 	
-	public StringProperty taskGroupProperty() {
+	public String taskGroupProperty() {
 		return taskGroup;
 	}
 }
