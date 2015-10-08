@@ -31,6 +31,8 @@ public class TaskOverviewController {
 	@FXML
 	private TableColumn<Task, String> taskGroupColumn;
 	@FXML
+	private TableColumn<Task, String> taskIdColumn;
+	@FXML
 	private TextArea outputField;
 	@FXML
 	private TextField inputField;
@@ -43,7 +45,8 @@ public class TaskOverviewController {
 	@FXML
 	private void initialize() {
 		System.out.println("Fini initialized");
-		
+		 
+		taskTitleColumn.setCellValueFactory(cellData -> cellData.getValue().taskTitleProperty());
 		taskTitleColumn.setCellValueFactory(cellData -> cellData.getValue().taskTitleProperty());
 		taskPriorityColumn.setCellValueFactory(cellData -> cellData.getValue().taskPriorityProperty());
 		taskGroupColumn.setCellValueFactory(cellData -> cellData.getValue().taskGroupProperty());
