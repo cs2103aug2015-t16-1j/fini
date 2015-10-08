@@ -12,9 +12,9 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="107.0" prefWidth="798.0">
                <children>
-                  <TableView fx:id="taskTable" prefHeight="405.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView id="tableView" fx:id="taskTable" prefHeight="405.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
-                      <TableColumn fx:id= "taskIdColumn" prefWidth="75.0" text="ID" />
+                      <TableColumn fx:id="taskIdColumn" prefWidth="75.0" text="ID" />
                       <TableColumn fx:id="taskTitleColumn" prefWidth="421.0" text="Title" />
                         <TableColumn fx:id="taskDateColumn" minWidth="0.0" prefWidth="108.0" text="Datetime" />
                         <TableColumn fx:id="taskPriorityColumn" minWidth="6.0" prefWidth="84.0" text="Priority" />
@@ -25,7 +25,7 @@
             </AnchorPane>
           <AnchorPane maxHeight="150.0" minHeight="0.0" minWidth="0.0" prefHeight="52.0" prefWidth="798.0">
                <children>
-                  <TextArea fx:id="outputField" layoutY="-9.0" prefHeight="39.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-9.0">
+                  <TextArea fx:id="outputField" prefHeight="49.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-9.0">
                      <font>
                         <Font name="Helvetica Neue Light" size="14.0" />
                      </font></TextArea>

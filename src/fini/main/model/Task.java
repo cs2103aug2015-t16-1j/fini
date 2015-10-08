@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 
-import fini.main.MainApp;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -21,7 +20,6 @@ public class Task {
 	private SimpleObjectProperty<LocalDate> taskDate;
 	private final StringProperty taskPriority;
 	private final StringProperty taskGroup;
-	private final int taskId;
 	
 	DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 	
@@ -51,8 +49,8 @@ public class Task {
 	  this.taskGroup = new SimpleStringProperty("Tasks");
 	  this.taskPriority = new SimpleStringProperty("Normal");
 	}
-
-  private void setTaskDate(String taskDetails) {
+	
+	private void setTaskDate(String taskDetails) {
     String[] dateArray = taskDetails.split("/");
     int day = Integer.parseInt(dateArray[0]);
     int month = Integer.parseInt(dateArray[1]);
@@ -71,7 +69,6 @@ public class Task {
 	public StringProperty taskTitleProperty() {
 		return taskTitle;
 	}
-	
 	
 	public LocalDate getTaskDate() {
 		return taskDate.get();
