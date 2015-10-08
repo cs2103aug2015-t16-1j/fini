@@ -52,7 +52,7 @@ public class FiniParser {
 		case EXIT:
 			System.exit(0);
 		case INVALID:
-			return_string = "INVALID COMMAND";
+			return_string = "Why don't you try giving an actual command?";
 			break;
 		default:
 			return_string = "ERROR executeCommand";
@@ -117,7 +117,7 @@ public class FiniParser {
 		getMainApp().getTaskData().add(tempTask);
 		boolean isAddSuccess = true;
 		if (isAddSuccess) {
-			return "Added";
+			return "Added " + tempTask.getTaskTitle();
 		} else {
 			return "Add Error";
 		}
