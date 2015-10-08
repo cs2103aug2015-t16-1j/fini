@@ -8,9 +8,11 @@ import fini.main.model.Task;
 import fini.main.view.TaskOverviewController;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
+import fini.main.view.StorageController;
 
 public class FiniParser {
 	private TaskOverviewController mainController;
+	private StorageController storageController;
 	
 	public void setMainController(TaskOverviewController mainController) {
 		System.out.println("main controller set");
@@ -23,16 +25,22 @@ public class FiniParser {
 	
 	public FiniParser() {
 		System.out.println("Fini Parser Constructed");
+		storageController = StorageController.getInstance("save.txt");
 	}
 	
 	public String executeCommand(String userCommand) {
 		String firstWord = getFirstWord(userCommand);
 		CommandType commandType = getCommandType(firstWord);
+		String return_string = "";
 		switch (commandType) {
 		case ADD:
-			return addTask(userCommand);
+			return_string = addTask(userCommand);
+			storageController.save(getMainApp().getTaskData());
+			break;
 		case DELETE:
-			return deleteTask(userCommand);
+			return_string = deleteTask(userCommand);
+			storageController.save(getMainApp().getTaskData());
+			break;
 //		case SEARCH:
 //			return searchTask(userCommand);
 //		case UPDATE:
@@ -42,10 +50,13 @@ public class FiniParser {
 		case EXIT:
 			System.exit(0);
 		case INVALID:
-			return "INVALID COMMAND";
+			return_string = "INVALID COMMAND";
+			break;
 		default:
-			return "ERROR executeCommand";
+			return_string = "ERROR executeCommand";
+			break;
 		}
+		return return_string;
 	}
 	
 	private CommandType getCommandType(String command) {
