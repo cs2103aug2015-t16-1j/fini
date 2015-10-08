@@ -35,16 +35,18 @@ public class FiniParser {
 		switch (commandType) {
 		case ADD:
 			return_string = addTask(userCommand);
-			storageController.save(getMainApp().getTaskData());
+//			storageController.save(getMainApp().getTaskData());
 			break;
 		case DELETE:
 			return_string = deleteTask(userCommand);
-			storageController.save(getMainApp().getTaskData());
+//			storageController.save(getMainApp().getTaskData());
 			break;
 //		case SEARCH:
 //			return searchTask(userCommand);
-//		case UPDATE:
-//			return displayTask(userCommand);
+		case UPDATE:
+			return_string = updateTask(userCommand);
+//			storageController.save(getMainApp().getTaskData());
+			break;
 //		case SORT:
 //			return sortTask(userCommand);
 		case EXIT:
@@ -149,6 +151,23 @@ public class FiniParser {
 		}
 	}
 	
+	private String updateTask(String userCommand) {
+		String[] userCommandArray = userCommand.split("\\s+");
+		String taskNumberString = userCommandArray[1];
+		String updateTitle = userCommandArray[2];
+		int taskNumber = parseInt(taskNumberString);
+		int actualTaskNumber = taskNumber - 1;
+		
+		Task tempTask = new Task(updateTitle);
+		try {
+			getMainApp().getTaskData().set(actualTaskNumber, tempTask);
+			return "Updated";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Fatal error";
+		}
+	}
+	
 //	private String searchTask(String userCommand) {
 //		String keyword = removeFirstWord(userCommand);
 //		ArrayList<Task> searchList = logic.searchTask(keyword);
@@ -160,16 +179,6 @@ public class FiniParser {
 //		}
 //	}
 //	
-//	private String updateTask(String userCommand) {
-//		ArrayList<Task>list = (ArrayList<Task>) logic.getList();
-//		
-//		boolean isListEmpty = list.isEmpty();
-//		if (isListEmpty) {
-//			return "Displayed";
-//		} else {
-//			return "Display Error";
-//		}
-//	}
 //	
 //	private String sortTask(String userCommand) {
 //		boolean sortSuccess = logic.sortTask();
