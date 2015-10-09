@@ -24,9 +24,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class MainApp extends Application {
- protected static final double OPACITY_ZERO = 0;
-protected static final double OPACITY_FULL = 100;
-protected static final double DURATION_OF_FADE_TRANSITION = 3000;
 private Stage primaryStage;
  private Scene welcomeScreen;
  private BorderPane rootLayout;
@@ -51,58 +48,9 @@ private Stage primaryStage;
  public void start(Stage primaryStage) throws IOException {
   this.primaryStage = primaryStage;
   this.primaryStage.setTitle("Fini");
-  displayWelcomeScene();
-  fadeOutWelcomeScene();
-  //fadeInMainScene();
   initRootLayout();
-  
   showTaskOverview();
  }
-
- private void displayWelcomeScene() throws IOException {
-     FXMLLoader loader = new FXMLLoader();
-     loader.setLocation(MainApp.class.getResource("view/WelcomeScene.fxml"));
-     welcomeLayout = (AnchorPane) loader.load();
-     welcomeScreen = new Scene(welcomeLayout);
-     primaryStage.setScene(welcomeScreen);
-     primaryStage.show();
-     System.out.println("SHowing WELCOME");
-     SequentialTransition seqTransition = new SequentialTransition (
-         new PauseTransition(Duration.millis(30000)) // wait a second
-     );
-     seqTransition.play();
- }
-
- private void fadeOutWelcomeScene() {
-   FadeTransition welcomeSceneFadeOut = new FadeTransition(Duration.millis(DURATION_OF_FADE_TRANSITION), rootLayout);
-   welcomeSceneFadeOut.setFromValue(OPACITY_FULL);
-   welcomeSceneFadeOut.setToValue(OPACITY_ZERO);
-   welcomeSceneFadeOut.play();
-}
- 
- private void fadeInMainScene() {
-   Timeline timeline = new Timeline();
-   timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(0.5),
-       new EventHandler<ActionEvent>() {
-
-           @Override
-           public void handle(ActionEvent event) {
-               try {
-                   rootLayout = FXMLLoader.load(getClass().getResource("view/RootLayout.fxml"));
-               } catch (IOException e) {
-                   e.printStackTrace();
-               }
-               FadeTransition mainSceneFadeIn = new FadeTransition(Duration.millis(DURATION_OF_FADE_TRANSITION), rootLayout);
-               mainSceneFadeIn.setFromValue(OPACITY_ZERO);
-               mainSceneFadeIn.setToValue(OPACITY_FULL);
-               mainSceneFadeIn.play();
-               primaryStage.setScene(new Scene(rootLayout));
-               primaryStage.show();
-           }
-       }));
-   timeline.play();
-}
-
  
  public void initRootLayout() {
   try {
@@ -114,7 +62,6 @@ private Stage primaryStage;
    // Show the scene containing the root layout.
    Scene scene = new Scene(rootLayout);
    primaryStage.setScene(scene);
-   scene.getStylesheets().add(getClass().getResource("view/rootLayout.css").toExternalForm());
    primaryStage.show();
   } catch (IOException e) {
    e.printStackTrace();

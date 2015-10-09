@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import fini.main.MainApp;
-import fini.main.logic.FiniParser;
+import fini.main.model.FiniParser;
 import fini.main.model.Task;
 import javafx.fxml.FXML;
 //import javafx.scene.control.Alert;

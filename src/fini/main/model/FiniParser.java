@@ -1,10 +1,9 @@
-package fini.main.logic;
+package fini.main.model;
 
 import java.io.File;
 import java.util.ArrayList;
 
 import fini.main.MainApp;
-import fini.main.model.Task;
 import fini.main.view.MainController;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
@@ -20,7 +19,7 @@ public class FiniParser {
 	}
 	
 	private static enum CommandType {
-		ADD, DELETE, UPDATE, CLEAR, SEARCH, SORT, EXIT, INVALID
+		ADD, DELETE, UPDATE, CLEAR, SEARCH, SORT, SAVE, EXIT, INVALID
 	}
 	
 	public FiniParser() {
@@ -75,7 +74,8 @@ public class FiniParser {
 			return CommandType.SORT;
 		} else if (commandLowerCase.equals("exit")) {
 			return CommandType.EXIT;
-//		} else if () {
+		} else if (commandLowerCase.equals("save")) {
+			return CommandType.SAVE;
 		} else {
 			return CommandType.INVALID;
 		}
