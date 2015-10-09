@@ -3,6 +3,7 @@ package fini.main.model;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 
 import javafx.beans.property.ObjectProperty;
@@ -10,16 +11,17 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-/**
- * Model class for a Task
- * @author gaieepo
- *
- */
 public class Task {
-	private StringProperty taskTitle;
-	private SimpleObjectProperty<LocalDate> taskDate;
-	private final StringProperty taskPriority;
-	private final StringProperty taskGroup;
+    public static enum TaskType {
+      FLOATING, DEADLINE, EVENT
+    };
+  
+	private StringProperty title;
+	private SimpleObjectProperty<LocalDate> date;
+	private SimpleObjectProperty<LocalTime> startTime;
+	private SimpleObjectProperty<LocalTime> endTime;
+	private StringProperty priority;
+	private TaskType type;
 	
 	DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 	
@@ -32,77 +34,71 @@ public class Task {
 	
 	/**
 	 * Constructor with some initial data.
-	 * @param taskTitle
+	 * @param title
 	 */
-	public Task(String taskTitle) {
-		this.taskTitle = new SimpleStringProperty(taskTitle);
+	public Task(String title) {
+		this.title = new SimpleStringProperty(title);
 		
 		// Some initial dummy data, just for convenient testing.
-		this.taskDate = new SimpleObjectProperty<LocalDate>(LocalDate.of(2015, 9, 14));
-		this.taskPriority = new SimpleStringProperty("Normal");
-		this.taskGroup = new SimpleStringProperty("Inbox");
+		this.date = new SimpleObjectProperty<LocalDate>(LocalDate.of(2015, 9, 14));
+		this.priority = new SimpleStringProperty("Normal");
 	}
 	
-	public Task(String taskTitle, String taskDetails) {
-	  this.taskTitle = new SimpleStringProperty(taskTitle);
-	  setTaskDate(taskDetails);
-	  this.taskGroup = new SimpleStringProperty("Tasks");
-	  this.taskPriority = new SimpleStringProperty("Normal");
+	public Task(String title, String taskDetails) {
+	  this.title = new SimpleStringProperty(title);
+	  setdate(taskDetails);
+	  this.priority = new SimpleStringProperty("Normal");
 	}
 	
-	private void setTaskDate(String taskDetails) {
+	private void setdate(String taskDetails) {
     String[] dateArray = taskDetails.split("/");
     int day = Integer.parseInt(dateArray[0]);
     int month = Integer.parseInt(dateArray[1]);
     int year = Integer.parseInt(dateArray[2]);
-    this.taskDate = new SimpleObjectProperty<LocalDate>(LocalDate.of(year, month, day));
+    this.date = new SimpleObjectProperty<LocalDate>(LocalDate.of(year, month, day));
   }
 
-  public String getTaskTitle() {
-		return taskTitle.get();
+  public String getTitle() {
+		return title.get();
 	}
 	
-	public void setTaskTitle(String taskTitle) {
-		this.taskTitle.set(taskTitle);
+	public void settitle(String title) {
+		this.title.set(title);
 	}
 	
-	public StringProperty taskTitleProperty() {
-		return taskTitle;
+	public StringProperty getTitleProperty() {
+		return title;
 	}
 	
-	public LocalDate getTaskDate() {
-		return taskDate.get();
+	public LocalDate getDate() {
+		return date.get();
 	}
 	
-	public void setTaskDate(LocalDate taskDate) {
-		this.taskDate.set(taskDate);
+	public void setDate(LocalDate date) {
+		this.date.set(date);
 	}
 	
-	public ObjectProperty<LocalDate> taskDateProperty() {
-		return taskDate;
+	public String getPriority() {
+		return priority.get();
 	}
 	
-	public String getTaskPriority() {
-		return taskPriority.get();
+	public void setPriority(String priority) {
+		this.priority.set(priority);
 	}
 	
-	public void setTaskPriority(String taskPriority) {
-		this.taskPriority.set(taskPriority);
+	public StringProperty getPriorityProperty() {
+		return priority;
 	}
-	
-	public StringProperty taskPriorityProperty() {
-		return taskPriority;
-	}
-	
-	public String getTaskGroup() {
-		return taskGroup.get();
-	}
-	
-	public void setTaskGroup(String taskGroup) {
-		this.taskGroup.set(taskGroup);
-	}
-	
-	public StringProperty taskGroupProperty() {
-		return taskGroup;
-	}
+
+  public SimpleObjectProperty<LocalDate> getDateProperty() {
+    return date;
+  }
+
+  public SimpleObjectProperty<LocalTime> getStartTimeProperty() {
+    return startTime;
+  }
+  
+  public SimpleObjectProperty<LocalTime> getEndTimeProperty() {
+    return endTime;
+  }
 }

@@ -5,16 +5,16 @@ import java.util.ArrayList;
 
 import fini.main.MainApp;
 import fini.main.model.Task;
-import fini.main.view.TaskOverviewController;
+import fini.main.view.MainController;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 import fini.main.view.StorageController;
 
 public class FiniParser {
-	private TaskOverviewController mainController;
+	private MainController mainController;
 	private StorageController storageController;
 	
-	public void setMainController(TaskOverviewController mainController) {
+	public void setMainController(MainController mainController) {
 		System.out.println("main controller set");
 		this.mainController = mainController;
 	}
@@ -117,7 +117,7 @@ public class FiniParser {
 		getMainApp().getTaskData().add(tempTask);
 		boolean isAddSuccess = true;
 		if (isAddSuccess) {
-			return "Added " + tempTask.getTaskTitle();
+			return "Added " + tempTask.getTitle();
 		} else {
 			return "Add Error";
 		}
@@ -145,7 +145,7 @@ public class FiniParser {
 		
 		boolean isDeleteSuccess = deletedTask != null;
 		if (isDeleteSuccess) {
-			return "Deleted " + deletedTask.getTaskTitle();
+			return "Deleted " + deletedTask.getTitle();
 		} else {
 			return "Delete Error";
 		}

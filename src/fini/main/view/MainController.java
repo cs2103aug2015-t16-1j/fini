@@ -2,6 +2,7 @@ package fini.main.view;
 
 //import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import fini.main.MainApp;
 import fini.main.logic.FiniParser;
@@ -16,20 +17,22 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
-public class TaskOverviewController {
+public class MainController {
 	private String userCommand;
 	private static FiniParser finiParser;
 	
 	@FXML
 	private TableView<Task> taskTable;
 	@FXML
-	private TableColumn<Task, LocalDate> taskDateColumn; 
-	@FXML
 	private TableColumn<Task, String> taskTitleColumn;
 	@FXML
 	private TableColumn<Task, String> taskPriorityColumn;
 	@FXML
-	private TableColumn<Task, String> taskGroupColumn;
+	private TableColumn<Task, LocalDate> taskDateColumn;
+	@FXML
+    private TableColumn<Task, LocalTime> taskStartTimeColumn;
+	@FXML
+    private TableColumn<Task, LocalTime> taskEndTimeColumn;
 	@FXML
 	private TableColumn<Task, String> taskIdColumn;
 	@FXML
@@ -39,18 +42,18 @@ public class TaskOverviewController {
 	
 	private MainApp mainApp;
 	
-	public TaskOverviewController() {
+	public MainController() {
 	}
 		
 	@FXML
 	private void initialize() {
 		System.out.println("Fini initialized");
 		 
-		taskTitleColumn.setCellValueFactory(cellData -> cellData.getValue().taskTitleProperty());
-		taskTitleColumn.setCellValueFactory(cellData -> cellData.getValue().taskTitleProperty());
-		taskPriorityColumn.setCellValueFactory(cellData -> cellData.getValue().taskPriorityProperty());
-		taskGroupColumn.setCellValueFactory(cellData -> cellData.getValue().taskGroupProperty());
-		taskDateColumn.setCellValueFactory(cellData -> cellData.getValue().taskDateProperty());
+		taskTitleColumn.setCellValueFactory(cellData -> cellData.getValue().getTitleProperty());
+		taskPriorityColumn.setCellValueFactory(cellData -> cellData.getValue().getPriorityProperty());
+		taskDateColumn.setCellValueFactory(cellData -> cellData.getValue().getDateProperty());
+		taskStartTimeColumn.setCellValueFactory(cellData -> cellData.getValue().getStartTimeProperty());
+		taskEndTimeColumn.setCellValueFactory(cellData -> cellData.getValue().getEndTimeProperty());
 		
 		outputField.setEditable(false);
 		

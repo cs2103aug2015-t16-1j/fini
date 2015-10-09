@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.prefs.Preferences;
 
 import fini.main.model.Task;
-import fini.main.view.TaskOverviewController;
+import fini.main.view.MainController;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
@@ -114,7 +114,7 @@ private Stage primaryStage;
    // Show the scene containing the root layout.
    Scene scene = new Scene(rootLayout);
    primaryStage.setScene(scene);
-   
+   scene.getStylesheets().add(getClass().getResource("view/rootLayout.css").toExternalForm());
    primaryStage.show();
   } catch (IOException e) {
    e.printStackTrace();
@@ -132,7 +132,7 @@ private Stage primaryStage;
    rootLayout.setCenter(taskOverview);
    
    // Give the controller access to the main app.
-   TaskOverviewController controller = loader.getController();
+   MainController controller = loader.getController();
    controller.setMainApp(this);
    System.out.println("Controller Set!");
   } catch (IOException e) {

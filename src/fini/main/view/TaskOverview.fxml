@@ -6,26 +6,27 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fini.main.view.TaskOverviewController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@rootLayout.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fini.main.view.MainController">
    <children>
       <SplitPane dividerPositions="0.8645484949832776, 0.9280936454849499" layoutX="251.0" layoutY="41.0" orientation="VERTICAL" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="107.0" prefWidth="798.0">
                <children>
-                  <TableView id="tableView" fx:id="taskTable" prefHeight="405.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView id="tableView" fx:id="taskTable" layoutX="99.0" prefHeight="513.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
                       <TableColumn fx:id="taskIdColumn" prefWidth="75.0" text="ID" />
-                      <TableColumn fx:id="taskTitleColumn" prefWidth="421.0" text="Title" />
-                        <TableColumn fx:id="taskDateColumn" minWidth="0.0" prefWidth="108.0" text="Datetime" />
-                        <TableColumn fx:id="taskPriorityColumn" minWidth="6.0" prefWidth="84.0" text="Priority" />
-                        <TableColumn fx:id="taskGroupColumn" minWidth="0.0" prefWidth="109.0" text="Group" />
+                      <TableColumn fx:id="taskTitleColumn" prefWidth="259.0" text="Title" />
+                        <TableColumn fx:id="taskDateColumn" minWidth="0.0" prefWidth="120.0" text="Date" />
+                        <TableColumn fx:id="taskStartTimeColumn" prefWidth="120.0" text="Start Time" />
+                        <TableColumn fx:id="taskEndTimeColumn" prefWidth="120.0" text="End Time" />
+                        <TableColumn fx:id="taskPriorityColumn" minWidth="6.0" prefWidth="103.0" text="Priority" />
                     </columns>
                   </TableView>
                </children>
             </AnchorPane>
           <AnchorPane maxHeight="150.0" minHeight="0.0" minWidth="0.0" prefHeight="52.0" prefWidth="798.0">
                <children>
-                  <TextArea fx:id="outputField" prefHeight="49.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-9.0">
+                  <TextArea fx:id="outputField" prefHeight="30.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <font>
                         <Font name="Helvetica Neue Light" size="14.0" />
                      </font></TextArea>
