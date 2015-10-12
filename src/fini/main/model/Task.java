@@ -67,25 +67,18 @@ public class Task {
     int indexOfDeadline = checkIfOnlyDeadlineExists(taskDetails);
     int indexOfRecurringTask = checkIfRecurringDeadlineExists(taskDetails);
 
-    if(indexOfDeadline > 0) {
-      String date = taskDetails.substring(0, indexOfDeadline-1);
-      setDate(date);
-      if(indexOfPriority > 0) {
-        String deadlineDetails = taskDetails.substring(indexOfDeadline, indexOfPriority-1);
-        deadlineDetails = deadlineDetails.replace("at ", "");
-        String priorityDetails = taskDetails.substring(indexOfPriority);
-        this.startTime = new SimpleStringProperty(deadlineDetails);
-        priorityDetails = priorityDetails.replace("with priority", "");
-        this.priority = new SimpleStringProperty(priorityDetails.toUpperCase());
-      }
-    }
-
     if(indexOfRecurringTask >= 0) {
+      System.out.println("ENTERED");
       String dateDetails = taskDetails;
       System.out.println(dateDetails);
       if(indexOfPriority > 0) {
         dateDetails = taskDetails.substring(indexOfRecurringTask, indexOfPriority);
       }
+      int indexOfTime = dateDetails.indexOf("at ");
+      String timeDetails = dateDetails.substring(indexOfTime);
+      timeDetails = timeDetails.replace("at ", "");
+      this.startTime = new SimpleStringProperty(timeDetails);
+      dateDetails = dateDetails.substring(0, indexOfTime-1);
       dateDetails = dateDetails.replace("every ", "");
       dateDetails = dateDetails.toUpperCase();
       String storeRecurringDay = "";
@@ -105,7 +98,19 @@ public class Task {
       } else if (dateDetails.equals("SUNDAY")) {
         storeRecurringDay = "Sun";
       } 
+      System.out.println(storeRecurringDay + "HELLO");
       this.recurringDay = new SimpleStringProperty(storeRecurringDay);
+    } else if(indexOfDeadline > 0) {
+      String date = taskDetails.substring(0, indexOfDeadline-1);
+      setDate(date);
+      if(indexOfPriority > 0) {
+        String deadlineDetails = taskDetails.substring(indexOfDeadline, indexOfPriority-1);
+        deadlineDetails = deadlineDetails.replace("at ", "");
+        String priorityDetails = taskDetails.substring(indexOfPriority);
+        this.startTime = new SimpleStringProperty(deadlineDetails);
+        priorityDetails = priorityDetails.replace("with priority", "");
+        this.priority = new SimpleStringProperty(priorityDetails.toUpperCase());
+      }
     }
 
     if(indexOfPriority > 0) {
