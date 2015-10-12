@@ -49,6 +49,7 @@ public class MainController {
 	private void initialize() {
 		System.out.println("Fini initialized");
 		 
+		taskIdColumn.setCellValueFactory(cellData -> cellData.getValue().getIdProperty());
 		taskTitleColumn.setCellValueFactory(cellData -> cellData.getValue().getTitleProperty());
 		taskPriorityColumn.setCellValueFactory(cellData -> cellData.getValue().getPriorityProperty());
 		taskDateColumn.setCellValueFactory(cellData -> cellData.getValue().getDateProperty());

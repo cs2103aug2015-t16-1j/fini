@@ -29,7 +29,7 @@ private Stage primaryStage;
  private BorderPane rootLayout;
  private AnchorPane welcomeLayout;
  
- private ObservableList<Task> taskData = FXCollections.observableArrayList();
+ private static ObservableList<Task> taskData = FXCollections.observableArrayList();
  
  public MainApp() {
   // Add some sample data
@@ -40,7 +40,7 @@ private Stage primaryStage;
   taskData.add(new Task("Do CS2103T Homework :/"));
  }
  
- public ObservableList<Task> getTaskData() {
+ public static ObservableList<Task> getTaskData() {
   return taskData;
  }
  

@@ -114,8 +114,8 @@ public class FiniParser {
 		else {
 		  tempTask = new Task(taskToAdd);
 		}
-		getMainApp().getTaskData().add(tempTask);
-		boolean isAddSuccess = true;
+		
+		boolean isAddSuccess = getMainApp().getTaskData().add(tempTask);;
 		if (isAddSuccess) {
 			return "Added " + tempTask.getTitle();
 		} else {
@@ -139,6 +139,9 @@ public class FiniParser {
 		Task deletedTask;
 		try {
 			deletedTask = getMainApp().getTaskData().remove(actualTaskNumber);
+			for(int i=0;i<getMainApp().getTaskData().size();i++) {
+			  getMainApp().getTaskData().get(i).setTaskId(i+1);
+			}
 		} catch (Exception e) {
 			deletedTask = null;
 		}
