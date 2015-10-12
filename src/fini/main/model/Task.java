@@ -20,13 +20,14 @@ public class Task {
 
   private StringProperty title;
   private SimpleObjectProperty<LocalDate> date;
-  private SimpleObjectProperty<LocalTime> startTime;
-  private SimpleObjectProperty<LocalTime> endTime;
+  private SimpleStringProperty startTime;
+  private SimpleStringProperty endTime;
   private StringProperty priority;
   private StringProperty id;
   private TaskType type;
 
   DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+  private SimpleStringProperty deadline;
 
   /**
    * Default constructor.
@@ -60,17 +61,64 @@ public class Task {
   public Task(String title, String taskDetails) {
     this.title = new SimpleStringProperty(title);
     int indexOfPriority = checkIfPriorityExists(taskDetails);
-    if(indexOfPriority > 0) {
-      setDate(taskDetails, indexOfPriority);
-      String priorityDetails = taskDetails.substring(indexOfPriority);
-      priorityDetails = priorityDetails.replace("with priority", "");
-      this.priority = new SimpleStringProperty(priorityDetails);
-    } else {
-      setDate(taskDetails);
+    int indexOfStartTime = checkIfStartTimeExists(taskDetails);
+    int indexOfEndTime = checkIfEndTimeExists(taskDetails);
+    int indexOfDeadline = checkIfOnlyDeadlineExists(taskDetails);
+
+    if(indexOfDeadline > 0) {
+      String date = taskDetails.substring(0, indexOfDeadline-1);
+      setDate(date);
+      if(indexOfPriority > 0) {
+        String deadlineDetails = taskDetails.substring(indexOfDeadline, indexOfPriority-1);
+        String priorityDetails = taskDetails.substring(indexOfPriority);
+        this.deadline = new SimpleStringProperty(deadlineDetails);
+        priorityDetails = priorityDetails.replace("with priority", "");
+        this.priority = new SimpleStringProperty(priorityDetails.toUpperCase());
+      }
     }
     
-   // this.priority = new SimpleStringProperty("Normal");
+    if((indexOfStartTime > 0) && (indexOfEndTime > 0)) {
+      String dateDetails = taskDetails.substring(0, indexOfStartTime - 1);
+      setDate(dateDetails);
+      String startTimeDetails = taskDetails.substring(indexOfStartTime, indexOfEndTime-1);
+      startTimeDetails = startTimeDetails.replace("from ", "");
+      this.startTime = new SimpleStringProperty(startTimeDetails);
+      if (indexOfPriority > 0) {
+       String endTimeDetails = taskDetails.substring(indexOfEndTime, indexOfPriority - 1);
+       this.endTime = new SimpleStringProperty(endTimeDetails.replace("to ", ""));
+       String priorityDetails = taskDetails.substring(indexOfPriority);
+       priorityDetails = priorityDetails.replace("with priority", "");
+       this.priority = new SimpleStringProperty(priorityDetails.toUpperCase());
+      } else {
+        String endTimeDetails = taskDetails.substring(indexOfEndTime); 
+        this.endTime = new SimpleStringProperty(endTimeDetails.replace("to ", ""));
+      }
+    }
+
+//    if(indexOfPriority > 0) {
+//      setDate(taskDetails, indexOfPriority);
+//      String priorityDetails = taskDetails.substring(indexOfPriority);
+//      priorityDetails = priorityDetails.replace("with priority", "");
+//      this.priority = new SimpleStringProperty(priorityDetails.toUpperCase());
+//    } else {
+//      setDate(taskDetails);
+//    }
+
+    // this.priority = new SimpleStringProperty("Normal");
   }
+
+  private int checkIfOnlyDeadlineExists(String taskDetails) {
+    return taskDetails.indexOf("at");
+  }
+
+  private int checkIfStartTimeExists(String taskDetails) {
+    return taskDetails.indexOf("from");
+  }
+
+  private int checkIfEndTimeExists(String taskDetails) {
+    return taskDetails.indexOf("to");
+  }
+
 
   private int checkIfPriorityExists(String taskDetails) {
     return taskDetails.indexOf("with priority");
@@ -83,7 +131,7 @@ public class Task {
     int year = Integer.parseInt(dateArray[2]);
     this.date = new SimpleObjectProperty<LocalDate>(LocalDate.of(year, month, day));
   }
-  
+
   private void setDate(String taskDetails, int indexOfPriorityDetails) {
     taskDetails = taskDetails.substring(0, indexOfPriorityDetails-1);
     String[] dateArray = taskDetails.split("/");
@@ -92,7 +140,7 @@ public class Task {
     int year = Integer.parseInt(dateArray[2]);
     this.date = new SimpleObjectProperty<LocalDate>(LocalDate.of(year, month, day));
   }
-  
+
   public String getTitle() {
     return title.get();
   }
@@ -133,11 +181,11 @@ public class Task {
     return date;
   }
 
-  public SimpleObjectProperty<LocalTime> getStartTimeProperty() {
+  public SimpleStringProperty getStartTimeProperty() {
     return startTime;
   }
 
-  public SimpleObjectProperty<LocalTime> getEndTimeProperty() {
+  public SimpleStringProperty getEndTimeProperty() {
     return endTime;
   }
 }

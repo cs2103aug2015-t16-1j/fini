@@ -30,9 +30,9 @@ public class MainController {
 	@FXML
 	private TableColumn<Task, LocalDate> taskDateColumn;
 	@FXML
-    private TableColumn<Task, LocalTime> taskStartTimeColumn;
+    private TableColumn<Task, String> taskStartTimeColumn;
 	@FXML
-    private TableColumn<Task, LocalTime> taskEndTimeColumn;
+    private TableColumn<Task, String> taskEndTimeColumn;
 	@FXML
 	private TableColumn<Task, String> taskIdColumn;
 	@FXML
