@@ -70,13 +70,14 @@ public class Task {
       setDate(date);
       if(indexOfPriority > 0) {
         String deadlineDetails = taskDetails.substring(indexOfDeadline, indexOfPriority-1);
+        deadlineDetails = deadlineDetails.replace("at ", "");
         String priorityDetails = taskDetails.substring(indexOfPriority);
-        this.deadline = new SimpleStringProperty(deadlineDetails);
+        this.startTime = new SimpleStringProperty(deadlineDetails);
         priorityDetails = priorityDetails.replace("with priority", "");
         this.priority = new SimpleStringProperty(priorityDetails.toUpperCase());
       }
     }
-    
+
     if((indexOfStartTime > 0) && (indexOfEndTime > 0)) {
       String dateDetails = taskDetails.substring(0, indexOfStartTime - 1);
       setDate(dateDetails);
@@ -84,27 +85,28 @@ public class Task {
       startTimeDetails = startTimeDetails.replace("from ", "");
       this.startTime = new SimpleStringProperty(startTimeDetails);
       if (indexOfPriority > 0) {
-       String endTimeDetails = taskDetails.substring(indexOfEndTime, indexOfPriority - 1);
-       this.endTime = new SimpleStringProperty(endTimeDetails.replace("to ", ""));
-       String priorityDetails = taskDetails.substring(indexOfPriority);
-       priorityDetails = priorityDetails.replace("with priority", "");
-       this.priority = new SimpleStringProperty(priorityDetails.toUpperCase());
+        String endTimeDetails = taskDetails.substring(indexOfEndTime, indexOfPriority - 1);
+        this.endTime = new SimpleStringProperty(endTimeDetails.replace("to ", ""));
+        String priorityDetails = taskDetails.substring(indexOfPriority);
+        priorityDetails = priorityDetails.replace("with priority", "");
+        this.priority = new SimpleStringProperty(priorityDetails.toUpperCase());
       } else {
         String endTimeDetails = taskDetails.substring(indexOfEndTime); 
         this.endTime = new SimpleStringProperty(endTimeDetails.replace("to ", ""));
       }
     }
 
-//    if(indexOfPriority > 0) {
-//      setDate(taskDetails, indexOfPriority);
-//      String priorityDetails = taskDetails.substring(indexOfPriority);
-//      priorityDetails = priorityDetails.replace("with priority", "");
-//      this.priority = new SimpleStringProperty(priorityDetails.toUpperCase());
-//    } else {
-//      setDate(taskDetails);
-//    }
+    //    if(indexOfPriority > 0) {
+    //      setDate(taskDetails, indexOfPriority);
+    //      String priorityDetails = taskDetails.substring(indexOfPriority);
+    //      priorityDetails = priorityDetails.replace("with priority", "");
+    //      this.priority = new SimpleStringProperty(priorityDetails.toUpperCase());
+    //    } else {
+    //      setDate(taskDetails);
+    //    }
 
     // this.priority = new SimpleStringProperty("Normal");
+    setTaskId();
   }
 
   private int checkIfOnlyDeadlineExists(String taskDetails) {
