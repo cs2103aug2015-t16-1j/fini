@@ -12,14 +12,15 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="107.0" prefWidth="798.0">
                <children>
-                  <TableView id="tableView" fx:id="taskTable" layoutX="99.0" prefHeight="513.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView id="tableView" fx:id="taskTable" layoutX="99.0" prefHeight="513.0" prefWidth="798.0" stylesheets="@style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
-                      <TableColumn fx:id="taskIdColumn" prefWidth="75.0" text="ID" />
-                      <TableColumn fx:id="taskTitleColumn" prefWidth="259.0" text="Title" />
-                        <TableColumn fx:id="taskDateColumn" minWidth="0.0" prefWidth="120.0" text="Date" />
-                        <TableColumn fx:id="taskStartTimeColumn" prefWidth="120.0" text="Start Time" />
-                        <TableColumn fx:id="taskEndTimeColumn" prefWidth="120.0" text="End Time" />
-                        <TableColumn fx:id="taskPriorityColumn" minWidth="6.0" prefWidth="103.0" text="Priority" />
+                      <TableColumn id="IdColumn" fx:id="taskIdColumn" prefWidth="42.0" text="ID" />
+                      <TableColumn fx:id="taskTitleColumn" prefWidth="257.0" text="Title" />
+                        <TableColumn fx:id="taskDateColumn" minWidth="0.0" prefWidth="111.0" text="Date" />
+                        <TableColumn fx:id="recurringColumn" prefWidth="31.0" text="R" />
+                        <TableColumn fx:id="taskStartTimeColumn" prefWidth="129.0" text="Start Time" />
+                        <TableColumn fx:id="taskEndTimeColumn" prefWidth="112.0" text="End Time" />
+                        <TableColumn fx:id="taskPriorityColumn" minWidth="6.0" prefWidth="115.0" text="Priority" />
                     </columns>
                   </TableView>
                </children>
@@ -28,7 +29,7 @@
                <children>
                   <TextArea fx:id="outputField" prefHeight="30.0" prefWidth="798.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <font>
-                        <Font name="Helvetica Neue Light" size="14.0" />
+                        <Font name="Raleway" size="14.0" />
                      </font></TextArea>
                </children>
             </AnchorPane>

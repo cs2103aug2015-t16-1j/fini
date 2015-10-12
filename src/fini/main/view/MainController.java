@@ -34,6 +34,8 @@ public class MainController {
 	@FXML
     private TableColumn<Task, String> taskEndTimeColumn;
 	@FXML
+	private TableColumn<Task, String> recurringColumn;
+	@FXML
 	private TableColumn<Task, String> taskIdColumn;
 	@FXML
 	private TextArea outputField;
@@ -55,6 +57,9 @@ public class MainController {
 		taskDateColumn.setCellValueFactory(cellData -> cellData.getValue().getDateProperty());
 		taskStartTimeColumn.setCellValueFactory(cellData -> cellData.getValue().getStartTimeProperty());
 		taskEndTimeColumn.setCellValueFactory(cellData -> cellData.getValue().getEndTimeProperty());
+		recurringColumn.setCellValueFactory(cellData -> cellData.getValue().getRecurringProperty());
+		
+		//taskIdColumn.setStyle("-fx-te: " + color + ";");
 		
 		outputField.setEditable(false);
 		
