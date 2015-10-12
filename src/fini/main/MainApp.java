@@ -33,11 +33,11 @@ private Stage primaryStage;
  
  public MainApp() {
   // Add some sample data
-  taskData.add(new Task("Project Meeting"));
-  taskData.add(new Task("Send iPhone for servicing"));
-  taskData.add(new Task("Watch Superman"));
-  taskData.add(new Task("Buy Groceries"));
-  taskData.add(new Task("Do CS2103T Homework :/"));
+//  taskData.add(new Task("Project Meeting"));
+//  taskData.add(new Task("Send iPhone for servicing"));
+//  taskData.add(new Task("Watch Superman"));
+//  taskData.add(new Task("Buy Groceries"));
+//  taskData.add(new Task("Do CS2103T Homework :/"));
  }
  
  public static ObservableList<Task> getTaskData() {

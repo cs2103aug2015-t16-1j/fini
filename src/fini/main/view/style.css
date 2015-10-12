@@ -1,0 +1,22 @@
+.root {
+	-fx-font-family: raleway;
+}
+
+.tableView {
+	-fx-font-family: raleway;
+	
+}
+
+.table-view .column-header{
+    -fx-text-fill: -fx-selection-bar-text;
+    -fx-font-size: 16px;
+    -fx-font-family: "Open Sans";
+		-fx-font-weight: bold;
+}
+
+.table-view .table-column {
+    -fx-font-size: 16px;
+    -fx-font-family: "Open Sans";
+	-fx-font-weight: lighter;
+}
+
