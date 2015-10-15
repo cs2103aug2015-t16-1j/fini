@@ -1,6 +1,7 @@
 package fini.main.model;
 
 public class FiniParser {
+
     private static FiniParser parser;
     private Storage taskOrganiser;
 
@@ -87,10 +88,19 @@ public class FiniParser {
 		System.out.println("The task details for the recurring task: " + recurringDay);
 
 		if(isEvent) {
-		    int indexOfFrom = commandParameters.indexOf("from");
-		    int indexOfTo = commandParameters.indexOf("to");
-		    startTime = commandParameters.substring(indexOfFrom + 2, indexOfFrom + 5);
-		    endTime = commandParameters.substring(indexOfTo + 2, indexOfTo + 5);
+		    int indexOfFrom = taskDetails.indexOf("from");
+		    int indexOfTo = taskDetails.indexOf("to");
+
+		    String removeFromKeyword = taskDetails.substring(indexOfFrom);
+		    removeFromKeyword = removeFromKeyword.replace("from ", "");
+		    String[] splitRemoveFromKeyword = removeFromKeyword.split(" ");
+		    startTime = splitRemoveFromKeyword[0];
+
+		    String removeToKeyword = taskDetails.substring(indexOfTo);
+		    removeToKeyword = removeToKeyword.replace("to ", "");
+		    String[] splitRemoveToKeyword = removeToKeyword.split(" ");
+		    endTime = splitRemoveToKeyword[0];
+
 		} else if(isDeadline) {
 		    int indexOfAt = taskDetails.indexOf("at ");
 		    String removeAtKeyword = taskDetails.substring(indexOfAt);
@@ -115,12 +125,14 @@ public class FiniParser {
 		    removeFromKeyword = removeFromKeyword.replace("from ", "");
 		    String[] splitRemoveFromKeyword = removeFromKeyword.split(" ");
 		    startTime = splitRemoveFromKeyword[0];
+		    System.out.println(startTime);
 
 		    int indexOfEndTime = taskDetails.indexOf("to ");
 		    String removeToKeyword = taskDetails.substring(indexOfEndTime);
 		    removeToKeyword = removeToKeyword.replace("to ", "");
 		    String[] splitRemoveToKeyword = removeToKeyword.split(" ");
 		    endTime = splitRemoveToKeyword[0];
+		    System.out.println(endTime);
 		} else {
 		    startTime = null;
 		    endTime = null;
