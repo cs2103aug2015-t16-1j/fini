@@ -6,31 +6,25 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.media.VideoTrack;
 
 public class Storage {
   private static Storage taskOrganiser;
-  private ObservableList<Task> taskMasterList;
+  
+  private ObservableList<Task> taskMasterList = FXCollections.observableArrayList();
   
   private File saveFile;
   private BufferedReader reader;
   private PrintWriter writer;
-  private Gson gson;
   
-  public Storage() {
-    taskMasterList = FXCollections.observableArrayList();
-    gson = new Gson();
-    saveFile = new File("save.txt");
-    createIfNotExists(saveFile);
-  }
+  private Gson gson;
   
   public static Storage getInstance() {
     if(taskOrganiser == null) {
@@ -39,6 +33,71 @@ public class Storage {
     return taskOrganiser;
   }
   
+  public Storage() {
+//    taskMasterList = FXCollections.observableArrayList();
+    gson = new Gson();
+    
+    saveFile = new File("save.txt");
+    createIfNotExists(saveFile);
+  }
+  
+  public void readFile() {
+	  String text = "";
+	  ArrayList<Task> tempTaskMasterList = new ArrayList<Task>();
+	  
+	  try {
+		  if (!initReader(saveFile)) {
+			  taskMasterList = FXCollections.observableArrayList();
+		  }
+		  while ((text = reader.readLine()) != null) {
+			  Task task = gson.fromJson(text, Task.class);
+			  tempTaskMasterList.add(task);
+	      }
+	  } catch (IOException | JsonSyntaxException e) {
+		  e.printStackTrace();
+	  }
+	  closeReader();
+	  
+	  if (tempTaskMasterList.isEmpty()) {
+		  taskMasterList = FXCollections.observableArrayList();
+	  }
+	  
+	  for (Task task : tempTaskMasterList) {
+		  taskMasterList.add(task);
+	  }
+  }
+  
+  public void updateFile(ArrayList<Task> tasks) {
+	  try {
+		  writer = new PrintWriter(saveFile, "UTF-8");
+		  for (Task task : tasks) {
+			  writer.println(gson.toJson(task));
+		  }
+	  } catch (FileNotFoundException | UnsupportedEncodingException e) {
+		  e.printStackTrace();
+	  }
+	  writer.close();
+  }
+  
+  // Initialization Methods
+  private boolean initReader(File saveFile) {
+	  try {
+		  reader = new BufferedReader(new FileReader(saveFile));
+	  } catch (FileNotFoundException e) {
+		  return false;
+	  }
+	  return true;
+  }
+  
+  private void closeReader() {
+	  try {
+		  reader.close();
+	  } catch (IOException e) {
+		  e.printStackTrace();
+	  }
+  }
+  
+  // Utility Methods
   private void createIfNotExists(File saveFile) {
 	  try {
 		  if (!saveFile.exists()) {
@@ -55,32 +114,5 @@ public class Storage {
 
   public ObservableList<Task> getTasks() {
     return taskMasterList;
-  }
-  
-  public void readFile() {
-	  ArrayList<Task> storedTask = new ArrayList<Task>();
-	  String text = "";
-	  
-	  try {
-		reader = new BufferedReader(new FileReader(saveFile));
-		while ((text = reader.readLine()) != null) {
-			Task task = gson.fromJson(text, Task.class);
-			storedTask.add(task);
-		}
-	} catch (JsonSyntaxException | IOException e) {
-		e.printStackTrace();
-	}
-	  
-	  if (storedTask == null || storedTask.isEmpty()) {
-		storedTask = new ArrayList<Task>();
-	}
-	  
-	  
-	  
-	  try {
-		reader.close();
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
   }
 }
