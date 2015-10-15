@@ -1,10 +1,7 @@
 package fini.main.view;
 
-import java.awt.Insets;
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import javax.swing.JSpinner.ListEditor;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import fini.main.model.FiniParser;
 import fini.main.model.Storage;
@@ -12,14 +9,11 @@ import fini.main.model.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -48,6 +42,7 @@ public class RootController extends BorderPane {
   private Storage taskOrganiser;
   private String userInput;
   private Font defaultFont;
+  private static Logger logger = Logger.getLogger("RootControllerLogger");
 
   public RootController() {
     listView = new ListView<HBox>();
@@ -63,12 +58,13 @@ public class RootController extends BorderPane {
   public void handleKeyPressEvent(KeyEvent event) throws Exception {
     if(event.getCode() == KeyCode.ENTER) {
       userInput = commandBox.getText();
-      System.out.println(userInput);
+      logger.log(Level.INFO, userInput);
       commandBox.clear();
       parser.parse(userInput);
       updateMainDisplay(taskOrganiser.getTasks());
       updateProjectsOverviewPanel(taskOrganiser.getTasks());
       //      updateTasksOverviewPanel(taskOrganiser.getTasks());
+      logger.log(Level.INFO, "End of HandlingKeyPress");
     }
   }
 
@@ -97,7 +93,7 @@ public class RootController extends BorderPane {
     //ObservableList<String> taskList = FXCollections.observableArrayList();
     ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
     for(Task task: taskMasterList) {
-      //taskList.add(task.getTitle());
+      logger.log(Level.INFO, "Processing each task");
       String taskTitle = task.getTitle();
       String taskProject = task.getProject();
       String taskPriority = task.getPriority();
@@ -114,7 +110,7 @@ public class RootController extends BorderPane {
 
       if(isRecurringTask) {
         taskDate = task.getRecurringDay();
-        System.out.println("Recurring day is " + taskDate);
+        logger.log(Level.INFO, "Recurring day is " + taskDate);
       } else {
         taskDate = task.getDate();
       }
