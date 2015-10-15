@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -57,26 +58,29 @@ public class Storage {
   }
   
   public void readFile() {
-	  ArrayList<Task> storedTask;
-	  
+	  ArrayList<Task> storedTask = new ArrayList<Task>();
 	  String text = "";
 	  
-	  // Init BufferedReader
 	  try {
-		  reader = new BufferedReader(new FileReader(saveFile));
-		  
-		  Task task = gson.fromJson(text, Task.class);
-		  storedTask.add(task);
-	  } catch (FileNotFoundException e) {
-		  storedTask = new ArrayList<Task>();
-	  }
+		reader = new BufferedReader(new FileReader(saveFile));
+		while ((text = reader.readLine()) != null) {
+			Task task = gson.fromJson(text, Task.class);
+			storedTask.add(task);
+		}
+	} catch (JsonSyntaxException | IOException e) {
+		e.printStackTrace();
+	}
+	  
+	  if (storedTask == null || storedTask.isEmpty()) {
+		storedTask = new ArrayList<Task>();
+	}
 	  
 	  
 	  
 	  try {
-		  reader.close();
-	  } catch (IOException e) {
-		  e.printStackTrace();
-	  }
+		reader.close();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
   }
 }
