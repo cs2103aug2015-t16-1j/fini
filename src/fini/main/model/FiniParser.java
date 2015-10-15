@@ -1,222 +1,181 @@
 package fini.main.model;
 
-import java.io.File;
-import java.util.ArrayList;
-
-import fini.main.MainApp;
-import fini.main.view.MainController;
-import javafx.fxml.FXML;
-import javafx.stage.FileChooser;
-import fini.main.view.StorageController;
-
 public class FiniParser {
-	private MainController mainController;
-	private StorageController storageController;
-	
-	public void setMainController(MainController mainController) {
-		System.out.println("main controller set");
-		this.mainController = mainController;
-	}
-	
-	private static enum CommandType {
-		ADD, DELETE, UPDATE, CLEAR, SEARCH, SORT, SAVE, EXIT, INVALID
-	}
-	
-	public FiniParser() {
-		System.out.println("Fini Parser Constructed");
-		storageController = StorageController.getInstance("save.txt");
-	}
-	
-	public String executeCommand(String userCommand) {
-		String firstWord = getFirstWord(userCommand);
-		CommandType commandType = getCommandType(firstWord);
-		String return_string = "";
-		switch (commandType) {
-		case ADD:
-			return_string = addTask(userCommand);
-//			storageController.save(getMainApp().getTaskData());
-			break;
-		case DELETE:
-			return_string = deleteTask(userCommand);
-//			storageController.save(getMainApp().getTaskData());
-			break;
-//		case SEARCH:
-//			return searchTask(userCommand);
-		case UPDATE:
-			return_string = updateTask(userCommand);
-//			storageController.save(getMainApp().getTaskData());
-			break;
-//		case SORT:
-//			return sortTask(userCommand);
-		case EXIT:
-			System.exit(0);
-		case INVALID:
-			return_string = "Why don't you try giving an actual command?";
-			break;
-		default:
-			return_string = "ERROR executeCommand";
-			break;
-		}
-		return return_string;
-	}
-	
-	private CommandType getCommandType(String command) {
-		String commandLowerCase = command.toLowerCase();
-		if (commandLowerCase.equals("add")) {
-			return CommandType.ADD;
-		} else if (commandLowerCase.equals("clear")) {
-			return CommandType.CLEAR;
-		} else if (commandLowerCase.equals("delete")) {
-			return CommandType.DELETE;
-		} else if (commandLowerCase.equals("update")) {
-			return CommandType.UPDATE;
-		} else if (commandLowerCase.equals("sort")) {
-			return CommandType.SORT;
-		} else if (commandLowerCase.equals("exit")) {
-			return CommandType.EXIT;
-		} else if (commandLowerCase.equals("save")) {
-			return CommandType.SAVE;
-		} else {
-			return CommandType.INVALID;
-		}
-	}
-	
-	private MainApp getMainApp() {
-		return mainController.getMainApp();
-	}
-	
-	private String getFirstWord(String userCommand) {
-		String oneOrMoreSpaces = "\\s+";
-		String[] splitUserCommand = userCommand.split(oneOrMoreSpaces);
-		String firstWord = splitUserCommand[0];
-		return firstWord;
-	}
-	
-	private String removeFirstWord(String userCommand) {
-		String blank = "";
-		String firstWord = getFirstWord(userCommand);
-		String removeFirstWord = userCommand.replaceFirst(firstWord, blank);
-		String removeFirstWordTrimmed = removeFirstWord.trim();
-		return removeFirstWordTrimmed;
-	}
-	
-	private String addTask(String userCommand) {
-		String taskToAdd = removeFirstWord(userCommand);
-		Task tempTask;
-		
-		// check if there is a given date
-		int indexOfTaskDetails = taskToAdd.indexOf("//");
-		if (indexOfTaskDetails > 0) {
-		  String taskDetails = taskToAdd.substring(indexOfTaskDetails + 3);
-		  String taskName = taskToAdd.substring(0, indexOfTaskDetails);
-		  tempTask = new Task(taskName, taskDetails);
-		}
-		else {
-		  tempTask = new Task(taskToAdd);
-		}
-		
-		boolean isAddSuccess = getMainApp().getTaskData().add(tempTask);;
-		if (isAddSuccess) {
-			return "Added " + tempTask.getTitle();
-		} else {
-			return "Add Error";
-		}
-	}
-	
-	private int parseInt(String intString) {
-		try {
-			int value = Integer.parseInt(intString);
-			return value;
-		} catch (Exception e) {
-			return -1; // Error Index
-		}
-	}
-	
-	private String deleteTask(String userCommand) {
-		String taskNumberString = removeFirstWord(userCommand);
-		int taskNumber = parseInt(taskNumberString);
-		int actualTaskNumber = taskNumber - 1;
-		Task deletedTask;
-		try {
-			deletedTask = getMainApp().getTaskData().remove(actualTaskNumber);
-			for(int i=0;i<getMainApp().getTaskData().size();i++) {
-			  getMainApp().getTaskData().get(i).setTaskId(i+1);
-			}
-		} catch (Exception e) {
-			deletedTask = null;
-		}
-		
-		boolean isDeleteSuccess = deletedTask != null;
-		if (isDeleteSuccess) {
-			return "Deleted " + deletedTask.getTitle();
-		} else {
-			return "Delete Error";
-		}
-	}
-	
-	private String updateTask(String userCommand) {
-		String[] userCommandArray = userCommand.split("\\s+");
-		String taskNumberString = userCommandArray[1];
-		String updateTitle = userCommandArray[2];
-		int taskNumber = parseInt(taskNumberString);
-		int actualTaskNumber = taskNumber - 1;
-		
-		Task tempTask = new Task(updateTitle);
-		try {
-			getMainApp().getTaskData().set(actualTaskNumber, tempTask);
-			return "Updated";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "Fatal error";
-		}
-	}
-	
-//	private String searchTask(String userCommand) {
-//		String keyword = removeFirstWord(userCommand);
-//		ArrayList<Task> searchList = logic.searchTask(keyword);
-//		boolean searchSuccess = !searchList.isEmpty();
-//		if (searchSuccess) {
-//			return "Searched";
-//		} else {
-//			return "Search Error";
-//		}
-//	}
-//	
-//	
-//	private String sortTask(String userCommand) {
-//		boolean sortSuccess = logic.sortTask();
-//		if (sortSuccess) {
-//			return "Sorted";
-//		} else {
-//			return "Sort Error";
-//		}
-//	}
-	
-	
-	/*private String saveFile() {
-		File taskFile = getMainApp().getTaskFilePath();
-		if (taskFile != null) {
-			return getMainApp().saveTaskDataToFile(taskFile);
-		} else {
-			return saveFileAs();
-		}
-	}
-	
-    private String handleSaveAs() {
-        FileChooser fileChooser = new FileChooser();
-        
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-                "Text files (*.txt)", "*.txt");
-        fileChooser.getExtensionFilters().add(extFilter);
 
-        File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
+  private static FiniParser parser;
+  private Storage taskOrganiser;
 
-        if (file != null) {
-            // Make sure it has the correct extension
-            if (!file.getPath().endsWith(".xml")) {
-                file = new File(file.getPath() + ".xml");
-            }
-            mainApp.savePersonDataToFile(file);
+  enum CommandType {
+    ADD, DELETE, DISPLAY, CLEAR, SORT, SEARCH, INVALID, EXIT
+  };
+
+  public FiniParser() {
+    this.taskOrganiser = Storage.getInstance();
+  }
+
+  public void parse(String userInput) {
+    String[] userInputSplitArray = userInput.split(" ");
+    String commandParameters = "";
+    if(userInputSplitArray.length > 1) {
+      commandParameters= userInput.replace(userInputSplitArray[0], "").substring(1);
+    }
+    CommandType userCommand = getUserCommand(userInputSplitArray[0].toLowerCase());
+    executeCommand(userCommand, commandParameters);
+  }
+
+  private CommandType getUserCommand(String command) {
+    switch(command) {
+      case "add":
+        return CommandType.ADD;
+      default:
+        return CommandType.INVALID;
+    }
+  }
+
+  private void executeCommand(CommandType userCommand, String commandParameters) {
+    switch(userCommand) {
+      case ADD:
+        addTask(commandParameters);
+        break;
+      default:
+        break;
+    }
+  }
+
+  private void addTask(String commandParameters) {
+    boolean hasTaskParameters = checkIfHasParameters(commandParameters);
+    boolean isRecurringTask = checkIfRecurringTask(commandParameters);
+    boolean hasPriority = checkIfHasPriority(commandParameters);
+    boolean hasProject = checkIfHasProject(commandParameters);
+    boolean isEvent = checkIfTaskIsEvent(commandParameters);
+    boolean isDeadline = checkIfTaskIsDeadline(commandParameters);
+    String[] splitParameters = null;
+    String[] splitTaskDetails = null;
+    String taskDetails = ""; 
+    //System.out.println("PRINTING TASK DETAILS: " + taskDetails);
+
+    String priority = null;
+    String project = null;
+    String startTime = null;
+    String endTime = null;
+    String date = null;
+    String title = null;
+    
+    if(hasTaskParameters) {
+      splitParameters = commandParameters.split(" ");
+      splitTaskDetails = commandParameters.split("//");
+      taskDetails = splitTaskDetails[1].substring(1).toLowerCase();
+      
+      int indexOfStartOfTaskDetails = commandParameters.indexOf(" //");
+      title = commandParameters.substring(0, indexOfStartOfTaskDetails);
+
+      if(hasPriority) {
+        priority = extractPriority(commandParameters);
+      }
+
+      if(hasProject) {
+        project = extractProject(commandParameters);
+      }
+
+      if(isRecurringTask) {
+        int indexOfEvery = taskDetails.indexOf("every ");
+        System.out.println("The task details for the recurring task: " + taskDetails);
+        String removeEveryKeyWord = taskDetails.substring(indexOfEvery);
+        removeEveryKeyWord = removeEveryKeyWord.replace("every ", "");
+        System.out.println("The task details for the recurring task: " + removeEveryKeyWord);
+        String[] splitRemoveEveryKeyWord = removeEveryKeyWord.split(" ");
+        String recurringDay = splitRemoveEveryKeyWord[0];
+        System.out.println("The task details for the recurring task: " + recurringDay);
+
+        if(isEvent) {
+          int indexOfFrom = commandParameters.indexOf("from");
+          int indexOfTo = commandParameters.indexOf("to");
+          startTime = commandParameters.substring(indexOfFrom + 2, indexOfFrom + 5);
+          endTime = commandParameters.substring(indexOfTo + 2, indexOfTo + 5);
+        } else if(isDeadline) {
+          int indexOfAt = taskDetails.indexOf("at ");
+          String removeAtKeyword = taskDetails.substring(indexOfAt);
+          removeAtKeyword = removeAtKeyword.replace("at ", "");
+          String[] splitRemoveAtKeyword = removeAtKeyword.split(" ");
+          startTime = splitRemoveAtKeyword[0];
+          endTime = null;
         }
-    }()*/
+      } else {
+        String[] taskDetailsArray = taskDetails.split(" ");
+        date = taskDetailsArray[0];
+        if(isDeadline) {
+          int indexOfStartTime = taskDetails.indexOf("at ");
+          String removeAtKeyword = taskDetails.substring(indexOfStartTime);
+          removeAtKeyword = removeAtKeyword.replace("at ", "");
+          String[] splitRremoveAtKeyword = removeAtKeyword.split(" ");
+          startTime = splitRremoveAtKeyword[0];
+          endTime = null;
+        } else if(isEvent) {
+          int indexOfStartTime = taskDetails.indexOf("from ");
+          String removeFromKeyword = taskDetails.substring(indexOfStartTime);
+          removeFromKeyword = removeFromKeyword.replace("from ", "");
+          String[] splitRemoveFromKeyword = removeFromKeyword.split(" ");
+          startTime = splitRemoveFromKeyword[0];
+
+          int indexOfEndTime = taskDetails.indexOf("to ");
+          String removeToKeyword = taskDetails.substring(indexOfEndTime);
+          removeToKeyword = removeToKeyword.replace("to ", "");
+          String[] splitRemoveToKeyword = removeToKeyword.split(" ");
+          endTime = splitRemoveToKeyword[0];
+        } else {
+          startTime = null;
+          endTime = null;
+        }
+      }
+    } else {
+      title = commandParameters.replaceAll(" ", "");
+    }
+    Task newTask = new Task(isRecurringTask, title, date, startTime, endTime, priority, project);
+    taskOrganiser.addNewTask(newTask);
+  }
+
+  private boolean checkIfHasParameters(String commandParameters) {
+    return commandParameters.contains("//");
+  }
+
+  private String extractProject(String commandParameters) {
+    String project;
+    String projectDetails = commandParameters.substring(commandParameters.indexOf("project"));
+    project = projectDetails.replace("project", "");
+    return project;
+  }
+
+  private boolean checkIfHasProject(String commandParameters) {
+    return commandParameters.contains("project");
+  }
+
+  private String extractPriority(String commandParameters) {
+    String priority;
+    String priorityDetails = commandParameters.substring(commandParameters.indexOf("with priority"));
+    priority = priorityDetails.replace("with priority ", "");
+    return priority;
+  }
+
+  private boolean checkIfTaskIsDeadline(String commandParameters) {
+    return commandParameters.contains("at");
+  }
+
+  private boolean checkIfTaskIsEvent(String commandParameters) {
+    return commandParameters.contains("from") && commandParameters.contains("to");
+  }
+
+  private boolean checkIfHasPriority(String commandParameters) {
+    return commandParameters.contains("with priority");
+  }
+
+  private boolean checkIfRecurringTask(String commandParameters) {
+    return commandParameters.contains("every");
+  }
+
+  public static FiniParser getInstance() {
+    if(parser == null) {
+      parser = new FiniParser();
+    }
+    return parser;
+  }
 }

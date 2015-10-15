@@ -1,243 +1,190 @@
 package fini.main.model;
 
-import fini.main.MainApp;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
-
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import java.time.format.DateTimeFormatter;
 
 public class Task {
-  public static enum TaskType {
-    FLOATING, DEADLINE, EVENT
-  };
+  private String taskTitle;
+  private String project;
+  private String priority;
+  private LocalDate taskDate;
+  private LocalTime taskStartTime;
+  private LocalTime taskEndTime;
+  private String recurringDay;
+  private boolean isRecurring;
+  private boolean isDeadline = false;
+  private boolean isEvent = false;
+  private boolean isFloating = false;
 
-  private StringProperty title;
-  private SimpleObjectProperty<LocalDate> date;
-  private SimpleStringProperty startTime;
-  private SimpleStringProperty endTime;
-  private StringProperty priority;
-  private StringProperty id;
-  private SimpleStringProperty recurringDay;
-  private TaskType type;
+  private static final String priorityHigh = "High";
+  private static final String priorityMedium = "Medium";
+  private static final String priorityNormal = "Normal";
+  private static final String priorityLow = "Low";
 
-  DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-  private SimpleStringProperty deadline;
+  private static final String defaultPriority = "Normal";
+  private static final String defaultProject = "Inbox";
 
-  /**
-   * Default constructor.
-   */
+  private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+  private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHMM");
+
   public Task() {
-    this(null);
+    this.taskTitle = "Untitled Task";
+    this.project = defaultProject;
+    this.priority = priorityMedium;
+    this.taskDate = null;
+    this.taskStartTime = null;
+    this.taskEndTime = null;
   }
 
-  /**
-   * Constructor with some initial data.
-   * @param title
-   */
-  public Task(String title) {
-    this.title = new SimpleStringProperty(title);
-
-    // Some initial dummy data, just for convenient testing.
-    //this.date = new SimpleObjectProperty<LocalDate>(LocalDate.of(2015, 9, 14));
-    this.priority = new SimpleStringProperty("Normal");
-    setTaskId();
+  public Task(String taskTitle) {
+    this.taskTitle = taskTitle;
+    this.project = defaultProject;
   }
 
-  public void setTaskId() {
-    int taskId = MainApp.getTaskData().size() + 1;
-    this.id = new SimpleStringProperty(Integer.toString(taskId));
-  }
+  public Task(boolean isRecurring, String title, String date, String startTime, String endTime, String priority, String project) {
+    this.isRecurring = isRecurring;
+    this.taskTitle = title;
 
-  public void setTaskId(int newIndex) {
-    this.id = new SimpleStringProperty(Integer.toString(newIndex));
-  }
-
-  public Task(String title, String taskDetails) {
-    this.title = new SimpleStringProperty(title);
-    int indexOfPriority = checkIfPriorityExists(taskDetails);
-    int indexOfStartTime = checkIfStartTimeExists(taskDetails);
-    int indexOfEndTime = checkIfEndTimeExists(taskDetails);
-    int indexOfDeadline = checkIfOnlyDeadlineExists(taskDetails);
-    int indexOfRecurringTask = checkIfRecurringDeadlineExists(taskDetails);
-
-    if(indexOfRecurringTask >= 0) {
-      System.out.println("ENTERED");
-      String dateDetails = taskDetails;
-      System.out.println(dateDetails);
-      if(indexOfPriority > 0) {
-        dateDetails = taskDetails.substring(indexOfRecurringTask, indexOfPriority);
-      }
-      int indexOfTime = dateDetails.indexOf("at ");
-      String timeDetails = dateDetails.substring(indexOfTime);
-      timeDetails = timeDetails.replace("at ", "");
-      this.startTime = new SimpleStringProperty(timeDetails);
-      dateDetails = dateDetails.substring(0, indexOfTime-1);
-      dateDetails = dateDetails.replace("every ", "");
-      dateDetails = dateDetails.toUpperCase();
-      String storeRecurringDay = "";
-      System.out.println(dateDetails);
-      if (dateDetails.equals("MONDAY")) {
-        storeRecurringDay = "Mon";
-      } else if (dateDetails.equals("TUESDAY")) {
-        storeRecurringDay = "Tue";
-      } else if (dateDetails.equals("WEDNESDAY")) {
-        storeRecurringDay = "Wed";
-      } else if (dateDetails.equals("THURSDAY")) {
-        storeRecurringDay = "Thu";
-      } else if (dateDetails.equals("FRIDAY")) {
-        storeRecurringDay = "Fri";
-      } else if (dateDetails.equals("SATURDAY")) {
-        storeRecurringDay = "Sat";
-      } else if (dateDetails.equals("SUNDAY")) {
-        storeRecurringDay = "Sun";
-      } 
-      System.out.println(storeRecurringDay + "HELLO");
-      this.recurringDay = new SimpleStringProperty(storeRecurringDay);
-    } else if(indexOfDeadline > 0) {
-      String date = taskDetails.substring(0, indexOfDeadline-1);
-      setDate(date);
-      if(indexOfPriority > 0) {
-        String deadlineDetails = taskDetails.substring(indexOfDeadline, indexOfPriority-1);
-        deadlineDetails = deadlineDetails.replace("at ", "");
-        String priorityDetails = taskDetails.substring(indexOfPriority);
-        this.startTime = new SimpleStringProperty(deadlineDetails);
-        priorityDetails = priorityDetails.replace("with priority", "");
-        this.priority = new SimpleStringProperty(priorityDetails.toUpperCase());
-      }
+    if(startTime != null) {
+      String formattedStartTime = formatTime(startTime);
+      this.taskStartTime = LocalTime.parse(formattedStartTime, timeFormatter);
+      System.out.println("Time is " + taskStartTime.toString());
     }
 
-    if(indexOfPriority > 0) {
-      String priorityDetails = taskDetails.substring(indexOfPriority);
-      priorityDetails = priorityDetails.replace("with priority", "");
-      this.priority = new SimpleStringProperty(priorityDetails.toUpperCase());
+    if(endTime != null) {
+      String formattedEndTime = formatTime(endTime);
+      this.taskStartTime = LocalTime.parse(formattedEndTime, timeFormatter);
     }
-  
 
-  if((indexOfStartTime > 0) && (indexOfEndTime > 0)) {
-    String dateDetails = taskDetails.substring(0, indexOfStartTime - 1);
-    setDate(dateDetails);
-    String startTimeDetails = taskDetails.substring(indexOfStartTime, indexOfEndTime-1);
-    startTimeDetails = startTimeDetails.replace("from ", "");
-    this.startTime = new SimpleStringProperty(startTimeDetails);
-    if (indexOfPriority > 0) {
-      String endTimeDetails = taskDetails.substring(indexOfEndTime, indexOfPriority - 1);
-      this.endTime = new SimpleStringProperty(endTimeDetails.replace("to ", ""));
-      String priorityDetails = taskDetails.substring(indexOfPriority);
-      priorityDetails = priorityDetails.replace("with priority", "");
-      this.priority = new SimpleStringProperty(priorityDetails.toUpperCase());
+    if(startTime !=null  && endTime != null) {
+      isEvent = true;
+    } else if(startTime != null) {
+      isDeadline = true;
     } else {
-      String endTimeDetails = taskDetails.substring(indexOfEndTime); 
-      this.endTime = new SimpleStringProperty(endTimeDetails.replace("to ", ""));
+      isFloating = true;
+    }
+
+    if(priority != null) {
+      this.priority = priority;
+    } else {
+      this.priority = defaultPriority;
+    }
+
+    if(project != null) {
+      this.project = project;
+    } else {
+      this.project = defaultProject;
+    }
+
+    // if recurring take in the day as it is, else parse
+    if (isRecurring) {
+      recurringDay = date;
+    } else {
+      if(date != null) {
+        this.taskDate = LocalDate.parse(date, dateFormatter);
+      }
     }
   }
 
-  //    if(indexOfPriority > 0) {
-  //      setDate(taskDetails, indexOfPriority);
-  //      String priorityDetails = taskDetails.substring(indexOfPriority);
-  //      priorityDetails = priorityDetails.replace("with priority", "");
-  //      this.priority = new SimpleStringProperty(priorityDetails.toUpperCase());
-  //    } else {
-  //      setDate(taskDetails);
-  //    }
+  private String formatTime(String userGivenTime) {
+    System.out.println(userGivenTime);
+    int time = Integer.parseInt(userGivenTime.substring(0,1));
+    String timeOfDay = userGivenTime.substring(1);
+    String formattedStartTime = "";
+    switch (time) {
+      case 1:
+        formattedStartTime = (timeOfDay.equals("am")) ? "0100" : "1300";
+        break;
+      case 2:
+        formattedStartTime = (timeOfDay.equals("am")) ? "0200" : "1400";
+        break;
+      case 3:
+        formattedStartTime = (timeOfDay.equals("am")) ? "0300" : "1500";
+        break;
+      case 4:
+        formattedStartTime = (timeOfDay.equals("am")) ? "0400" : "1600";
+        break;
+      case 5:
+        formattedStartTime = (timeOfDay.equals("am")) ? "0500" : "1700";
+        break;
+      case 6:
+        formattedStartTime = (timeOfDay.equals("am")) ? "0600" : "1800";
+        break;
+      case 7:
+        formattedStartTime = (timeOfDay.equals("am")) ? "0700" : "1900";
+        break;
+      case 8:
+        formattedStartTime = (timeOfDay.equals("am")) ? "0800" : "2000";
+        break;
+      case 9:
+        formattedStartTime = (timeOfDay.equals("am")) ? "0900" : "2100";
+        break;
+      case 10:
+        formattedStartTime = (timeOfDay.equals("am")) ? "1000" : "2200";
+        break;
+      case 11:
+        formattedStartTime = (timeOfDay.equals("am")) ? "1100" : "2300";
+        break;
+      case 12:
+        formattedStartTime = (timeOfDay.equals("am")) ? "0000" : "1200";
+        break;
+      default:
+        break;
+    }
+    return formattedStartTime;
+  }
 
-  // this.priority = new SimpleStringProperty("Normal");
-  setTaskId();
-}
+  public String getTitle() {
+    return taskTitle;
+  }
 
-private int checkIfRecurringDeadlineExists(String taskDetails) {
-  return taskDetails.indexOf("every");
-}
+  public String getProject() {
+    return this.project;
+  }
 
-private int checkIfOnlyDeadlineExists(String taskDetails) {
-  return taskDetails.indexOf("at");
-}
+  public String getDate() {
+    if(taskDate == null) {
+      return "No date";
+    }
+    return taskDate.toString();
+  }
 
-private int checkIfStartTimeExists(String taskDetails) {
-  return taskDetails.indexOf("from");
-}
+  public String getStartTime() {
+    if(taskStartTime == null) {
+      return "No Time";
+    }
+    return taskStartTime.toString();
+  }
 
-private int checkIfEndTimeExists(String taskDetails) {
-  return taskDetails.indexOf("to");
-}
+  public String getEndTime() {
+    if(taskEndTime == null) {
+      return "No Time";
+    }
+    return taskEndTime.toString();
+  }
 
+  public boolean checkIfRecurring() {
+    return isRecurring;
+  }
 
-private int checkIfPriorityExists(String taskDetails) {
-  return taskDetails.indexOf("with priority");
-}
+  public String getRecurringDay() {
+    return recurringDay;
+  }
 
-private void setDate(String taskDetails) {
-  String[] dateArray = taskDetails.split("/");
-  int day = Integer.parseInt(dateArray[0]);
-  int month = Integer.parseInt(dateArray[1]);
-  int year = Integer.parseInt(dateArray[2]);
-  this.date = new SimpleObjectProperty<LocalDate>(LocalDate.of(year, month, day));
-}
+  public boolean checkIfDeadline() {
+    return isDeadline;
+  }
 
-private void setDate(String taskDetails, int indexOfPriorityDetails) {
-  taskDetails = taskDetails.substring(0, indexOfPriorityDetails-1);
-  String[] dateArray = taskDetails.split("/");
-  int day = Integer.parseInt(dateArray[0]);
-  int month = Integer.parseInt(dateArray[1]);
-  int year = Integer.parseInt(dateArray[2]);
-  this.date = new SimpleObjectProperty<LocalDate>(LocalDate.of(year, month, day));
-}
+  public boolean checkIfEvent() {
+    return isEvent;
+  }
 
-public String getTitle() {
-  return title.get();
-}
+  public boolean checkIfFloating() {
+    return isFloating;
+  }
 
-public void setTitle(String title) {
-  this.title.set(title);
-}
-
-public StringProperty getTitleProperty() {
-  return title;
-}
-
-public StringProperty getIdProperty() {
-  return id;
-}
-
-public LocalDate getDate() {
-  return date.get();
-}
-
-public void setDate(LocalDate date) {
-  this.date.set(date);
-}
-
-public String getPriority() {
-  return priority.get();
-}
-
-public void setPriority(String priority) {
-  this.priority.set(priority);
-}
-
-public StringProperty getPriorityProperty() {
-  return priority;
-}
-
-public SimpleObjectProperty<LocalDate> getDateProperty() {
-  return date;
-}
-
-public SimpleStringProperty getStartTimeProperty() {
-  return startTime;
-}
-
-public SimpleStringProperty getEndTimeProperty() {
-  return endTime;
-}
-
-public SimpleStringProperty getRecurringProperty() {
-  return recurringDay;
-}
+  public String getPriority() {
+    return priority;
+  }
 }
