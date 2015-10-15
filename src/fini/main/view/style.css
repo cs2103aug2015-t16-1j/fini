@@ -17,7 +17,7 @@
 
 .display #listView {
     -fx-font-size: 16px;
-    -fx-font-family: "Handlee", sans-serif, serif;
+    -fx-font-family: "Open Sans", sans-serif, serif;
 }
 
 .display #commandBox {
@@ -25,4 +25,15 @@
     -fx-font-family: "Open Sans", sans-serif, serif;
 	-fx-text-box-border: navy ;
 	-fx-focus-color: navy ;
+}
+
+.display #displayToUser {
+    -fx-font-size: 14px;
+    -fx-font-family: "Open Sans", sans-serif, serif;
+}
+
+.list-cell {
+   /* -fx-background-color: white;*/
+	-fx-padding: 7 10 7 10;
+/*	 -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );*/
 }
