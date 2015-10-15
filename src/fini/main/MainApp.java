@@ -14,45 +14,45 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
-	@FXML
-	private Button welcomeButton;
-	private RootController rootController;
-	private Stage primaryStage = new Stage();
-	
-	public static void main(String[] args) {
-		launch(args);
+    @FXML
+    private Button welcomeButton;
+    private RootController rootController;
+    private Stage primaryStage = new Stage();
+
+    public static void main(String[] args) {
+	launch(args);
+    }
+
+    @Override
+    public void start(Stage stage) {
+	Parent parent = null;
+	primaryStage = stage;
+	welcomeButton = new Button();
+	try {
+	    parent = FXMLLoader.load(getClass().getResource("view/Welcome.fxml"));
+	} catch (IOException e) {
+	    e.printStackTrace();
 	}
 
-	@Override
-	public void start(Stage stage) {
-		Parent parent = null;
-		primaryStage = stage;
-		welcomeButton = new Button();
-		try {
-			parent = FXMLLoader.load(getClass().getResource("view/Welcome.fxml"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		Scene scene = new Scene(parent);
-		primaryStage.setTitle("Fini");
-		primaryStage.setScene(scene);
-		primaryStage.show();
-	}
+	Scene scene = new Scene(parent);
+	primaryStage.setTitle("Fini");
+	primaryStage.setScene(scene);
+	primaryStage.show();
+    }
 
-	private void intialiseRootController() {
-		rootController = new RootController();
+    private void intialiseRootController() {
+	rootController = new RootController();
+    }
+
+    @FXML
+    public void handleKeyPress(KeyEvent event) throws IOException {
+	if(event.getCode() == KeyCode.ENTER) {
+	    Parent main = null;
+	    main = FXMLLoader.load(getClass().getResource("view/FiniLayout.fxml"));
+	    Scene scene = new Scene(main);
+	    primaryStage.setScene(scene);
+	    primaryStage.show();
+	    intialiseRootController();
 	}
-	
-	@FXML
-	public void handleKeyPress(KeyEvent event) throws IOException {
-		if(event.getCode() == KeyCode.ENTER) {
-			Parent main = null;
-			main = FXMLLoader.load(getClass().getResource("view/FiniLayout.fxml"));
-			Scene scene = new Scene(main);
-			primaryStage.setScene(scene);
-			primaryStage.show();
-			intialiseRootController();
-		}
-	}
+    }
 }
