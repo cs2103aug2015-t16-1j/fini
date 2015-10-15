@@ -3,6 +3,8 @@ package fini.main.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Task {
   private String taskTitle;
@@ -27,6 +29,8 @@ public class Task {
 
   private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
   private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHMM");
+  
+  private static Logger logger = Logger.getLogger("TaskLogger");
 
   public Task() {
     this.taskTitle = "Untitled Task";
@@ -49,7 +53,7 @@ public class Task {
     if(startTime != null) {
       String formattedStartTime = formatTime(startTime);
       this.taskStartTime = LocalTime.parse(formattedStartTime, timeFormatter);
-      System.out.println("Time is " + taskStartTime.toString());
+      logger.log(Level.INFO, "Time is " + taskStartTime.toString());
     }
 
     if(endTime != null) {
@@ -88,7 +92,7 @@ public class Task {
   }
 
   private String formatTime(String userGivenTime) {
-    System.out.println(userGivenTime);
+    logger.log(Level.INFO, userGivenTime);
     int time = Integer.parseInt(userGivenTime.substring(0,1));
     String timeOfDay = userGivenTime.substring(1);
     String formattedStartTime = "";
