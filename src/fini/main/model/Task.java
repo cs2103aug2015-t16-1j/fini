@@ -140,6 +140,7 @@ public class Task {
   }
 
   public String getTitle() {
+	assert taskTitle != null;
     return taskTitle;
   }
 
