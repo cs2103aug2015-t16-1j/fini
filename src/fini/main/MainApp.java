@@ -1,5 +1,7 @@
 package fini.main;
 
+import java.io.IOException;
+
 import fini.main.view.RootController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,8 +18,13 @@ public class MainApp extends Application {
   }
 
   @Override
-  public void start(Stage stage) throws Exception {
-    Parent parent = FXMLLoader.load(getClass().getResource("view/FiniLayout.fxml"));
+  public void start(Stage stage) {
+    Parent parent = null;
+	try {
+		parent = FXMLLoader.load(getClass().getResource("view/FiniLayout.fxml"));
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
     intialiseRootController();
     Scene scene = new Scene(parent);
     stage.setTitle("Fini");

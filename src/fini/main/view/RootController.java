@@ -89,7 +89,7 @@ public class RootController extends BorderPane {
     return rootController;
   }
 
-  public void updateMainDisplay(ObservableList<Task> taskMasterList) throws Exception {
+  public void updateMainDisplay(ObservableList<Task> taskMasterList) {
     //ObservableList<String> taskList = FXCollections.observableArrayList();
     ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
     for(Task task: taskMasterList) {
