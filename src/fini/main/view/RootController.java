@@ -13,6 +13,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 
 public class RootController extends BorderPane {
 
@@ -25,7 +26,7 @@ public class RootController extends BorderPane {
 	private TextField commandBox;
 
 	@FXML
-	private ListView<HBox> projectsOverviewPanel;
+	private ListView<String> projectsOverviewPanel;
 
 	@FXML
 	private ListView<String> tasksOverviewPanel;
@@ -40,7 +41,7 @@ public class RootController extends BorderPane {
 
 	public RootController() {
 		listView = new ListView<HBox>();
-		projectsOverviewPanel = new ListView<HBox>();
+		projectsOverviewPanel = new ListView<String>();
 		tasksOverviewPanel = new ListView<String>();
 		commandBox = new TextField();
 		displayToUser = new Label();
@@ -78,29 +79,14 @@ public class RootController extends BorderPane {
 	}
 
 	private void updateProjectsOverviewPanel(ObservableList<Task> taskMasterList) {
-        ObservableList<HBox> projectsOverview = FXCollections.observableArrayList();
-        // should we have fixed boxes of display for this?
-        String[] taskTypeName = new String[]{"Inbox","This Week","This Month"};
-        Integer[] taskTypeNum = new Integer[]{0,0,0};
-        
-        for(Task task: taskMasterList) {
-            for(int i = 0; i < 3; i++) {
-                if(task.getProject() == taskTypeName[i]) {
-                    taskTypeNum[i]++;
-                }
-            }
-        }
-        
-        for(int i = 0; i < 3; i++) {
-            HBox newOverviewBox = new HBox();
-            Label name = new Label(taskTypeName[i]);
-            Label num = new Label(taskTypeNum[i].toString());
-            newOverviewBox.getChildren().addAll(name, num);
-            newOverviewBox.setSpacing(30);
-            projectsOverview.add(newOverviewBox);
-        }
-        projectsOverviewPanel.setItems(projectsOverview);
-    }
+		ObservableList<String> projectsOverview = FXCollections.observableArrayList();
+		for(Task task: taskMasterList) {
+			if(projectsOverview.contains(task.getProject()) == false) {
+				projectsOverview.add(task.getProject());
+			}
+		}
+		projectsOverviewPanel.setItems(projectsOverview);
+	}
 
 	public static RootController getInstance() {
 		if(rootController == null) {
