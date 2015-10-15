@@ -64,7 +64,7 @@ public class Storage {
 	for (Task task : tempTaskMasterList) {
 	    taskMasterList.add(task);
 	}
-	
+
 	System.out.println(taskMasterList.size());
     }
 
