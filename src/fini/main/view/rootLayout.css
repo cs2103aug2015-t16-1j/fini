@@ -1,8 +1,0 @@
-@font-face {
-	-fx-font-family: Lato;
-	src: url('../../../resources/fonts/Lato-Regular.ttf');
-}
-
-.text {
-	-fx-font-family: "Lato";
-}
