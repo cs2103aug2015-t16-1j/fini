@@ -66,10 +66,10 @@ public class Storage {
 		}
 	}
 
-	public void updateFile(ArrayList<Task> tasks) {
+	public void updateFile() {
 		try {
 			writer = new PrintWriter(saveFile, "UTF-8");
-			for (Task task : tasks) {
+			for (Task task : taskMasterList) {
 				writer.println(gson.toJson(task));
 			}
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {

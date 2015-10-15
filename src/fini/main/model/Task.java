@@ -80,6 +80,7 @@ public class Task {
 		// if recurring take in the day as it is, else parse
 		if (isRecurring) {
 			recurringDay = date;
+			System.out.println("Task Class: Recurring Day: " + recurringDay);
 		} else {
 			if(date != null) {
 				this.taskDate = LocalDate.parse(date, dateFormatter);
