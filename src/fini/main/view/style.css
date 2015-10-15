@@ -1,4 +1,4 @@
-.root {
+/*.root {
 	-fx-font-family: raleway;
 }
 
@@ -6,6 +6,13 @@
 	-fx-font-family: Helvetica;
 }
 
+.list-view .hBox {
+	-fx-background-color: blue;
+}
+
+#projectsOverviewPanel {
+	-fx-background-color: blue;
+}
 /*.tableView {
 	-fx-font-family: raleway;
 
@@ -24,3 +31,26 @@
 	-fx-font-weight: lighter;
 }
 */
+
+.root {
+	-fx-background-color: white;
+	-fx-padding: 10;
+}
+
+.display #tasksOverviewPanel {
+    -fx-font-size: 16px;
+    -fx-font-family: "Open Sans";
+	-fx-font-weight: lighter;
+}
+
+.display #projectsOverviewPanel {
+    -fx-font-size: 16px;
+    -fx-font-family: "Open Sans";
+	-fx-font-weight: lighter;
+}
+
+.display #listView {
+    -fx-font-size: 16px;
+    -fx-font-family: "Open Sans";
+	-fx-font-weight: lighter;
+}
