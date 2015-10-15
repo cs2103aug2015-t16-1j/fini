@@ -4,7 +4,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.85" prefHeight="600.0" prefWidth="700.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fini.main.view.RootController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fini.main.view.RootController">
    <children>
       <VBox layoutX="214.0" layoutY="45.0" prefHeight="500.0" prefWidth="600.0" styleClass="display" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -25,7 +25,7 @@
             </StackPane>
             <VBox prefHeight="75.0" prefWidth="100.0">
                <children>
-                  <Label fx:id="displayToUser" text="displayToUser" />
+                  <Label fx:id="displayToUser" alignment="CENTER" prefHeight="17.0" prefWidth="685.0" text="Welcome to Fini!" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
                   <TextField fx:id="commandBox" onKeyPressed="#handleKeyPressEvent" />
                </children>
             </VBox>
