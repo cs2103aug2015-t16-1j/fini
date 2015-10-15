@@ -64,6 +64,8 @@ public class Storage {
 	for (Task task : tempTaskMasterList) {
 	    taskMasterList.add(task);
 	}
+	
+	System.out.println(taskMasterList.size());
     }
 
     public void updateFile() {
@@ -79,7 +81,7 @@ public class Storage {
     }
 
     // Initialization Methods
-    private boolean initReader(File saveFile) {
+    private Boolean initReader(File saveFile) {
 	try {
 	    reader = new BufferedReader(new FileReader(saveFile));
 	} catch (FileNotFoundException e) {
