@@ -70,6 +70,7 @@ public class Task {
     }
 
     if(priority != null) {
+    assert(priority != null);
       this.priority = priority;
     } else {
       this.priority = defaultPriority;
