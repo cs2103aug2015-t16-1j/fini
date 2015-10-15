@@ -1,11 +1,15 @@
 package fini.main.model;
 
+import java.io.File;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Storage {
   private static Storage taskOrganiser;
   private ObservableList<Task> taskMasterList;
+  
+  private File file;
   
   public Storage() {
     taskMasterList = FXCollections.observableArrayList();
