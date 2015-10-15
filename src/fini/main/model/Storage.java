@@ -34,7 +34,6 @@ public class Storage {
   }
   
   public Storage() {
-//    taskMasterList = FXCollections.observableArrayList();
     gson = new Gson();
     
     saveFile = new File("save.txt");
