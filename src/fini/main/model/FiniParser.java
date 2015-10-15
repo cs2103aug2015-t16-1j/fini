@@ -13,14 +13,19 @@ public class FiniParser {
 		this.taskOrganiser = Storage.getInstance();
 	}
 
-	public void parse(String userInput) {
-		String[] userInputSplitArray = userInput.split(" ");
-		String commandParameters = "";
-		if(userInputSplitArray.length > 1) {
-			commandParameters= userInput.replace(userInputSplitArray[0], "").substring(1);
+	public boolean parse(String userInput) {
+		try {
+			String[] userInputSplitArray = userInput.split(" ");
+			String commandParameters = "";
+			if(userInputSplitArray.length > 1) {
+				commandParameters= userInput.replace(userInputSplitArray[0], "").substring(1);
+			}
+			CommandType userCommand = getUserCommand(userInputSplitArray[0].toLowerCase());
+			executeCommand(userCommand, commandParameters);
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
-		CommandType userCommand = getUserCommand(userInputSplitArray[0].toLowerCase());
-		executeCommand(userCommand, commandParameters);
 	}
 
 	private CommandType getUserCommand(String command) {

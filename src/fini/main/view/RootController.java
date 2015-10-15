@@ -38,29 +38,39 @@ public class RootController extends BorderPane {
 	private FiniParser parser;
 	private Storage taskOrganiser;
 	private String userInput;
-	private Font defaultFont;
 
 	public RootController() {
 		listView = new ListView<HBox>();
 		projectsOverviewPanel = new ListView<String>();
 		tasksOverviewPanel = new ListView<String>();
 		commandBox = new TextField();
+		displayToUser = new Label();
 		parser = FiniParser.getInstance();
 		taskOrganiser = Storage.getInstance();
-		defaultFont = new Font("Raleway", 14);
+		displayToUser.setText("");
 	}
 
 	@FXML
 	public void handleKeyPressEvent(KeyEvent event) throws Exception {
+		boolean isOperationSuccessful;
 		if(event.getCode() == KeyCode.ENTER) {
 			userInput = commandBox.getText();
 			System.out.println(userInput);
 			commandBox.clear();
-			parser.parse(userInput);
+			isOperationSuccessful = parser.parse(userInput);
 			updateMainDisplay(taskOrganiser.getTasks());
 			updateProjectsOverviewPanel(taskOrganiser.getTasks());
+			updateDisplayToUser(isOperationSuccessful);
 			taskOrganiser.updateFile();
 			//      updateTasksOverviewPanel(taskOrganiser.getTasks());
+		}
+	}
+
+	private void updateDisplayToUser(boolean isOperationSuccessful) {
+		if(isOperationSuccessful) {
+			displayToUser.setText("Operation Successful");
+		} else {
+			displayToUser.setText("Error Occurred");
 		}
 	}
 
