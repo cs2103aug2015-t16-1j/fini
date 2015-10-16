@@ -212,4 +212,9 @@ public class Task {
 	public String getPriority() {
 		return priority;
 	}
+	
+	// TODO need to add task type
+	public String getTaskType() {
+        return "Inbox";
+    }
 }

@@ -26,7 +26,7 @@ public class RootController extends BorderPane {
 	private ListView<String> projectsOverviewPanel;
 
 	@FXML
-	private ListView<String> tasksOverviewPanel;
+	private ListView<HBox> tasksOverviewPanel;
 
 	@FXML
 	private Label displayToUser;
@@ -41,7 +41,7 @@ public class RootController extends BorderPane {
 	public RootController() {
 		listView = new ListView<HBox>();
 		projectsOverviewPanel = new ListView<String>();
-		tasksOverviewPanel = new ListView<String>();
+		tasksOverviewPanel = new ListView<HBox>();
 		commandBox = new TextField();
 		displayToUser = new Label();
 		parser = FiniParser.getInstance();
@@ -58,6 +58,7 @@ public class RootController extends BorderPane {
 			boolean isOperationSuccessful = parser.parse(userInput);
 			updateMainDisplay(taskOrganiser.getTasks());
 			updateProjectsOverviewPanel(taskOrganiser.getTasks());
+			updateTasksOverviewPanel(taskOrganiser.getTasks());
 			updateDisplayToUser(isOperationSuccessful);
 			taskOrganiser.updateFile();
 		}
@@ -73,8 +74,30 @@ public class RootController extends BorderPane {
 	}
 	
 	public void updateTasksOverviewPanel(ObservableList<Task> taskMasterList) {
-		ObservableList<String> tasksOverview = FXCollections.observableArrayList();
-	}
+        ObservableList<HBox> tasksOverview = FXCollections.observableArrayList();
+        String[] taskTypeName = new String[]{"Inbox","Today","This Week","Total"};
+        Integer[] taskTypeNum = new Integer[]{0,0,0,0};
+        
+        for(Task task: taskMasterList) {
+            for(int i = 0; i < 3; i++) {
+                if(task.getTaskType() == taskTypeName[i]) {
+                    taskTypeNum[i]++;
+                }
+            }
+        }
+        
+        taskTypeNum[3] = taskTypeNum[0] + taskTypeNum[1] + taskTypeNum[2];
+
+        for(int i = 0; i < 4; i++) {
+            HBox newOverviewBox = new HBox();
+            Label name = new Label(taskTypeName[i]);
+            Label num = new Label(taskTypeNum[i].toString());
+            newOverviewBox.getChildren().addAll(name, num);
+            newOverviewBox.setSpacing(30);
+            tasksOverview.add(newOverviewBox);
+        }
+        tasksOverviewPanel.setItems(tasksOverview);
+    }
 
 	public void updateProjectsOverviewPanel(ObservableList<Task> taskMasterList) {
 		ObservableList<String> projectsOverview = FXCollections.observableArrayList();
