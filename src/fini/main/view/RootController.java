@@ -34,8 +34,6 @@ public class RootController extends BorderPane {
 
 	private Brain brain = Brain.getInstance();
 	
-	private FiniParser parser;
-	private Storage taskOrganiser;
 	private String userInput;
 
 	public RootController() {
@@ -44,9 +42,8 @@ public class RootController extends BorderPane {
 		tasksOverviewPanel = new ListView<HBox>();
 		commandBox = new TextField();
 		displayToUser = new Label();
-		parser = FiniParser.getInstance();
-		taskOrganiser = Storage.getInstance();
-		displayToUser.setText("");
+		
+		displayToUser.setText("Welcome to Fini");
 	}
 
 	@FXML
@@ -55,18 +52,21 @@ public class RootController extends BorderPane {
 		if(event.getCode() == KeyCode.ENTER) {
 			userInput = commandBox.getText();
 			System.out.println(userInput);
+			
+			brain.executeCommand(userInput);
+			
 			commandBox.clear();
 			
-			isOperationSuccessful = parser.parse(userInput);
-			updateMainDisplay(taskOrganiser.getTasks());
-			updateProjectsOverviewPanel(taskOrganiser.getTasks());
-			updateTasksOverviewPanel(taskOrganiser.getTasks());
-			updateDisplayToUser(isOperationSuccessful);
-			taskOrganiser.updateFile();
+//			isOperationSuccessful = parser.parse(userInput);
+//			updateMainDisplay(taskOrganiser.getTasks());
+//			updateProjectsOverviewPanel(taskOrganiser.getTasks());
+//			updateTasksOverviewPanel(taskOrganiser.getTasks());
+//			updateDisplayToUser(isOperationSuccessful);
+//			taskOrganiser.updateFile();
 		}
 	}
 
-	private void updateDisplayToUser(boolean isOperationSuccessful) {
+	public void updateDisplayToUser(boolean isOperationSuccessful) {
 		if(isOperationSuccessful) {
 			displayToUser.setText("Operation Successful");
 		} else {
@@ -74,7 +74,7 @@ public class RootController extends BorderPane {
 		}
 	}
 
-	private void updateTasksOverviewPanel(ObservableList<Task> taskMasterList) {
+	public void updateTasksOverviewPanel(ObservableList<Task> taskMasterList) {
         ObservableList<HBox> tasksOverview = FXCollections.observableArrayList();
         String[] taskTypeName = new String[]{"Inbox","Today","This Week","Total"};
         Integer[] taskTypeNum = new Integer[]{0,0,0,0};
@@ -99,7 +99,7 @@ public class RootController extends BorderPane {
         tasksOverviewPanel.setItems(tasksOverview);
     }
 
-	private void updateProjectsOverviewPanel(ObservableList<Task> taskMasterList) {
+	public void updateProjectsOverviewPanel(ObservableList<Task> taskMasterList) {
 		ObservableList<String> projectsOverview = FXCollections.observableArrayList();
 		for(Task task: taskMasterList) {
 			if(projectsOverview.contains(task.getProject()) == false) {
