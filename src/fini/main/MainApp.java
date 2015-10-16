@@ -43,8 +43,8 @@ public class MainApp extends Application {
 	}
 
 	private void intialiseRootController() {
-		brain = Brain.getInstance();
 		rootController = new RootController();
+		brain = Brain.getInstance();
 		brain.setRootController(this.rootController);
 	}
 	
