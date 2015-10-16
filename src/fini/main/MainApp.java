@@ -4,11 +4,13 @@ import java.io.IOException;
 
 import fini.main.view.RootController;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -36,28 +38,42 @@ public class MainApp extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		Scene scene = new Scene(parent);
+		
+		setListenerForWelcomeScene(parent);
 		primaryStage.setTitle("Fini");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+	}
+
+	private void setListenerForWelcomeScene(AnchorPane parent) {
+		final TextField welcomeSceneListener = new TextField();
+	    welcomeSceneListener.setLayoutX(-200);
+	    welcomeSceneListener.setLayoutY(-200);
+	    welcomeSceneListener.setOnKeyPressed(new EventHandler<KeyEvent>() {
+	      public void handle(KeyEvent userPressesEnter) {
+	        if(userPressesEnter.getCode().equals(KeyCode.ENTER)) {
+	        	Parent main = null;
+				try {
+					main = FXMLLoader.load(getClass().getResource("view/FiniLayout.fxml"));
+				} catch (IOException e) {
+					System.out.println("Unable to find or load FXML file");
+					e.printStackTrace();
+				}
+				Scene scene = new Scene(main);
+				primaryStage.setScene(scene);
+				primaryStage.show();
+				intialiseRootController();
+	        }
+	      }
+	    });
+	    parent.getChildren().add(welcomeSceneListener);
+	    welcomeSceneListener.requestFocus();
 	}
 
 	private void intialiseRootController() {
 		rootController = new RootController();
 		brain = Brain.getInstance();
 		brain.setRootController(this.rootController);
-	}
-	
-	@FXML
-	public void handleKeyPress(KeyEvent event) throws IOException {
-		if(event.getCode() == KeyCode.ENTER) {
-			Parent main = null;
-			main = FXMLLoader.load(getClass().getResource("view/FiniLayout.fxml"));
-			Scene scene = new Scene(main);
-			primaryStage.setScene(scene);
-			primaryStage.show();
-			intialiseRootController();
-		}
 	}
 }
