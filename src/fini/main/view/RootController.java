@@ -1,5 +1,6 @@
 package fini.main.view;
 
+import fini.main.Brain;
 import fini.main.model.FiniParser;
 import fini.main.model.Storage;
 import fini.main.model.Task;
@@ -34,7 +35,8 @@ public class RootController extends BorderPane {
 	@FXML
 	private Label displayToUser;
 
-	private static RootController rootController;
+	private Brain brain = Brain.getInstance();
+	
 	private FiniParser parser;
 	private Storage taskOrganiser;
 	private String userInput;
@@ -57,12 +59,13 @@ public class RootController extends BorderPane {
 			userInput = commandBox.getText();
 			System.out.println(userInput);
 			commandBox.clear();
+			
 			isOperationSuccessful = parser.parse(userInput);
 			updateMainDisplay(taskOrganiser.getTasks());
 			updateProjectsOverviewPanel(taskOrganiser.getTasks());
 			updateDisplayToUser(isOperationSuccessful);
 			taskOrganiser.updateFile();
-			//      updateTasksOverviewPanel(taskOrganiser.getTasks());
+			// updateTasksOverviewPanel(taskOrganiser.getTasks());
 		}
 	}
 
@@ -86,13 +89,6 @@ public class RootController extends BorderPane {
 			}
 		}
 		projectsOverviewPanel.setItems(projectsOverview);
-	}
-
-	public static RootController getInstance() {
-		if(rootController == null) {
-			rootController = new RootController();
-		}
-		return rootController;
 	}
 
 	public void updateMainDisplay(ObservableList<Task> taskMasterList) {

@@ -16,7 +16,9 @@ import javafx.stage.Stage;
 public class MainApp extends Application {
 	@FXML
 	private Button welcomeButton;
+	
 	private RootController rootController;
+	private Brain brain;
 	private Stage primaryStage = new Stage();
 	
 	public static void main(String[] args) {
@@ -41,7 +43,9 @@ public class MainApp extends Application {
 	}
 
 	private void intialiseRootController() {
+		brain = Brain.getInstance();
 		rootController = new RootController();
+		brain.setRootController(this.rootController);
 	}
 	
 	@FXML
