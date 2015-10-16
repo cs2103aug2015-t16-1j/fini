@@ -50,14 +50,6 @@ public class RootController extends BorderPane {
 			brain.executeCommand(userInput);
 			
 			commandBox.clear();
-			
-			// Move this portion to Brain:
-//			isOperationSuccessful = parser.parse(userInput);
-//			updateMainDisplay(taskOrganiser.getTasks());
-//			updateProjectsOverviewPanel(taskOrganiser.getTasks());
-//			updateDisplayToUser(isOperationSuccessful);
-//			taskOrganiser.updateFile();
-			// updateTasksOverviewPanel(taskOrganiser.getTasks());
 		}
 	}
 
