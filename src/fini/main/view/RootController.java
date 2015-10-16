@@ -37,7 +37,12 @@ public class RootController extends BorderPane {
 	private String userInput;
 
 	public RootController() {
+		listView = new ListView<HBox>();
+		commandBox = new TextField();
+		projectsOverviewPanel = new ListView<String>();
+		tasksOverviewPanel = new ListView<String>();
 		displayToUser = new Label();
+		
 		displayToUser.setText("Welcome to Fini");
 	}
 
