@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
@@ -27,7 +28,7 @@ public class MainApp extends Application {
 
 	@Override
 	public void start(Stage stage) {
-		Parent parent = null;
+		AnchorPane parent = null;
 		primaryStage = stage;
 		welcomeButton = new Button();
 		try {
