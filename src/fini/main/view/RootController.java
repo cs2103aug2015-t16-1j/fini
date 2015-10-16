@@ -32,18 +32,22 @@ public class RootController extends BorderPane {
 	@FXML
 	private Label displayToUser;
 
+	private static RootController rootController;
 	private Brain brain = Brain.getInstance();
+	private Storage taskOrganiser;
+	private FiniParser parser;
 	
 	private String userInput;
 
 	public RootController() {
 		listView = new ListView<HBox>();
-		commandBox = new TextField();
 		projectsOverviewPanel = new ListView<String>();
 		tasksOverviewPanel = new ListView<String>();
+		commandBox = new TextField();
 		displayToUser = new Label();
-		
-		displayToUser.setText("Welcome to Fini");
+		parser = FiniParser.getInstance();
+		taskOrganiser = Storage.getInstance();
+		displayToUser.setText("Welcome to Fini!");
 	}
 
 	@FXML
@@ -51,10 +55,12 @@ public class RootController extends BorderPane {
 		if(event.getCode() == KeyCode.ENTER) {
 			userInput = commandBox.getText();
 			System.out.println(userInput);
-
-			brain.executeCommand(userInput);
-			
 			commandBox.clear();
+			boolean isOperationSuccessful = parser.parse(userInput);
+			updateMainDisplay(taskOrganiser.getTasks());
+			updateProjectsOverviewPanel(taskOrganiser.getTasks());
+			updateDisplayToUser(isOperationSuccessful);
+			taskOrganiser.updateFile();
 		}
 	}
 
