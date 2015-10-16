@@ -30,9 +30,9 @@ public class Brain {
 		// Change all of these hierarchy: TODO
 		rootController.updateMainDisplay(taskOrganiser.getTasks());
 		rootController.updateProjectsOverviewPanel(taskOrganiser.getTasks());
+		rootController.updateTasksOverviewPanel(taskOrganiser.getTasks());
 		rootController.updateDisplayToUser(isOperationSuccessful);
 		taskOrganiser.updateFile();
-		// updateTasksOverviewPanel(taskOrganiser.getTasks());
 
 		//      Handle Using Command Class: TODO
 		//		Command newCommand = new Command(command);
