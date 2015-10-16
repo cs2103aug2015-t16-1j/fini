@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+import javax.print.attribute.standard.RequestingUserName;
+
 public class Task {
 	private String taskTitle;
 	private String project;
@@ -23,7 +25,7 @@ public class Task {
 	private static final String priorityLow = "Low";
 
 	private static final String defaultPriority = "Normal";
-	private static final String defaultProject = "Inbox";
+	private static final String defaultProject = "Coding";
 
 	private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHMM");
@@ -211,5 +213,10 @@ public class Task {
 
 	public String getPriority() {
 		return priority;
+	}
+	
+	// TODO. need to create taskType
+	public String getTaskType() {
+	    return "Inbox";
 	}
 }
