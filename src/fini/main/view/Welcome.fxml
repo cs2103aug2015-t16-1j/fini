@@ -7,33 +7,32 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fini.main.MainApp">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fini.main.MainApp">
    <children>
-      <Text fontSmoothingType="LCD" layoutX="65.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to">
+      <Text fontSmoothingType="LCD" layoutX="162.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to">
          <font>
             <Font name="Open Sans Light" size="55.0" />
          </font>
       </Text>
-      <Text layoutX="195.0" layoutY="303.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Getting things done...fast">
+      <Text fontSmoothingType="LCD" layoutX="290.0" layoutY="312.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Getting things done...fast">
          <font>
             <Font name="Open Sans Light Italic" size="18.0" />
          </font>
       </Text>
-      <ImageView fitHeight="79.0" fitWidth="76.0" layoutX="372.0" layoutY="274.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="79.0" fitWidth="76.0" layoutX="450.0" layoutY="284.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/images/check.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="81.0" fitWidth="156.0" layoutX="374.0" layoutY="191.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="81.0" fitWidth="156.0" layoutX="471.0" layoutY="201.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../resources/images/logo.png" />
          </image>
       </ImageView>
-      <Text fontSmoothingType="LCD" layoutX="201.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please press ENTER to continue">
+      <Text fontSmoothingType="LCD" layoutX="300.0" layoutY="468.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please press ENTER to continue">
          <font>
             <Font name="Open Sans Light" size="12.0" />
          </font>
       </Text>
-      <Button fx:id="welcomeButton" layoutX="-29.0" layoutY="-54.0" mnemonicParsing="false" onKeyPressed="#handleKeyPress" text="Button" />
    </children>
 </AnchorPane>
