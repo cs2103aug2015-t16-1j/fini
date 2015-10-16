@@ -17,11 +17,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
 public class RootController extends BorderPane {
-
 	@FXML
 	private ListView<HBox> listView;
-	//  private ListView<HBox> listView;
-	//  ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
 
 	@FXML
 	private TextField commandBox;
@@ -37,51 +34,47 @@ public class RootController extends BorderPane {
 
 	private Brain brain = Brain.getInstance();
 	
-	private FiniParser parser;
-	private Storage taskOrganiser;
 	private String userInput;
 
 	public RootController() {
-		listView = new ListView<HBox>();
-		projectsOverviewPanel = new ListView<String>();
-		tasksOverviewPanel = new ListView<String>();
-		commandBox = new TextField();
 		displayToUser = new Label();
-		parser = FiniParser.getInstance();
-		taskOrganiser = Storage.getInstance();
-		displayToUser.setText("");
+		displayToUser.setText("Welcome to Fini");
 	}
 
 	@FXML
 	public void handleKeyPressEvent(KeyEvent event) throws Exception {
-		boolean isOperationSuccessful;
 		if(event.getCode() == KeyCode.ENTER) {
 			userInput = commandBox.getText();
 			System.out.println(userInput);
+
+			brain.executeCommand(userInput);
+			
 			commandBox.clear();
 			
-			isOperationSuccessful = parser.parse(userInput);
-			updateMainDisplay(taskOrganiser.getTasks());
-			updateProjectsOverviewPanel(taskOrganiser.getTasks());
-			updateDisplayToUser(isOperationSuccessful);
-			taskOrganiser.updateFile();
+			// Move this portion to Brain:
+//			isOperationSuccessful = parser.parse(userInput);
+//			updateMainDisplay(taskOrganiser.getTasks());
+//			updateProjectsOverviewPanel(taskOrganiser.getTasks());
+//			updateDisplayToUser(isOperationSuccessful);
+//			taskOrganiser.updateFile();
 			// updateTasksOverviewPanel(taskOrganiser.getTasks());
 		}
 	}
 
-	private void updateDisplayToUser(boolean isOperationSuccessful) {
+	// Update Display
+	public void updateDisplayToUser(boolean isOperationSuccessful) {
 		if(isOperationSuccessful) {
 			displayToUser.setText("Operation Successful");
 		} else {
 			displayToUser.setText("Error Occurred");
 		}
 	}
-
-	private void updateTasksOverviewPanel(ObservableList<Task> taskMasterList) {
+	
+	public void updateTasksOverviewPanel(ObservableList<Task> taskMasterList) {
 		ObservableList<String> tasksOverview = FXCollections.observableArrayList();
 	}
 
-	private void updateProjectsOverviewPanel(ObservableList<Task> taskMasterList) {
+	public void updateProjectsOverviewPanel(ObservableList<Task> taskMasterList) {
 		ObservableList<String> projectsOverview = FXCollections.observableArrayList();
 		for(Task task: taskMasterList) {
 			if(projectsOverview.contains(task.getProject()) == false) {
@@ -129,6 +122,7 @@ public class RootController extends BorderPane {
 		listView.setItems(displayBoxes);
 	}
 
+	// Add Display Component
 	public HBox addHBox(String typeOfTask, String taskTitle, String taskDate, String taskStartTime, String taskEndTime, String taskPriority, String taskProject, boolean isRecurringTask) {
 		HBox hbox = new HBox();
 		hbox.setSpacing(10);
