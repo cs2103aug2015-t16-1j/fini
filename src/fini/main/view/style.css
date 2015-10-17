@@ -7,23 +7,26 @@
     -fx-font-size: 16px;
     -fx-font-family: "Open Sans";
 	-fx-font-weight: lighter;
+	-fx-text-box-border: white;
 }
 
 .display #projectsOverviewPanel {
     -fx-font-size: 16px;
     -fx-font-family: "Open Sans";
 	-fx-font-weight: lighter;
+	-fx-text-box-border: white;
 }
 
 .display #listView {
     -fx-font-size: 16px;
     -fx-font-family: "Open Sans", sans-serif, serif;
+	-fx-text-box-border: white;
 }
 
 .display #commandBox {
     -fx-font-size: 16px;
     -fx-font-family: "Open Sans", sans-serif, serif;
-	-fx-text-box-border: navy ;
+	-fx-text-box-border: navy;
 	-fx-focus-color: navy ;
 }
 
