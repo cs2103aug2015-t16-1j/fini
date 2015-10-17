@@ -1,6 +1,7 @@
 package fini.main;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import fini.main.view.RootController;
 import javafx.application.Application;
@@ -17,13 +18,16 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
+	// Global Logger
+	public final static Logger finiLogger = Logger.getLogger(MainApp.class.getName());
+
 	@FXML
 	private Button welcomeButton;
-	
+
 	private RootController rootController;
 	private Brain brain;
 	private Stage primaryStage = new Stage();
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -39,7 +43,7 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 		Scene scene = new Scene(parent);
-		
+
 		setListenerForWelcomeScene(parent);
 		primaryStage.setTitle("Fini");
 		primaryStage.setScene(scene);
@@ -48,27 +52,27 @@ public class MainApp extends Application {
 
 	private void setListenerForWelcomeScene(AnchorPane parent) {
 		final TextField welcomeSceneListener = new TextField();
-	    welcomeSceneListener.setLayoutX(-200);
-	    welcomeSceneListener.setLayoutY(-200);
-	    welcomeSceneListener.setOnKeyPressed(new EventHandler<KeyEvent>() {
-	      public void handle(KeyEvent userPressesEnter) {
-	        if(userPressesEnter.getCode().equals(KeyCode.ENTER)) {
-	        	Parent main = null;
-				try {
-					main = FXMLLoader.load(getClass().getResource("view/FiniLayout.fxml"));
-				} catch (IOException e) {
-					System.out.println("Unable to find or load FXML file");
-					e.printStackTrace();
+		welcomeSceneListener.setLayoutX(-200);
+		welcomeSceneListener.setLayoutY(-200);
+		welcomeSceneListener.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			public void handle(KeyEvent userPressesEnter) {
+				if(userPressesEnter.getCode().equals(KeyCode.ENTER)) {
+					Parent main = null;
+					try {
+						main = FXMLLoader.load(getClass().getResource("view/FiniLayout.fxml"));
+					} catch (IOException e) {
+						System.out.println("Unable to find or load FXML file");
+						e.printStackTrace();
+					}
+					Scene scene = new Scene(main);
+					primaryStage.setScene(scene);
+					primaryStage.show();
+					intialiseRootController();
 				}
-				Scene scene = new Scene(main);
-				primaryStage.setScene(scene);
-				primaryStage.show();
-				intialiseRootController();
-	        }
-	      }
-	    });
-	    parent.getChildren().add(welcomeSceneListener);
-	    welcomeSceneListener.requestFocus();
+			}
+		});
+		parent.getChildren().add(welcomeSceneListener);
+		welcomeSceneListener.requestFocus();
 	}
 
 	private void intialiseRootController() {
