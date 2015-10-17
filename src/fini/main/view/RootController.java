@@ -1,5 +1,13 @@
 package fini.main.view;
 
+/*
+ * This is the root controller class for the display (view). The interactions on the
+ * Graphical User Interface (GUI), which are the commands entered by users in the command
+ * box are handled here.
+ * 
+ * @author A0121828H
+ */
+
 import fini.main.Brain;
 import fini.main.model.FiniParser;
 import fini.main.model.Storage;
@@ -43,10 +51,12 @@ public class RootController extends BorderPane {
 		projectsOverviewPanel = new ListView<String>();
 		tasksOverviewPanel = new ListView<HBox>();
 		commandBox = new TextField();
+		
 		displayToUser = new Label();
 		parser = FiniParser.getInstance();
 		taskOrganiser = Storage.getInstance();
 		displayToUser.setText("Welcome to Fini!");
+		commandBox.requestFocus();
 	}
 
 	@FXML
