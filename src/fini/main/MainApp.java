@@ -17,12 +17,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-/*
- * This is the main class for FINI (the application). The two scenes,
- * welcome scene and the main scene are handled here.
- * @author A0121828H
- */
-
 public class MainApp extends Application {
 	// Global Logger
 	public final static Logger finiLogger = Logger.getLogger(MainApp.class.getName());
