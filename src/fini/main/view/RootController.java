@@ -50,13 +50,19 @@ public class RootController extends BorderPane {
 		projectsOverviewPanel = new ListView<String>();
 		tasksOverviewPanel = new ListView<HBox>();
 		commandBox = new TextField();
-
 		displayToUser = new Label();
 		parser = FiniParser.getInstance();
 		taskOrganiser = Storage.getInstance();
-		displayToUser.setText("Welcome to Fini!");
-		commandBox.requestFocus();
+	}
+
+	@FXML
+	protected void initialize() {
 		taskOrganiser.readFile();
+		updateMainDisplay(taskOrganiser.getTasks());
+		updateProjectsOverviewPanel(taskOrganiser.getTasks());
+		updateTasksOverviewPanel(taskOrganiser.getTasks());
+		commandBox.requestFocus();
+//		taskOrganiser.updateFile();
 	}
 
 	@FXML

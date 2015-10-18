@@ -3,3 +3,6 @@
 {"taskTitle":"wtf","project":"Inbox","priority":"Normal","isRecurring":false,"taskType":"Inbox"}
 {"taskTitle":"wtata","project":"Inbox","priority":"Normal","isRecurring":false,"taskType":"Inbox"}
 {"taskTitle":"harish","project":"Inbox","priority":"Normal","isRecurring":false,"taskType":"Inbox"}
+{"taskTitle":"","project":"Inbox","priority":"Normal","isRecurring":false,"taskType":"Inbox"}
+{"taskTitle":"smth","project":"Inbox","priority":"Normal","isRecurring":false,"taskType":"Inbox"}
+{"taskTitle":"smth else","project":"Inbox","priority":"Normal","isRecurring":false,"taskType":"Inbox"}
