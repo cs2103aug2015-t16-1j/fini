@@ -166,10 +166,10 @@ public class FiniParser {
 				new Task(isRecurringTask, title, date, startTime, endTime, priority, project);
 		taskOrganiser.addNewTask(newTask);
 	}
-	
+
 	private void deleteTask(String commandParameters) {
 		Integer taskId = checkTaskId(commandParameters);
-		
+
 		if (taskId > taskOrganiser.getSize()) {
 			System.out.println("Invalid TaskID input!");
 		} else {
@@ -177,7 +177,6 @@ public class FiniParser {
 			taskOrganiser.deleteTask(taskId);
 			System.out.println("Task " + taskId + ": " + deletedTask.getTitle() + " has been deleted!");
 		}
-		
 	}
 
 	private void updateTask(String commandParameters) {
