@@ -1,12 +1,14 @@
 package fini.main.model;
 
+import javax.xml.bind.ValidationEvent;
+
 public class FiniParser {
 
     private static FiniParser parser;
     private Storage taskOrganiser;
 
     enum CommandType {
-        ADD, DELETE, DISPLAY, CLEAR, SORT, SEARCH, INVALID, EXIT
+        ADD, DELETE, UPDATE, DISPLAY, CLEAR, SORT, SEARCH, INVALID, EXIT
     };
 
     public FiniParser() {
@@ -15,7 +17,9 @@ public class FiniParser {
 
     public boolean parse(String userInput) {
         try {
-            String[] userInputSplitArray = userInput.split(" ");
+            String cleanInput = getCleanString(userInput);
+            System.out.println(cleanInput);
+            String[] userInputSplitArray = cleanInput.split(" ");
             String commandParameters = "";
             if (userInputSplitArray.length > 1) {
                 commandParameters = userInput.replace(userInputSplitArray[0], "").substring(1);
@@ -32,6 +36,8 @@ public class FiniParser {
         switch (command) {
             case "add":
                 return CommandType.ADD;
+            case "update":
+                return CommandType.UPDATE;
             default:
                 return CommandType.INVALID;
         }
@@ -42,6 +48,8 @@ public class FiniParser {
             case ADD:
                 addTask(commandParameters);
                 break;
+            case UPDATE:
+                //updateTask(commandParameters);
             default:
                 break;
         }
@@ -152,6 +160,7 @@ public class FiniParser {
         taskOrganiser.addNewTask(newTask);
     }
 
+ 
     private boolean checkIfHasParameters(String commandParameters) {
         return commandParameters.contains("//");
     }
@@ -192,6 +201,14 @@ public class FiniParser {
         return commandParameters.contains("every");
     }
 
+    private String getCleanString(String userInput) {
+        String cleanStr;
+        cleanStr = userInput.trim();
+        cleanStr = cleanStr.replaceAll("[^A-Za-z0-9/\\s+]", "");
+        cleanStr = cleanStr.replaceAll("\\s+", " ");
+        return cleanStr;
+    }
+    
     public static FiniParser getInstance() {
         if (parser == null) {
             parser = new FiniParser();
