@@ -40,6 +40,8 @@ public class FiniParser {
 			return CommandType.ADD;
 		case "update":
 			return CommandType.UPDATE;
+		case "delete":
+			return CommandType.DELETE;
 		default:
 			return CommandType.INVALID;
 		}
@@ -52,6 +54,8 @@ public class FiniParser {
 			break;
 		case UPDATE:
 			updateTask(commandParameters);
+		case DELETE:
+			deleteTask(commandParameters);
 		default:
 			break;
 		}
@@ -161,6 +165,19 @@ public class FiniParser {
 		Task newTask =
 				new Task(isRecurringTask, title, date, startTime, endTime, priority, project);
 		taskOrganiser.addNewTask(newTask);
+	}
+	
+	private void deleteTask(String commandParameters) {
+		Integer taskId = checkTaskId(commandParameters);
+		
+		if (taskId > taskOrganiser.getSize()) {
+			System.out.println("Invalid TaskID input!");
+		} else {
+			Task deletedTask = taskOrganiser.getTasks().get(taskId-1);
+			taskOrganiser.deleteTask(taskId);
+			System.out.println("Task " + taskId + ": " + deletedTask.getTitle() + " has been deleted!");
+		}
+		
 	}
 
 	private void updateTask(String commandParameters) {

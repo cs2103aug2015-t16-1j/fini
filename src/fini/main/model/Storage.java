@@ -116,6 +116,10 @@ public class Storage {
     public void addNewTask(Task newTask) {
         taskMasterList.add(newTask);
     }
+    
+    public void deleteTask(int taskId) {
+    	taskMasterList.remove(taskId-1);
+    }
 
     public ObservableList<Task> getTasks() {
         return taskMasterList;
