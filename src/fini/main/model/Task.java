@@ -27,8 +27,8 @@ public class Task {
     private static final String defaultPriority = "Normal";
     private static final String defaultProject = "Inbox";
 
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHMM");
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHMM");
     
     // default constructor
     public Task() {
