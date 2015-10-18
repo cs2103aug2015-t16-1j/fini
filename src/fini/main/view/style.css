@@ -3,11 +3,23 @@
 	-fx-padding: 10;
 }
 
+/*Welcome Scene*/
+.welcomePane {
+	-fx-background-color: navy;
+	-fx-background-image: url("blue.jpg");
+}
+
+.display {
+/*	-fx-background-image: url("bluebg.jpg");*/
+/*	-fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);*/
+}
+
 .display #tasksOverviewPanel {
     -fx-font-size: 16px;
     -fx-font-family: "Open Sans";
 	-fx-font-weight: lighter;
 	-fx-text-box-border: white;
+	-fx-text-fill: white;
 }
 
 .display #projectsOverviewPanel {
