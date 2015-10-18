@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -45,7 +46,7 @@ public class MainApp extends Application {
         primaryStage = stage;
         welcomeButton = new Button();
         try {
-            parent = FXMLLoader.load(getClass().getResource("view/Welcome.fxml"));
+            parent = FXMLLoader.load(getClass().getResource("view/Welcomev2.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -53,6 +54,8 @@ public class MainApp extends Application {
 
         setListenerForWelcomeScene(parent);
         primaryStage.setTitle("Fini");
+        // TODO: Icon not working
+        primaryStage.getIcons().add(new Image("file:resources/images/icon.png"));
         primaryStage.setScene(scene);
         primaryStage.show();
     }
