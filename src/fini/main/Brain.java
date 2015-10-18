@@ -1,8 +1,13 @@
 package fini.main;
 
+import java.util.ArrayList;
+
 import fini.main.model.FiniParser;
 import fini.main.model.Storage;
+import fini.main.model.Task;
 import fini.main.view.RootController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Brain {
     private static Brain brain;
@@ -11,6 +16,13 @@ public class Brain {
     private Storage taskOrganiser;
     private FiniParser parser;
 
+    private ArrayList<Task> taskMasterList;
+    
+    // Observablelist Manipulation
+    private ObservableList<Task> taskObservableList = FXCollections.observableArrayList();
+    
+    
+    
     private Brain() {
         parser = FiniParser.getInstance();
         taskOrganiser = Storage.getInstance();

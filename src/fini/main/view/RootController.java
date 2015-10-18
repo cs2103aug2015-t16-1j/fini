@@ -56,7 +56,7 @@ public class RootController extends BorderPane {
 		taskOrganiser = Storage.getInstance();
 		displayToUser.setText("Welcome to Fini!");
 		commandBox.requestFocus();
-//		taskOrganiser.readFile();
+		taskOrganiser.readFile();
 	}
 
 	@FXML

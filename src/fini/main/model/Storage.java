@@ -41,12 +41,25 @@ public class Storage {
     }
 
     public void readFile() {
+    	taskMasterList = FXCollections.observableArrayList();
+        ArrayList<Task> tempTaskMasterList;
+        tempTaskMasterList = readTasks(saveFile);
+
+        if (tempTaskMasterList == null || tempTaskMasterList.isEmpty()) {
+            taskMasterList = FXCollections.observableArrayList();
+        } else {
+        	for (Task task : tempTaskMasterList) {
+        		taskMasterList.add(task);
+        	}
+        }
+    }
+    
+    private ArrayList<Task> readTasks(File saveFile) {
         String text = "";
         ArrayList<Task> tempTaskMasterList = new ArrayList<Task>();
-
-        try {
+    	try {
             if (!initReader(saveFile)) {
-                taskMasterList = FXCollections.observableArrayList();
+            	return tempTaskMasterList;
             }
             while ((text = reader.readLine()) != null) {
                 Task task = gson.fromJson(text, Task.class);
@@ -56,14 +69,7 @@ public class Storage {
             e.printStackTrace();
         }
         closeReader();
-
-        if (tempTaskMasterList.isEmpty()) {
-            taskMasterList = FXCollections.observableArrayList();
-        }
-
-        for (Task task : tempTaskMasterList) {
-            taskMasterList.add(task);
-        }
+        return tempTaskMasterList;
     }
 
     public void updateFile() {
