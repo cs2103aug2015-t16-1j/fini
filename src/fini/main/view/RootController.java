@@ -96,7 +96,7 @@ public class RootController extends BorderPane {
 
 		for (Task task : taskMasterList) {
 			for (int i = 0; i < 3; i++) {
-				if (task.getTaskType() == taskTypeName[i]) {
+				if (task.getLabelForTaskOverviewPane() == taskTypeName[i]) {
 					taskTypeNum[i]++;
 				}
 			}
