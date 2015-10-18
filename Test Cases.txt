@@ -1,0 +1,25 @@
+TEST CASES
+
+Floating Tasks
+add task
+add new floating task
+add new task // with priority high
+add new task // project TestCase
+add new task // with priority high project TestCase
+add new task // with project TestCase priority high
+
+Deadline Tasks
+add deadline // 12/12/2015 at 9pm
+add deadline task // 12/12/2015 at 9pm
+add deadline task // 12/12/2015 at 9pm with priority high
+add deadline task // 12/12/2015 at 9pm project EE2020
+add deadline task // 12/12/2015 at 9pm with priority high project EE2020
+add deadline task // 12/12/2015 at 9pm with project EE2020
+priority high
+
+Event Tasks
+add event // 12/12/2015 from 9am to 10pm
+add event // 12/12/2015 from 9am to 10pm with priority high
+add event // 12/12/2015 from 9am to 10pm project LAF1201
+add event // 12/12/2015 from 9am to 10pm with priority high project LAF1201
+add event // 12/12/2015 from 9am to 10pm project LAF1201 priority high 
