@@ -29,7 +29,8 @@ public class Task {
 
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHMM");
-
+    
+    // default constructor
     public Task() {
         this.taskTitle = "Untitled Task";
         this.project = defaultProject;
@@ -39,18 +40,23 @@ public class Task {
         this.taskStartTime = null;
         this.taskEndTime = null;
     }
-
+    
+    // constructor for floating task
     public Task(String taskTitle) {
         this.taskTitle = taskTitle;
         this.taskType = DEFAULT_TYPE;
         this.project = defaultProject;
     }
-
+    
+    // constructor for event
     public Task(boolean isRecurring, String title, String date, String startTime, String endTime,
             String priority, String project) {
         this.isRecurring = isRecurring;
-        this.taskTitle = title;
-
+        
+        setTitle(title);
+        setPriority(priority);
+        setProject(project);
+        
         if (startTime != null) {
             String formattedStartTime = formatTime(startTime);
             this.taskStartTime = LocalTime.parse(formattedStartTime, timeFormatter);
@@ -67,20 +73,7 @@ public class Task {
             this.taskType = DEADLINE_TYPE;
         } else {
             this.taskType = DEFAULT_TYPE;
-        }
-
-        if (priority != null) {
-            assert(priority != null);
-            this.priority = priority;
-        } else {
-            this.priority = defaultPriority;
-        }
-
-        if (project != null) {
-            this.project = project;
-        } else {
-            this.project = defaultProject;
-        }
+        } 
         
         // if recurring take in the day as it is, else parse
         if (isRecurring) {
@@ -172,7 +165,11 @@ public class Task {
     public String getProject() {
         return this.project;
     }
-
+    
+    public String getPriority() {
+        return priority;
+    }
+    
     public String getDate() {
         if (taskDate == null) {
             return "No date";
@@ -193,13 +190,13 @@ public class Task {
         }
         return taskEndTime.toString();
     }
+    
+    public String getRecurringDay() {
+        return recurringDay;
+    }
 
     public boolean checkIfRecurring() {
         return isRecurring;
-    }
-
-    public String getRecurringDay() {
-        return recurringDay;
     }
 
     public boolean checkIfDeadline() {
@@ -214,20 +211,25 @@ public class Task {
         return taskType == DEFAULT_TYPE;
     }
 
-    public String getPriority() {
-        return priority;
-    }
-    
     public void setTitle(String title) {
         this.taskTitle = title;
     }
     
     public void setProject(String project) {
-        this.project = project;
+        if (project != null) {
+            this.project = project;
+        } else {
+            this.project = defaultProject;
+        }
     }
     
     public void setPriority(String priority) {
-        this.priority = priority;
+        if (priority != null) {
+            assert(priority != null);
+            this.priority = priority;
+        } else {
+            this.priority = defaultPriority;
+        }
     }
     
     // TODO need to add task type
