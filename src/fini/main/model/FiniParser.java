@@ -263,6 +263,7 @@ public class FiniParser {
 		String priorityDetails = commandParameters.substring(indexOfPriority);
 		priorityDetails = priorityDetails.replace("priority ", "");
 		String[] removePriorityKeyword = priorityDetails.split(" ");
+		System.out.println(removePriorityKeyword[0]);
 		return removePriorityKeyword[0];
 	}
 
@@ -275,7 +276,7 @@ public class FiniParser {
 	}
 
 	private boolean checkIfHasPriority(String commandParameters) {
-		return commandParameters.contains("with priority");
+		return commandParameters.contains("priority");
 	}
 
 	private boolean checkIfRecurringTask(String commandParameters) {
