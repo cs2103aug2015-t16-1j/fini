@@ -57,6 +57,7 @@ public class FiniParser {
 		}
 	}
 
+	// @author A0121828H
 	private void addTask(String commandParameters) {
 		boolean hasTaskParameters = checkIfHasParameters(commandParameters);
 		boolean isRecurringTask = checkIfRecurringTask(commandParameters);
