@@ -114,4 +114,8 @@ public class Storage {
     public ObservableList<Task> getTasks() {
         return taskMasterList;
     }
+    
+    public int getSize() {
+        return taskMasterList.size();
+    }
 }

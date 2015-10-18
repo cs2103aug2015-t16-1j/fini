@@ -13,10 +13,12 @@ public class Task {
     private LocalTime taskEndTime;
     private String recurringDay;
     private boolean isRecurring;
-    private boolean isDeadline = false;
-    private boolean isEvent = false;
-    private boolean isFloating = false;
-
+    private String taskType;
+    
+    private static final String DEFAULT_TYPE = "Inbox";
+    private static final String EVENT_TYPE = "Event";
+    private static final String DEADLINE_TYPE = "Deadline";
+    
     private static final String priorityHigh = "High";
     private static final String priorityMedium = "Medium";
     private static final String priorityNormal = "Normal";
@@ -32,6 +34,7 @@ public class Task {
         this.taskTitle = "Untitled Task";
         this.project = defaultProject;
         this.priority = priorityMedium;
+        this.taskType = DEFAULT_TYPE;
         this.taskDate = null;
         this.taskStartTime = null;
         this.taskEndTime = null;
@@ -39,6 +42,7 @@ public class Task {
 
     public Task(String taskTitle) {
         this.taskTitle = taskTitle;
+        this.taskType = DEFAULT_TYPE;
         this.project = defaultProject;
     }
 
@@ -58,11 +62,11 @@ public class Task {
         }
 
         if (startTime != null && endTime != null) {
-            isEvent = true;
+            this.taskType = EVENT_TYPE;
         } else if (startTime != null) {
-            isDeadline = true;
+            this.taskType = DEADLINE_TYPE;
         } else {
-            isFloating = true;
+            this.taskType = DEFAULT_TYPE;
         }
 
         if (priority != null) {
@@ -77,7 +81,7 @@ public class Task {
         } else {
             this.project = defaultProject;
         }
-
+        
         // if recurring take in the day as it is, else parse
         if (isRecurring) {
             recurringDay = date;
@@ -199,21 +203,33 @@ public class Task {
     }
 
     public boolean checkIfDeadline() {
-        return isDeadline;
+        return taskType == DEADLINE_TYPE;
     }
 
     public boolean checkIfEvent() {
-        return isEvent;
+        return taskType == EVENT_TYPE;
     }
 
     public boolean checkIfFloating() {
-        return isFloating;
+        return taskType == DEFAULT_TYPE;
     }
 
     public String getPriority() {
         return priority;
     }
-
+    
+    public void setTitle(String title) {
+        this.taskTitle = title;
+    }
+    
+    public void setProject(String project) {
+        this.project = project;
+    }
+    
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
+    
     // TODO need to add task type
     public String getTaskType() {
         return "Inbox";
