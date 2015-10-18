@@ -2,6 +2,8 @@ package fini.main.model;
 
 import javax.xml.bind.ValidationEvent;
 
+import org.w3c.dom.css.ElementCSSInlineStyle;
+
 public class FiniParser {
 
     private static FiniParser parser;
@@ -49,7 +51,7 @@ public class FiniParser {
                 addTask(commandParameters);
                 break;
             case UPDATE:
-                //updateTask(commandParameters);
+                updateTask(commandParameters);
             default:
                 break;
         }
@@ -160,9 +162,84 @@ public class FiniParser {
         taskOrganiser.addNewTask(newTask);
     }
 
- 
+    private void updateTask(String commandParameters) {
+        Integer taskId = checkTaskId(commandParameters);
+        boolean hasTaskParameters = checkIfHasParameters(commandParameters);
+        if (0 < taskId && taskId < taskOrganiser.getSize() + 2 && hasTaskParameters) {
+            Task taskForUpdate = taskOrganiser.getTasks().get(taskId - 1);
+            String taskUpdateDetails = commandParameters.split("//")[1];
+            
+            boolean needToChangeTitle = checkIfHasTitle(taskUpdateDetails);
+            boolean needToChangePriority = checkIfHasPriority(taskUpdateDetails);
+            boolean needToChangeProject = checkIfHasProject(taskUpdateDetails);
+            boolean needToChangeDate = checkIfHasDate(taskUpdateDetails);
+            boolean isEvent = taskForUpdate.checkIfDeadline();
+            boolean isDeadline = taskForUpdate.checkIfDeadline();
+            boolean isRecurringTask = taskForUpdate.checkIfRecurring();
+            
+            if (needToChangeTitle) {
+                taskForUpdate.setTitle(extractTitle(taskUpdateDetails));
+            }
+            if (needToChangePriority) {
+                taskForUpdate.setPriority(extractPriority(taskUpdateDetails));
+            }
+            if (needToChangeProject) {
+                taskForUpdate.setProject(extractProject(taskUpdateDetails));
+            }
+            if (needToChangeDate) {
+                if (isRecurringTask) {
+                    if(isDeadline) {
+                        setRecurTaskDate(taskUpdateDetails);
+                    } else if(isEvent) {
+                        setRecurTaskStartAndEndTime(taskUpdateDetails);
+                    }
+                } else {
+                    if(isDeadline) {
+                        setTaskDate(taskUpdateDetails);
+                    } else if (isEvent) {
+                        setTaskStartAndEndTime(taskUpdateDetails);
+                    }
+                }
+            }
+            
+            taskOrganiser.getTasks().set(taskId - 1, taskForUpdate);
+        } else {
+            System.out.println("Invalid UPDATE input");
+        }
+    }
+
+    private Integer checkTaskId(String commandParameters) {
+        String taskIdStr = commandParameters.split("//")[0].trim();
+        boolean isNum = false;
+        for (char ch : taskIdStr.toCharArray()) {
+            if (!Character.isDigit(ch)) {
+                isNum = false;
+            }
+            isNum = true;
+        }
+        Integer taskId;
+        if (isNum) {
+            taskId = Integer.valueOf(taskIdStr);
+        } else {
+            taskId = -1;
+        }
+        return taskId;
+    }
+
+    private boolean checkIfHasTitle(String commandParameters) {
+        return commandParameters.toLowerCase().contains("title");
+    }
+
+    private boolean checkIfHasDate(String commandParameters) {
+        return commandParameters.toLowerCase().contains("date");
+    }
+
     private boolean checkIfHasParameters(String commandParameters) {
         return commandParameters.contains("//");
+    }
+
+    private boolean checkIfHasProject(String commandParameters) {
+        return commandParameters.contains("project");
     }
 
     private String extractProject(String commandParameters) {
@@ -172,9 +249,13 @@ public class FiniParser {
         String[] removeProjectKeyword = projectDetails.split(" ");
         return removeProjectKeyword[0];
     }
-
-    private boolean checkIfHasProject(String commandParameters) {
-        return commandParameters.contains("project");
+    
+    private String extractTitle(String commandParameters) {
+        int indexOfProject = commandParameters.indexOf("title");
+        String projectDetails = commandParameters.substring(indexOfProject);
+        projectDetails = projectDetails.replace("project ", "");
+        String[] removeProjectKeyword = projectDetails.split(" ");
+        return removeProjectKeyword[0];
     }
 
     private String extractPriority(String commandParameters) {
@@ -208,7 +289,7 @@ public class FiniParser {
         cleanStr = cleanStr.replaceAll("\\s+", " ");
         return cleanStr;
     }
-    
+
     public static FiniParser getInstance() {
         if (parser == null) {
             parser = new FiniParser();
