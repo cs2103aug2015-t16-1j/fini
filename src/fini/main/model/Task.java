@@ -189,7 +189,7 @@ public class Task {
         return taskType;
     }
     
-    // TODO. only a stub
+    // TODO only a stub
     public String getLabelForTaskOverviewPane() {
         return "Inbox";
     }
