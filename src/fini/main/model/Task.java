@@ -51,22 +51,14 @@ public class Task {
     // constructor for event
     public Task(boolean isRecurring, String title, String date, String startTime, String endTime,
             String priority, String project) {
-        this.isRecurring = isRecurring;
         
+        setRecurring(isRecurring);
         setTitle(title);
         setPriority(priority);
         setProject(project);
-        
-        if (startTime != null) {
-            String formattedStartTime = formatTime(startTime);
-            this.taskStartTime = LocalTime.parse(formattedStartTime, timeFormatter);
-        }
-
-        if (endTime != null) {
-            String formattedEndTime = formatTime(endTime);
-            this.taskEndTime = LocalTime.parse(formattedEndTime, timeFormatter);
-        }
-
+        setStartTime(startTime);
+        setEndTime(endTime);
+       
         if (startTime != null && endTime != null) {
             this.taskType = EVENT_TYPE;
         } else if (startTime != null) {
@@ -80,9 +72,7 @@ public class Task {
             recurringDay = date;
             System.out.println("Task Class: Recurring Day: " + recurringDay);
         } else {
-            if (date != null) {
-                this.taskDate = LocalDate.parse(date, dateFormatter);
-            }
+            setTaskDate(date);
         }
     }
 
@@ -194,7 +184,16 @@ public class Task {
     public String getRecurringDay() {
         return recurringDay;
     }
-
+    
+    public String getTaskType() {
+        return taskType;
+    }
+    
+    // TODO. only a stub
+    public String getLabelForTaskOverviewPane() {
+        return "Inbox";
+    }
+    
     public boolean checkIfRecurring() {
         return isRecurring;
     }
@@ -211,6 +210,10 @@ public class Task {
         return taskType == DEFAULT_TYPE;
     }
 
+    public void setRecurring(boolean isRecurring) {
+        this.isRecurring = isRecurring;
+    }
+    
     public void setTitle(String title) {
         this.taskTitle = title;
     }
@@ -232,8 +235,23 @@ public class Task {
         }
     }
     
-    // TODO need to add task type
-    public String getTaskType() {
-        return "Inbox";
+    public void setStartTime(String startTime) {
+        if (startTime != null) {
+            String formattedStartTime = formatTime(startTime);
+            this.taskStartTime = LocalTime.parse(formattedStartTime, timeFormatter);
+        }
+    }
+    
+    public void setEndTime(String endTime) {
+        if (endTime != null) {
+            String formattedEndTime = formatTime(endTime);
+            this.taskEndTime = LocalTime.parse(formattedEndTime, timeFormatter);
+        }
+    }
+    
+    public void setTaskDate(String date) {
+        if (date != null) {
+            this.taskDate = LocalDate.parse(date, dateFormatter);
+        }
     }
 }
