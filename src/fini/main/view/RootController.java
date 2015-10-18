@@ -23,186 +23,187 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 public class RootController extends BorderPane {
-    @FXML
-    private ListView<HBox> listView;
+	@FXML
+	private ListView<HBox> listView;
 
-    @FXML
-    private TextField commandBox;
+	@FXML
+	private TextField commandBox;
 
-    @FXML
-    private ListView<String> projectsOverviewPanel;
+	@FXML
+	private ListView<String> projectsOverviewPanel;
 
-    @FXML
-    private ListView<HBox> tasksOverviewPanel;
+	@FXML
+	private ListView<HBox> tasksOverviewPanel;
 
-    @FXML
-    private Label displayToUser;
+	@FXML
+	private Label displayToUser;
 
-    private static RootController rootController;
-    private Brain brain = Brain.getInstance();
-    private Storage taskOrganiser;
-    private FiniParser parser;
+	private static RootController rootController;
+	private Brain brain = Brain.getInstance();
+	private Storage taskOrganiser;
+	private FiniParser parser;
 
-    private String userInput;
+	private String userInput;
 
-    public RootController() {
-        listView = new ListView<HBox>();
-        projectsOverviewPanel = new ListView<String>();
-        tasksOverviewPanel = new ListView<HBox>();
-        commandBox = new TextField();
+	public RootController() {
+		listView = new ListView<HBox>();
+		projectsOverviewPanel = new ListView<String>();
+		tasksOverviewPanel = new ListView<HBox>();
+		commandBox = new TextField();
 
-        displayToUser = new Label();
-        parser = FiniParser.getInstance();
-        taskOrganiser = Storage.getInstance();
-        displayToUser.setText("Welcome to Fini!");
-        commandBox.requestFocus();
-    }
+		displayToUser = new Label();
+		parser = FiniParser.getInstance();
+		taskOrganiser = Storage.getInstance();
+		displayToUser.setText("Welcome to Fini!");
+		commandBox.requestFocus();
+	}
 
-    @FXML
-    public void handleKeyPressEvent(KeyEvent event) throws Exception {
-        if (event.getCode() == KeyCode.ENTER) {
-            userInput = commandBox.getText();
-            System.out.println(userInput);
-            commandBox.clear();
-            boolean isOperationSuccessful = parser.parse(userInput);
-            updateMainDisplay(taskOrganiser.getTasks());
-            updateProjectsOverviewPanel(taskOrganiser.getTasks());
-            updateTasksOverviewPanel(taskOrganiser.getTasks());
-            updateDisplayToUser(isOperationSuccessful);
-            taskOrganiser.updateFile();
-        }
-    }
+	@FXML
+	public void handleKeyPressEvent(KeyEvent event) throws Exception {
+		if (event.getCode() == KeyCode.ENTER) {
+			userInput = commandBox.getText();
+			System.out.println(userInput);
+			commandBox.clear();
+			boolean isOperationSuccessful = parser.parse(userInput);
+			updateMainDisplay(taskOrganiser.getTasks());
+			updateProjectsOverviewPanel(taskOrganiser.getTasks());
+			updateTasksOverviewPanel(taskOrganiser.getTasks());
+			updateDisplayToUser(isOperationSuccessful);
+			taskOrganiser.updateFile();
+		}
+	}
 
-    // Update Display
-    public void updateDisplayToUser(boolean isOperationSuccessful) {
-        if (isOperationSuccessful) {
-            displayToUser.setText("Operation Successful");
-        } else {
-            displayToUser.setText("Error Occurred");
-        }
-    }
+	// Update Display
+	public void updateDisplayToUser(boolean isOperationSuccessful) {
+		if (isOperationSuccessful) {
+			displayToUser.setText("Operation Successful");
+		} else {
+			displayToUser.setText("Error Occurred");
+		}
+	}
 
-    public void updateTasksOverviewPanel(ObservableList<Task> taskMasterList) {
-        ObservableList<HBox> tasksOverview = FXCollections.observableArrayList();
-        String[] taskTypeName = new String[] {"Inbox", "Today", "This Week", "Total"};
-        Integer[] taskTypeNum = new Integer[] {0, 0, 0, 0};
+	public void updateTasksOverviewPanel(ObservableList<Task> taskMasterList) {
+		ObservableList<HBox> tasksOverview = FXCollections.observableArrayList();
+		String[] taskTypeName = new String[] {"Inbox", "Today", "This Week", "Total"};
+		Integer[] taskTypeNum = new Integer[] {0, 0, 0, 0};
 
-        for (Task task : taskMasterList) {
-            for (int i = 0; i < 3; i++) {
-                if (task.getTaskType() == taskTypeName[i]) {
-                    taskTypeNum[i]++;
-                }
-            }
-        }
+		for (Task task : taskMasterList) {
+			for (int i = 0; i < 3; i++) {
+				if (task.getTaskType() == taskTypeName[i]) {
+					taskTypeNum[i]++;
+				}
+			}
+		}
 
-        taskTypeNum[3] = taskTypeNum[0] + taskTypeNum[1] + taskTypeNum[2];
+		taskTypeNum[3] = taskTypeNum[0] + taskTypeNum[1] + taskTypeNum[2];
 
-        for (int i = 0; i < 4; i++) {
-            HBox newOverviewBox = new HBox();
-            Label name = new Label(taskTypeName[i]);
-            Label num = new Label(taskTypeNum[i].toString());
-            newOverviewBox.getChildren().addAll(name, num);
-            newOverviewBox.setSpacing(30);
-            tasksOverview.add(newOverviewBox);
-        }
-        tasksOverviewPanel.setItems(tasksOverview);
-    }
+		for (int i = 0; i < 4; i++) {
+			HBox newOverviewBox = new HBox();
+			Label name = new Label(taskTypeName[i]);
+			Label num = new Label(taskTypeNum[i].toString());
+			newOverviewBox.getChildren().addAll(name, num);
+			newOverviewBox.setSpacing(30);
+			tasksOverview.add(newOverviewBox);
+		}
+		tasksOverviewPanel.setItems(tasksOverview);
+	}
 
-    public void updateProjectsOverviewPanel(ObservableList<Task> taskMasterList) {
-        ObservableList<String> projectsOverview = FXCollections.observableArrayList();
-        for (Task task : taskMasterList) {
-            if (projectsOverview.contains(task.getProject()) == false) {
-                projectsOverview.add(task.getProject());
-            }
-        }
-        projectsOverviewPanel.setItems(projectsOverview);
-    }
+	public void updateProjectsOverviewPanel(ObservableList<Task> taskMasterList) {
+		ObservableList<String> projectsOverview = FXCollections.observableArrayList();
+		for (Task task : taskMasterList) {
+			if (projectsOverview.contains(task.getProject()) == false) {
+				projectsOverview.add(task.getProject());
+			}
+		}
+		projectsOverviewPanel.setItems(projectsOverview);
+	}
 
-    public void updateMainDisplay(ObservableList<Task> taskMasterList) {
-        // ObservableList<String> taskList = FXCollections.observableArrayList();
-        ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
-        for (Task task : taskMasterList) {
-            String taskTitle = task.getTitle();
-            String taskProject = task.getProject();
-            String taskPriority = task.getPriority();
-            String taskStartTime = task.getStartTime();
-            String taskEndTime = task.getEndTime();
+	public void updateMainDisplay(ObservableList<Task> taskMasterList) {
+		// ObservableList<String> taskList = FXCollections.observableArrayList();
+		ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
+		for (Task task : taskMasterList) {
+			int taskId = taskMasterList.indexOf(task) + 1;
+			String taskTitle = task.getTitle();
+			String taskProject = task.getProject();
+			String taskPriority = task.getPriority();
+			String taskStartTime = task.getStartTime();
+			String taskEndTime = task.getEndTime();
 
-            boolean isRecurringTask = task.checkIfRecurring();
-            boolean isDeadline = task.checkIfDeadline();
-            boolean isEvent = task.checkIfEvent();
-            boolean isFloating = task.checkIfFloating();
-            HBox newTaskBox = null;
-            String taskDate = "";
-            String typeOfTask = "";
+			boolean isRecurringTask = task.checkIfRecurring();
+			boolean isDeadline = task.checkIfDeadline();
+			boolean isEvent = task.checkIfEvent();
+			boolean isFloating = task.checkIfFloating();
+			HBox newTaskBox = null;
+			String taskDate = "";
+			String typeOfTask = "";
 
-            if (isRecurringTask) {
-                taskDate = task.getRecurringDay();
-                System.out.println("Recurring day is " + taskDate);
-            } else {
-                taskDate = task.getDate();
-            }
-            if (isFloating) {
-                typeOfTask = "floating";
-            } else if (isDeadline) {
-                typeOfTask = "deadline";
-            } else {
-                typeOfTask = "event";
-            }
-            newTaskBox = addHBox(typeOfTask, taskTitle, taskDate, taskStartTime, taskEndTime,
-                    taskPriority, taskProject, isRecurringTask);
+			if (isRecurringTask) {
+				taskDate = task.getRecurringDay();
+				System.out.println("Recurring day is " + taskDate);
+			} else {
+				taskDate = task.getDate();
+			}
+			if (isFloating) {
+				typeOfTask = "floating";
+			} else if (isDeadline) {
+				typeOfTask = "deadline";
+			} else {
+				typeOfTask = "event";
+			}
+			newTaskBox = addHBox(taskId, typeOfTask, taskTitle, taskDate, taskStartTime, taskEndTime,
+					taskPriority, taskProject, isRecurringTask);
 
-            displayBoxes.add(newTaskBox);
-        }
-        listView.setItems(displayBoxes);
-    }
+			displayBoxes.add(newTaskBox);
+		}
+		listView.setItems(displayBoxes);
+	}
 
-    // Add Display Component
-    public HBox addHBox(String typeOfTask, String taskTitle, String taskDate, String taskStartTime,
-            String taskEndTime, String taskPriority, String taskProject, boolean isRecurringTask) {
-        HBox hbox = new HBox();
-        hbox.setSpacing(10);
-        // hbox.setStyle("-fx-background-color: #006EEE; -fx-font-family: Helvetica; -fx-text-fill:
-        // white;");
-        // hbox.setStyle("-fx-font-family: Raleway;");
+	// Add Display Component
+	public HBox addHBox(int taskId, String typeOfTask, String taskTitle, String taskDate, String taskStartTime,
+			String taskEndTime, String taskPriority, String taskProject, boolean isRecurringTask) {
+		HBox hbox = new HBox();
+		hbox.setSpacing(10);
+		// hbox.setStyle("-fx-background-color: #006EEE; -fx-font-family: Helvetica; -fx-text-fill:
+		// white;");
+		// hbox.setStyle("-fx-font-family: Raleway;");
+		Label id = new Label(Integer.toString(taskId));
+		Label title = new Label(taskTitle);
+		// title.setStyle("-fx-text-fill: white;");
+		Label date = new Label(taskDate);
+		Label startTime = new Label(taskStartTime);
+		Label endTime = new Label(taskEndTime);
+		Label priority = new Label(taskPriority);
+		Label project = new Label(taskProject);
+		Label isRecurring = null;
+		// Label recurringDay = null;
 
-        Label title = new Label(taskTitle);
-        // title.setStyle("-fx-text-fill: white;");
-        Label date = new Label(taskDate);
-        Label startTime = new Label(taskStartTime);
-        Label endTime = new Label(taskEndTime);
-        Label priority = new Label(taskPriority);
-        Label project = new Label(taskProject);
-        Label isRecurring = null;
-        // Label recurringDay = null;
+		switch (typeOfTask) {
+		case "floating":
+			hbox.getChildren().addAll(id, title);
+			break;
+		case "deadline":
+			hbox.getChildren().addAll(id, title, date, startTime);
+			break;
+		case "event":
+			hbox.getChildren().addAll(id, title, date, startTime, endTime);
+			break;
+		default:
+			break;
+		}
+		if (taskPriority != null) {
+			hbox.getChildren().addAll(priority);
+		}
 
-        switch (typeOfTask) {
-            case "floating":
-                hbox.getChildren().addAll(title);
-                break;
-            case "deadline":
-                hbox.getChildren().addAll(title, date, startTime);
-                break;
-            case "event":
-                hbox.getChildren().addAll(title, date, startTime, endTime);
-                break;
-            default:
-                break;
-        }
-        if (taskPriority != null) {
-            hbox.getChildren().addAll(priority);
-        }
+		if (taskProject != null) {
+			hbox.getChildren().addAll(project);
+		}
 
-        if (taskProject != null) {
-            hbox.getChildren().addAll(project);
-        }
-
-        if (isRecurringTask) {
-            // recurringDay
-            System.out.println("Recurring day is " + date.getText());
-            isRecurring = new Label("R");
-            hbox.getChildren().addAll(isRecurring);
-        }
-        return hbox;
-    }
+		if (isRecurringTask) {
+			// recurringDay
+			System.out.println("Recurring day is " + date.getText());
+			isRecurring = new Label("R");
+			hbox.getChildren().addAll(isRecurring);
+		}
+		return hbox;
+	}
 }
