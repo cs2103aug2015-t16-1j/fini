@@ -197,16 +197,16 @@ public class FiniParser {
 			Task taskForUpdate = taskOrganiser.getTasks().get(taskId - 1);
 			System.out.println("updating task number " + taskId + ": "+ taskForUpdate.getTitle());
 			String taskUpdateDetails = commandParameters.split("//")[1].trim();
-			
+
 			boolean needToChangeTitle = checkIfHasTitle(taskUpdateDetails);
 			boolean needToChangePriority = checkIfHasPriority(taskUpdateDetails);
 			boolean needToChangeProject = checkIfHasProject(taskUpdateDetails);
 			boolean needToChangeDate = checkIfHasDate(taskUpdateDetails);
-	        boolean needToChangeTime = checkIfHasTime(taskUpdateDetails);
+			boolean needToChangeTime = checkIfHasTime(taskUpdateDetails);
 			boolean isEvent = taskForUpdate.checkIfDeadline();
 			boolean isDeadline = taskForUpdate.checkIfDeadline();
 			boolean isRecurringTask = taskForUpdate.checkIfRecurring();
-			
+
 			// TODO cannot add more than one word for title. need to fix
 			if (needToChangeTitle) {
 				taskForUpdate.setTitle(extractInformation("title", taskUpdateDetails));
@@ -218,7 +218,7 @@ public class FiniParser {
 				taskForUpdate.setProject(extractInformation("project", taskUpdateDetails));
 			}
 			if(needToChangeDate) {
-			    taskForUpdate.setTaskDate(extractInformation("date", taskUpdateDetails));
+				taskForUpdate.setTaskDate(extractInformation("date", taskUpdateDetails));
 			}
 			if (needToChangeTime) {
 				/* recurring function not implemented
@@ -229,8 +229,8 @@ public class FiniParser {
 						setRecurTaskStartAndEndTime(taskUpdateDetails);
 					}
 				} else {
-				*/
-			    if(isDeadline) {
+				 */
+				if(isDeadline) {
 					taskForUpdate.setStartTime(extractInformation("time", taskUpdateDetails));
 				} else if (isEvent) {
 					String timeDetail = extractInformation("time", taskUpdateDetails);
@@ -270,11 +270,11 @@ public class FiniParser {
 	private boolean checkIfHasDate(String commandParameters) {
 		return commandParameters.toLowerCase().contains("date");
 	}
-	
+
 	private boolean checkIfHasTime(String commandParameters) {
-        return commandParameters.toLowerCase().contains("time");
-    }
-	
+		return commandParameters.toLowerCase().contains("time");
+	}
+
 	private boolean checkIfHasParameters(String commandParameters) {
 		return commandParameters.contains("//");
 	}
@@ -292,7 +292,7 @@ public class FiniParser {
 	}
 
 	private String extractInformation(String keyword, String commandParameters) {
-	    commandParameters = commandParameters.trim();
+		commandParameters = commandParameters.trim();
 		int indexOfKeyword = commandParameters.toLowerCase().indexOf(keyword);
 		String commandDetails = commandParameters.substring(indexOfKeyword).trim();
 		commandDetails  = commandDetails .replace(keyword, "").trim();
@@ -300,15 +300,15 @@ public class FiniParser {
 		System.out.println(removeKeyword[0]);
 		return removeKeyword[0];
 	}
-	
+
 	private String extractPriority(String commandParameters) {
-        int indexOfPriority = commandParameters.toLowerCase().indexOf("priority");
-        String priorityDetails = commandParameters.substring(indexOfPriority);
-        priorityDetails = priorityDetails.replace("priority ", "");
-        String[] removePriorityKeyword = priorityDetails.split(" ");
-        System.out.println(removePriorityKeyword[0]);
-        return removePriorityKeyword[0];
-    }
+		int indexOfPriority = commandParameters.toLowerCase().indexOf("priority");
+		String priorityDetails = commandParameters.substring(indexOfPriority);
+		priorityDetails = priorityDetails.replace("priority ", "");
+		String[] removePriorityKeyword = priorityDetails.split(" ");
+		System.out.println(removePriorityKeyword[0]);
+		return removePriorityKeyword[0];
+	}
 
 	private boolean checkIfTaskIsDeadline(String commandParameters) {
 		return commandParameters.contains("at");
