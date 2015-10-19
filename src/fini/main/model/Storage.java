@@ -20,119 +20,119 @@ import javafx.collections.ObservableList;
  *
  */
 public class Storage {
-    private static Storage taskOrganiser;
+	private static Storage taskOrganiser;
 
-    private ObservableList<Task> taskMasterList = FXCollections.observableArrayList();
+	private ObservableList<Task> taskMasterList = FXCollections.observableArrayList();
 
-    private File saveFile;
-    private BufferedReader reader;
-    private PrintWriter writer;
+	private File saveFile;
+	private BufferedReader reader;
+	private PrintWriter writer;
 
-    private Gson gson;
+	private Gson gson;
 
-    public static Storage getInstance() {
-        if (taskOrganiser == null) {
-            taskOrganiser = new Storage();
-        }
-        return taskOrganiser;
-    }
+	public static Storage getInstance() {
+		if (taskOrganiser == null) {
+			taskOrganiser = new Storage();
+		}
+		return taskOrganiser;
+	}
 
-    public Storage() {
-        gson = new Gson();
+	public Storage() {
+		gson = new Gson();
 
-        saveFile = new File("save.txt");
-        createIfNotExists(saveFile);
-    }
+		saveFile = new File("save.txt");
+		createIfNotExists(saveFile);
+	}
 
-    public ArrayList<Task> readFile() {
-    	taskMasterList = FXCollections.observableArrayList();
-        ArrayList<Task> tempTaskMasterList;
-        tempTaskMasterList = readTasks(saveFile);
+	public ArrayList<Task> readFile() {
+		taskMasterList = FXCollections.observableArrayList();
+		ArrayList<Task> tempTaskMasterList;
+		tempTaskMasterList = readTasks(saveFile);
 
-        if (tempTaskMasterList == null || tempTaskMasterList.isEmpty()) {
-            taskMasterList = FXCollections.observableArrayList();
-        } else {
-        	for (Task task : tempTaskMasterList) {
-        		taskMasterList.add(task);
-        	}
-        }
-        return tempTaskMasterList;
-    }
-    
-    private ArrayList<Task> readTasks(File saveFile) {
-        String text = "";
-        ArrayList<Task> tempTaskMasterList = new ArrayList<Task>();
-    	try {
-            if (!initReader(saveFile)) {
-            	return tempTaskMasterList;
-            }
-            while ((text = reader.readLine()) != null) {
-                Task task = gson.fromJson(text, Task.class);
-                tempTaskMasterList.add(task);
-            }
-        } catch (IOException | JsonSyntaxException e) {
-            e.printStackTrace();
-        }
-        closeReader();
-        return tempTaskMasterList;
-    }
+		if (tempTaskMasterList == null || tempTaskMasterList.isEmpty()) {
+			taskMasterList = FXCollections.observableArrayList();
+		} else {
+			for (Task task : tempTaskMasterList) {
+				taskMasterList.add(task);
+			}
+		}
+		return tempTaskMasterList;
+	}
 
-    public void updateFile() {
-        try {
-            writer = new PrintWriter(saveFile, "UTF-8");
-            for (Task task : taskMasterList) {
-                writer.println(gson.toJson(task));
-            }
-        } catch (FileNotFoundException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        writer.close();
-    }
+	private ArrayList<Task> readTasks(File saveFile) {
+		String text = "";
+		ArrayList<Task> tempTaskMasterList = new ArrayList<Task>();
+		try {
+			if (!initReader(saveFile)) {
+				return tempTaskMasterList;
+			}
+			while ((text = reader.readLine()) != null) {
+				Task task = gson.fromJson(text, Task.class);
+				tempTaskMasterList.add(task);
+			}
+		} catch (IOException | JsonSyntaxException e) {
+			e.printStackTrace();
+		}
+		closeReader();
+		return tempTaskMasterList;
+	}
 
-    // Initialization Methods
-    private boolean initReader(File saveFile) {
-        try {
-            reader = new BufferedReader(new FileReader(saveFile));
-        } catch (FileNotFoundException e) {
-            return false;
-        }
-        return true;
-    }
+	public void updateFile() {
+		try {
+			writer = new PrintWriter(saveFile, "UTF-8");
+			for (Task task : taskMasterList) {
+				writer.println(gson.toJson(task));
+			}
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		writer.close();
+	}
 
-    private void closeReader() {
-        try {
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	// Initialization Methods
+	private boolean initReader(File saveFile) {
+		try {
+			reader = new BufferedReader(new FileReader(saveFile));
+		} catch (FileNotFoundException e) {
+			return false;
+		}
+		return true;
+	}
 
-    // Utility Methods
-    private void createIfNotExists(File saveFile) {
-        try {
-            if (!saveFile.exists()) {
-                saveFile.createNewFile();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	private void closeReader() {
+		try {
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    public void addNewTask(Task newTask) {
-        taskMasterList.add(newTask);
-    }
-    
-    public void deleteTask(int taskId) {
-    	taskMasterList.remove(taskId-1);
-    }
+	// Utility Methods
+	private void createIfNotExists(File saveFile) {
+		try {
+			if (!saveFile.exists()) {
+				saveFile.createNewFile();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    public ObservableList<Task> getTasks() {
-        return taskMasterList;
-    }
-    
-    public int getSize() {
-        return taskMasterList.size();
-    }
+	public void addNewTask(Task newTask) {
+		taskMasterList.add(newTask);
+	}
+
+	public void deleteTask(int taskId) {
+		taskMasterList.remove(taskId-1);
+	}
+
+	public ObservableList<Task> getTasks() {
+		return taskMasterList;
+	}
+
+	public int getSize() {
+		return taskMasterList.size();
+	}
 
 	public void clearTasks() {
 		taskMasterList.clear();
