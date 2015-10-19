@@ -14,7 +14,11 @@ import com.google.gson.JsonSyntaxException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
+/**
+ * Storage component
+ * @author gaieepo
+ *
+ */
 public class Storage {
     private static Storage taskOrganiser;
 
@@ -40,7 +44,7 @@ public class Storage {
         createIfNotExists(saveFile);
     }
 
-    public void readFile() {
+    public ArrayList<Task> readFile() {
     	taskMasterList = FXCollections.observableArrayList();
         ArrayList<Task> tempTaskMasterList;
         tempTaskMasterList = readTasks(saveFile);
@@ -52,6 +56,7 @@ public class Storage {
         		taskMasterList.add(task);
         	}
         }
+        return tempTaskMasterList;
     }
     
     private ArrayList<Task> readTasks(File saveFile) {

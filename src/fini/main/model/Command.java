@@ -1,5 +1,10 @@
 package fini.main.model;
 
+/**
+ * Command model
+ * @author gaieepo
+ *
+ */
 public class Command {
     public static enum Type {
         ADD, DELETE, INVALID
