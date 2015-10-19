@@ -8,7 +8,11 @@ import fini.main.model.Task;
 import fini.main.view.RootController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
+/**
+ * Brain
+ * @author gaieepo
+ *
+ */
 public class Brain {
     private static Brain brain;
     private RootController rootController;
@@ -22,6 +26,7 @@ public class Brain {
     private Brain() {
         parser = FiniParser.getInstance();
         taskOrganiser = Storage.getInstance();
+        taskMasterList = taskOrganiser.readFile();
     }
 
     public static Brain getInstance() {
