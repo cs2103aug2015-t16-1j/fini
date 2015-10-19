@@ -259,4 +259,9 @@ public class Task {
             this.taskDate = LocalDate.parse(date, dateFormatter);
         }
     }
+    
+    // Project Related Methods
+    public void update(String projectName, LocalDate projectEndDate, LocalTime projectEndTime, Boolean projectIsCompleted) {
+    	
+    }
 }
