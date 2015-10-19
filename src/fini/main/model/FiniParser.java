@@ -42,6 +42,8 @@ public class FiniParser {
 			return CommandType.UPDATE;
 		case "delete":
 			return CommandType.DELETE;
+		case "clear":
+			return CommandType.CLEAR;
 		default:
 			return CommandType.INVALID;
 		}
@@ -58,9 +60,15 @@ public class FiniParser {
 		case DELETE:
 			deleteTask(commandParameters);
 			break;
+		case CLEAR:
+			clearTasks(commandParameters);
 		default:
 			break;
 		}
+	}
+
+	private void clearTasks(String commandParameters) {
+		taskOrganiser.clearTasks();
 	}
 
 	// @author A0121828H

@@ -133,4 +133,8 @@ public class Storage {
     public int getSize() {
         return taskMasterList.size();
     }
+
+	public void clearTasks() {
+		taskMasterList.clear();
+	}
 }
