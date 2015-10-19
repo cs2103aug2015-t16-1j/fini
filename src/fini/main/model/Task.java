@@ -17,6 +17,7 @@ public class Task {
 	private LocalTime taskEndTime;
 	private String recurringDay;
 	private boolean isRecurring;
+	private boolean isCompleted;
 
 	private String taskType;
 
@@ -152,6 +153,7 @@ public class Task {
 		return userGivenTime.contains("am");
 	}
 
+	// Public Getters
 	public String getTitle() {
 		assert taskTitle != null;
 		return taskTitle;
@@ -198,7 +200,12 @@ public class Task {
 	public String getLabelForTaskOverviewPane() {
 		return "Inbox";
 	}
+	
+	public boolean isCompleted() {
+		return isCompleted;
+	}
 
+	// Util methods
 	public boolean checkIfRecurring() {
 		return isRecurring;
 	}
@@ -215,6 +222,7 @@ public class Task {
 		return taskType == DEFAULT_TYPE;
 	}
 
+	// Public Setters
 	public void setRecurring(boolean isRecurring) {
 		this.isRecurring = isRecurring;
 	}
