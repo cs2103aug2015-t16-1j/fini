@@ -2,9 +2,12 @@ package fini.main;
 
 import java.util.ArrayList;
 
+import org.junit.runners.AllTests;
+
 import fini.main.model.FiniParser;
 import fini.main.model.Storage;
 import fini.main.model.Task;
+import fini.main.util.Sorter;
 import fini.main.view.RootController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +22,7 @@ public class Brain {
 
     private Storage taskOrganiser;
     private FiniParser parser;
+    private Sorter sorter;
 
     private ArrayList<Task> taskMasterList;
     private ObservableList<Task> taskObservableList = FXCollections.observableArrayList();
@@ -27,13 +31,22 @@ public class Brain {
         parser = FiniParser.getInstance();
         taskOrganiser = Storage.getInstance();
         taskMasterList = taskOrganiser.readFile();
+        
+        sortAllTasks();
+        // 2. Load incomplete;
     }
 
     public static Brain getInstance() {
         if (brain == null) {
             brain = new Brain();
+//            brain.initFirstDisplay();
         }
         return brain;
+    }
+    
+    private void initFirstDisplay() {
+//    	rootController.setFeedback("Welcome to fini");
+//    	rootController.updateMainDisplay(taskMasterList);
     }
 
     public void executeCommand(String command) {
@@ -54,8 +67,16 @@ public class Brain {
         // String commandAction = newCommand.getCommandAction();
         // String commandArguments = newCommand.getCommandArguments();
     }
-
+    
+    // Init Methods
     public void setRootController(RootController rootController) {
         this.rootController = rootController;
+    }
+    
+    private void sortAllTasks() {
+    	assert taskMasterList != null;
+    	sorter = new Sorter(taskMasterList);
+    	sorter.sort();
+    	taskMasterList = sorter.getSortedList();
     }
 }

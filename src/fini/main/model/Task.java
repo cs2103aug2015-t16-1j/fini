@@ -5,6 +5,10 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class Task {
+	public static enum Type { // TODO
+		DEFAULT, EVENT, DEADLINE
+	}
+	
     private String taskTitle;
     private String project;
     private String priority;
@@ -13,6 +17,7 @@ public class Task {
     private LocalTime taskEndTime;
     private String recurringDay;
     private boolean isRecurring;
+    
     private String taskType;
     
     private static final String DEFAULT_TYPE = "Inbox";
