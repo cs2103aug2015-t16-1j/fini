@@ -17,11 +17,7 @@ public class Brain {
     private FiniParser parser;
 
     private ArrayList<Task> taskMasterList;
-    
-    // Observablelist Manipulation
     private ObservableList<Task> taskObservableList = FXCollections.observableArrayList();
-    
-    
     
     private Brain() {
         parser = FiniParser.getInstance();
