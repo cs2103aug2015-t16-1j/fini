@@ -26,68 +26,68 @@ import javafx.stage.Stage;
  */
 
 public class MainApp extends Application {
-    // Global Logger
-    public final static Logger finiLogger = Logger.getLogger(MainApp.class.getName());
+	// Global Logger
+	public final static Logger finiLogger = Logger.getLogger(MainApp.class.getName());
 
-    @FXML
-    private Button welcomeButton;
+	@FXML
+	private Button welcomeButton;
 
-    private RootController rootController;
-    private Brain brain;
-    private Stage primaryStage = new Stage();
+	private RootController rootController;
+	private Brain brain;
+	private Stage primaryStage = new Stage();
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+	public static void main(String[] args) {
+		launch(args);
+	}
 
-    @Override
-    public void start(Stage stage) {
-        AnchorPane parent = null;
-        primaryStage = stage;
-        welcomeButton = new Button();
-        try {
-            parent = FXMLLoader.load(getClass().getResource("view/Welcomev2.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Scene scene = new Scene(parent);
+	@Override
+	public void start(Stage stage) {
+		AnchorPane parent = null;
+		primaryStage = stage;
+		welcomeButton = new Button();
+		try {
+			parent = FXMLLoader.load(getClass().getResource("view/Welcomev2.fxml"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Scene scene = new Scene(parent);
 
-        setListenerForWelcomeScene(parent);
-        primaryStage.setTitle("Fini");
-        // TODO: Icon not working
-        primaryStage.getIcons().add(new Image("file:resources/images/icon.png"));
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
+		setListenerForWelcomeScene(parent);
+		primaryStage.setTitle("Fini");
+		// TODO: Icon not working
+		primaryStage.getIcons().add(new Image("file:resources/images/icon.png"));
+		primaryStage.setScene(scene);
+		primaryStage.show();
+	}
 
-    private void setListenerForWelcomeScene(AnchorPane parent) {
-        final TextField welcomeSceneListener = new TextField();
-        welcomeSceneListener.setLayoutX(-200);
-        welcomeSceneListener.setLayoutY(-200);
-        welcomeSceneListener.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent userPressesEnter) {
-                if (userPressesEnter.getCode().equals(KeyCode.ENTER)) {
-                    Parent main = null;
-                    try {
-                        main = FXMLLoader.load(getClass().getResource("view/FiniLayout.fxml"));
-                    } catch (IOException e) {
-                        System.out.println("Unable to find or load FXML file");
-                        e.printStackTrace();
-                    }
-                    Scene scene = new Scene(main);
-                    primaryStage.setScene(scene);
-                    primaryStage.show();
-                    intialiseRootController();
-                }
-            }
-        });
-        parent.getChildren().add(welcomeSceneListener);
-        welcomeSceneListener.requestFocus();
-    }
+	private void setListenerForWelcomeScene(AnchorPane parent) {
+		final TextField welcomeSceneListener = new TextField();
+		welcomeSceneListener.setLayoutX(-200);
+		welcomeSceneListener.setLayoutY(-200);
+		welcomeSceneListener.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			public void handle(KeyEvent userPressesEnter) {
+				if (userPressesEnter.getCode().equals(KeyCode.ENTER)) {
+					Parent main = null;
+					try {
+						main = FXMLLoader.load(getClass().getResource("view/FiniLayout.fxml"));
+					} catch (IOException e) {
+						System.out.println("Unable to find or load FXML file");
+						e.printStackTrace();
+					}
+					Scene scene = new Scene(main);
+					primaryStage.setScene(scene);
+					primaryStage.show();
+					intialiseRootController();
+				}
+			}
+		});
+		parent.getChildren().add(welcomeSceneListener);
+		welcomeSceneListener.requestFocus();
+	}
 
-    private void intialiseRootController() {
-        rootController = new RootController();
-        brain = Brain.getInstance();
-        brain.setRootController(this.rootController);
-    }
+	private void intialiseRootController() {
+		rootController = new RootController();
+		brain = Brain.getInstance();
+		brain.setRootController(this.rootController);
+	}
 }
