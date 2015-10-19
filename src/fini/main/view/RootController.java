@@ -38,7 +38,6 @@ public class RootController extends BorderPane {
 	@FXML
 	private Label displayToUser;
 
-	private static RootController rootController;
 	private Brain brain = Brain.getInstance();
 	private Storage taskOrganiser;
 	private FiniParser parser;

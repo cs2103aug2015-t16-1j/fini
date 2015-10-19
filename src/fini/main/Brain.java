@@ -14,7 +14,6 @@ import javafx.collections.ObservableList;
 /**
  * Brain
  * @author gaieepo
- *
  */
 public class Brain {
     private static Brain brain;
