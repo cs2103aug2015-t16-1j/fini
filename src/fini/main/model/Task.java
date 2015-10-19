@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class Task {
-	public static enum Type { // TODO
+	public static enum Type {
 		DEFAULT, EVENT, DEADLINE
 	}
 
@@ -19,11 +19,11 @@ public class Task {
 	private boolean isRecurring;
 	private boolean isCompleted;
 
-	private String taskType;
+	private Type taskType;
 
-	private static final String DEFAULT_TYPE = "Inbox";
-	private static final String EVENT_TYPE = "Event";
-	private static final String DEADLINE_TYPE = "Deadline";
+//	private static final String DEFAULT_TYPE = "Inbox";
+//	private static final String EVENT_TYPE = "Event";
+//	private static final String DEADLINE_TYPE = "Deadline";
 
 	private static final String priorityHigh = "High";
 	private static final String priorityMedium = "Medium";
@@ -41,7 +41,7 @@ public class Task {
 		this.taskTitle = "Untitled Task";
 		this.project = defaultProject;
 		this.priority = priorityMedium;
-		this.taskType = DEFAULT_TYPE;
+		this.taskType = Type.DEFAULT;
 		this.taskDate = null;
 		this.taskStartTime = null;
 		this.taskEndTime = null;
@@ -50,27 +50,26 @@ public class Task {
 	// constructor for floating task
 	public Task(String taskTitle) {
 		this.taskTitle = taskTitle;
-		this.taskType = DEFAULT_TYPE;
+		this.taskType = Type.DEFAULT;
 		this.project = defaultProject;
 	}
 
 	// constructor for event
 	public Task(boolean isRecurring, String title, String date, String startTime, String endTime,
 			String priority, String project) {
-
-		setRecurring(isRecurring);
-		setTitle(title);
-		setPriority(priority);
+		this.isRecurring = isRecurring;
+		this.taskTitle = title;
+		this.priority = priority;
 		setProject(project);
 		setStartTime(startTime);
 		setEndTime(endTime);
 
 		if (startTime != null && endTime != null) {
-			this.taskType = EVENT_TYPE;
+			this.taskType = Type.EVENT;
 		} else if (startTime != null) {
-			this.taskType = DEADLINE_TYPE;
+			this.taskType = Type.DEADLINE;
 		} else {
-			this.taskType = DEFAULT_TYPE;
+			this.taskType = Type.DEFAULT;
 		} 
 
 		// if recurring take in the day as it is, else parse
@@ -192,7 +191,7 @@ public class Task {
 		return recurringDay;
 	}
 
-	public String getTaskType() {
+	public Type getTaskType() {
 		return taskType;
 	}
 
@@ -205,21 +204,21 @@ public class Task {
 		return isCompleted;
 	}
 
-	// Util methods
+	// Checking Methods
 	public boolean checkIfRecurring() {
 		return isRecurring;
 	}
 
 	public boolean checkIfDeadline() {
-		return taskType == DEADLINE_TYPE;
+		return taskType == Type.DEADLINE;
 	}
 
 	public boolean checkIfEvent() {
-		return taskType == EVENT_TYPE;
+		return taskType == Type.EVENT;
 	}
 
 	public boolean checkIfFloating() {
-		return taskType == DEFAULT_TYPE;
+		return taskType == Type.DEFAULT;
 	}
 
 	// Public Setters
@@ -269,7 +268,8 @@ public class Task {
 	}
 
 	// Project Related Methods
+	// @author gaieepo
 	public void update(String projectName, LocalDate projectEndDate, LocalTime projectEndTime, Boolean projectIsCompleted) {
-
+		// TODO
 	}
 }

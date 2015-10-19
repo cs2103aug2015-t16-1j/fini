@@ -70,6 +70,7 @@ public class RootController extends BorderPane {
 			userInput = commandBox.getText();
 			System.out.println(userInput);
 			commandBox.clear();
+			
 			boolean isOperationSuccessful = parser.parse(userInput);
 			updateMainDisplay(taskOrganiser.getTasks());
 			updateProjectsOverviewPanel(taskOrganiser.getTasks());

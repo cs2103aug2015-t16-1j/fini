@@ -1,8 +1,7 @@
 package fini.main;
 
 import java.util.ArrayList;
-
-import org.junit.runners.AllTests;
+import java.util.stream.Collectors;
 
 import fini.main.model.FiniParser;
 import fini.main.model.Storage;
@@ -29,10 +28,13 @@ public class Brain {
 	private Brain() {
 		parser = FiniParser.getInstance();
 		taskOrganiser = Storage.getInstance();
+		
 		taskMasterList = taskOrganiser.readFile();
 
 		sortAllTasks();
-		// 2. Load incomplete;
+		
+		ArrayList<Task> incompleteTasks = (ArrayList<Task>) taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList());
+		taskObservableList.addAll(incompleteTasks);
 	}
 
 	public static Brain getInstance() {

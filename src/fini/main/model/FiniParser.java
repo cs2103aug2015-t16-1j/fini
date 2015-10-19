@@ -44,6 +44,8 @@ public class FiniParser {
 			return CommandType.DELETE;
 		case "clear":
 			return CommandType.CLEAR;
+		case "exit":
+			return CommandType.EXIT;
 		default:
 			return CommandType.INVALID;
 		}
@@ -62,6 +64,10 @@ public class FiniParser {
 			break;
 		case CLEAR:
 			clearTasks(commandParameters);
+			break;
+		case EXIT:
+			System.exit(0);
+			break;
 		default:
 			break;
 		}
