@@ -12,19 +12,13 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import fini.main.util.Sorter;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 /**
- * Storage component
+ * Storage component - Nothing should be stored in Storage
  * @author gaieepo
  *
  */
 public class Storage {
 	private static Storage taskOrganiser;
-
-	// taskMasterList
-	private ObservableList<Task> taskMasterList = FXCollections.observableArrayList();
 
 	private File saveFile;
 	private BufferedReader reader;
@@ -47,53 +41,32 @@ public class Storage {
 	}
 
 	public ArrayList<Task> readFile() {
-		taskMasterList = FXCollections.observableArrayList();
-		ArrayList<Task> tempTaskMasterList;
-		tempTaskMasterList = readTasks(saveFile);
-
-		if (tempTaskMasterList == null || tempTaskMasterList.isEmpty()) {
-			taskMasterList = FXCollections.observableArrayList();
-		} else {
-			for (Task task : tempTaskMasterList) {
-				taskMasterList.add(task);
-			}
-		}
-		return tempTaskMasterList;
-	}
-
-	private ArrayList<Task> readTasks(File saveFile) {
 		String text = "";
-		ArrayList<Task> tempTaskMasterList = new ArrayList<Task>();
+		ArrayList<Task> tasks = new ArrayList<Task>();
+		
 		try {
 			if (!initReader(saveFile)) {
-				return tempTaskMasterList;
+				return tasks;
 			}
 			while ((text = reader.readLine()) != null) {
 				Task task = gson.fromJson(text, Task.class);
-				tempTaskMasterList.add(task);
+				tasks.add(task);
 			}
 		} catch (IOException | JsonSyntaxException e) {
 			e.printStackTrace();
 		}
 		closeReader();
-		return tempTaskMasterList;
-	}
-	
-	public void sortTaskMasterList() {
-		ArrayList<Task> arrayListTaskMasterList = new ArrayList<Task>(taskMasterList);
-		Sorter sorter = new Sorter(arrayListTaskMasterList);
-		sorter.sort();
-		arrayListTaskMasterList = sorter.getSortedList();
-		taskMasterList = FXCollections.observableArrayList();
-		for (Task task : arrayListTaskMasterList) {
-			taskMasterList.add(task);
+		
+		if (tasks == null || tasks.isEmpty()) {
+			tasks = new ArrayList<Task>();
 		}
+		return tasks;
 	}
 
-	public void updateFile() {
+	public void updateFile(ArrayList<Task> tasks) {
 		try {
 			writer = new PrintWriter(saveFile, "UTF-8");
-			for (Task task : taskMasterList) {
+			for (Task task : tasks) {
 				writer.println(gson.toJson(task));
 			}
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
@@ -129,25 +102,5 @@ public class Storage {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void addNewTask(Task newTask) {
-		taskMasterList.add(newTask);
-	}
-
-	public void deleteTask(int taskId) {
-		taskMasterList.remove(taskId-1);
-	}
-
-	public ObservableList<Task> getTasks() {
-		return taskMasterList;
-	}
-
-	public int getSize() {
-		return taskMasterList.size();
-	}
-
-	public void clearTasks() {
-		taskMasterList.clear();
 	}
 }

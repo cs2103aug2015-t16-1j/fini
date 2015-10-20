@@ -5,19 +5,17 @@ import java.io.File;
 import fini.main.util.ModsLoader;
 
 public class FiniParser {
-
-	private static FiniParser parser;
-	private Storage taskOrganiser;
-
-	enum CommandType {
+	public static enum CommandType {
 		ADD, DELETE, UPDATE, DISPLAY, CLEAR, SORT, SEARCH, INVALID, EXIT, COMPLETE, MODS
 	};
 
+	private static FiniParser parser;
+
 	public FiniParser() {
-		this.taskOrganiser = Storage.getInstance();
+		// TODO Nothing should be initialized yet
 	}
 
-	public boolean parse(String userInput) {
+	public String parse(String userInput) {
 		try {
 			String cleanInput = getCleanString(userInput);
 			System.out.println(cleanInput);
@@ -28,10 +26,10 @@ public class FiniParser {
 			}
 			CommandType userCommand = getUserCommand(userInputSplitArray[0].toLowerCase());
 			executeCommand(userCommand, commandParameters);
-			return true;
+			return "Operation Successful";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return "Error Occurred";
 		}
 	}
 

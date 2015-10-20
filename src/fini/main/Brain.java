@@ -11,7 +11,7 @@ import fini.main.view.RootController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 /**
- * A Half-demaged Brain
+ * A Half-damaged Brain
  * @author gaieepo
  */
 public class Brain {
@@ -29,8 +29,9 @@ public class Brain {
 		finiParser = FiniParser.getInstance();
 		taskOrganiser = Storage.getInstance();
 		
-		// taskMasterList: all tasks
-		// taskObservableList: all incomplete tasks
+		// Everything stored here in Brain unless an updateFile is executed
+		// taskMasterList: all existing tasks
+		// taskObservableList: all displayed tasks
 		taskMasterList = taskOrganiser.readFile();
 		sortTaskMasterList();
 		taskObservableList.addAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
@@ -50,17 +51,25 @@ public class Brain {
 		rootController.updateTasksOverviewPanel(taskObservableList);
 	}
 
-	public void executeCommand(String command) {
-		String display = finiParser.parse(command);
-//		taskOrganiser.sortTaskMasterList();
-//		updateMainDisplay(taskOrganiser.getTasks());
-//		updateProjectsOverviewPanel(taskOrganiser.getTasks());
-//		updateTasksOverviewPanel(taskOrganiser.getTasks());
+	public void executeCommand(String userInput) {
+		String display = finiParser.parse(userInput);
+		
+		// Execute All Logic Process
+		// TODO
+		
+		sortTaskMasterList();
+		
+		rootController.updateMainDisplay(taskObservableList);
+		rootController.updateProjectsOverviewPanel(taskObservableList);
+		rootController.updateTasksOverviewPanel(taskObservableList);
 		rootController.updateDisplayToUser(display);
-//		taskOrganiser.updateFile();
 	}
+	
+	// Logic Methods -> All the CRUD should be in Brain class
+	// updateFile should be in logic methods
+	
 
-	// Init Methods
+	// Initialization Methods
 	public void setRootController(RootController rootController) {
 		this.rootController = rootController;
 	}
