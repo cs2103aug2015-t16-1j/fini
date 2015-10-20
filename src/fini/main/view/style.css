@@ -1,3 +1,17 @@
+/*@font-face {
+	font-family: FontAwesome;
+	font-weight: 400;
+	font-style: normal;
+	src: url("/resources/fonts/fontawesome-webfont.ttf");
+}*/
+
+/*@font-face {
+	font-family: "Open Sans";
+	font-weight: 400;
+	font-style: normal;
+	src: url("/resources/fonts/fontawesome-webfont.ttf");
+}*/
+
 .root {
 	-fx-background-color: white;
 	-fx-padding: 10;
