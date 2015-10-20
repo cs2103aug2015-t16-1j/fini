@@ -1,12 +1,16 @@
 package fini.main.model;
 
+import java.io.File;
+
+import fini.main.util.ModsLoader;
+
 public class FiniParser {
 
 	private static FiniParser parser;
 	private Storage taskOrganiser;
 
 	enum CommandType {
-		ADD, DELETE, UPDATE, DISPLAY, CLEAR, SORT, SEARCH, INVALID, EXIT, COMPLETE
+		ADD, DELETE, UPDATE, DISPLAY, CLEAR, SORT, SEARCH, INVALID, EXIT, COMPLETE, MODS
 	};
 
 	public FiniParser() {
@@ -45,6 +49,8 @@ public class FiniParser {
 			return CommandType.EXIT;
 		case "complete":
 			return CommandType.COMPLETE;
+		case "mods":
+			return CommandType.MODS;
 		default:
 			return CommandType.INVALID;
 		}
@@ -70,8 +76,24 @@ public class FiniParser {
 		case COMPLETE:
 			completeTask(commandParameters);
 			break;
+		case MODS:
+			loadNUSMods(commandParameters);
+			break;
 		default:
 			break;
+		}
+	}
+	
+	/**
+	 * EXTRAORDINARY FEATURE - Sync with nusmods html file
+	 * @author gaieepo
+	 */
+	private void loadNUSMods(String commandParameters) {
+		File modsFile = new File(commandParameters);
+		if (modsFile.exists()) {
+			ModsLoader loader = new ModsLoader(modsFile);
+		} else {
+			System.out.println("No Mods File");
 		}
 	}
 
