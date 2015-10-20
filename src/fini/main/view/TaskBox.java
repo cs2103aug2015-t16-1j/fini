@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
+// TODO: Incorporate this into RootController instead of addHBox
+
 public class TaskBox extends HBox {
 	// FXML Components
 	@FXML

@@ -52,13 +52,52 @@ public class RootController {
 
 	@FXML
 	protected void initialize() {
-//		taskOrganiser.readFile();
-//		taskOrganiser.sortTaskMasterList();
-//		updateMainDisplay(taskOrganiser.getTasks());
-//		updateProjectsOverviewPanel(taskOrganiser.getTasks());
-//		updateTasksOverviewPanel(taskOrganiser.getTasks());
+<<<<<<< HEAD
+		taskOrganiser.readFile();
+		taskOrganiser.sortTaskMasterList();
+		updateMainDisplay(taskOrganiser.getTasks());
+		// TODO: Uncomment when sort for display is fully implemented
+		//sortForMainDisplay(taskOrganiser.getTasks());
+		updateProjectsOverviewPanel(taskOrganiser.getTasks());
+		updateTasksOverviewPanel(taskOrganiser.getTasks());
+=======
+		taskOrganiser.readFile();
+		taskOrganiser.sortTaskMasterList();
+		updateMainDisplay(taskOrganiser.getTasks());
+		// TODO: Uncomment when sort for display is fully implemented
+//		sortForMainDisplay(taskOrganiser.getTasks());
+		updateProjectsOverviewPanel(taskOrganiser.getTasks());
+		updateTasksOverviewPanel(taskOrganiser.getTasks());
+>>>>>>> a2ea4637a3fc3b99cca0ed07b147a61deef94337
 		commandBox.requestFocus();
 //		taskOrganiser.updateFile();
+	}
+
+	private void sortForMainDisplay(ObservableList<Task> tasks) {
+		ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
+		HBox floatingCategory = createCategoryBox("Floating Tasks");
+		displayBoxes.add(floatingCategory);
+		
+		for(Task task : tasks) {
+			if(task.getDate() == null) {
+				displayBoxes.add(getFloatingTaskBox(task));
+			}
+		}
+		listView.setItems(displayBoxes);
+	}
+
+	private HBox getFloatingTaskBox(Task task) {
+		HBox floatingTaskBox = new HBox();
+		Label title = new Label(task.getTitle());
+		floatingTaskBox.getChildren().add(title);
+		return floatingTaskBox;
+	}
+
+	private HBox createCategoryBox(String category) {
+		HBox categoryBox = new HBox();
+		Label categoryLabel = new Label(category);
+		categoryBox.getChildren().add(categoryLabel);
+		return categoryBox;
 	}
 
 	@FXML
