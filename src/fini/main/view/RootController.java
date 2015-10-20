@@ -52,25 +52,7 @@ public class RootController {
 
 	@FXML
 	protected void initialize() {
-<<<<<<< HEAD
-		taskOrganiser.readFile();
-		taskOrganiser.sortTaskMasterList();
-		updateMainDisplay(taskOrganiser.getTasks());
-		// TODO: Uncomment when sort for display is fully implemented
-		//sortForMainDisplay(taskOrganiser.getTasks());
-		updateProjectsOverviewPanel(taskOrganiser.getTasks());
-		updateTasksOverviewPanel(taskOrganiser.getTasks());
-=======
-		taskOrganiser.readFile();
-		taskOrganiser.sortTaskMasterList();
-		updateMainDisplay(taskOrganiser.getTasks());
-		// TODO: Uncomment when sort for display is fully implemented
-//		sortForMainDisplay(taskOrganiser.getTasks());
-		updateProjectsOverviewPanel(taskOrganiser.getTasks());
-		updateTasksOverviewPanel(taskOrganiser.getTasks());
->>>>>>> a2ea4637a3fc3b99cca0ed07b147a61deef94337
 		commandBox.requestFocus();
-//		taskOrganiser.updateFile();
 	}
 
 	private void sortForMainDisplay(ObservableList<Task> tasks) {
