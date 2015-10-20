@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import fini.main.util.Sorter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 /**
@@ -76,6 +77,17 @@ public class Storage {
 		}
 		closeReader();
 		return tempTaskMasterList;
+	}
+	
+	public void sortTaskMasterList() {
+		ArrayList<Task> arrayListTaskMasterList = new ArrayList<Task>(taskMasterList);
+		Sorter sorter = new Sorter(arrayListTaskMasterList);
+		sorter.sort();
+		arrayListTaskMasterList = sorter.getSortedList();
+		taskMasterList = FXCollections.observableArrayList();
+		for (Task task : arrayListTaskMasterList) {
+			taskMasterList.add(task);
+		}
 	}
 
 	public void updateFile() {

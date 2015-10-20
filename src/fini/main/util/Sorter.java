@@ -72,6 +72,8 @@ public class Sorter {
 				return LOWER_THAN;
 			} else if (t1 != null && t2 == null) {
 				return HIGHER_THAN;
+			} else if (t1 == null && t2 == null) {
+				return EQUAL;
 			} else if (t1.isBefore(t2)) {
 				return LOWER_THAN;
 			} else if (t1.isAfter(t2)) {
@@ -96,6 +98,8 @@ public class Sorter {
 				return LOWER_THAN;
 			} else if (d1 != null && d2 == null) {
 				return HIGHER_THAN;
+			} else if (d1 == null && d2 == null) {
+				return EQUAL;
 			} else if (d1.isBefore(d2)) {
 				return LOWER_THAN;
 			} else if (d1.isAfter(d2)) {

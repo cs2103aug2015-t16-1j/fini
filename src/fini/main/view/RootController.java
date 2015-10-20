@@ -57,6 +57,7 @@ public class RootController extends BorderPane {
 	@FXML
 	protected void initialize() {
 		taskOrganiser.readFile();
+		taskOrganiser.sortTaskMasterList();
 		updateMainDisplay(taskOrganiser.getTasks());
 		updateProjectsOverviewPanel(taskOrganiser.getTasks());
 		updateTasksOverviewPanel(taskOrganiser.getTasks());
@@ -72,6 +73,7 @@ public class RootController extends BorderPane {
 			commandBox.clear();
 			
 			boolean isOperationSuccessful = parser.parse(userInput);
+			taskOrganiser.sortTaskMasterList();
 			updateMainDisplay(taskOrganiser.getTasks());
 			updateProjectsOverviewPanel(taskOrganiser.getTasks());
 			updateTasksOverviewPanel(taskOrganiser.getTasks());
