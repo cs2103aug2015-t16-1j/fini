@@ -154,13 +154,14 @@ public class FiniParser {
 					endTime = null;
 				}
 			} else {
+				System.out.println(taskDetails);
 				String[] taskDetailsArray = taskDetails.split(" ");
 				if(hasDate) {
 					date = taskDetailsArray[0];
 				} else {
 					date = null;
 				}
-				
+				System.out.println(date);
 				if (isDeadline) {
 					int indexOfStartTime = taskDetails.indexOf("at ");
 					String removeAtKeyword = taskDetails.substring(indexOfStartTime);
@@ -197,7 +198,7 @@ public class FiniParser {
 
 	private boolean checkIfDateIsAvailable(String commandParameters) {
 		commandParameters = commandParameters.replace("//", "");
-		return (commandParameters.length() - commandParameters.replace(".", "").length() == 2);
+		return (commandParameters.length() - commandParameters.replace("/", "").length() == 2);
 	}
 
 	//author A0121298E
