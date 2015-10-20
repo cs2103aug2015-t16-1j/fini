@@ -1,3 +1,6 @@
+/*
+ * @author A0121828H
+ */
 package fini.main.view;
 
 import javafx.fxml.FXML;
