@@ -10,7 +10,7 @@ public class FiniParser {
 	private Storage taskOrganiser;
 
 	enum CommandType {
-		ADD, DELETE, UPDATE, DISPLAY, CLEAR, SORT, SEARCH, INVALID, EXIT
+		ADD, DELETE, UPDATE, DISPLAY, CLEAR, SORT, SEARCH, INVALID, EXIT, COMPLETE
 	};
 
 	public FiniParser() {
@@ -46,6 +46,8 @@ public class FiniParser {
 			return CommandType.CLEAR;
 		case "exit":
 			return CommandType.EXIT;
+		case "complete":
+			return CommandType.COMPLETE;
 		default:
 			return CommandType.INVALID;
 		}
@@ -67,6 +69,9 @@ public class FiniParser {
 			break;
 		case EXIT:
 			System.exit(0);
+			break;
+		case COMPLETE:
+			completeTask(commandParameters);
 			break;
 		default:
 			break;
@@ -250,7 +255,17 @@ public class FiniParser {
 			System.out.println("Invalid UPDATE input");
 		}
 	}
+	
+	/**
+	 * Set Task as completed
+	 * @param commandParameters
+	 * @author gaieepo
+	 */
+	private void completeTask(String commandParameters) {
+		// TODO
+	}
 
+	// Utility Methods
 	private Integer checkTaskId(String commandParameters) {
 		String taskIdStr = commandParameters.split("//")[0].trim();
 		boolean isNum = false;

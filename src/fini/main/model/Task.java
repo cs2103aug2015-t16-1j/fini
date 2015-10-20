@@ -290,6 +290,14 @@ public class Task {
 			this.taskDate = LocalDate.parse(date, dateFormatter);
 		}
 	}
+	
+	public void setComplete() {
+		isCompleted = true;
+	}
+	
+	public void setIncomplete() {
+		isCompleted = false;
+	}
 
 	// Project Related Methods
 	// @author gaieepo

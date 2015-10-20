@@ -84,7 +84,7 @@ public class Project implements ProjectInterface {
 		this.projectEndTime = projectEndTime;
 	}
 	
-	public void setCompleted() {
+	public void setComplete() {
 		this.projectIsCompleted = true;
 	}
 	
