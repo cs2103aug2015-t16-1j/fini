@@ -12,6 +12,7 @@ import java.util.Comparator;
  */
 
 import fini.main.model.Task;
+import fini.main.model.Task.Type;
 public class Sorter {
 	private ArrayList<Task> listToSort;
 	private ArrayList<Comparator<Task>> comparators;
@@ -39,13 +40,16 @@ public class Sorter {
 		 */
 		@Override
 		public int compare(Task lhs, Task rhs) {
-			if (lhs.getTaskType() == Task.Type.DEFAULT && rhs.getTaskType() == Task.Type.DEADLINE) {
+			Type lt = lhs.getTaskType();
+			Type rt = rhs.getTaskType();
+			
+			if (lt == Task.Type.DEFAULT && rt == Task.Type.DEADLINE) {
 				return LOWER_THAN;
-			} else if (lhs.getTaskType() == Task.Type.DEADLINE && rhs.getTaskType() == Task.Type.DEFAULT) {
+			} else if (lt == Task.Type.DEADLINE && rt == Task.Type.DEFAULT) {
 				return HIGHER_THAN;
-			} else if (lhs.getTaskType() == Task.Type.DEFAULT && rhs.getTaskType() == Task.Type.EVENT ) {
+			} else if (lt == Task.Type.DEFAULT && rt == Task.Type.EVENT) {
 				return LOWER_THAN;
-			} else if (lhs.getTaskType() == Task.Type.EVENT && rhs.getTaskType() == Task.Type.DEFAULT) {
+			} else if (lt == Task.Type.EVENT && rt == Task.Type.DEFAULT) {
 				return HIGHER_THAN;
 			} else {
 				return EQUAL;

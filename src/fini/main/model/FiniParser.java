@@ -1,9 +1,5 @@
 package fini.main.model;
 
-import javax.xml.bind.ValidationEvent;
-
-import org.w3c.dom.css.ElementCSSInlineStyle;
-
 public class FiniParser {
 
 	private static FiniParser parser;

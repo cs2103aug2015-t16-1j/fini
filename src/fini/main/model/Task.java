@@ -21,10 +21,6 @@ public class Task {
 
 	private Type taskType;
 
-//	private static final String DEFAULT_TYPE = "Inbox";
-//	private static final String EVENT_TYPE = "Event";
-//	private static final String DEADLINE_TYPE = "Deadline";
-
 	private static final String priorityHigh = "High";
 	private static final String priorityMedium = "Medium";
 	private static final String priorityNormal = "Normal";
@@ -62,7 +58,7 @@ public class Task {
 		setProject(project);
 		setStartTime(startTime);
 		setEndTime(endTime);
-
+		
 		if (startTime != null && endTime != null) {
 			this.taskType = Type.EVENT;
 		} else if (startTime != null) {

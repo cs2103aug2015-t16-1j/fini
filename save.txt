@@ -1,6 +1,3 @@
-{"taskTitle":"jonas","project":"Inbox","priority":"high","taskDate":{"year":1993,"month":12,"day":12},"isRecurring":false,"isCompleted":false,"taskType":"DEFAULT"}
-{"taskTitle":"harish","project":"Inbox","taskDate":{"year":2011,"month":12,"day":12},"isRecurring":false,"isCompleted":false,"taskType":"DEFAULT"}
-{"taskTitle":"curry chicken","project":"Inbox","taskDate":{"year":2012,"month":12,"day":12},"isRecurring":false,"isCompleted":false,"taskType":"DEFAULT"}
-{"taskTitle":"gai","project":"Inbox","taskDate":{"year":2013,"month":12,"day":12},"isRecurring":false,"isCompleted":false,"taskType":"DEFAULT"}
-{"taskTitle":"smt","project":"Inbox","isRecurring":false,"isCompleted":false,"taskType":"DEFAULT"}
-{"taskTitle":"sth","project":"Inbox","isRecurring":false,"isCompleted":false,"taskType":"DEFAULT"}
+{"taskTitle":"harish","project":"Inbox","taskDate":{"year":2012,"month":12,"day":12},"isRecurring":false,"isCompleted":false,"taskType":"DEFAULT"}
+{"taskTitle":"gai","project":"Inbox","taskDate":{"year":2012,"month":12,"day":12},"isRecurring":false,"isCompleted":false,"taskType":"DEFAULT"}
+{"taskTitle":"jonas","project":"Inbox","taskDate":{"year":2011,"month":12,"day":12},"isRecurring":false,"isCompleted":false,"taskType":"DEFAULT"}
