@@ -39,34 +39,55 @@ public class RootController {
 	@FXML
 	private Label displayToUser;
 
-//	private Brain brain = Brain.getInstance();
-	private Storage taskOrganiser;
-	private FiniParser parser;
+	private Brain brain = Brain.getInstance();
 
 	private String userInput;
 
 	public RootController() {
-		parser = FiniParser.getInstance();
-		taskOrganiser = Storage.getInstance();
+		// TODO With the Brain fully functioning, here we do not initialize anything
 	}
 
 	@FXML
 	protected void initialize() {
 		commandBox.requestFocus();
 	}
-
-	private void sortForMainDisplay(ObservableList<Task> tasks) {
-		ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
-		HBox floatingCategory = createCategoryBox("Floating Tasks");
-		displayBoxes.add(floatingCategory);
-		
-		for(Task task : tasks) {
-			if(task.getDate() == null) {
-				displayBoxes.add(getFloatingTaskBox(task));
-			}
+	
+	@FXML
+	public void handleKeyPressEvent(KeyEvent event) throws Exception {
+		if (event.getCode() == KeyCode.ENTER) {
+			userInput = commandBox.getText();
+			System.out.println(userInput);
+			commandBox.clear();
+			
+			brain.executeCommand(userInput);
+			
+//			boolean isOperationSuccessful = parser.parse(userInput);
+//			taskOrganiser.sortTaskMasterList();
+//			updateMainDisplay(taskOrganiser.getTasks());
+//			updateProjectsOverviewPanel(taskOrganiser.getTasks());
+//			updateTasksOverviewPanel(taskOrganiser.getTasks());
+//			updateDisplayToUser(isOperationSuccessful);
+//			taskOrganiser.updateFile();
 		}
-		listView.setItems(displayBoxes);
+		// TODO
+		// 1. SEARCH/EDIT + SPACE -> auto-trigger for instant search and auto-complete for edit
+		// 2. COMMAND + TAB -> auto-complete command (Veto's idea)
+		// 3. UP/DOWN -> previous/next command
+		// 4. PAGEUP/PAGEDOWN -> scroll up/down
 	}
+
+//	private void sortForMainDisplay(ObservableList<Task> tasks) {
+//		ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
+//		HBox floatingCategory = createCategoryBox("Floating Tasks");
+//		displayBoxes.add(floatingCategory);
+//		
+//		for(Task task : tasks) {
+//			if(task.getDate() == null) {
+//				displayBoxes.add(getFloatingTaskBox(task));
+//			}
+//		}
+//		listView.setItems(displayBoxes);
+//	}
 
 	private HBox getFloatingTaskBox(Task task) {
 		HBox floatingTaskBox = new HBox();
@@ -82,34 +103,13 @@ public class RootController {
 		return categoryBox;
 	}
 
-	@FXML
-	public void handleKeyPressEvent(KeyEvent event) throws Exception {
-		if (event.getCode() == KeyCode.ENTER) {
-			userInput = commandBox.getText();
-			System.out.println(userInput);
-			commandBox.clear();
-			
-			boolean isOperationSuccessful = parser.parse(userInput);
-			taskOrganiser.sortTaskMasterList();
-			updateMainDisplay(taskOrganiser.getTasks());
-			updateProjectsOverviewPanel(taskOrganiser.getTasks());
-			updateTasksOverviewPanel(taskOrganiser.getTasks());
-			updateDisplayToUser(isOperationSuccessful);
-			taskOrganiser.updateFile();
-		}
-	}
-
 	// Update Display
-	public void updateDisplayToUser(boolean isOperationSuccessful) {
-		if (isOperationSuccessful) {
+	public void updateDisplayToUser(String display) {
+		if (display != null) {
 			displayToUser.setText("Operation Successful");
 		} else {
-			displayToUser.setText("Error Occurred");
+			displayToUser.setText("NULL");
 		}
-	}
-	
-	public void setDisplayToUser(String display) {
-		displayToUser.setText(display);
 	}
 
 	public void updateTasksOverviewPanel(ObservableList<Task> taskMasterList) {

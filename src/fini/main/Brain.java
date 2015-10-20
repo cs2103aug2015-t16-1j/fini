@@ -11,7 +11,7 @@ import fini.main.view.RootController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 /**
- * Brain
+ * A Half-demaged Brain
  * @author gaieepo
  */
 public class Brain {
@@ -19,18 +19,20 @@ public class Brain {
 	private RootController rootController;
 
 	private Storage taskOrganiser;
-	private FiniParser parser;
+	private FiniParser finiParser;
 	private Sorter sorter;
 
 	private ArrayList<Task> taskMasterList;
 	private ObservableList<Task> taskObservableList = FXCollections.observableArrayList();
 
 	private Brain() {
-		parser = FiniParser.getInstance();
+		finiParser = FiniParser.getInstance();
 		taskOrganiser = Storage.getInstance();
 		
+		// taskMasterList: all tasks
+		// taskObservableList: all incomplete tasks
 		taskMasterList = taskOrganiser.readFile();
-		sortAllTasks();
+		sortTaskMasterList();
 		taskObservableList.addAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
 	}
 
@@ -41,6 +43,7 @@ public class Brain {
 		return brain;
 	}
 	
+	// Initialize first display when Fini is started - executed in MainApp 
 	public void initDisplay() {
 		rootController.updateMainDisplay(taskObservableList);
 		rootController.updateProjectsOverviewPanel(taskObservableList);
@@ -48,21 +51,13 @@ public class Brain {
 	}
 
 	public void executeCommand(String command) {
-		boolean isOperationSuccessful;
-		isOperationSuccessful = parser.parse(command);
-
-		rootController.updateMainDisplay(taskOrganiser.getTasks());
-//		rootController.updateProjectsOverviewPanel(taskOrganiser.getTasks());
-//		rootController.updateTasksOverviewPanel(taskOrganiser.getTasks());
-//		rootController.updateDisplayToUser(isOperationSuccessful);
-		taskOrganiser.updateFile();
-
-		// Handle Using Command Class: TODO
-		// Command newCommand = new Command(command);
-		//
-		// Command.Type commandType = newCommand.getCommandType();
-		// String commandAction = newCommand.getCommandAction();
-		// String commandArguments = newCommand.getCommandArguments();
+		String display = finiParser.parse(command);
+//		taskOrganiser.sortTaskMasterList();
+//		updateMainDisplay(taskOrganiser.getTasks());
+//		updateProjectsOverviewPanel(taskOrganiser.getTasks());
+//		updateTasksOverviewPanel(taskOrganiser.getTasks());
+		rootController.updateDisplayToUser(display);
+//		taskOrganiser.updateFile();
 	}
 
 	// Init Methods
@@ -70,7 +65,7 @@ public class Brain {
 		this.rootController = rootController;
 	}
 
-	private void sortAllTasks() {
+	private void sortTaskMasterList() {
 		assert taskMasterList != null;
 		sorter = new Sorter(taskMasterList);
 		sorter.sort();
