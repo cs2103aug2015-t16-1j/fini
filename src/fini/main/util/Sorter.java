@@ -39,13 +39,13 @@ public class Sorter {
 		 */
 		@Override
 		public int compare(Task lhs, Task rhs) {
-			if (lhs.getTaskType().equals("Inbox") && rhs.getTaskType().equals("Deadline")) {
+			if (lhs.getTaskType() == Task.Type.DEFAULT && rhs.getTaskType() == Task.Type.DEADLINE) {
 				return LOWER_THAN;
-			} else if (lhs.getTaskType().equals("Deadline") && rhs.getTaskType().equals("Inbox")) {
+			} else if (lhs.getTaskType() == Task.Type.DEADLINE && rhs.getTaskType() == Task.Type.DEFAULT) {
 				return HIGHER_THAN;
-			} else if (lhs.getTaskType().equals("Inbox") && rhs.getTaskType().equals("Event")) {
+			} else if (lhs.getTaskType() == Task.Type.DEFAULT && rhs.getTaskType() == Task.Type.EVENT ) {
 				return LOWER_THAN;
-			} else if (lhs.getTaskType().equals("Event") && rhs.getTaskType().equals("Inbox")) {
+			} else if (lhs.getTaskType() == Task.Type.EVENT && rhs.getTaskType() == Task.Type.DEFAULT) {
 				return HIGHER_THAN;
 			} else {
 				return EQUAL;
