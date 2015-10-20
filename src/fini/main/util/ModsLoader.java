@@ -1,4 +1,4 @@
-package fini.main.model;
+package fini.main.util;
 
 public class ModsLoader {
 	
