@@ -45,11 +45,6 @@ public class RootController extends BorderPane {
 	private String userInput;
 
 	public RootController() {
-		listView = new ListView<HBox>();
-		projectsOverviewPanel = new ListView<String>();
-		tasksOverviewPanel = new ListView<HBox>();
-		commandBox = new TextField();
-		displayToUser = new Label();
 		parser = FiniParser.getInstance();
 		taskOrganiser = Storage.getInstance();
 	}
