@@ -30,15 +30,8 @@ public class Brain {
 		taskOrganiser = Storage.getInstance();
 		
 		taskMasterList = taskOrganiser.readFile();
-
 		sortAllTasks();
-		
-		ArrayList<Task> incompleteTasks = (ArrayList<Task>) taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList());
-		taskObservableList.addAll(incompleteTasks);
-		
-		// First show
-		rootController.setDisplayToUser("Welcome to Fini");
-		
+		taskObservableList.addAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
 	}
 
 	public static Brain getInstance() {
@@ -46,6 +39,12 @@ public class Brain {
 			brain = new Brain();
 		}
 		return brain;
+	}
+	
+	public void initDisplay() {
+		rootController.updateMainDisplay(taskObservableList);
+		rootController.updateProjectsOverviewPanel(taskObservableList);
+		rootController.updateTasksOverviewPanel(taskObservableList);
 	}
 
 	public void executeCommand(String command) {

@@ -1,5 +1,7 @@
 package fini.main.view;
 
+import org.junit.internal.runners.TestMethod;
+
 /*
  * This is the root controller class for the display (view). The interactions on the Graphical User
  * Interface (GUI), which are the commands entered by users in the command box are handled here.
@@ -19,10 +21,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
-public class RootController extends BorderPane {
+public class RootController {
 	@FXML
 	private ListView<HBox> listView;
 
@@ -51,11 +52,11 @@ public class RootController extends BorderPane {
 
 	@FXML
 	protected void initialize() {
-		taskOrganiser.readFile();
-		taskOrganiser.sortTaskMasterList();
-		updateMainDisplay(taskOrganiser.getTasks());
-		updateProjectsOverviewPanel(taskOrganiser.getTasks());
-		updateTasksOverviewPanel(taskOrganiser.getTasks());
+//		taskOrganiser.readFile();
+//		taskOrganiser.sortTaskMasterList();
+//		updateMainDisplay(taskOrganiser.getTasks());
+//		updateProjectsOverviewPanel(taskOrganiser.getTasks());
+//		updateTasksOverviewPanel(taskOrganiser.getTasks());
 		commandBox.requestFocus();
 //		taskOrganiser.updateFile();
 	}
@@ -78,7 +79,7 @@ public class RootController extends BorderPane {
 	}
 
 	// Update Display
-	private void updateDisplayToUser(boolean isOperationSuccessful) {
+	public void updateDisplayToUser(boolean isOperationSuccessful) {
 		if (isOperationSuccessful) {
 			displayToUser.setText("Operation Successful");
 		} else {
@@ -90,7 +91,7 @@ public class RootController extends BorderPane {
 		displayToUser.setText(display);
 	}
 
-	private void updateTasksOverviewPanel(ObservableList<Task> taskMasterList) {
+	public void updateTasksOverviewPanel(ObservableList<Task> taskMasterList) {
 		ObservableList<HBox> tasksOverview = FXCollections.observableArrayList();
 		String[] taskTypeName = new String[] {"Inbox", "Today", "This Week", "Total"};
 		Integer[] taskTypeNum = new Integer[] {0, 0, 0, 0};
@@ -116,7 +117,7 @@ public class RootController extends BorderPane {
 		tasksOverviewPanel.setItems(tasksOverview);
 	}
 
-	private void updateProjectsOverviewPanel(ObservableList<Task> taskMasterList) {
+	public void updateProjectsOverviewPanel(ObservableList<Task> taskMasterList) {
 		ObservableList<String> projectsOverview = FXCollections.observableArrayList();
 		for (Task task : taskMasterList) {
 			if (projectsOverview.contains(task.getProject()) == false) {

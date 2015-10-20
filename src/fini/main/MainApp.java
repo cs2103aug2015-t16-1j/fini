@@ -1,6 +1,7 @@
 package fini.main;
 
 import java.io.IOException;
+import java.rmi.server.LoaderHandler;
 import java.util.logging.Logger;
 
 import fini.main.view.RootController;
@@ -67,17 +68,22 @@ public class MainApp extends Application {
 		welcomeSceneListener.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			public void handle(KeyEvent userPressesEnter) {
 				if (userPressesEnter.getCode().equals(KeyCode.ENTER)) {
-					Parent main = null;
+					AnchorPane main = null;
 					try {
-						main = FXMLLoader.load(getClass().getResource("view/FiniLayout.fxml"));
+						FXMLLoader loader = new FXMLLoader(getClass().getResource("view/FiniLayout.fxml"));
+						main = (AnchorPane) loader.load();
+						
+						Scene scene = new Scene(main);
+						primaryStage.setScene(scene); 
+						
+						rootController = loader.getController();
+						
+						primaryStage.show();
+						initializeBrain();
 					} catch (IOException e) {
 						System.out.println("Unable to find or load FXML file");
 						e.printStackTrace();
 					}
-					Scene scene = new Scene(main);
-					primaryStage.setScene(scene);
-					primaryStage.show();
-					intialiseRootController();
 				}
 			}
 		});
@@ -85,9 +91,9 @@ public class MainApp extends Application {
 		welcomeSceneListener.requestFocus();
 	}
 
-	private void intialiseRootController() {
-		rootController = new RootController();
-//		brain = Brain.getInstance();
-//		brain.setRootController(this.rootController);
+	private void initializeBrain() {
+		brain = Brain.getInstance();
+		brain.setRootController(this.rootController);
+		brain.initDisplay();
 	}
 }
