@@ -40,7 +40,6 @@ public class Task {
 	public Task() {
 		this.taskTitle = "Untitled Task";
 		this.project = defaultProject;
-		this.priority = priorityMedium;
 		this.taskType = Type.DEFAULT;
 		this.taskDate = null;
 		this.taskStartTime = null;
