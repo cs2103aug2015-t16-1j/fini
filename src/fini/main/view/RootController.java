@@ -38,7 +38,7 @@ public class RootController extends BorderPane {
 	@FXML
 	private Label displayToUser;
 
-	private Brain brain = Brain.getInstance();
+//	private Brain brain = Brain.getInstance();
 	private Storage taskOrganiser;
 	private FiniParser parser;
 
@@ -81,15 +81,19 @@ public class RootController extends BorderPane {
 	}
 
 	// Update Display
-	public void updateDisplayToUser(boolean isOperationSuccessful) {
+	private void updateDisplayToUser(boolean isOperationSuccessful) {
 		if (isOperationSuccessful) {
 			displayToUser.setText("Operation Successful");
 		} else {
 			displayToUser.setText("Error Occurred");
 		}
 	}
+	
+	public void setDisplayToUser(String display) {
+		displayToUser.setText(display);
+	}
 
-	public void updateTasksOverviewPanel(ObservableList<Task> taskMasterList) {
+	private void updateTasksOverviewPanel(ObservableList<Task> taskMasterList) {
 		ObservableList<HBox> tasksOverview = FXCollections.observableArrayList();
 		String[] taskTypeName = new String[] {"Inbox", "Today", "This Week", "Total"};
 		Integer[] taskTypeNum = new Integer[] {0, 0, 0, 0};
@@ -115,7 +119,7 @@ public class RootController extends BorderPane {
 		tasksOverviewPanel.setItems(tasksOverview);
 	}
 
-	public void updateProjectsOverviewPanel(ObservableList<Task> taskMasterList) {
+	private void updateProjectsOverviewPanel(ObservableList<Task> taskMasterList) {
 		ObservableList<String> projectsOverview = FXCollections.observableArrayList();
 		for (Task task : taskMasterList) {
 			if (projectsOverview.contains(task.getProject()) == false) {
@@ -133,8 +137,8 @@ public class RootController extends BorderPane {
 			String taskTitle = task.getTitle();
 			String taskProject = task.getProject();
 			String taskPriority = task.getPriority();
-			String taskStartTime = task.getStartTime();
-			String taskEndTime = task.getEndTime();
+			String taskStartTime = task.getStartTime() == null ? "No time" : task.getStartTime().toString();
+			String taskEndTime = task.getEndTime() == null ? "No time" : task.getEndTime().toString();
 
 			boolean isRecurringTask = task.checkIfRecurring();
 			boolean isDeadline = task.checkIfDeadline();
@@ -148,7 +152,7 @@ public class RootController extends BorderPane {
 				taskDate = task.getRecurringDay();
 				System.out.println("Recurring day is " + taskDate);
 			} else {
-				taskDate = task.getDate();
+				taskDate = task.getDate() == null ? "No date" : task.getDate().toString();
 			}
 			if (isFloating) {
 				typeOfTask = "floating";

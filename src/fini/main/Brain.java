@@ -35,30 +35,27 @@ public class Brain {
 		
 		ArrayList<Task> incompleteTasks = (ArrayList<Task>) taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList());
 		taskObservableList.addAll(incompleteTasks);
+		
+		// First show
+		rootController.setDisplayToUser("Welcome to Fini");
+		
 	}
 
 	public static Brain getInstance() {
 		if (brain == null) {
 			brain = new Brain();
-			//            brain.initFirstDisplay();
 		}
 		return brain;
-	}
-
-	private void initFirstDisplay() {
-		//    	rootController.setFeedback("Welcome to fini");
-		//    	rootController.updateMainDisplay(taskMasterList);
 	}
 
 	public void executeCommand(String command) {
 		boolean isOperationSuccessful;
 		isOperationSuccessful = parser.parse(command);
 
-		// Change all of these hierarchy: TODO
 		rootController.updateMainDisplay(taskOrganiser.getTasks());
-		rootController.updateProjectsOverviewPanel(taskOrganiser.getTasks());
-		rootController.updateTasksOverviewPanel(taskOrganiser.getTasks());
-		rootController.updateDisplayToUser(isOperationSuccessful);
+//		rootController.updateProjectsOverviewPanel(taskOrganiser.getTasks());
+//		rootController.updateTasksOverviewPanel(taskOrganiser.getTasks());
+//		rootController.updateDisplayToUser(isOperationSuccessful);
 		taskOrganiser.updateFile();
 
 		// Handle Using Command Class: TODO

@@ -166,25 +166,16 @@ public class Task {
 		return priority;
 	}
 
-	public String getDate() {
-		if (taskDate == null) {
-			return "No date";
-		}
-		return taskDate.toString();
+	public LocalDate getDate() {
+		return taskDate;
 	}
 
-	public String getStartTime() {
-		if (taskStartTime == null) {
-			return "No Time";
-		}
-		return taskStartTime.toString();
+	public LocalTime getStartTime() {
+		return taskStartTime;
 	}
 
-	public String getEndTime() {
-		if (taskEndTime == null) {
-			return "No Time";
-		}
-		return taskEndTime.toString();
+	public LocalTime getEndTime() {
+		return taskEndTime;
 	}
 
 	public String getRecurringDay() {
@@ -202,6 +193,39 @@ public class Task {
 	
 	public boolean isCompleted() {
 		return isCompleted;
+	}
+	
+	public boolean isOverdue() {
+		LocalDate nowDate = LocalDate.now();
+		LocalTime nowTime = LocalTime.now();
+		
+		/**
+		 * Possible combination:
+		 * No end date -> F
+		 * Got end date + end date before now -> T
+		 * Got end date + end date after now -> F
+		 * Got end date + end date today + No end time -> F
+		 * Got end date + end date today + Got end time + end time before now -> T
+		 * Got end date + end date today + Got end time + end time after now -> F
+		 * Got end date + end date today + Got end time + end time now -> T (This else branch rarely touch! So sad :( )
+		 */
+		if (getDate() == null) {
+			return false;
+		} else if (getDate().isBefore(nowDate)) {
+			return true;
+		} else if (getDate().isAfter(nowDate)) {
+			return false;
+		} else {
+			if (getStartTime() == null) {
+				return false;
+			} else if (getStartTime().isBefore(nowTime)) {
+				return true;
+			} else if (getStartTime().isAfter(nowTime)) {
+				return false;
+			} else {
+				return true;
+			}
+		}
 	}
 
 	// Checking Methods

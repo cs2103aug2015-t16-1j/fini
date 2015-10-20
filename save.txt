@@ -1,2 +1,0 @@
-{"taskTitle":"harish","project":"Inbox","priority":"Medium","isRecurring":false,"isCompleted":false,"taskType":"DEFAULT"}
-{"taskTitle":"curry chicken project gai","project":"Inbox","isRecurring":false,"isCompleted":false,"taskType":"DEFAULT"}

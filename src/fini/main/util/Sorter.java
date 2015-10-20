@@ -1,5 +1,7 @@
 package fini.main.util;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -63,17 +65,17 @@ public class Sorter {
 		 */
 		@Override
 		public int compare(Task lhs, Task rhs) {
-			String t1 = lhs.getStartTime();
-			String t2 = rhs.getStartTime();
+			LocalTime t1 = lhs.getStartTime();
+			LocalTime t2 = rhs.getStartTime();
 			
 			if (t1 == null && t2 != null) {
 				return LOWER_THAN;
 			} else if (t1 != null && t2 == null) {
 				return HIGHER_THAN;
-//			} else if (t1.isBefore(t2)) { TODO Using LocalDateTime type for Task time
-//				return LOWER_THAN;
-//			} else if (t1.isAfter(t2)) {
-//				return HIGHER_THAN;
+			} else if (t1.isBefore(t2)) {
+				return LOWER_THAN;
+			} else if (t1.isAfter(t2)) {
+				return HIGHER_THAN;
 			} else {
 				return EQUAL;
 			}
@@ -87,49 +89,49 @@ public class Sorter {
 		 */
 		@Override
 		public int compare(Task lhs, Task rhs) {
-			String d1 = lhs.getDate();
-			String d2 = rhs.getDate();
+			LocalDate d1 = lhs.getDate();
+			LocalDate d2 = rhs.getDate();
 			
 			if (d1 == null && d2 != null) {
 				return LOWER_THAN;
 			} else if (d1 != null && d2 == null) {
 				return HIGHER_THAN;
-//			} else if (d1.isBefore(d2)) { TODO Using LocalDateTime type for Task date
-//				return LOWER_THAN;
-//			} else if (d1.isAfter(d2)) {
-//				return HIGHER_THAN;
+			} else if (d1.isBefore(d2)) {
+				return LOWER_THAN;
+			} else if (d1.isAfter(d2)) {
+				return HIGHER_THAN;
 			} else {
 				return EQUAL;
 			}
 		}
 	}
 	
-//	class SortByOverdue implements Comparator<Task> {
-//		/**
-//		 * Possible combination:
-//		 * Overdue Pending -> -1
-//		 * Pending Overdue -> 1
-//		 * Same -> 0
-//		 */
-//		@Override
-//		public int compare(Task lhs, Task rhs) {
-//			if (lhs.isOverdue() && !rhs.isOverdue()) { TODO Using LocalDateTime type for Task datetime + Implement Overdue property
-//				return LOWER_THAN;
-//			} else if (!lhs.isOverdue() && rhs.isOverdue()) {
-//				return HIGHER_THAN;
-//			} else {
-//				return EQUAL;
-//			}
-//		}
-//	}
+	class SortByOverdue implements Comparator<Task> {
+		/**
+		 * Possible combination:
+		 * Overdue Pending -> -1
+		 * Pending Overdue -> 1
+		 * Same -> 0
+		 */
+		@Override
+		public int compare(Task lhs, Task rhs) {
+			if (lhs.isOverdue() && !rhs.isOverdue()) {
+				return LOWER_THAN;
+			} else if (!lhs.isOverdue() && rhs.isOverdue()) {
+				return HIGHER_THAN;
+			} else {
+				return EQUAL;
+			}
+		}
+	}
 	
 	public Sorter(ArrayList<Task> listToSort) {
 		this.listToSort = listToSort;
 		comparators = new ArrayList<Comparator<Task>>();
 		comparators.add(new SortByType());
-		comparators.add(new SortByDate());
 		comparators.add(new SortByTime());
-//		comparators.add(new SortByOverdue);
+		comparators.add(new SortByDate());
+		comparators.add(new SortByOverdue());
 	}
 	
 	public ArrayList<Task> getSortedList() {

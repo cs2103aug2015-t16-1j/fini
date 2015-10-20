@@ -87,7 +87,7 @@ public class MainApp extends Application {
 
 	private void intialiseRootController() {
 		rootController = new RootController();
-		brain = Brain.getInstance();
-		brain.setRootController(this.rootController);
+//		brain = Brain.getInstance();
+//		brain.setRootController(this.rootController);
 	}
 }
