@@ -30,6 +30,7 @@ public class FiniParser {
 			executeCommand(userCommand, commandParameters);
 			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -88,6 +89,7 @@ public class FiniParser {
 		boolean isRecurringTask = checkIfRecurringTask(commandParameters);
 		boolean hasPriority = checkIfHasPriority(commandParameters);
 		boolean hasProject = checkIfHasProject(commandParameters);
+		boolean hasDate = checkIfDateIsAvailable(commandParameters);
 		boolean isEvent = checkIfTaskIsEvent(commandParameters);
 		boolean isDeadline = checkIfTaskIsDeadline(commandParameters);
 		String[] splitParameters = null;
@@ -153,7 +155,12 @@ public class FiniParser {
 				}
 			} else {
 				String[] taskDetailsArray = taskDetails.split(" ");
-				date = taskDetailsArray[0];
+				if(hasDate) {
+					date = taskDetailsArray[0];
+				} else {
+					date = null;
+				}
+				
 				if (isDeadline) {
 					int indexOfStartTime = taskDetails.indexOf("at ");
 					String removeAtKeyword = taskDetails.substring(indexOfStartTime);
@@ -186,6 +193,11 @@ public class FiniParser {
 		Task newTask =
 				new Task(isRecurringTask, title, date, startTime, endTime, priority, project);
 		taskOrganiser.addNewTask(newTask);
+	}
+
+	private boolean checkIfDateIsAvailable(String commandParameters) {
+		commandParameters = commandParameters.replace("//", "");
+		return (commandParameters.length() - commandParameters.replace(".", "").length() == 2);
 	}
 
 	//author A0121298E
