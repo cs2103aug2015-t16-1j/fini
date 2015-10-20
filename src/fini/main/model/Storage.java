@@ -22,6 +22,7 @@ import javafx.collections.ObservableList;
 public class Storage {
 	private static Storage taskOrganiser;
 
+	// taskMasterList
 	private ObservableList<Task> taskMasterList = FXCollections.observableArrayList();
 
 	private File saveFile;
