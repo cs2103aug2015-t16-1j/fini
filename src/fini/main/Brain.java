@@ -19,14 +19,14 @@ public class Brain {
 	private RootController rootController;
 
 	private Storage taskOrganiser;
-	private FiniParser finiParser;
+	private FiniParser parser;
 	private Sorter sorter;
 
 	private ArrayList<Task> taskMasterList;
 	private ObservableList<Task> taskObservableList = FXCollections.observableArrayList();
 
 	private Brain() {
-		finiParser = FiniParser.getInstance();
+		parser = FiniParser.getInstance();
 		taskOrganiser = Storage.getInstance();
 		
 		// Everything stored here in Brain unless an updateFile is executed
@@ -52,7 +52,7 @@ public class Brain {
 	}
 
 	public void executeCommand(String userInput) {
-		String display = finiParser.parse(userInput);
+		String display = parser.parse(userInput);
 		
 		// Execute All Logic Process
 		// TODO

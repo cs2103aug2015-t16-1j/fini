@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-public class Task {
+public class Task implements TaskInterface {
 	public static enum Type {
 		DEFAULT, EVENT, DEADLINE
 	}
@@ -298,5 +298,16 @@ public class Task {
 	// @author gaieepo
 	public void update(String projectName, LocalDate projectEndDate, LocalTime projectEndTime, Boolean projectIsCompleted) {
 		// TODO
+	}
+
+	@Override
+	public Task makeCopy() {
+		Task taskObject = null;
+		try {
+			taskObject = (Task) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return taskObject;
 	}
 }

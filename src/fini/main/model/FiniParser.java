@@ -11,6 +11,8 @@ public class FiniParser {
 
 	private static FiniParser parser;
 
+	private CommandType commandType;
+	
 	public FiniParser() {
 		// TODO Nothing should be initialized yet
 	}
@@ -24,8 +26,8 @@ public class FiniParser {
 			if (userInputSplitArray.length > 1) {
 				commandParameters = userInput.replace(userInputSplitArray[0], "").substring(1);
 			}
-			CommandType userCommand = getUserCommand(userInputSplitArray[0].toLowerCase());
-			executeCommand(userCommand, commandParameters);
+			commandType = getUserCommandType(userInputSplitArray[0].toLowerCase());
+			executeCommand(commandType, commandParameters);
 			return "Operation Successful";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -33,7 +35,7 @@ public class FiniParser {
 		}
 	}
 
-	private CommandType getUserCommand(String command) {
+	private CommandType getUserCommandType(String command) {
 		switch (command) {
 		case "add":
 			return CommandType.ADD;
