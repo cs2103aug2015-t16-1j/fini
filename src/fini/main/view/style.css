@@ -64,25 +64,26 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 }
 
 .list-cell {
-	 -fx-background-color: white;
+	-fx-background-color: white;
 	-fx-padding: 7 10 7 10;
 	-fx-border-insets: 0 0 0 5;
 	/*	 -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );*/
 }
 
 .list-cell: hover {
-	-fx-background-color: aqua;
+
 }
 
+/* disable select */
 .list-cell: selected {
-	-fx-background-color: aqua;
+/*	-fx-background-color: aqua;*/
 }
 
 /* TASKBOX STYLE */
 .taskBox {
-		-fx-border-insets: 0 0 0 5;
-			-fx-border-width: 0 0 0.25 0;
-				-fx-border-color: #318CE7;
+	-fx-border-insets: 0 0 0 5;
+	-fx-border-width: 0 0 0.25 0;
+	-fx-border-color: #318CE7;
 }
 
 .taskBox #priority {
@@ -112,7 +113,7 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 	-fx-padding: 0 5 0 5;
 	-fx-text-fill: white;
 	-fx-background-color: blue;
-	  -fx-border-radius: 10 10 10 10;
+	-fx-border-radius: 10 10 10 10;
 	-fx-font-size: 12px;
 	-fx-font-family: "Open Sans", sans-serif, serif;
 }
