@@ -2,7 +2,10 @@ package fini.main.model;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -11,12 +14,11 @@ import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.ParseLocation;
 import com.joestelmach.natty.Parser;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
 import fini.main.model.Task.Priority;
 
 public class FiniParser {
 	public static enum CommandType {
-		ADD, DELETE, UPDATE, DISPLAY, CLEAR, SORT, SEARCH, INVALID, EXIT, COMPLETE, MODS
+		ADD, UPDATE, DELETE, CLEAR, EXIT, COMPLETE, MODS, INVALID
 	};
 
 	private static FiniParser finiParser;
@@ -27,9 +29,11 @@ public class FiniParser {
 	private String commandParameters;
 	private Priority priority;
 	private String projectName;
+	private ArrayList<LocalDateTime> dates;
 	private String notParsed;
 	
 	public FiniParser() {
+		dates = new ArrayList<LocalDateTime>();
 		parser = new Parser();
 	}
 
@@ -76,7 +80,6 @@ public class FiniParser {
 	}
 	
 	private Priority determinePriority(String[] userInputSplitArray) {
-		@SuppressWarnings("unchecked")
 		ArrayList<String> words = new ArrayList<String>(Arrays.asList(userInputSplitArray));
 		for (String word : words) {
 			if (word.toLowerCase().equals("priority")) {
@@ -111,7 +114,6 @@ public class FiniParser {
 	}
 	
 //	private String determineProjectName(String[] userInputSplitArray) {
-//		@SuppressWarnings("unchecked")
 //		ArrayList<String> words = new ArrayList<String>(Arrays.asList(userInputSplitArray));
 //		for (String word : words) {
 //			if (word.toLowerCase().equals("project")) {
@@ -134,9 +136,12 @@ public class FiniParser {
 		if (!groups.isEmpty()) {
 			DateGroup group = groups.get(0);
 			
+			List<Date> dateList = group.getDates();
+			for (Date date : dateList) {
+				dates.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+			}
+			
 			String matchingValue = group.getText();
-			System.out.println(matchingValue);
-//			Map<String, List<ParseLocation>> parseMap = group.getParseLocations();
 			
 			notParsed = commandParameters;
 			notParsed = notParsed.replaceAll(matchingValue, "");
@@ -167,74 +172,78 @@ public class FiniParser {
 		return projectName;
 	}
 	
+	public ArrayList<LocalDateTime> getDates() {
+		return dates;
+	}
+	
 	public String getNotParsed() {
 		return notParsed;
 	}
 
 	// Checking Methods
-	private Integer checkTaskId(String commandParameters) {
-		String taskIdStr = commandParameters.split("//")[0].trim();
-		boolean isNum = false;
-		for (char ch : taskIdStr.toCharArray()) {
-			if (!Character.isDigit(ch)) {
-				isNum = false;
-			}
-			isNum = true;
-		}
-		Integer taskId;
-		if (isNum) {
-			taskId = Integer.valueOf(taskIdStr);
-		} else {
-			taskId = -1;
-		}
-		return taskId;
-	}
-
-	private boolean checkIfHasTitle(String commandParameters) {
-		return commandParameters.toLowerCase().contains("title");
-	}
-
-	private boolean checkIfHasDate(String commandParameters) {
-		return commandParameters.toLowerCase().contains("date");
-	}
-
-	private boolean checkIfHasTime(String commandParameters) {
-		return commandParameters.toLowerCase().contains("time");
-	}
-
-	private boolean checkIfHasParameters(String commandParameters) {
-		return commandParameters.contains("//");
-	}
-
-	private boolean checkIfHasProject(String commandParameters) {
-		return commandParameters.contains("project");
-	}
-
-	private boolean checkIfTaskIsDeadline(String commandParameters) {
-		return commandParameters.contains("at");
-	}
-
-	private boolean checkIfTaskIsEvent(String commandParameters) {
-		return commandParameters.contains("from") && commandParameters.contains("to");
-	}
-
-	private boolean checkIfHasPriority(String commandParameters) {
-		return commandParameters.contains("priority");
-	}
-
-	private boolean checkIfRecurringTask(String commandParameters) {
-		return commandParameters.contains("every");
-	}
-	
-	
-	// Utility Methods
-	private String getCleanString(String userInput) {
-		String cleanStr;
-		cleanStr = userInput.trim();
-		cleanStr = cleanStr.replaceAll("[^A-Za-z0-9/\\s+]", "");
-		cleanStr = cleanStr.replaceAll("\\s+", " ");
-		return cleanStr;
-	}
+//	private Integer checkTaskId(String commandParameters) {
+//		String taskIdStr = commandParameters.split("//")[0].trim();
+//		boolean isNum = false;
+//		for (char ch : taskIdStr.toCharArray()) {
+//			if (!Character.isDigit(ch)) {
+//				isNum = false;
+//			}
+//			isNum = true;
+//		}
+//		Integer taskId;
+//		if (isNum) {
+//			taskId = Integer.valueOf(taskIdStr);
+//		} else {
+//			taskId = -1;
+//		}
+//		return taskId;
+//	}
+//
+//	private boolean checkIfHasTitle(String commandParameters) {
+//		return commandParameters.toLowerCase().contains("title");
+//	}
+//
+//	private boolean checkIfHasDate(String commandParameters) {
+//		return commandParameters.toLowerCase().contains("date");
+//	}
+//
+//	private boolean checkIfHasTime(String commandParameters) {
+//		return commandParameters.toLowerCase().contains("time");
+//	}
+//
+//	private boolean checkIfHasParameters(String commandParameters) {
+//		return commandParameters.contains("//");
+//	}
+//
+//	private boolean checkIfHasProject(String commandParameters) {
+//		return commandParameters.contains("project");
+//	}
+//
+//	private boolean checkIfTaskIsDeadline(String commandParameters) {
+//		return commandParameters.contains("at");
+//	}
+//
+//	private boolean checkIfTaskIsEvent(String commandParameters) {
+//		return commandParameters.contains("from") && commandParameters.contains("to");
+//	}
+//
+//	private boolean checkIfHasPriority(String commandParameters) {
+//		return commandParameters.contains("priority");
+//	}
+//
+//	private boolean checkIfRecurringTask(String commandParameters) {
+//		return commandParameters.contains("every");
+//	}
+//	
+//	
+//	// Utility Methods
+//	private String getCleanString(String userInput) {
+//		String cleanStr;
+//		cleanStr = userInput.trim();
+//		cleanStr = cleanStr.replaceAll("[^A-Za-z0-9/\\s+]", "");
+//		cleanStr = cleanStr.replaceAll("\\s+", " ");
+//		return cleanStr;
+//	}
 	
 	private String getSimpleCleanString(String userInput) {
 		String cleanStr;
@@ -243,32 +252,32 @@ public class FiniParser {
 		return cleanStr;
 	}
 	
-	private String extractProject(String commandParameters) {
-		int indexOfProject = commandParameters.toLowerCase().indexOf("project");
-		String projectDetails = commandParameters.substring(indexOfProject);
-		projectDetails = projectDetails.replace("project ", "");
-		String[] removeProjectKeyword = projectDetails.split(" ");
-		return removeProjectKeyword[0];
-	}
-
-	private String extractInformation(String keyword, String commandParameters) {
-		commandParameters = commandParameters.trim();
-		int indexOfKeyword = commandParameters.toLowerCase().indexOf(keyword);
-		String commandDetails = commandParameters.substring(indexOfKeyword).trim();
-		commandDetails  = commandDetails .replace(keyword, "").trim();
-		String[] removeKeyword = commandDetails.split(" ");
-		System.out.println(removeKeyword[0]);
-		return removeKeyword[0];
-	}
-
-	private String extractPriority(String commandParameters) {
-		int indexOfPriority = commandParameters.toLowerCase().indexOf("priority");
-		String priorityDetails = commandParameters.substring(indexOfPriority);
-		priorityDetails = priorityDetails.replace("priority ", "");
-		String[] removePriorityKeyword = priorityDetails.split(" ");
-		System.out.println(removePriorityKeyword[0]);
-		return removePriorityKeyword[0];
-	}
+//	private String extractProject(String commandParameters) {
+//		int indexOfProject = commandParameters.toLowerCase().indexOf("project");
+//		String projectDetails = commandParameters.substring(indexOfProject);
+//		projectDetails = projectDetails.replace("project ", "");
+//		String[] removeProjectKeyword = projectDetails.split(" ");
+//		return removeProjectKeyword[0];
+//	}
+//
+//	private String extractInformation(String keyword, String commandParameters) {
+//		commandParameters = commandParameters.trim();
+//		int indexOfKeyword = commandParameters.toLowerCase().indexOf(keyword);
+//		String commandDetails = commandParameters.substring(indexOfKeyword).trim();
+//		commandDetails  = commandDetails .replace(keyword, "").trim();
+//		String[] removeKeyword = commandDetails.split(" ");
+//		System.out.println(removeKeyword[0]);
+//		return removeKeyword[0];
+//	}
+//
+//	private String extractPriority(String commandParameters) {
+//		int indexOfPriority = commandParameters.toLowerCase().indexOf("priority");
+//		String priorityDetails = commandParameters.substring(indexOfPriority);
+//		priorityDetails = priorityDetails.replace("priority ", "");
+//		String[] removePriorityKeyword = priorityDetails.split(" ");
+//		System.out.println(removePriorityKeyword[0]);
+//		return removePriorityKeyword[0];
+//	}
 	
 	// getInstance Method
 	public static FiniParser getInstance() {

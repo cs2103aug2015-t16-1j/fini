@@ -1,5 +1,6 @@
 package fini.main;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -54,7 +55,9 @@ public class Brain {
 	}
 
 	public void executeCommand(String userInput) {
-		String display = finiParser.parse(userInput);
+		String display = "";
+		
+		finiParser.parse(userInput);
 		
 		System.out.println(">>>>>");
 		System.out.println(finiParser.getStoredUserInput());
@@ -62,11 +65,24 @@ public class Brain {
 		System.out.println(finiParser.getCommandParameters());
 		System.out.println(finiParser.getPriority());
 		System.out.println(finiParser.getProjectName());
+		for (LocalDateTime ldt : finiParser.getDates()) {
+			System.out.println(ldt.toString());
+		}
 		System.out.println(finiParser.getNotParsed());
 		System.out.println("<<<<<");
 		
-		sortTaskMasterList();
+		CommandType commandType = finiParser.getCommandType();
 		
+		switch (commandType) {
+		case ADD:
+			
+			break;
+
+		default:
+			break;
+		}
+		
+		sortTaskMasterList();
 		rootController.updateMainDisplay(taskObservableList);
 		rootController.updateProjectsOverviewPanel(taskObservableList);
 		rootController.updateTasksOverviewPanel(taskObservableList);
