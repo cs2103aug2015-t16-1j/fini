@@ -32,12 +32,8 @@ public class Brain {
 	private Brain() {
 		finiParser = FiniParser.getInstance();
 		taskOrganiser = Storage.getInstance();
-<<<<<<< HEAD
 		statusSaver = StatusSaver.getInstance();
 		
-=======
-
->>>>>>> 5ee7b3754c6dd3ea8a0345c1bb94865e44ed5f64
 		// Everything stored here in Brain unless an updateFile is executed
 		// taskMasterList: all existing tasks
 		// taskObservableList: all displayed tasks
@@ -83,9 +79,9 @@ public class Brain {
 		case ADD:
 			display = addTask();
 			break;
-		case MODE:
-			MainApp.switchMode();
-			break;
+//		case MODE:
+//			MainApp.switchMode();
+//			break;
 		default:
 			break;
 		}
@@ -104,7 +100,7 @@ public class Brain {
 		if (finiParser.getCommandParameters().isEmpty()) {
 			return "CommandParameters is empty";
 		}
-<<<<<<< HEAD
+		
 		// TODO if recurring, then create multiple tasks at the same time
 		Task newTask = new Task(finiParser.getNotParsed(), 
 								finiParser.getDatetimes(), 
@@ -115,9 +111,6 @@ public class Brain {
 		taskMasterList.add(newTask);
 		taskOrganiser.updateFile(taskMasterList);
 		return "Added: " + finiParser.getNotParsed();
-=======
-
->>>>>>> 5ee7b3754c6dd3ea8a0345c1bb94865e44ed5f64
 	}
 
 	//	/**
