@@ -1,5 +1,6 @@
 package fini.main;
 
+import java.io.File;
 import java.io.IOException;
 import java.rmi.server.LoaderHandler;
 import java.util.logging.Logger;
@@ -36,6 +37,9 @@ public class MainApp extends Application {
 	private RootController rootController;
 	private Brain brain;
 	private Stage primaryStage = new Stage();
+	private static Scene scene;
+	private static boolean isNormalMode;
+
 
 	public static void main(String[] args) {
 		launch(args);
@@ -51,12 +55,12 @@ public class MainApp extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Scene scene = new Scene(parent);
+		scene = new Scene(parent);
 
 		setListenerForWelcomeScene(parent);
 		primaryStage.setTitle("Fini");
 		// TODO: Icon not working
-//		primaryStage.getIcons().add(new Image("file:icon.png"));
+		//		primaryStage.getIcons().add(new Image("file:icon.png"));
 		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/images/icon.png")));
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -73,14 +77,16 @@ public class MainApp extends Application {
 					try {
 						FXMLLoader loader = new FXMLLoader(getClass().getResource("view/FiniLayout.fxml"));
 						main = (AnchorPane) loader.load();
-						
+
 						Scene scene = new Scene(main);
 						primaryStage.setScene(scene); 
-						
+
 						rootController = loader.getController();
-						
+
 						primaryStage.show();
+						
 						initializeBrain();
+						isNormalMode = true;
 					} catch (IOException e) {
 						System.out.println("Unable to find or load FXML file");
 						e.printStackTrace();
@@ -97,4 +103,16 @@ public class MainApp extends Application {
 		brain.setRootController(this.rootController);
 		brain.initDisplay();
 	}
+
+	// TODO: NightMode Switching
+//	public static void switchMode() {
+//		String loadCss;
+//		if(isNormalMode) {
+//			loadCss = this.getClass().getResource("view/nightMode.css").toExternalForm();
+//		} else {
+//			loadCss = this.getClass().getResource("view/style.css").toExternalForm();
+//		}
+//		scene.getStylesheets().clear();
+//		scene.getStylesheets().add(css);
+//	}
 }

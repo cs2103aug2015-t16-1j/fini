@@ -10,11 +10,12 @@ import java.util.List;
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
 
+import fini.main.MainApp;
 import fini.main.model.Task.Priority;
 
 public class FiniParser {
 	public static enum CommandType {
-		ADD, UPDATE, DELETE, CLEAR, SEARCH, EXIT, COMPLETE, MODS, INVALID
+		ADD, UPDATE, DELETE, CLEAR, SEARCH, MODE, EXIT, COMPLETE, MODS, INVALID
 	};
 
 	private static FiniParser finiParser;
@@ -44,7 +45,9 @@ public class FiniParser {
 		String[] userInputSplitArray = cleanInput.split(" ");
 		if (userInputSplitArray.length > 1) {
 			commandParameters = userInput.replaceFirst(userInputSplitArray[0], "").substring(1);
-			commandType = determineUserCommandType(userInputSplitArray[0].toLowerCase());
+			commandType = determineUserCommandType(userInputSplitArray[0].toLowerCase());			
+		
+			
 			cleanParameters = commandParameters;
 			priority = determinePriority(userInputSplitArray);
 //			projectName = determineProjectName(userInputSplitArray);
@@ -74,6 +77,8 @@ public class FiniParser {
 			return CommandType.COMPLETE;
 		case "mods":
 			return CommandType.MODS;
+		case "mode":
+			return CommandType.MODE;
 		default:
 			return CommandType.INVALID;
 		}

@@ -1,0 +1,157 @@
+/* @author A0121828H */
+/*@font-face {
+font-family: FontAwesome;
+font-weight: 400;
+font-style: normal;
+src: url("/resources/fonts/fontawesome-webfont.ttf");
+}*/
+
+/*@font-face {
+font-family: "Open Sans";
+font-weight: 400;
+font-style: normal;
+src: url("/resources/fonts/fontawesome-webfont.ttf");
+}*/
+
+.root {
+	-fx-background-color: black;
+	-fx-padding: 10;
+}
+
+/*Welcome Scene*/
+.welcomePane {
+	-fx-background-color: navy;
+	-fx-background-image: url("blue.jpg");
+}
+
+/* MAIN DISPLAY */
+.display {
+	/*	-fx-background-image: url("bluebg.jpg");*/
+	/*	-fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);*/
+		-fx-background-color: black;
+}
+
+.display #tasksOverviewPanel {
+	-fx-font-size: 14px;
+	-fx-font-family: "Open Sans";
+	-fx-font-weight: lighter;
+	-fx-text-box-border: black;
+	-fx-text-fill: black;
+}
+
+.display #projectsOverviewPanel {
+	-fx-font-size: 14px;
+	-fx-font-family: "Open Sans";
+	-fx-font-weight: lighter;
+	-fx-text-box-border: black;
+		-fx-background-color: black;
+}
+
+.display #listView {
+	-fx-font-size: 14px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+	-fx-text-box-border: black;
+		-fx-background-color: black;
+}
+
+.display #commandBox {
+	-fx-font-size: 14px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+	-fx-text-box-border: navy;
+	-fx-focus-color: navy ;
+		-fx-background-color: black;
+}
+
+.display #displayToUser {
+	-fx-font-size: 14px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+		-fx-background-color: black;
+}
+
+.list-cell {
+	-fx-background-color: black;
+	-fx-padding: 7 10 7 10;
+	-fx-border-insets: 0 0 0 5;
+	/*	 -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );*/
+		-fx-background-color: black;
+}
+
+.list-cell: hover {
+
+}
+
+/* disable select */
+.list-cell: selected {
+/*	-fx-background-color: aqua;*/
+}
+
+/* TASKBOX STYLE */
+.taskBox {
+	-fx-border-insets: 0 0 0 5;
+	-fx-border-width: 0 0 0.25 0;
+	-fx-border-color: #318CE7;
+		-fx-background-color: black;
+}
+
+.taskBox: hover {
+
+			-fx-background-color: black;
+}
+
+.taskBox #priority {
+	-fx-padding: 0 5 0 5;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+		-fx-background-color: black;
+}
+
+.taskBox #index {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 14px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+		-fx-background-color: black;
+}
+
+.taskBox #title {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 14px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+		-fx-background-color: black;
+}
+
+.taskBox #recurring {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 12px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+		-fx-background-color: black;
+}
+
+.taskBox #project {
+	-fx-padding: 0 5 0 5;
+	-fx-text-fill: black;
+	-fx-background-color: blue;
+	-fx-border-radius: 10 10 10 10;
+	-fx-font-size: 12px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+		-fx-background-color: black;
+}
+
+.taskBox #date {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 12px;
+		-fx-background-color: black;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+}
+
+.taskBox #startTime {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 10px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+		-fx-background-color: black;
+}
+
+.taskBox #endTime {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 10px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+		-fx-background-color: black;
+}
