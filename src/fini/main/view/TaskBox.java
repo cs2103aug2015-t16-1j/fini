@@ -60,11 +60,34 @@ public class TaskBox extends HBox {
 
 		if(taskProject != null) {
 			this.project.setText(taskProject);
+		} else {
+			hideLabel(project);
 		}
 
 		if(isRecurringTask) {
 			this.recurring.setText("R");
+		} else {
+			hideLabel(recurring);
 		}
+		
+		if(taskDate != null) {
+			this.date.setText(taskDate);
+		} else {
+			hideLabel(date);
+		}
+		
+		if(taskStartTime != null) {
+			startTime.setText(taskStartTime);
+		} else {
+			hideLabel(startTime);
+		}
+		
+		if(taskEndTime != null) {
+			endTime.setText(taskEndTime);
+		} else {
+			hideLabel(endTime);
+		}
+		
 
 		this.index.setText(Integer.toString(taskId));
 		this.date.setText(taskDate);
@@ -111,6 +134,11 @@ public class TaskBox extends HBox {
 		//			isRecurring = new Label("R");
 		//			hbox.getChildren().addAll(isRecurring);
 		//		}
+	}
+
+	private void hideLabel(Label label) {
+		label.setText("");
+		label.setOpacity(0);
 	}
 
 	private void loadFxml() {

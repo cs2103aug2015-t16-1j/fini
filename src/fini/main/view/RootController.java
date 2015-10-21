@@ -157,8 +157,8 @@ public class RootController {
 			String taskTitle = task.getTitle();
 			String taskProject = task.getProject();
 			String taskPriority = task.getPriority();
-			String taskStartTime = task.getStartTime() == null ? "No time" : task.getStartTime().toString();
-			String taskEndTime = task.getEndTime() == null ? "No time" : task.getEndTime().toString();
+			String taskStartTime = task.getStartTime() == null ? null : task.getStartTime().toString();
+			String taskEndTime = task.getEndTime() == null ? null : task.getEndTime().toString();
 
 			boolean isRecurringTask = task.checkIfRecurring();
 			boolean isDeadline = task.checkIfDeadline();
@@ -172,7 +172,7 @@ public class RootController {
 				taskDate = task.getRecurringDay();
 				System.out.println("Recurring day is " + taskDate);
 			} else {
-				taskDate = task.getDate() == null ? "No date" : task.getDate().toString();
+				taskDate = task.getDate() == null ? null : task.getDate().toString();
 			}
 			if (isFloating) {
 				typeOfTask = "floating";

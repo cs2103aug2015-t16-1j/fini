@@ -86,6 +86,10 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 	-fx-border-color: #318CE7;
 }
 
+.taskBox: hover {
+		-fx-background-color: aqua;
+}
+
 .taskBox #priority {
 	-fx-padding: 0 5 0 5;
 	-fx-font-family: "Open Sans", sans-serif, serif;
