@@ -266,7 +266,7 @@ public class FiniParser {
 //		return cleanStr;
 //	}
 	
-	private String getSimpleCleanString(String userInput) {
+	public String getSimpleCleanString(String userInput) {
 		String cleanStr;
 		cleanStr = userInput.trim();
 		cleanStr = cleanStr.replaceAll("\\s+", " ");
