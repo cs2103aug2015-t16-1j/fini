@@ -14,8 +14,14 @@ add deadline task // 12/12/2015 at 9pm
 add deadline task // 12/12/2015 at 9pm with priority high
 add deadline task // 12/12/2015 at 9pm project EE2020
 add deadline task // 12/12/2015 at 9pm with priority high project EE2020
-add deadline task // 12/12/2015 at 9pm with project EE2020
-priority high
+add deadline task // 12/12/2015 at 9pm with project EE2020 priority high
+
+Deadline Tasks Without Time
+add task // 12/12/2017
+add task // 12/12/2017 with priority medium
+add task // 12/12/2017 project DWOT
+add task // 12/12/2017 with priority medium project DWOT
+add task // 12/12/2017 project DWOT with priority medium
 
 Event Tasks
 add event // 12/12/2015 from 9am to 10pm
