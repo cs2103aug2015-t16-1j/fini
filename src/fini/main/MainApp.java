@@ -47,7 +47,7 @@ public class MainApp extends Application {
 		primaryStage = stage;
 		welcomeButton = new Button();
 		try {
-			parent = FXMLLoader.load(getClass().getResource("view/Welcomev2.fxml"));
+			parent = FXMLLoader.load(getClass().getResource("view/Welcome.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -56,7 +56,8 @@ public class MainApp extends Application {
 		setListenerForWelcomeScene(parent);
 		primaryStage.setTitle("Fini");
 		// TODO: Icon not working
-		primaryStage.getIcons().add(new Image("file:resources/images/icon.png"));
+//		primaryStage.getIcons().add(new Image("file:icon.png"));
+		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/images/icon.png")));
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
