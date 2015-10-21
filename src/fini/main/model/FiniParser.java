@@ -1,17 +1,13 @@
 package fini.main.model;
 
-import java.io.File;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import com.joestelmach.natty.DateGroup;
-import com.joestelmach.natty.ParseLocation;
 import com.joestelmach.natty.Parser;
 
 import fini.main.model.Task.Priority;
@@ -27,17 +23,20 @@ public class FiniParser {
 	private String storedUserInput;
 	private CommandType commandType;
 	private String commandParameters;
+	private String cleanParameters;
 	private Priority priority;
 	private String projectName;
 	private ArrayList<LocalDateTime> dates;
+	private boolean isRecurring;
+	private LocalDateTime recursUntil;
 	private String notParsed;
 	
 	public FiniParser() {
-		dates = new ArrayList<LocalDateTime>();
-		parser = new Parser();
+		initializeFields();
 	}
 
 	public String parse(String userInput) {
+		initializeFields();
 		storedUserInput = userInput;
 //		String cleanInput = getCleanString(userInput);
 		String cleanInput = getSimpleCleanString(userInput);
@@ -46,10 +45,11 @@ public class FiniParser {
 		if (userInputSplitArray.length > 1) {
 			commandParameters = userInput.replaceFirst(userInputSplitArray[0], "").substring(1);
 			commandType = determineUserCommandType(userInputSplitArray[0].toLowerCase());
+			cleanParameters = commandParameters;
 			priority = determinePriority(userInputSplitArray);
 //			projectName = determineProjectName(userInputSplitArray);
 			
-			boolean isNattySuccessful = evaluateParameters(commandParameters);
+			boolean isNattySuccessful = evaluateParameters(cleanParameters);
 			
 			if (isNattySuccessful) {
 				return "Parse Successful";
@@ -102,8 +102,8 @@ public class FiniParser {
 					}
 					
 					if (!returnPriority.equals(Priority.NORMAL)) {
-						commandParameters.replaceAll(word + " " + priority, "");
-						commandParameters = getSimpleCleanString(commandParameters);
+						cleanParameters = cleanParameters.replaceAll(word + " " + priority, "");
+						cleanParameters = getSimpleCleanString(cleanParameters);
 					}
 				} else {
 					break;
@@ -120,8 +120,8 @@ public class FiniParser {
 //				if (words.indexOf(word) != words.size() - 1) {
 //					String projectName = words.get(words.indexOf(word) + 1);
 //										
-//					commandParameters.replaceAll(word + " " + projectName, "");
-//					commandParameters = getSimpleCleanString(commandParameters);
+//					cleanParameters = cleanParameters.replaceAll(word + " " + projectName, "");
+//					cleanParameters = getSimpleCleanString(cleanParameters);
 //				} else {
 //					break;
 //				}
@@ -130,8 +130,8 @@ public class FiniParser {
 //		return null;
 //	}
 	
-	private boolean evaluateParameters(String commandParameters) {
-		List<DateGroup> groups = parser.parse(commandParameters);
+	private boolean evaluateParameters(String cleanParameters) {
+		List<DateGroup> groups = parser.parse(cleanParameters);
 		
 		if (!groups.isEmpty()) {
 			DateGroup group = groups.get(0);
@@ -141,9 +141,13 @@ public class FiniParser {
 				dates.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
 			}
 			
-			String matchingValue = group.getText();
+			isRecurring = group.isRecurring();
+			if (isRecurring && group.getRecursUntil() != null) {
+				recursUntil = LocalDateTime.ofInstant(group.getRecursUntil().toInstant(), ZoneId.systemDefault());
+			}
 			
-			notParsed = commandParameters;
+			String matchingValue = group.getText();
+			notParsed = cleanParameters;
 			notParsed = notParsed.replaceAll(matchingValue, "");
 			notParsed = getSimpleCleanString(notParsed);
 			return true;
@@ -164,6 +168,10 @@ public class FiniParser {
 		return commandParameters;
 	}
 	
+	public String getCleanParameters() {
+		return cleanParameters;
+	}
+	
 	public Priority getPriority() {
 		return priority;
 	}
@@ -174,6 +182,14 @@ public class FiniParser {
 	
 	public ArrayList<LocalDateTime> getDates() {
 		return dates;
+	}
+
+	public boolean getIsRecurring() {
+		return isRecurring;
+	}
+	
+	public LocalDateTime getRecursUntil() {
+		return recursUntil;
 	}
 	
 	public String getNotParsed() {
@@ -279,11 +295,23 @@ public class FiniParser {
 //		return removePriorityKeyword[0];
 //	}
 	
-	// getInstance Method
+	// Initialization Methods
 	public static FiniParser getInstance() {
 		if (finiParser == null) {
 			finiParser = new FiniParser();
 		}
 		return finiParser;
+	}
+	
+	private void initializeFields() {
+		storedUserInput = "";
+		commandType = null;
+		priority = null;
+		projectName = "";
+		dates = new ArrayList<LocalDateTime>();
+		isRecurring = false;
+		recursUntil = null;
+		notParsed = "";
+		parser = new Parser();
 	}
 }

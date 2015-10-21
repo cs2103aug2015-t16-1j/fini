@@ -105,11 +105,12 @@ public class RootController {
 
 	// Update Display
 	public void updateDisplayToUser(String display) {
-		if (display != null) {
-			displayToUser.setText("Operation Successful");
-		} else {
-			displayToUser.setText("NULL");
-		}
+//		if (display != null) {
+//			displayToUser.setText("Operation Successful");
+//		} else {
+//			displayToUser.setText("NULL");
+//		}
+		displayToUser.setText(display);
 	}
 
 	public void updateTasksOverviewPanel(ObservableList<Task> taskMasterList) {

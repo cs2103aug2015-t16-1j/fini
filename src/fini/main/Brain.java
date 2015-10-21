@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import com.joestelmach.natty.Parser;
+
 import fini.main.model.FiniParser;
 import fini.main.model.Storage;
 import fini.main.model.Task;
@@ -63,6 +65,7 @@ public class Brain {
 		System.out.println(finiParser.getStoredUserInput());
 		System.out.println(finiParser.getCommandType());
 		System.out.println(finiParser.getCommandParameters());
+		System.out.println(finiParser.getCleanParameters());
 		System.out.println(finiParser.getPriority());
 		System.out.println(finiParser.getProjectName());
 		for (LocalDateTime ldt : finiParser.getDates()) {
@@ -72,12 +75,10 @@ public class Brain {
 		System.out.println("<<<<<");
 		
 		CommandType commandType = finiParser.getCommandType();
-		
 		switch (commandType) {
 		case ADD:
-			
+			display = addTask();
 			break;
-
 		default:
 			break;
 		}
@@ -88,35 +89,22 @@ public class Brain {
 		rootController.updateTasksOverviewPanel(taskObservableList);
 		rootController.updateDisplayToUser(display);
 	}
+
+	// Logic Methods
+	private String addTask() {
+		if (finiParser.getCommandParameters().isEmpty()) {
+			return "CommandParameters is empty";
+		}
+		
+		ArrayList<LocalDateTime> parsedDates = finiParser.getDates();
+		String notParsedString = finiParser.getNotParsed();
+		
+//		Task newTask = new Task(isRecurringTask, title, date, startTime, endTime, priority, project);
+//		taskOrganiser.addNewTask(newTask);
+		
+		return "Add Task Method";
+	}
 	
-//	private void executeCommand(CommandType userCommand, String commandParameters) {
-//		switch (userCommand) {
-//		case ADD:
-//			addTask(commandParameters);
-//			break;
-//		case UPDATE:
-//			updateTask(commandParameters);
-//			break;
-//		case DELETE:
-//			deleteTask(commandParameters);
-//			break;
-//		case CLEAR:
-//			clearTasks(commandParameters);
-//			break;
-//		case EXIT:
-//			System.exit(0);
-//			break;
-//		case COMPLETE:
-//			completeTask(commandParameters);
-//			break;
-//		case MODS:
-//			loadNUSMods(commandParameters);
-//			break;
-//		default:
-//			break;
-//		}
-//	}
-//
 //	/**
 //	 * EXTRAORDINARY FEATURE - Sync with nusmods html file
 //	 * @author gaieepo
