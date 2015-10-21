@@ -8,6 +8,10 @@ public class Task implements TaskInterface {
 	public static enum Type {
 		DEFAULT, EVENT, DEADLINE
 	}
+	
+	public static enum Priority {
+		HIGH, MEDIUM, LOW, NORMAL
+	}
 
 	private String taskTitle;
 	private String project;

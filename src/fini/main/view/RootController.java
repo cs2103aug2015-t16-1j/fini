@@ -56,7 +56,7 @@ public class RootController {
 	public void handleKeyPressEvent(KeyEvent event) throws Exception {
 		if (event.getCode() == KeyCode.ENTER) {
 			userInput = commandBox.getText();
-			System.out.println(userInput);
+			System.out.println("RootController: " + userInput);
 			commandBox.clear();
 			
 			brain.executeCommand(userInput);
