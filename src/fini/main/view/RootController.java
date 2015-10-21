@@ -163,7 +163,7 @@ public class RootController {
 			boolean isDeadline = task.checkIfDeadline();
 			boolean isEvent = task.checkIfEvent();
 			boolean isFloating = task.checkIfFloating();
-			HBox newTaskBox = null;
+			//TaskBox newTaskBox = null;
 			String taskDate = "";
 			String typeOfTask = "";
 
@@ -180,7 +180,7 @@ public class RootController {
 			} else {
 				typeOfTask = "event";
 			}
-			newTaskBox = addHBox(taskId, typeOfTask, taskTitle, taskDate, taskStartTime, taskEndTime,
+			TaskBox newTaskBox = new TaskBox(taskId, typeOfTask, taskTitle, taskDate, taskStartTime, taskEndTime,
 					taskPriority, taskProject, isRecurringTask);
 
 			displayBoxes.add(newTaskBox);

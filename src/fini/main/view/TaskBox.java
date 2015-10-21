@@ -1,7 +1,6 @@
 package fini.main.view;
 
-import java.net.URL;
-
+import fini.main.MainApp;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -95,11 +94,17 @@ public class TaskBox extends HBox {
 
 	private void loadFxml() {
 		try {
-			URL location = getClass().getResource("../view/TaskBox.fxml");
-	        FXMLLoader taskBoxLoader = new FXMLLoader();
-	        taskBoxLoader.setLocation(location);
-            taskBoxLoader.setController(this);
-	        taskBoxLoader.load();
+			//URL location = getClass().getResource("../view/TaskBox.fxml");
+	        //FXMLLoader taskBoxLoader = new FXMLLoader();
+	        //taskBoxLoader.setLocation(location);
+            //taskBoxLoader.setController(this);
+	        //taskBoxLoader.load();
+	        
+	        FXMLLoader loader = new FXMLLoader(getClass().getResource("TaskBox.fxml"));
+	        loader.setRoot(this);
+	        loader.setController(this);
+	        loader.load();
+	        
         } catch (Exception e) {
             e.printStackTrace();
         }
