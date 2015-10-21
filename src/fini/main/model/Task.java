@@ -1,8 +1,10 @@
 package fini.main.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class Task implements TaskInterface {
 	public static enum Type {
@@ -14,69 +16,60 @@ public class Task implements TaskInterface {
 	}
 
 	private String taskTitle;
-	private String project;
-	private String priority;
-	private LocalDate taskDate;
+	private String projectName;
+	private Priority priority;
+	private LocalDate taskStartDate;
 	private LocalTime taskStartTime;
+	private LocalDate taskEndDate;
 	private LocalTime taskEndTime;
-	private String recurringDay;
 	private boolean isRecurring;
+	private LocalDateTime recursUntil;
 	private boolean isCompleted;
-
 	private Type taskType;
 
-	private static final String priorityHigh = "High";
-	private static final String priorityMedium = "Medium";
-	private static final String priorityNormal = "Normal";
-	private static final String priorityLow = "Low";
-
-	private static final String defaultPriority = "Normal";
 	private static final String defaultProject = "Inbox";
 
 	private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHMM");
 
-	// default constructor
-	public Task() {
-		this.taskTitle = "Untitled Task";
-		this.project = defaultProject;
-		this.taskType = Type.DEFAULT;
-		this.taskDate = null;
-		this.taskStartTime = null;
-		this.taskEndTime = null;
-	}
-
-	// constructor for floating task
-	public Task(String taskTitle) {
-		this.taskTitle = taskTitle;
-		this.taskType = Type.DEFAULT;
-		this.project = defaultProject;
-	}
-
-	// constructor for event
-	public Task(boolean isRecurring, String title, String date, String startTime, String endTime,
-			String priority, String project) {
-		this.isRecurring = isRecurring;
-		this.taskTitle = title;
-		this.priority = priority;
-		setProject(project);
-		setStartTime(startTime);
-		setEndTime(endTime);
+	public Task(String notParsed, ArrayList<LocalDateTime> datetimes,
+			Priority priority, String projectName, boolean isRecurring, LocalDateTime recursUntil) {
+		isCompleted = false;
 		
-		if (startTime != null && endTime != null) {
-			this.taskType = Type.EVENT;
-		} else if (startTime != null) {
-			this.taskType = Type.DEADLINE;
-		} else {
-			this.taskType = Type.DEFAULT;
-		} 
-
-		// if recurring take in the day as it is, else parse
-		if (isRecurring) {
-			recurringDay = date;
-			System.out.println("Task Class: Recurring Day: " + recurringDay);
-		} else {
-			setTaskDate(date);
+		this.taskTitle = notParsed;
+		this.isRecurring = isRecurring;
+		this.priority = priority;
+		this.projectName = projectName;
+		this.recursUntil = recursUntil;
+		
+		switch (datetimes.size()) {
+		case 2:
+			taskType = Type.EVENT;
+			break;
+		case 1:
+			taskType = Type.DEADLINE;
+			break;
+		default:
+			taskType = Type.DEFAULT;
+			break;
+		}
+		
+		switch (taskType) {
+		case EVENT:
+			LocalDateTime firstDatetime = datetimes.get(0);
+			LocalDateTime secondDatetime = datetimes.get(1);
+			taskStartDate = firstDatetime.toLocalDate();
+			taskStartTime = firstDatetime.toLocalTime();
+			taskEndDate = secondDatetime.toLocalDate();
+			taskEndTime = secondDatetime.toLocalTime();
+			break;
+		case DEADLINE:
+			firstDatetime = datetimes.get(0);
+			taskStartDate = firstDatetime.toLocalDate();
+			taskStartTime = firstDatetime.toLocalTime();
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -158,27 +151,31 @@ public class Task implements TaskInterface {
 	}
 
 	public String getProject() {
-		return this.project;
+		return projectName;
 	}
 
-	public String getPriority() {
+	public Priority getPriority() {
 		return priority;
 	}
 
-	public LocalDate getDate() {
-		return taskDate;
+	public LocalDate getStartDate() {
+		return taskStartDate;
 	}
 
 	public LocalTime getStartTime() {
 		return taskStartTime;
+	}
+	
+	public LocalDate getEndDate() {
+		return taskEndDate;
 	}
 
 	public LocalTime getEndTime() {
 		return taskEndTime;
 	}
 
-	public String getRecurringDay() {
-		return recurringDay;
+	public LocalDateTime getRecursUntil() {
+		return recursUntil;
 	}
 
 	public Type getTaskType() {
@@ -208,11 +205,11 @@ public class Task implements TaskInterface {
 		 * Got end date + end date today + Got end time + end time after now -> F
 		 * Got end date + end date today + Got end time + end time now -> T (This else branch rarely touch! So sad :( )
 		 */
-		if (getDate() == null) {
+		if (getStartDate() == null) {
 			return false;
-		} else if (getDate().isBefore(nowDate)) {
+		} else if (getStartDate().isBefore(nowDate)) {
 			return true;
-		} else if (getDate().isAfter(nowDate)) {
+		} else if (getStartDate().isAfter(nowDate)) {
 			return false;
 		} else {
 			if (getStartTime() == null) {
@@ -255,18 +252,18 @@ public class Task implements TaskInterface {
 
 	public void setProject(String project) {
 		if (project != null) {
-			this.project = project;
+			this.projectName = project;
 		} else {
-			this.project = defaultProject;
+			this.projectName = defaultProject;
 		}
 	}
 
-	public void setPriority(String priority) {
+	public void setPriority(Priority priority) {
 		if (priority != null) {
 			assert(priority != null);
 			this.priority = priority;
 		} else {
-			this.priority = defaultPriority;
+			this.priority = Priority.NORMAL;
 		}
 	}
 
@@ -284,9 +281,9 @@ public class Task implements TaskInterface {
 		}
 	}
 
-	public void setTaskDate(String date) {
+	public void setTaskStartDate(String date) {
 		if (date != null) {
-			this.taskDate = LocalDate.parse(date, dateFormatter);
+			this.taskStartDate = LocalDate.parse(date, dateFormatter);
 		}
 	}
 	

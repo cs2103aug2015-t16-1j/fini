@@ -4,13 +4,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-import com.joestelmach.natty.Parser;
-
 import fini.main.model.FiniParser;
+import fini.main.model.StatusSaver;
 import fini.main.model.Storage;
 import fini.main.model.Task;
 import fini.main.model.FiniParser.CommandType;
-import fini.main.model.Task.Priority;
 import fini.main.util.Sorter;
 import fini.main.view.RootController;
 import javafx.collections.FXCollections;
@@ -26,6 +24,7 @@ public class Brain {
 	private Storage taskOrganiser;
 	private FiniParser finiParser;
 	private Sorter sorter;
+	private StatusSaver statusSaver;
 
 	private ArrayList<Task> taskMasterList;
 	private ObservableList<Task> taskObservableList = FXCollections.observableArrayList();
@@ -33,6 +32,7 @@ public class Brain {
 	private Brain() {
 		finiParser = FiniParser.getInstance();
 		taskOrganiser = Storage.getInstance();
+		statusSaver = StatusSaver.getInstance();
 		
 		// Everything stored here in Brain unless an updateFile is executed
 		// taskMasterList: all existing tasks
@@ -68,7 +68,7 @@ public class Brain {
 		System.out.println(finiParser.getCleanParameters());
 		System.out.println(finiParser.getPriority());
 		System.out.println(finiParser.getProjectName());
-		for (LocalDateTime ldt : finiParser.getDates()) {
+		for (LocalDateTime ldt : finiParser.getDatetimes()) {
 			System.out.println(ldt.toString());
 		}
 		System.out.println(finiParser.getNotParsed());
@@ -84,6 +84,7 @@ public class Brain {
 		}
 		
 		sortTaskMasterList();
+		taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
 		rootController.updateMainDisplay(taskObservableList);
 		rootController.updateProjectsOverviewPanel(taskObservableList);
 		rootController.updateTasksOverviewPanel(taskObservableList);
@@ -92,17 +93,20 @@ public class Brain {
 
 	// Logic Methods
 	private String addTask() {
+		// StatusSaver
 		if (finiParser.getCommandParameters().isEmpty()) {
 			return "CommandParameters is empty";
 		}
-		
-		ArrayList<LocalDateTime> parsedDates = finiParser.getDates();
-		String notParsedString = finiParser.getNotParsed();
-		
-//		Task newTask = new Task(isRecurringTask, title, date, startTime, endTime, priority, project);
-//		taskOrganiser.addNewTask(newTask);
-		
-		return "Add Task Method";
+		// TODO if recurring, then create multiple tasks at the same time
+		Task newTask = new Task(finiParser.getNotParsed(), 
+								finiParser.getDatetimes(), 
+								finiParser.getPriority(),
+								finiParser.getProjectName(),
+								finiParser.getIsRecurring(),
+								finiParser.getRecursUntil());
+		taskMasterList.add(newTask);
+		taskOrganiser.updateFile(taskMasterList);
+		return "Added: " + finiParser.getNotParsed();
 	}
 	
 //	/**

@@ -26,7 +26,7 @@ public class FiniParser {
 	private String cleanParameters;
 	private Priority priority;
 	private String projectName;
-	private ArrayList<LocalDateTime> dates;
+	private ArrayList<LocalDateTime> datetimes;
 	private boolean isRecurring;
 	private LocalDateTime recursUntil;
 	private String notParsed;
@@ -138,7 +138,7 @@ public class FiniParser {
 			
 			List<Date> dateList = group.getDates();
 			for (Date date : dateList) {
-				dates.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+				datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
 			}
 			
 			isRecurring = group.isRecurring();
@@ -180,8 +180,8 @@ public class FiniParser {
 		return projectName;
 	}
 	
-	public ArrayList<LocalDateTime> getDates() {
-		return dates;
+	public ArrayList<LocalDateTime> getDatetimes() {
+		return datetimes;
 	}
 
 	public boolean getIsRecurring() {
@@ -308,7 +308,7 @@ public class FiniParser {
 		commandType = null;
 		priority = null;
 		projectName = "";
-		dates = new ArrayList<LocalDateTime>();
+		datetimes = new ArrayList<LocalDateTime>();
 		isRecurring = false;
 		recursUntil = null;
 		notParsed = "";
