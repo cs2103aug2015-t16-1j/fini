@@ -1,16 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="250.0" styleClass="taskBox" type="HBox" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <Label fx:id="priority" text="Priority" />
-      <Label fx:id="index" text="Index" />
-      <Label fx:id="title" text="Title" />
-      <Label fx:id="recurring" text="Recurring" />
-      <Label fx:id="project" text="Project" />
-      <Label fx:id="date" text="Date" />
-   </children>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="600.0" styleClass="taskBox" stylesheets="@style.css" type="HBox" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<Circle fx:id="priority" fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+		<Label fx:id="index" maxWidth="30.0" prefHeight="30.0" text="Index">
+			<font>
+				<Font size="12.0" />
+			</font>
+		</Label>
+		<Label fx:id="title" prefHeight="30.0" prefWidth="300.0" text="Title" wrapText="true">
+			<font>
+				<Font size="14.0" />
+			</font>
+		</Label>
+		<Label fx:id="recurring" text="Recurring">
+			<font>
+				<Font size="10.0" />
+			</font>
+		</Label>
+		<Label fx:id="project" text="Project">
+			<font>
+				<Font size="10.0" />
+			</font>
+		</Label>
+		<Label fx:id="date" text="Date">
+			<font>
+				<Font size="12.0" />
+			</font>
+		</Label>
+		<VBox prefHeight="35.0" prefWidth="50.0">
+			<children>
+				<Label fx:id="startTime" prefHeight="15.0" prefWidth="50.0" text="Start">
+					<font>
+						<Font name="Open Sans Light Italic" size="10.0" />
+					</font>
+				</Label>
+				<Label fx:id="endTime" prefHeight="15.0" prefWidth="50.0" text="End">
+					<font>
+						<Font name="Open Sans Light Italic" size="10.0" />
+					</font>
+				</Label>
+			</children>
+		</VBox>
+	</children>
 </fx:root>

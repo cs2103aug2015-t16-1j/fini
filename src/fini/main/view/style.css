@@ -1,16 +1,16 @@
 /* @author A0121828H */
 /*@font-face {
-	font-family: FontAwesome;
-	font-weight: 400;
-	font-style: normal;
-	src: url("/resources/fonts/fontawesome-webfont.ttf");
+font-family: FontAwesome;
+font-weight: 400;
+font-style: normal;
+src: url("/resources/fonts/fontawesome-webfont.ttf");
 }*/
 
 /*@font-face {
-	font-family: "Open Sans";
-	font-weight: 400;
-	font-style: normal;
-	src: url("/resources/fonts/fontawesome-webfont.ttf");
+font-family: "Open Sans";
+font-weight: 400;
+font-style: normal;
+src: url("/resources/fonts/fontawesome-webfont.ttf");
 }*/
 
 .root {
@@ -24,46 +24,113 @@
 	-fx-background-image: url("blue.jpg");
 }
 
+/* MAIN DISPLAY */
 .display {
-/*	-fx-background-image: url("bluebg.jpg");*/
-/*	-fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);*/
+	/*	-fx-background-image: url("bluebg.jpg");*/
+	/*	-fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);*/
 }
 
 .display #tasksOverviewPanel {
-    -fx-font-size: 16px;
-    -fx-font-family: "Open Sans";
+	-fx-font-size: 14px;
+	-fx-font-family: "Open Sans";
 	-fx-font-weight: lighter;
 	-fx-text-box-border: white;
 	-fx-text-fill: white;
 }
 
 .display #projectsOverviewPanel {
-    -fx-font-size: 16px;
-    -fx-font-family: "Open Sans";
+	-fx-font-size: 14px;
+	-fx-font-family: "Open Sans";
 	-fx-font-weight: lighter;
 	-fx-text-box-border: white;
 }
 
 .display #listView {
-    -fx-font-size: 16px;
-    -fx-font-family: "Open Sans", sans-serif, serif;
+	-fx-font-size: 14px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 	-fx-text-box-border: white;
 }
 
 .display #commandBox {
-    -fx-font-size: 16px;
-    -fx-font-family: "Open Sans", sans-serif, serif;
+	-fx-font-size: 14px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 	-fx-text-box-border: navy;
 	-fx-focus-color: navy ;
 }
 
 .display #displayToUser {
-    -fx-font-size: 14px;
-    -fx-font-family: "Open Sans", sans-serif, serif;
+	-fx-font-size: 14px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
 .list-cell {
-   /* -fx-background-color: white;*/
+	 -fx-background-color: white;
 	-fx-padding: 7 10 7 10;
-/*	 -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );*/
+	-fx-border-insets: 0 0 0 5;
+	/*	 -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );*/
+}
+
+.list-cell: hover {
+	-fx-background-color: aqua;
+}
+
+.list-cell: selected {
+	-fx-background-color: aqua;
+}
+
+/* TASKBOX STYLE */
+.taskBox {
+		-fx-border-insets: 0 0 0 5;
+			-fx-border-width: 0 0 0.25 0;
+				-fx-border-color: #318CE7;
+}
+
+.taskBox #priority {
+	-fx-padding: 0 5 0 5;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+}
+
+.taskBox #index {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 14px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+}
+
+.taskBox #title {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 14px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+}
+
+.taskBox #recurring {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 12px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+}
+
+.taskBox #project {
+	-fx-padding: 0 5 0 5;
+	-fx-text-fill: white;
+	-fx-background-color: blue;
+	  -fx-border-radius: 10 10 10 10;
+	-fx-font-size: 12px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+}
+
+.taskBox #date {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 12px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+}
+
+.taskBox #startTime {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 10px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+}
+
+.taskBox #endTime {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 10px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 }
