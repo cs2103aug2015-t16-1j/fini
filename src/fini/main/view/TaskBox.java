@@ -70,25 +70,28 @@ public class TaskBox extends HBox {
 		} else {
 			hideLabel(recurring);
 		}
-		
+
 		if(taskDate != null) {
 			this.date.setText(taskDate);
 		} else {
 			hideLabel(date);
 		}
-		
+
 		if(taskStartTime != null) {
 			startTime.setText(taskStartTime);
 		} else {
 			hideLabel(startTime);
 		}
-		
+
 		if(taskEndTime != null) {
 			endTime.setText(taskEndTime);
 		} else {
-			hideLabel(endTime);
+			if(taskStartTime != null) {
+				endTime.setText("-");
+			} else {
+				hideLabel(endTime);
+			}
 		}
-		
 
 		this.index.setText(Integer.toString(taskId));
 		this.date.setText(taskDate);
