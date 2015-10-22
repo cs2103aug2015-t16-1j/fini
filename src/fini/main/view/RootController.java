@@ -13,6 +13,7 @@ import fini.main.Brain;
 import fini.main.model.FiniParser;
 import fini.main.model.Storage;
 import fini.main.model.Task;
+import fini.main.model.Task.Priority;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -156,7 +157,7 @@ public class RootController {
 			int taskId = taskMasterList.indexOf(task) + 1;
 			String taskTitle = task.getTitle();
 			String taskProject = task.getProject();
-			String taskPriority = task.getPriority();
+			Priority taskPriority = task.getPriority();
 			String taskStartTime = task.getStartTime() == null ? null : task.getStartTime().toString();
 			String taskEndTime = task.getEndTime() == null ? null : task.getEndTime().toString();
 
@@ -172,7 +173,7 @@ public class RootController {
 				taskDate = task.getRecurringDay();
 				System.out.println("Recurring day is " + taskDate);
 			} else {
-				taskDate = task.getDate() == null ? null : task.getDate().toString();
+				taskDate = task.getStartDate() == null ? null : task.getStartDate().toString();
 			}
 			if (isFloating) {
 				typeOfTask = "floating";

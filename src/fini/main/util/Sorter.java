@@ -95,8 +95,8 @@ public class Sorter {
 		 */
 		@Override
 		public int compare(Task lhs, Task rhs) {
-			LocalDate d1 = lhs.getDate();
-			LocalDate d2 = rhs.getDate();
+			LocalDate d1 = lhs.getStartDate();
+			LocalDate d2 = rhs.getStartDate();
 			
 			if (d1 == null && d2 != null) {
 				return LOWER_THAN;

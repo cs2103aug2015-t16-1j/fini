@@ -311,4 +311,9 @@ public class Task implements TaskInterface {
 		}
 		return taskObject;
 	}
+	
+	// TODO: Implement recurring day function
+	public String getRecurringDay() {
+		return null;
+	}
 }

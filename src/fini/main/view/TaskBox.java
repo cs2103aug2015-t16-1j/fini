@@ -1,6 +1,7 @@
 package fini.main.view;
 
 import fini.main.MainApp;
+import fini.main.model.Task.Priority;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -37,19 +38,19 @@ public class TaskBox extends HBox {
 	private Label endTime;
 
 	public TaskBox(int taskId, String typeOfTask, String taskTitle, String taskDate, String taskStartTime,
-			String taskEndTime, String taskPriority, String taskProject, boolean isRecurringTask) {
+			String taskEndTime, Priority taskPriority, String taskProject, boolean isRecurringTask) {
 
 		loadFxml();
 
 		if(taskPriority != null) {
 			switch(taskPriority) {
-			case "high":
+			case HIGH:
 				this.priority.setFill(Color.RED);
 				break;
-			case "medium":
+			case MEDIUM:
 				this.priority.setFill(Color.ORANGE);
 				break;
-			case "low":
+			case LOW:
 				this.priority.setFill(Color.YELLOW);
 				break;
 			default:
