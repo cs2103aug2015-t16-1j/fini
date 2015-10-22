@@ -1,6 +1,5 @@
 package fini.main.model;
 
-import java.security.spec.ECFieldF2m;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -103,9 +102,7 @@ public class FiniParser {
 		for (String word : words) {
 			if (word.toLowerCase().equals("priority")) {
 				if (words.indexOf(word) != words.size() - 1) {
-					System.out.println("HERE");
 					String priority = words.get(words.indexOf(word) + 1);
-					System.out.println(priority);
 					Priority returnPriority;
 					switch (priority.toLowerCase()) {
 					case "high":

@@ -3,10 +3,12 @@ package fini.main;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Spliterator;
 import java.util.stream.Collectors;
 
 import javax.swing.undo.UndoableEdit;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
 import fini.main.model.FiniParser;
 import fini.main.model.StatusSaver;
 import fini.main.model.Storage;
@@ -84,6 +86,10 @@ public class Brain {
 			saveThisStatus();
 			display = addTask();
 			break;
+		case UPDATE:
+//			saveThisStatus();
+			display = updateTask();
+			break;
 		case DELETE:
 			saveThisStatus();
 			display = deleteTask();
@@ -137,6 +143,44 @@ public class Brain {
 		taskMasterList.add(newTask);
 		taskOrganiser.updateFile(taskMasterList);
 		return "Added: " + finiParser.getNotParsed();
+	}
+	
+	private String updateTask() {
+		int taskIndex;
+		Task taskToUpdate;
+		
+		if (finiParser.getCommandParameters().split(" ").length < 2) {
+			return "Update insufficient parameters INVALID";
+		}
+		
+		String[] splitNotParsed = finiParser.getNotParsed().split(" ");
+		
+		try {
+			taskIndex = Integer.parseInt(splitNotParsed[0]) - 1;
+			taskToUpdate = taskObservableList.get(taskIndex);
+		} catch (IndexOutOfBoundsException | NumberFormatException e) {
+			return "Task not found";
+		}
+		
+		String[] fixedSplitNotParsed = (String[]) Arrays.copyOfRange(splitNotParsed, 1, splitNotParsed.length);
+		String fixedNotParsed = String.join(" ", fixedSplitNotParsed);
+		
+		// delete first
+		taskObservableList.remove(taskToUpdate);
+		taskMasterList.remove(taskToUpdate);
+		taskOrganiser.updateFile(taskMasterList);
+		
+		// add then
+		Task newTask = new Task(fixedNotParsed, 
+								finiParser.getDatetimes(), 
+								finiParser.getPriority(),
+								finiParser.getProjectName(),
+								finiParser.getIsRecurring(),
+								finiParser.getRecursUntil());
+		taskMasterList.add(newTask);
+		taskOrganiser.updateFile(taskMasterList);
+		
+		return "Update: " + (taskIndex + 1) + taskToUpdate.getTitle();
 	}
 	
 	// @author A0121828H
