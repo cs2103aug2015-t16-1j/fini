@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import javax.swing.undo.UndoableEdit;
+
 import fini.main.model.FiniParser;
 import fini.main.model.StatusSaver;
 import fini.main.model.Storage;
@@ -79,26 +81,35 @@ public class Brain {
 		CommandType commandType = finiParser.getCommandType();
 		switch (commandType) {
 		case ADD:
+			saveThisStatus();
 			display = addTask();
 			break;
+		case DELETE:
+			saveThisStatus();
+			display = deleteTask();
+			break;
 		case CLEAR:
+			saveThisStatus();
 			display = clearAllTasks();
 			break;
-		case DELETE:
-			display = deleteTask();
+		case UNDO:
+			display = undo();
 			break;
 		case MODE:
 //			MainApp.switchMode();
 			break;
 		case MODS:
+			saveThisStatus();
 			display = loadNUSMods();
 			break;
 		case EXIT:
 			System.exit(0);
 		case COMPLETE:
+			saveThisStatus();
 			display = completeTask();
 			break;
-		default:
+		case INVALID:
+			display = "commandType INVALID";
 			break;
 		}
 
@@ -178,6 +189,22 @@ public class Brain {
 		}
 		taskOrganiser.updateFile(taskMasterList);
 		return "NUSMODS loaded";
+	}
+	
+	private String undo() {
+		if (statusSaver.isMasterStackEmpty()) {
+			return "Cannot undo lah! You haven't done any changes yet.";
+		}
+		statusSaver.retrieveLastStatus();
+		taskMasterList = statusSaver.getLastTaskMasterList();
+		taskObservableList = statusSaver.getLastTaskObservableList();
+		return "Undo~do~do~do~do~";
+	}
+	
+	private void saveThisStatus() {
+		assert taskMasterList != null;
+		assert taskObservableList != null;
+		statusSaver.saveStatus(taskMasterList, taskObservableList);
 	}
 
 	//	private void addTask(String commandParameters) {

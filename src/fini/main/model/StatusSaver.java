@@ -1,8 +1,10 @@
 package fini.main.model;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Stack;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
@@ -17,8 +19,9 @@ public class StatusSaver {
 	private Stack<ArrayList<Task>> masterStack;
 	private Stack<ObservableList<Task>> observableStack;
 	
-	private ArrayList<Task> taskMasterList;
-	private ObservableList<Task> taskObservableList;
+	private ArrayList<Task> tempTaskMasterList;
+	private ObservableList<Task> tempTaskObservableList;
+	
 	
 	private StatusSaver() {
 		masterStack = new Stack<ArrayList<Task>>();
@@ -32,5 +35,49 @@ public class StatusSaver {
 		return statusSaver;
 	}
 	
+	// Public Methods
+	public void saveStatus(ArrayList<Task> taskMasterList, ObservableList<Task> taskObservableList) {
+		masterStack.push(copyArrayList(taskMasterList));
+		observableStack.push(copyObservableList(taskObservableList));
+	}
 	
+	public void retrieveLastStatus() {
+		try {
+			tempTaskMasterList = masterStack.pop();
+			tempTaskObservableList = observableStack.pop();
+		} catch (EmptyStackException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public ArrayList<Task> getLastTaskMasterList() {
+		assert  tempTaskMasterList != null;
+		return tempTaskMasterList;
+	}
+	
+	public ObservableList<Task> getLastTaskObservableList() {
+		assert tempTaskObservableList != null;
+		return tempTaskObservableList;
+	}
+	
+	// Utility Methods
+	public boolean isMasterStackEmpty() {
+		return masterStack.isEmpty();
+	}
+	
+	private ArrayList<Task> copyArrayList(ArrayList<Task> origin) {
+		ArrayList<Task> duplicate = new ArrayList<Task>();
+		for (Task task : origin) {
+			duplicate.add(task.makeCopy());
+		}
+		return duplicate;
+	}
+	
+	private ObservableList<Task> copyObservableList(ObservableList<Task> origin) {
+		ArrayList<Task> duplicate = new ArrayList<Task>();
+		for (Task task : origin) {
+			duplicate.add(task.makeCopy());
+		}
+		return FXCollections.observableArrayList(duplicate);
+	}
 }

@@ -83,6 +83,8 @@ public class FiniParser {
 			return CommandType.DELETE;
 		case "clear":
 			return CommandType.CLEAR;
+		case "undo":
+			return CommandType.UNDO;
 		case "exit":
 			return CommandType.EXIT;
 		case "complete":

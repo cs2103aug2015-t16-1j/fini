@@ -309,6 +309,9 @@ public class Task implements TaskInterface {
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
+		
+		// Init values?
+		
 		return taskObject;
 	}
 	
