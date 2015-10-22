@@ -74,6 +74,11 @@ public class Task implements TaskInterface {
 		
 		System.out.println("Task type: " + taskType);
 	}
+	
+	// constructor with only taskTitle. dont delete. for testing purpose
+	public Task(String taskTitle){
+	    setTitle(taskTitle);
+	}
 
 	private String formatTime(String userGivenTime) {
 		userGivenTime = userGivenTime.toLowerCase();
