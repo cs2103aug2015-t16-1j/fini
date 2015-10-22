@@ -36,7 +36,7 @@
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <ImageView fitHeight="45.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fitHeight="45.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
                                           <Label prefHeight="100.0" prefWidth="120.0" text="Today">
                                              <padding>
                                                 <Insets left="5.0" />
@@ -60,7 +60,7 @@
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <ImageView fitHeight="45.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fitHeight="45.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" />
                                           <Label prefHeight="100.0" prefWidth="120.0" text="Others">
                                              <padding>
                                                 <Insets left="5.0" />
