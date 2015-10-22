@@ -173,6 +173,8 @@ public class FiniParser {
 			notParsed = notParsed.replaceAll(matchingValue, "");
 			notParsed = getSimpleCleanString(notParsed);
 			return true;
+		} else {
+			notParsed = cleanParameters;
 		}
 		return false;
 	}
