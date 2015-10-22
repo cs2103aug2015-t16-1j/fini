@@ -62,16 +62,16 @@ public class Brain {
 		finiParser.parse(userInput);
 
 		System.out.println(">>>>>");
-		System.out.println(finiParser.getStoredUserInput());
-		System.out.println(finiParser.getCommandType());
-		System.out.println(finiParser.getCommandParameters());
-		System.out.println(finiParser.getCleanParameters());
-		System.out.println(finiParser.getPriority());
-		System.out.println(finiParser.getProjectName());
+		System.out.println("StoredInput: " + finiParser.getStoredUserInput());
+		System.out.println("CommandType: " + finiParser.getCommandType());
+		System.out.println("CommandParameters: " + finiParser.getCommandParameters());
+		System.out.println("CleanParameters: " + finiParser.getCleanParameters());
+		System.out.println("Priority: " + finiParser.getPriority());
+		System.out.println("ProjectName: " + finiParser.getProjectName());
 		for (LocalDateTime ldt : finiParser.getDatetimes()) {
-			System.out.println(ldt.toString());
+			System.out.println("Datetime: " + ldt.toString());
 		}
-		System.out.println(finiParser.getNotParsed());
+		System.out.println("NotParsed: " + finiParser.getNotParsed());
 		System.out.println("<<<<<");
 
 		CommandType commandType = finiParser.getCommandType();
@@ -82,9 +82,17 @@ public class Brain {
 		case CLEAR:
 			display = clearAllTasks();
 			break;
+		case DELETE:
+			display = deleteTask();
+			break;
 //		case MODE:
 //			MainApp.switchMode();
 //			break;
+		case COMPLETE:
+			display = completeTask();
+			break;
+		case EXIT:
+			System.exit(0);
 		default:
 			break;
 		}
@@ -97,13 +105,6 @@ public class Brain {
 		rootController.updateDisplayToUser(display);
 	}
 	
-	// @author A0121828H
-	private String clearAllTasks() {
-		taskMasterList.clear();
-		taskOrganiser.updateFile(taskMasterList);
-		return "All tasks have been cleared";
-	}
-
 	// Logic Methods
 	private String addTask() {
 		// StatusSaver
@@ -122,6 +123,42 @@ public class Brain {
 		taskOrganiser.updateFile(taskMasterList);
 		return "Added: " + finiParser.getNotParsed();
 	}
+	
+	// @author A0121828H
+	private String clearAllTasks() {
+		taskMasterList.clear();
+		taskOrganiser.updateFile(taskMasterList);
+		return "All tasks have been cleared";
+	}
+	
+	private String deleteTask() {
+		int taskIndex;
+		Task taskToDelete;
+		try {
+			taskIndex = Integer.parseInt(finiParser.getCleanParameters()) - 1;
+			taskToDelete = taskObservableList.get(taskIndex);
+		} catch (IndexOutOfBoundsException | NumberFormatException e) {
+			return "Task not found";
+		}
+		
+		taskObservableList.remove(taskToDelete);
+		taskMasterList.remove(taskToDelete);
+		taskOrganiser.updateFile(taskMasterList);
+		return "Delete: " + (taskIndex + 1) + " " + taskToDelete.getTitle();
+	}
+	
+	private String completeTask() {
+		int taskIndex;
+		Task taskToComplete;
+		try {
+			taskIndex = Integer.parseInt(finiParser.getCleanParameters()) - 1;
+			taskToComplete = taskObservableList.get(taskIndex);
+			taskToComplete.setComplete();
+		} catch (IndexOutOfBoundsException e) {
+			return "Task not found";
+		}
+		return "Complete: " + (taskIndex + 1) + taskToComplete.getTitle();
+	}
 
 	//	/**
 	//	 * EXTRAORDINARY FEATURE - Sync with nusmods html file
@@ -134,10 +171,6 @@ public class Brain {
 	//		} else {
 	//			System.out.println("No Mods File");
 	//		}
-	//	}
-	//
-	//	private void clearTasks(String commandParameters) {
-	//		taskOrganiser.clearTasks();
 	//	}
 	//
 	//	private void addTask(String commandParameters) {
@@ -250,18 +283,6 @@ public class Brain {
 	//		Task newTask =
 	//				new Task(isRecurringTask, title, date, startTime, endTime, priority, project);
 	//		taskOrganiser.addNewTask(newTask);
-	//	}
-	//
-	//	private void deleteTask(String commandParameters) {
-	//		Integer taskId = checkTaskId(commandParameters);
-	//
-	//		if (taskId > taskOrganiser.getSize()) {
-	//			System.out.println("Invalid TaskID input!");
-	//		} else {
-	//			Task deletedTask = taskOrganiser.getTasks().get(taskId-1);
-	//			taskOrganiser.deleteTask(taskId);
-	//			System.out.println("Task " + taskId + ": " + deletedTask.getTitle() + " has been deleted!");
-	//		}
 	//	}
 	//
 	//	private void updateTask(String commandParameters) {
