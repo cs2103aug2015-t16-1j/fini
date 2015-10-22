@@ -12,10 +12,12 @@ import org.junit.Test;
 public class ProjectTest {
 
 	Project proj;
+	Task testTask;
 	
 	@Before
 	public void initialize() {
 		proj = new Project("testProject");
+		testTask = new Task("unit test");
 	}
 	
 	
@@ -28,6 +30,12 @@ public class ProjectTest {
 	public void testSetProjectName() {
 		proj.setProjectName("testProjectTwice");
 		assertEquals("testProjectTwice", proj.getProjectName());
+	}
+	
+	@Test
+	public void testAddTask() {
+		proj.addTaskToProject(testTask);
+		assertEquals("unit test", proj.getTasks().get(0).getTitle());
 	}
 
 }
