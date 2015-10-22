@@ -9,7 +9,6 @@ import org.junit.After;
 import org.junit.Test;
 
 
-
 public class ProjectTest {
 
 	Project proj;
@@ -23,6 +22,12 @@ public class ProjectTest {
 	@Test
 	public void testGetProjectName() {
 		assertEquals("testProject", proj.getProjectName());
+	}
+	
+	@Test
+	public void testSetProjectName() {
+		proj.setProjectName("testProjectTwice");
+		assertEquals("testProjectTwice", proj.getProjectName());
 	}
 
 }
