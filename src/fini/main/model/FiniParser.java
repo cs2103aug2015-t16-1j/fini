@@ -324,7 +324,7 @@ public class FiniParser {
 		storedUserInput = "";
 		commandType = null;
 		priority = null;
-		projectName = "";
+		projectName = null;
 		datetimes = new ArrayList<LocalDateTime>();
 		isRecurring = false;
 		recursUntil = null;

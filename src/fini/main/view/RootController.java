@@ -1,5 +1,8 @@
 package fini.main.view;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+
 import org.junit.internal.runners.TestMethod;
 
 /*
@@ -43,6 +46,7 @@ public class RootController {
 	private Brain brain = Brain.getInstance();
 
 	private String userInput;
+	private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
 	public RootController() {
 		// TODO With the Brain fully functioning, here we do not initialize anything
@@ -158,8 +162,8 @@ public class RootController {
 			String taskTitle = task.getTitle();
 			String taskProject = task.getProject();
 			Priority taskPriority = task.getPriority();
-			String taskStartTime = task.getStartTime() == null ? null : task.getStartTime().toString();
-			String taskEndTime = task.getEndTime() == null ? null : task.getEndTime().toString();
+			String taskStartTime = task.getStartTime() == null ? null : timeFormatter.format(task.getStartTime());
+			String taskEndTime = task.getEndTime() == null ? null : timeFormatter.format(task.getEndTime());
 
 			boolean isRecurringTask = task.checkIfRecurring();
 			boolean isDeadline = task.checkIfDeadline();
