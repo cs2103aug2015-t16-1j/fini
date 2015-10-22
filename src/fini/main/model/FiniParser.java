@@ -16,7 +16,7 @@ import fini.main.model.Task.Priority;
 
 public class FiniParser {
 	public static enum CommandType {
-		ADD, UPDATE, DELETE, CLEAR, SEARCH, MODE, EXIT, COMPLETE, MODS, INVALID
+		ADD, UPDATE, DELETE, CLEAR, UNDO, SEARCH, MODE, EXIT, COMPLETE, MODS, INVALID
 	};
 
 	private static FiniParser finiParser;
@@ -101,7 +101,9 @@ public class FiniParser {
 		for (String word : words) {
 			if (word.toLowerCase().equals("priority")) {
 				if (words.indexOf(word) != words.size() - 1) {
+					System.out.println("HERE");
 					String priority = words.get(words.indexOf(word) + 1);
+					System.out.println(priority);
 					Priority returnPriority;
 					switch (priority.toLowerCase()) {
 					case "high":
@@ -121,6 +123,7 @@ public class FiniParser {
 					if (!returnPriority.equals(Priority.NORMAL)) {
 						cleanParameters = cleanParameters.replaceAll(word + " " + priority, "");
 						cleanParameters = getSimpleCleanString(cleanParameters);
+						return returnPriority;
 					}
 				} else {
 					break;

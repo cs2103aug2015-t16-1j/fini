@@ -87,9 +87,9 @@ public class Brain {
 		case DELETE:
 			display = deleteTask();
 			break;
-//		case MODE:
+		case MODE:
 //			MainApp.switchMode();
-//			break;
+			break;
 		case MODS:
 			display = loadNUSMods();
 			break;
@@ -112,7 +112,6 @@ public class Brain {
 	
 	// Logic Methods
 	private String addTask() {
-		// StatusSaver
 		if (finiParser.getCommandParameters().isEmpty()) {
 			return "CommandParameters is empty";
 		}
@@ -177,9 +176,10 @@ public class Brain {
 		} else {
 			return "No nusmods file";
 		}
+		taskOrganiser.updateFile(taskMasterList);
 		return "NUSMODS loaded";
 	}
-	//
+
 	//	private void addTask(String commandParameters) {
 	//		boolean hasTaskParameters = checkIfHasParameters(commandParameters);
 	//		boolean isRecurringTask = checkIfRecurringTask(commandParameters);
