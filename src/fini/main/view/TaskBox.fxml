@@ -9,7 +9,7 @@
 
 <fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="550.0" styleClass="taskBox" stylesheets="@style.css" type="HBox" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-		<Circle fx:id="priority" fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+		<Circle fx:id="priority" fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" HBox.hgrow="NEVER" />
 		<Label fx:id="index" maxWidth="30.0" prefHeight="30.0" text="Index">
 			<font>
 				<Font size="12.0" />

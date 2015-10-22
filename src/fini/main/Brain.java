@@ -79,6 +79,9 @@ public class Brain {
 		case ADD:
 			display = addTask();
 			break;
+		case CLEAR:
+			display = clearAllTasks();
+			break;
 //		case MODE:
 //			MainApp.switchMode();
 //			break;
@@ -92,6 +95,13 @@ public class Brain {
 		rootController.updateProjectsOverviewPanel(taskObservableList);
 		rootController.updateTasksOverviewPanel(taskObservableList);
 		rootController.updateDisplayToUser(display);
+	}
+	
+	// @author A0121828H
+	private String clearAllTasks() {
+		taskMasterList.clear();
+		taskOrganiser.updateFile(taskMasterList);
+		return "All tasks have been cleared";
 	}
 
 	// Logic Methods
