@@ -1,3 +1,0 @@
-{"taskTitle":"gai","priority":"NORMAL","taskStartDate":{"year":2015,"month":10,"day":21},"taskStartTime":{"hour":2,"minute":0,"second":0,"nano":0},"isRecurring":false,"isCompleted":false,"taskType":"DEADLINE"}
-{"taskTitle":"gai","priority":"NORMAL","taskStartDate":{"year":2015,"month":10,"day":22},"taskStartTime":{"hour":1,"minute":0,"second":0,"nano":0},"isRecurring":false,"isCompleted":false,"taskType":"DEADLINE"}
-{"taskTitle":"jonas","priority":"NORMAL","isRecurring":false,"isCompleted":false,"taskType":"DEFAULT"}

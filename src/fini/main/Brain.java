@@ -87,7 +87,7 @@ public class Brain {
 			display = addTask();
 			break;
 		case UPDATE:
-//			saveThisStatus();
+			saveThisStatus();
 			display = updateTask();
 			break;
 		case DELETE:
