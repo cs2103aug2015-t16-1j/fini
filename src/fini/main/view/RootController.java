@@ -26,6 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class RootController {
 	@FXML
@@ -38,10 +39,22 @@ public class RootController {
 	private ListView<String> projectsOverviewPanel;
 
 	@FXML
-	private ListView<HBox> tasksOverviewPanel;
+	private VBox tasksOverviewPanel;
 
 	@FXML
 	private Label displayToUser;
+	
+	@FXML
+	private Label inboxTasks;
+	
+	@FXML
+	private Label todayTasks;
+	
+	@FXML
+	private Label thisWeekTasks;
+	
+	@FXML
+	private Label otherTasks;
 
 	private Brain brain = Brain.getInstance();
 
@@ -133,15 +146,10 @@ public class RootController {
 
 		taskTypeNum[3] = taskTypeNum[0] + taskTypeNum[1] + taskTypeNum[2];
 
-		for (int i = 0; i < 4; i++) {
-			HBox newOverviewBox = new HBox();
-			Label name = new Label(taskTypeName[i]);
-			Label num = new Label(taskTypeNum[i].toString());
-			newOverviewBox.getChildren().addAll(name, num);
-			newOverviewBox.setSpacing(30);
-			tasksOverview.add(newOverviewBox);
-		}
-		tasksOverviewPanel.setItems(tasksOverview);
+		inboxTasks.setText(Integer.toString(taskTypeNum[0]));
+		todayTasks.setText(Integer.toString(taskTypeNum[1]));
+		thisWeekTasks.setText(Integer.toString(taskTypeNum[2]));
+		otherTasks.setText(Integer.toString(taskTypeNum[3]));
 	}
 
 	public void updateProjectsOverviewPanel(ObservableList<Task> taskMasterList) {

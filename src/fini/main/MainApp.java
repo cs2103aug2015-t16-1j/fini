@@ -75,7 +75,7 @@ public class MainApp extends Application {
 				if (userPressesEnter.getCode().equals(KeyCode.ENTER)) {
 					AnchorPane main = null;
 					try {
-						FXMLLoader loader = new FXMLLoader(getClass().getResource("view/FiniLayout.fxml"));
+						FXMLLoader loader = new FXMLLoader(getClass().getResource("view/FiniLayout2.fxml"));
 						main = (AnchorPane) loader.load();
 
 						Scene scene = new Scene(main);

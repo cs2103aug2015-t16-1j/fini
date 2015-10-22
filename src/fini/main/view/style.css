@@ -139,3 +139,8 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 	-fx-font-size: 10px;
 	-fx-font-family: "Open Sans", sans-serif, serif;
 }
+
+/* TASK OVERVIEW PANEL */
+.inboxBox {
+	-fx-padding: 0 5 0 5;	
+}
