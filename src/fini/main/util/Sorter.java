@@ -139,7 +139,7 @@ public class Sorter {
 		comparators.add(new SortByType());
 		comparators.add(new SortByTime());
 		comparators.add(new SortByDate());
-		comparators.add(new SortByOverdue());
+//		comparators.add(new SortByOverdue());
 	}
 	
 	public ArrayList<Task> getSortedList() {
