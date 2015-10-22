@@ -1,5 +1,6 @@
 package fini.main;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import fini.main.model.StatusSaver;
 import fini.main.model.Storage;
 import fini.main.model.Task;
 import fini.main.model.FiniParser.CommandType;
+import fini.main.util.ModsLoader;
 import fini.main.util.Sorter;
 import fini.main.view.RootController;
 import javafx.collections.FXCollections;
@@ -88,11 +90,14 @@ public class Brain {
 //		case MODE:
 //			MainApp.switchMode();
 //			break;
-		case COMPLETE:
-			display = completeTask();
+		case MODS:
+			display = loadNUSMods();
 			break;
 		case EXIT:
 			System.exit(0);
+		case COMPLETE:
+			display = completeTask();
+			break;
 		default:
 			break;
 		}
@@ -160,18 +165,20 @@ public class Brain {
 		return "Complete: " + (taskIndex + 1) + taskToComplete.getTitle();
 	}
 
-	//	/**
-	//	 * EXTRAORDINARY FEATURE - Sync with nusmods html file
-	//	 * @author gaieepo
-	//	 */
-	//	private void loadNUSMods(String commandParameters) {
-	//		File modsFile = new File(commandParameters);
-	//		if (modsFile.exists()) {
-	//			ModsLoader loader = new ModsLoader(modsFile);
-	//		} else {
-	//			System.out.println("No Mods File");
-	//		}
-	//	}
+	/**
+	 * EXTRAORDINARY FEATURE - Sync with nusmods html file
+	 * @author gaieepo
+	 */
+	private String loadNUSMods() {
+		File modsFile = new File(finiParser.getCleanParameters());
+		if (modsFile.exists()) {
+			ModsLoader loader = new ModsLoader(modsFile);
+			taskMasterList.addAll(loader.getLessonTasks());
+		} else {
+			return "No nusmods file";
+		}
+		return "NUSMODS loaded";
+	}
 	//
 	//	private void addTask(String commandParameters) {
 	//		boolean hasTaskParameters = checkIfHasParameters(commandParameters);
