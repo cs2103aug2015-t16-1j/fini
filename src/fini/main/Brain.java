@@ -237,12 +237,12 @@ public class Brain {
 	
 	private String undo() {
 		if (statusSaver.isMasterStackEmpty()) {
-			return "Cannot undo lah! You haven't done any changes yet.";
+			return "Hmmm...I can't undo when you haven't done anything yet!";
 		}
 		statusSaver.retrieveLastStatus();
 		taskMasterList = statusSaver.getLastTaskMasterList();
 		taskObservableList = statusSaver.getLastTaskObservableList();
-		return "Undo~do~do~do~do~";
+		return "Your action has been undone.";
 	}
 	
 	private void saveThisStatus() {
