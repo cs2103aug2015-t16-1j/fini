@@ -12,8 +12,6 @@ import fini.main.model.Task.Type;
 
 import org.junit.Test;
 
-import main.java.Task;
-
 public class TaskTest {
     
     @Test
