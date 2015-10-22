@@ -71,6 +71,8 @@ public class Task implements TaskInterface {
 		default:
 			break;
 		}
+		
+		System.out.println("Task type: " + taskType);
 	}
 
 	private String formatTime(String userGivenTime) {
