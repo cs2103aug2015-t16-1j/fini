@@ -102,6 +102,7 @@ public class Brain {
 			display = undo();
 			break;
 		case MODE:
+			// TODO: NighMODE! :)
 //			MainApp.switchMode();
 			break;
 		case MODS:
@@ -159,7 +160,7 @@ public class Brain {
 			taskIndex = Integer.parseInt(splitNotParsed[0]) - 1;
 			taskToUpdate = taskObservableList.get(taskIndex);
 		} catch (IndexOutOfBoundsException | NumberFormatException e) {
-			return "Task not found";
+			return "Task not found!";
 		}
 		
 		String[] fixedSplitNotParsed = (String[]) Arrays.copyOfRange(splitNotParsed, 1, splitNotParsed.length);
@@ -220,7 +221,7 @@ public class Brain {
 	}
 
 	/**
-	 * EXTRAORDINARY FEATURE - Sync with nusmods html file
+	 * EXTRAORDINARY FEATURE - Sync with NUSMODS HTML file
 	 * @author gaieepo
 	 */
 	private String loadNUSMods() {
