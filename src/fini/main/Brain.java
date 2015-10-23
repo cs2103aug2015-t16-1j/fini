@@ -115,7 +115,7 @@ public class Brain {
 			display = completeTask();
 			break;
 		case INVALID:
-			display = "commandType INVALID";
+			display = "You have provided an invalid command. Enter help for more info.";
 			break;
 		}
 
