@@ -26,6 +26,13 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 	-fx-focus-color: navy ;
 }
 
+.vBoxDisplay #displayToUser {
+	-fx-font-size: 14px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+}
+
+
+
 /*Welcome Scene*/
 .welcomePane {
 	-fx-background-color: navy;
