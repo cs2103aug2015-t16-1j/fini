@@ -80,7 +80,7 @@ public class MainApp extends Application {
 						FXMLLoader loader = new FXMLLoader(getClass().getResource("view/FiniLayout2.fxml"));
 						main = (AnchorPane) loader.load();
 						
-						FadeTransition ft = new FadeTransition(Duration.millis(3000), main);
+						FadeTransition ft = new FadeTransition(Duration.millis(1500), main);
 						ft.setFromValue(0.0);
 						ft.setToValue(1.0);
 						ft.play();
