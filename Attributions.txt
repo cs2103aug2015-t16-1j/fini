@@ -5,6 +5,9 @@ http://www.iconarchive.com/show/led-icons-by-led24.de/arrow-redo-icon.html
 https://commons.wikimedia.org/wiki/File:Calendar_font_awesome.svg
 https://commons.wikimedia.org/wiki/File:Inbox_font_awesome.svg
 
+Recurring icon
+https://commons.wikimedia.org/wiki/File:Repeat_font_awesome.svg
+
 Dependencies
 https://github.com/google/gson
 http://natty.joestelmach.com/

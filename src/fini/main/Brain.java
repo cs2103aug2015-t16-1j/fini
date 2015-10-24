@@ -131,7 +131,7 @@ public class Brain {
 	// Logic Methods
 	private String addTask() {
 		if (finiParser.getCommandParameters().isEmpty()) {
-			return "CommandParameters is empty";
+			return "You have not provided any parameters for your command.";
 		}
 		
 		// TODO if recurring, then create multiple tasks at the same time
@@ -217,7 +217,7 @@ public class Brain {
 		} catch (IndexOutOfBoundsException e) {
 			return "Task not found";
 		}
-		return "Complete: " + (taskIndex + 1) + taskToComplete.getTitle();
+		return "Completed: " + (taskIndex + 1) + taskToComplete.getTitle();
 	}
 
 	/**

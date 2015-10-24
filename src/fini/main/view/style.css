@@ -152,3 +152,15 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 .inboxBox {
 	-fx-padding: 0 5 0 5;	
 }
+
+/* TASK CATEGORY BOX */
+.categoryBox #category {
+	-fx-font-size: 18px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+	-fx-font-weight: bold;
+}
+
+.categoryBox #date {
+	-fx-font-size: 12px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+}

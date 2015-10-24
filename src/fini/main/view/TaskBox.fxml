@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
@@ -21,11 +22,14 @@
 				<Font size="14.0" />
 			</font>
 		</Label>
-		<Label fx:id="recurring" text="Recurring">
-			<font>
-				<Font size="10.0" />
-			</font>
-		</Label>
+      <ImageView fx:id="recurring" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" translateY="5.0">
+         <HBox.margin>
+            <Insets right="5.0" />
+         </HBox.margin>
+         <image>
+            <Image url="@../resources/images/recurring.png" />
+         </image>
+      </ImageView>
 		<Label fx:id="project" text="Project">
 			<font>
 				<Font size="10.0" />

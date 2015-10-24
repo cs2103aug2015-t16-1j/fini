@@ -6,6 +6,7 @@ import java.rmi.server.LoaderHandler;
 import java.util.logging.Logger;
 
 import fini.main.view.RootController;
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -19,6 +20,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /*
  * This is the main class for FINI (the application). The two scenes, welcome scene and the main
@@ -77,7 +79,12 @@ public class MainApp extends Application {
 					try {
 						FXMLLoader loader = new FXMLLoader(getClass().getResource("view/FiniLayout2.fxml"));
 						main = (AnchorPane) loader.load();
-
+						
+						FadeTransition ft = new FadeTransition(Duration.millis(3000), main);
+						ft.setFromValue(0.0);
+						ft.setToValue(1.0);
+						ft.play();
+						
 						Scene scene = new Scene(main);
 						primaryStage.setScene(scene); 
 
