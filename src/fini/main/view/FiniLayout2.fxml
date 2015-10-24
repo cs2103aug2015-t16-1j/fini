@@ -67,11 +67,11 @@
                                              <image>
                                                 <Image url="@../resources/images/stack.png" />
                                              </image></ImageView>
-                                          <Label prefHeight="100.0" prefWidth="120.0" text="Others">
+                                          <Label prefHeight="100.0" prefWidth="120.0" text="Total Tasks">
                                              <padding>
                                                 <Insets left="5.0" />
                                              </padding></Label>
-                                          <Label fx:id="otherTasks" prefHeight="45.0" text="Label" />
+                                          <Label fx:id="totalNumberOfTasks" prefHeight="45.0" text="Label" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -81,6 +81,22 @@
                         </VBox>
                         <ListView fx:id="listView" prefHeight="573.0" prefWidth="600.0" />
                      </children>
+                  </HBox>
+                  <HBox prefHeight="20.0" prefWidth="119.0" styleClass="pointsBox" StackPane.alignment="TOP_RIGHT">
+                     <children>
+                        <Label text="Fini Points:">
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="finiPoints" text="Label" />
+                     </children>
+                     <StackPane.margin>
+                        <Insets bottom="510.0" left="660.0" />
+                     </StackPane.margin>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
                   </HBox>
                </children>
             </StackPane>
