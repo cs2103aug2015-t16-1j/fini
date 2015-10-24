@@ -164,3 +164,17 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 	-fx-font-size: 12px;
 	-fx-font-family: "Open Sans", sans-serif, serif;
 }
+
+/* FINI POINTS BOX */
+.pointsBox {
+	-fx-font-size: 12px;
+	-fx-font-style: italic;
+	-fx-font-weight: bolder;
+	-fx-background-color: #00EDFD;
+	-fx-border-radius: 2px;
+	-fx-font-family: "Handlee", sans-serif, serif;
+}
+
+.pointsBox #finiPoints {
+	
+}
