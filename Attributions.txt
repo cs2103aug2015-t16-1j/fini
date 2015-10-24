@@ -8,6 +8,9 @@ https://commons.wikimedia.org/wiki/File:Inbox_font_awesome.svg
 Recurring icon
 https://commons.wikimedia.org/wiki/File:Repeat_font_awesome.svg
 
+Fonts:
+https://www.google.com/fonts# - Open Sans, Handlee
+
 Dependencies
 https://github.com/google/gson
 http://natty.joestelmach.com/
