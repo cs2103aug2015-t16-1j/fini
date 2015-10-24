@@ -37,10 +37,11 @@ public class Task implements TaskInterface {
 			Priority priority, String projectName, boolean isRecurring, LocalDateTime recursUntil) {
 		isCompleted = false;
 
-		this.taskTitle = notParsed;
-		this.isRecurring = isRecurring;
-		this.priority = priority;
-		this.projectName = projectName;
+		setTitle(notParsed);
+		setRecurring(isRecurring);
+		setPriority(priority);
+		setProject(projectName);
+		setRecursUntil(recursUntil);
 		this.recursUntil = recursUntil;
 
 		switch (datetimes.size()) {
@@ -74,6 +75,10 @@ public class Task implements TaskInterface {
 		}
 
 		System.out.println("Task type: " + taskType);
+	}
+
+	private void setRecursUntil(LocalDateTime recursUntil) {
+		this.recursUntil = recursUntil;
 	}
 
 	// constructor with only taskTitle. dont delete. for testing purpose
@@ -159,7 +164,10 @@ public class Task implements TaskInterface {
 	}
 
 	public String getProject() {
-		return projectName;
+		if(projectName != null) {
+			return projectName;
+		}
+		return defaultProject;
 	}
 
 	public Priority getPriority() {
@@ -268,7 +276,6 @@ public class Task implements TaskInterface {
 
 	public void setPriority(Priority priority) {
 		if (priority != null) {
-			assert(priority != null);
 			this.priority = priority;
 		} else {
 			this.priority = Priority.NORMAL;
@@ -338,12 +345,26 @@ public class Task implements TaskInterface {
 	}
 
 	public boolean isTaskDueToday() {
-		LocalDate today = LocalDate.now();
-		return taskStartDate.equals(today);
+		if(taskType != Type.DEFAULT) {
+			LocalDate today = LocalDate.now();
+			return taskStartDate.equals(today);
+		} 
+		return false;
 	}
 
 	public boolean isTaskDueTomorrow() {
-		LocalDate tomorrow = LocalDate.now().plusDays(1);
-		return taskStartDate.equals(tomorrow);
+		if(taskType != Type.DEFAULT) {
+			LocalDate tomorrow = LocalDate.now().plusDays(1);
+			return taskStartDate.equals(tomorrow);
+		} 
+		return false;
+	}
+
+	public boolean isTaskDueWithinSevenDays() {
+		if(taskType != Type.DEFAULT) {
+			LocalDate nextSevenDays = LocalDate.now().plusDays(7);
+			return taskStartDate.isBefore(nextSevenDays);
+		}
+		return false;
 	}
 }

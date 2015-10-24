@@ -3,6 +3,8 @@ package fini.main.view;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.internal.runners.TestMethod;
 
@@ -55,7 +57,10 @@ public class RootController {
 	private Label thisWeekTasks;
 
 	@FXML
-	private Label otherTasks;
+	private Label totalNumberOfTasks;
+
+	@FXML
+	private Label finiPoints;
 
 	private Brain brain = Brain.getInstance();
 
@@ -107,7 +112,7 @@ public class RootController {
 	//		}
 	//		listView.setItems(displayBoxes);
 	//	}
-	
+
 	// Update Display
 	public void updateDisplayToUser(String display) {
 		//		if (display != null) {
@@ -120,23 +125,30 @@ public class RootController {
 
 	public void updateTasksOverviewPanel(ObservableList<Task> taskMasterList) {
 		ObservableList<HBox> tasksOverview = FXCollections.observableArrayList();
-		String[] taskTypeName = new String[] {"Inbox", "Today", "This Week", "Total"};
-		Integer[] taskTypeNum = new Integer[] {0, 0, 0, 0};
+
+		Integer tasksInInbox = 0;
+		Integer tasksDueToday = 0;
+		Integer tasksDueThisWeek = 0;
+		Integer totalTasks = taskMasterList.size();
 
 		for (Task task : taskMasterList) {
-			for (int i = 0; i < 3; i++) {
-				if (task.getLabelForTaskOverviewPane() == taskTypeName[i]) {
-					taskTypeNum[i]++;
-				}
+			if(task.getProject().equals("Inbox")) {
+				tasksInInbox += 1;
+			}
+
+			if(task.isTaskDueToday()) {
+				tasksDueToday += 1;
+			}
+
+			if(task.isTaskDueWithinSevenDays()) {
+				tasksDueThisWeek += 1;
 			}
 		}
 
-		taskTypeNum[3] = taskTypeNum[0] + taskTypeNum[1] + taskTypeNum[2];
-
-		inboxTasks.setText(Integer.toString(taskTypeNum[0]));
-		todayTasks.setText(Integer.toString(taskTypeNum[1]));
-		thisWeekTasks.setText(Integer.toString(taskTypeNum[2]));
-		otherTasks.setText(Integer.toString(taskTypeNum[3]));
+		inboxTasks.setText(Integer.toString(tasksInInbox));
+		todayTasks.setText(tasksDueToday.toString());
+		thisWeekTasks.setText(tasksDueThisWeek.toString());
+		totalNumberOfTasks.setText(totalTasks.toString());
 	}
 
 	public void updateProjectsOverviewPanel(ObservableList<Task> taskMasterList) {
@@ -213,7 +225,7 @@ public class RootController {
 		TaskCategory todayCategory = null;
 		TaskCategory tomorrowCategory = null;
 		TaskCategory othersCategory = null;
-		
+
 		// Create all category boxes
 		try {
 			overdueCategory = new TaskCategory("Overdue");
@@ -283,5 +295,28 @@ public class RootController {
 			hbox.getChildren().addAll(isRecurring);
 		}
 		return hbox;
+	}
+
+	public void updateFiniPoints(List<Task> completedTasks) {
+		Integer points = 0;
+
+		for(Task task : completedTasks) {
+			switch(task.getPriority()) {
+			case HIGH:
+				points += 30;
+				break;
+			case MEDIUM:
+			case NORMAL:
+				points += 20;
+				break;
+			case LOW:
+				points += 10;
+				break;
+			default:
+				points += 0;
+				break;
+			}
+		}
+		finiPoints.setText(points.toString());
 	}
 }

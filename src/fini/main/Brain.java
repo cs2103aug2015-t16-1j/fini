@@ -60,6 +60,7 @@ public class Brain {
 		rootController.updateMainDisplay(taskObservableList);
 		rootController.updateProjectsOverviewPanel(taskObservableList);
 		rootController.updateTasksOverviewPanel(taskObservableList);
+		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
 
 	public void executeCommand(String userInput) {
@@ -126,6 +127,7 @@ public class Brain {
 		rootController.updateProjectsOverviewPanel(taskObservableList);
 		rootController.updateTasksOverviewPanel(taskObservableList);
 		rootController.updateDisplayToUser(display);
+		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
 	
 	// Logic Methods
@@ -430,5 +432,15 @@ public class Brain {
 		sorter = new Sorter(taskMasterList);
 		sorter.sort();
 		taskMasterList = sorter.getSortedList();
+	}
+	
+	public ArrayList<Task> getCompletedTasks() {
+		ArrayList<Task> completedTasks = new ArrayList<Task>();
+		for(Task task : taskMasterList) {
+			if(task.isCompleted()) {
+				completedTasks.add(task);
+			}
+		}
+		return completedTasks;
 	}
 }
