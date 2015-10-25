@@ -130,9 +130,15 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
-.taskBox #date {
+.taskBox #startDate {
 	-fx-padding: 0 5 0 5;
-	-fx-font-size: 12px;
+	-fx-font-size: 10px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+}
+
+.taskBox #endDate {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 10px;
 	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
