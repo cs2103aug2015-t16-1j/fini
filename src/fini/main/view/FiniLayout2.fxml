@@ -8,7 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../Documents/Eclipse%20Workspace/Fini/src/fini/main/view/style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fini.main.view.RootController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fini.main.view.RootController">
    <children>
       <VBox layoutX="214.0" layoutY="45.0" prefHeight="500.0" prefWidth="600.0" styleClass="display" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -36,7 +36,10 @@
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <ImageView fitHeight="45.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fitHeight="45.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" translateY="10.0">
+                                             <image>
+                                                <Image url="@../resources/images/today.png" />
+                                             </image></ImageView>
                                           <Label prefHeight="100.0" prefWidth="120.0" text="Today">
                                              <padding>
                                                 <Insets left="5.0" />
@@ -60,12 +63,15 @@
                                     </HBox>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <ImageView fitHeight="45.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" />
-                                          <Label prefHeight="100.0" prefWidth="120.0" text="Others">
+                                          <ImageView fitHeight="45.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" translateY="10.0">
+                                             <image>
+                                                <Image url="@../resources/images/stack.png" />
+                                             </image></ImageView>
+                                          <Label prefHeight="100.0" prefWidth="120.0" text="Total Tasks">
                                              <padding>
                                                 <Insets left="5.0" />
                                              </padding></Label>
-                                          <Label fx:id="otherTasks" prefHeight="45.0" text="Label" />
+                                          <Label fx:id="totalNumberOfTasks" prefHeight="45.0" text="Label" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -76,12 +82,28 @@
                         <ListView fx:id="listView" prefHeight="573.0" prefWidth="600.0" />
                      </children>
                   </HBox>
+                  <HBox prefHeight="20.0" prefWidth="119.0" styleClass="pointsBox" StackPane.alignment="TOP_RIGHT">
+                     <children>
+                        <Label text="Fini Points:">
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="finiPoints" text="Label" />
+                     </children>
+                     <StackPane.margin>
+                        <Insets bottom="510.0" left="660.0" />
+                     </StackPane.margin>
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                  </HBox>
                </children>
             </StackPane>
-            <VBox prefHeight="75.0" prefWidth="100.0">
+            <VBox prefHeight="75.0" prefWidth="100.0" styleClass="vBoxDisplay">
                <children>
                   <Label fx:id="displayToUser" alignment="CENTER" prefHeight="17.0" prefWidth="800.0" text="Welcome to Fini!" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
-                  <TextField fx:id="commandBox" onKeyPressed="#handleKeyPressEvent" prefHeight="20.0" prefWidth="800.0">
+                  <TextField fx:id="commandBox" onKeyPressed="#handleKeyPressEvent" prefHeight="20.0" prefWidth="800.0" promptText="Enter command here:">
                      <effect>
                         <SepiaTone level="0.32" />
                      </effect></TextField>

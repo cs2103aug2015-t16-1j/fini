@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.shape.*?>
@@ -9,40 +11,46 @@
 
 <fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="550.0" styleClass="taskBox" stylesheets="@style.css" type="HBox" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-		<Circle fx:id="priority" fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" HBox.hgrow="NEVER" />
+		<Circle fx:id="priority" fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" translateY="7.0" HBox.hgrow="NEVER" />
 		<Label fx:id="index" maxWidth="30.0" prefHeight="30.0" text="Index">
 			<font>
 				<Font size="12.0" />
 			</font>
 		</Label>
-		<Label fx:id="title" prefHeight="30.0" prefWidth="300.0" text="Title" wrapText="true">
+		<Label fx:id="title" prefHeight="46.0" prefWidth="294.0" text="Title" wrapText="true">
 			<font>
 				<Font size="14.0" />
 			</font>
 		</Label>
-		<Label fx:id="recurring" text="Recurring">
+      <ImageView fx:id="recurring" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" translateY="3.0">
+         <HBox.margin>
+            <Insets right="5.0" />
+         </HBox.margin>
+         <image>
+            <Image url="@../resources/images/recurring.png" />
+         </image>
+      </ImageView>
+		<Label fx:id="project" text="Project" translateY="3.0">
 			<font>
 				<Font size="10.0" />
 			</font>
 		</Label>
-		<Label fx:id="project" text="Project">
-			<font>
-				<Font size="10.0" />
-			</font>
-		</Label>
-		<Label fx:id="date" text="Date">
+		<Label fx:id="date" text="Date" translateY="3.0">
 			<font>
 				<Font size="12.0" />
 			</font>
 		</Label>
 		<VBox prefHeight="35.0" prefWidth="70.0">
 			<children>
-				<Label fx:id="startTime" prefHeight="15.0" prefWidth="70.0" text="Start">
+				<Label fx:id="startTime" alignment="CENTER" prefHeight="15.0" prefWidth="70.0" text="Start" textAlignment="CENTER">
 					<font>
 						<Font name="Open Sans Light Italic" size="10.0" />
 					</font>
+               <VBox.margin>
+                  <Insets bottom="1.0" />
+               </VBox.margin>
 				</Label>
-				<Label fx:id="endTime" prefHeight="15.0" prefWidth="70.0" text="End">
+				<Label fx:id="endTime" alignment="CENTER" prefHeight="15.0" prefWidth="70.0" text="End" textAlignment="CENTER">
 					<font>
 						<Font name="Open Sans Light Italic" size="10.0" />
 					</font>

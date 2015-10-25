@@ -18,6 +18,21 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 	-fx-padding: 10;
 }
 
+/* COMMAND BOX */
+.vBoxDisplay #commandBox {
+	-fx-font-size: 14px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+	-fx-text-box-border: navy;
+	-fx-focus-color: navy ;
+}
+
+.vBoxDisplay #displayToUser {
+	-fx-font-size: 14px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+}
+
+
+
 /*Welcome Scene*/
 .welcomePane {
 	-fx-background-color: navy;
@@ -49,13 +64,6 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 	-fx-font-size: 14px;
 	-fx-font-family: "Open Sans", sans-serif, serif;
 	-fx-text-box-border: white;
-}
-
-.display #commandBox {
-	-fx-font-size: 14px;
-	-fx-font-family: "Open Sans", sans-serif, serif;
-	-fx-text-box-border: navy;
-	-fx-focus-color: navy ;
 }
 
 .display #displayToUser {
@@ -143,4 +151,30 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 /* TASK OVERVIEW PANEL */
 .inboxBox {
 	-fx-padding: 0 5 0 5;	
+}
+
+/* TASK CATEGORY BOX */
+.categoryBox #category {
+	-fx-font-size: 18px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+	-fx-font-weight: bold;
+}
+
+.categoryBox #date {
+	-fx-font-size: 12px;
+	-fx-font-family: "Open Sans", sans-serif, serif;
+}
+
+/* FINI POINTS BOX */
+.pointsBox {
+	-fx-font-size: 12px;
+	-fx-font-style: italic;
+	-fx-font-weight: bolder;
+	-fx-background-color: #00EDFD;
+	-fx-border-radius: 2px;
+	-fx-font-family: "Handlee", sans-serif, serif;
+}
+
+.pointsBox #finiPoints {
+	
 }

@@ -5,12 +5,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Task implements TaskInterface {
 	public static enum Type {
 		DEFAULT, EVENT, DEADLINE
 	}
-	
+
 	public static enum Priority {
 		HIGH, MEDIUM, LOW, NORMAL
 	}
@@ -35,13 +36,14 @@ public class Task implements TaskInterface {
 	public Task(String notParsed, ArrayList<LocalDateTime> datetimes,
 			Priority priority, String projectName, boolean isRecurring, LocalDateTime recursUntil) {
 		isCompleted = false;
-		
-		this.taskTitle = notParsed;
-		this.isRecurring = isRecurring;
-		this.priority = priority;
-		this.projectName = projectName;
+
+		setTitle(notParsed);
+		setRecurring(isRecurring);
+		setPriority(priority);
+		setProject(projectName);
+		setRecursUntil(recursUntil);
 		this.recursUntil = recursUntil;
-		
+
 		switch (datetimes.size()) {
 		case 2:
 			taskType = Type.EVENT;
@@ -53,7 +55,7 @@ public class Task implements TaskInterface {
 			taskType = Type.DEFAULT;
 			break;
 		}
-		
+
 		switch (taskType) {
 		case EVENT:
 			LocalDateTime firstDatetime = datetimes.get(0);
@@ -71,13 +73,17 @@ public class Task implements TaskInterface {
 		default:
 			break;
 		}
-		
+
 		System.out.println("Task type: " + taskType);
 	}
-	
+
+	private void setRecursUntil(LocalDateTime recursUntil) {
+		this.recursUntil = recursUntil;
+	}
+
 	// constructor with only taskTitle. dont delete. for testing purpose
 	public Task(String taskTitle){
-	    setTitle(taskTitle);
+		setTitle(taskTitle);
 	}
 
 	private String formatTime(String userGivenTime) {
@@ -158,7 +164,10 @@ public class Task implements TaskInterface {
 	}
 
 	public String getProject() {
-		return projectName;
+		if(projectName != null) {
+			return projectName;
+		}
+		return defaultProject;
 	}
 
 	public Priority getPriority() {
@@ -172,7 +181,7 @@ public class Task implements TaskInterface {
 	public LocalTime getStartTime() {
 		return taskStartTime;
 	}
-	
+
 	public LocalDate getEndDate() {
 		return taskEndDate;
 	}
@@ -193,15 +202,15 @@ public class Task implements TaskInterface {
 	public String getLabelForTaskOverviewPane() {
 		return "Inbox";
 	}
-	
+
 	public boolean isCompleted() {
 		return isCompleted;
 	}
-	
+
 	public boolean isOverdue() {
 		LocalDate nowDate = LocalDate.now();
 		LocalTime nowTime = LocalTime.now();
-		
+
 		/**
 		 * Possible combination:
 		 * No end date -> F
@@ -267,7 +276,6 @@ public class Task implements TaskInterface {
 
 	public void setPriority(Priority priority) {
 		if (priority != null) {
-			assert(priority != null);
 			this.priority = priority;
 		} else {
 			this.priority = Priority.NORMAL;
@@ -293,11 +301,11 @@ public class Task implements TaskInterface {
 			this.taskStartDate = LocalDate.parse(date, dateFormatter);
 		}
 	}
-	
+
 	public void setComplete() {
 		isCompleted = true;
 	}
-	
+
 	public void setIncomplete() {
 		isCompleted = false;
 	}
@@ -316,14 +324,47 @@ public class Task implements TaskInterface {
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
-		
+
 		// Init values?
-		
+
 		return taskObject;
 	}
-	
+
 	// TODO: Implement recurring day function
 	public String getRecurringDay() {
 		return null;
+	}
+
+	// only applicable for deadlines/events etc.
+	public boolean checkIfOverdue() {
+		if(taskType != Type.DEFAULT) {
+			LocalDate today = LocalDate.now();
+			return taskStartDate.isBefore(today);
+		}
+		return false;
+	}
+
+	public boolean isTaskDueToday() {
+		if(taskType != Type.DEFAULT) {
+			LocalDate today = LocalDate.now();
+			return taskStartDate.equals(today);
+		} 
+		return false;
+	}
+
+	public boolean isTaskDueTomorrow() {
+		if(taskType != Type.DEFAULT) {
+			LocalDate tomorrow = LocalDate.now().plusDays(1);
+			return taskStartDate.equals(tomorrow);
+		} 
+		return false;
+	}
+
+	public boolean isTaskDueWithinSevenDays() {
+		if(taskType != Type.DEFAULT) {
+			LocalDate nextSevenDays = LocalDate.now().plusDays(7);
+			return taskStartDate.isBefore(nextSevenDays);
+		}
+		return false;
 	}
 }

@@ -1,0 +1,9 @@
+TODO FOR V0.3
+
+1. Search
+2. Redo
+3. Scroll (Page Up and Down)
+4. Command History
+5. Recurring Tasks
+6. NUS MODS Implementation (Fully)
+7. Night Mode

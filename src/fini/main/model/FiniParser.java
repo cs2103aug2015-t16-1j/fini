@@ -15,7 +15,7 @@ import fini.main.model.Task.Priority;
 
 public class FiniParser {
 	public static enum CommandType {
-		ADD, UPDATE, DELETE, CLEAR, UNDO, SEARCH, MODE, EXIT, COMPLETE, MODS, INVALID
+		ADD, UPDATE, DELETE, CLEAR, UNDO, REDO, SEARCH, MODE, EXIT, COMPLETE, MODS, INVALID
 	};
 
 	private static FiniParser finiParser;

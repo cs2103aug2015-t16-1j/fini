@@ -60,6 +60,7 @@ public class Brain {
 		rootController.updateMainDisplay(taskObservableList);
 		rootController.updateProjectsOverviewPanel(taskObservableList);
 		rootController.updateTasksOverviewPanel(taskObservableList);
+		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
 
 	public void executeCommand(String userInput) {
@@ -102,6 +103,7 @@ public class Brain {
 			display = undo();
 			break;
 		case MODE:
+			// TODO: NighMODE! :)
 //			MainApp.switchMode();
 			break;
 		case MODS:
@@ -115,7 +117,7 @@ public class Brain {
 			display = completeTask();
 			break;
 		case INVALID:
-			display = "commandType INVALID";
+			display = "You have provided an invalid command. Enter help for more info.";
 			break;
 		}
 
@@ -125,12 +127,13 @@ public class Brain {
 		rootController.updateProjectsOverviewPanel(taskObservableList);
 		rootController.updateTasksOverviewPanel(taskObservableList);
 		rootController.updateDisplayToUser(display);
+		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
 	
 	// Logic Methods
 	private String addTask() {
 		if (finiParser.getCommandParameters().isEmpty()) {
-			return "CommandParameters is empty";
+			return "You have not provided any parameters for your command.";
 		}
 		
 		// TODO if recurring, then create multiple tasks at the same time
@@ -159,7 +162,7 @@ public class Brain {
 			taskIndex = Integer.parseInt(splitNotParsed[0]) - 1;
 			taskToUpdate = taskObservableList.get(taskIndex);
 		} catch (IndexOutOfBoundsException | NumberFormatException e) {
-			return "Task not found";
+			return "Task not found!";
 		}
 		
 		String[] fixedSplitNotParsed = (String[]) Arrays.copyOfRange(splitNotParsed, 1, splitNotParsed.length);
@@ -216,11 +219,11 @@ public class Brain {
 		} catch (IndexOutOfBoundsException e) {
 			return "Task not found";
 		}
-		return "Complete: " + (taskIndex + 1) + taskToComplete.getTitle();
+		return "Completed: " + (taskIndex + 1) + taskToComplete.getTitle();
 	}
 
 	/**
-	 * EXTRAORDINARY FEATURE - Sync with nusmods html file
+	 * EXTRAORDINARY FEATURE - Sync with NUSMODS HTML file
 	 * @author gaieepo
 	 */
 	private String loadNUSMods() {
@@ -237,12 +240,12 @@ public class Brain {
 	
 	private String undo() {
 		if (statusSaver.isMasterStackEmpty()) {
-			return "Cannot undo lah! You haven't done any changes yet.";
+			return "Hmmm...I can't undo when you haven't done anything yet!";
 		}
 		statusSaver.retrieveLastStatus();
 		taskMasterList = statusSaver.getLastTaskMasterList();
 		taskObservableList = statusSaver.getLastTaskObservableList();
-		return "Undo~do~do~do~do~";
+		return "Your action has been undone.";
 	}
 	
 	private void saveThisStatus() {
@@ -429,5 +432,15 @@ public class Brain {
 		sorter = new Sorter(taskMasterList);
 		sorter.sort();
 		taskMasterList = sorter.getSortedList();
+	}
+	
+	public ArrayList<Task> getCompletedTasks() {
+		ArrayList<Task> completedTasks = new ArrayList<Task>();
+		for(Task task : taskMasterList) {
+			if(task.isCompleted()) {
+				completedTasks.add(task);
+			}
+		}
+		return completedTasks;
 	}
 }

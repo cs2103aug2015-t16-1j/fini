@@ -7,26 +7,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 
 public class TaskCategory extends HBox {
     @FXML
     private Label category;
 
-    @FXML
-    private Label date;
-
     public TaskCategory(String taskCategory) throws Exception {
         initialiseFxmlFiles();
-        category = new Label();
-        this.category.setText("HARISH");
-    }
-
-    public TaskCategory(String taskCategory, String date) throws Exception {
-        initialiseFxmlFiles();
-        this.category = new Label();
-        this.date = new Label();
-        this.category.setText("HARISH");
-        this.date.setText(date);
+        this.category.setText(taskCategory);
+        if(taskCategory.equals("Overdue")) {
+        	category.setTextFill(Color.web("#cc0000"));
+        }
     }
 
     private void initialiseFxmlFiles() throws Exception {

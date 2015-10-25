@@ -5,6 +5,7 @@ import fini.main.model.Task.Priority;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -23,7 +24,7 @@ public class TaskBox extends HBox {
 	private Label title;
 
 	@FXML
-	private Label recurring;
+	private ImageView recurring;
 
 	@FXML
 	private Label project;
@@ -65,30 +66,31 @@ public class TaskBox extends HBox {
 			hideLabel(project);
 		}
 
-		if(isRecurringTask) {
-			this.recurring.setText("R");
-		} else {
-			hideLabel(recurring);
-		}
-		
+		if(!isRecurringTask) {
+			this.recurring.setOpacity(0);
+		} 
+
 		if(taskDate != null) {
 			this.date.setText(taskDate);
 		} else {
 			hideLabel(date);
 		}
-		
+
 		if(taskStartTime != null) {
 			startTime.setText(taskStartTime);
 		} else {
 			hideLabel(startTime);
 		}
-		
+
 		if(taskEndTime != null) {
 			endTime.setText(taskEndTime);
 		} else {
-			hideLabel(endTime);
+			if(taskStartTime != null) {
+				endTime.setText("-");
+			} else {
+				hideLabel(endTime);
+			}
 		}
-		
 
 		this.index.setText(Integer.toString(taskId));
 		this.date.setText(taskDate);
