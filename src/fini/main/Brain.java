@@ -1,18 +1,14 @@
 package fini.main;
 
-import java.io.File;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Spliterator;
 import java.util.stream.Collectors;
 
 import fini.main.model.Command;
+import fini.main.model.Command.CommandType;
 import fini.main.model.FiniParser;
 import fini.main.model.StatusSaver;
 import fini.main.model.Storage;
 import fini.main.model.Task;
-import fini.main.model.Command.CommandType;
-import fini.main.util.ModsLoader;
 import fini.main.util.Sorter;
 import fini.main.view.RootController;
 import javafx.collections.FXCollections;
@@ -58,6 +54,7 @@ public class Brain {
 		rootController.updateMainDisplay(taskObservableList);
 		rootController.updateProjectsOverviewPanel(taskObservableList);
 		rootController.updateTasksOverviewPanel(taskObservableList);
+		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
 
 //	public static void main(String[] args) {

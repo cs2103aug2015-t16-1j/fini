@@ -178,9 +178,10 @@ public class RootController {
 
 			String taskTitle = task.getTitle();
 			String taskProject = task.getProject();
-			String taskStartTime = task.getStartDateTime() == null ? "Null" : timeFormatter.format(task.getStartDateTime());
-			String taskEndTime = task.getEndDateTime() == null ? "Null" : timeFormatter.format(task.getEndDateTime());
-			String taskDateTime;
+			String taskStartTime = task.getStartDateTime() == null ? null : timeFormatter.format(task.getStartDateTime());
+			String taskEndTime = task.getEndDateTime() == null ? null : timeFormatter.format(task.getEndDateTime());
+			String taskStartDate = task.getStartDateTime() == null ? null : task.getStartDateTime().toLocalDate().toString();
+			String taskEndDate = task.getEndDateTime() == null ? null : task.getEndDateTime().toLocalDate().toString();
 			String typeOfTask = "";
 
 			Priority taskPriority = task.getPriority();
@@ -191,12 +192,12 @@ public class RootController {
 			boolean isFloating = task.getTaskType() == Type.DEFAULT;
 			boolean isOverdue = task.isOverdue();
 
-			if (isRecurringTask) {
-				taskDateTime = task.getStartDateTime().toString();
-				System.out.println("Recurring day is " + taskDateTime.toString());
-			} else {
-				taskDateTime = task.getStartDateTime() == null ? "Null" : task.getStartDateTime().toString();
-			}
+//			if (isRecurringTask) {
+//				taskStartDate = task.getStartDateTime().toLocalDate().toString();
+//				System.out.println("Recurring day is " + taskStartDate);
+//			} else {
+//				taskDateTime = task.getStartDateTime() == null ? "Null" : task.getStartDateTime().toString();
+//			}
 			if (isFloating) {
 				typeOfTask = "floating";
 			} else if (isDeadline) {
@@ -208,7 +209,8 @@ public class RootController {
 			TaskBox newTaskBox = new TaskBox(taskId, 
 											 typeOfTask, 
 											 taskTitle, 
-											 taskDateTime,
+											 taskStartDate,
+											 taskEndDate,
 											 taskStartTime, 
 											 taskEndTime, 
 											 taskPriority, 
