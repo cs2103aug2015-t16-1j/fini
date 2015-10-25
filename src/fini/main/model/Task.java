@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Task & TaskBuilder - using builder pattern
@@ -33,6 +34,7 @@ public class Task implements TaskInterface {
 	
 	private boolean isCompleted = false;
 	private Type taskType;
+	private String recurUniqueID = null;
 
 	private static final String defaultProject = "Inbox";
 
@@ -87,6 +89,10 @@ public class Task implements TaskInterface {
 		// Required
 		taskTitle = taskBuilder.taskTitle;
 		isRecurring = taskBuilder.isRecurring;
+		
+		if (isRecurring) {
+			recurUniqueID = UUID.randomUUID().toString();
+		}
 		
 		// Optional
 		projectName = taskBuilder.projectName;
@@ -157,6 +163,10 @@ public class Task implements TaskInterface {
 
 	public Type getTaskType() {
 		return taskType;
+	}
+	
+	public String getRecurUniqueID() {
+		return recurUniqueID;
 	}
 	
 	public boolean isCompleted() {
@@ -254,6 +264,7 @@ public class Task implements TaskInterface {
 			   (interval == null ? "Null" : interval.toString()) + "\n" +
 			   isCompleted + "\n" +
 			   taskType.toString() + "\n" +
+			   recurUniqueID + "\n" +
 			   "<<<<<<<<<";
 	}
 	

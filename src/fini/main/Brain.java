@@ -1,6 +1,8 @@
 package fini.main;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.stream.Collectors;
 
 import fini.main.model.Command;
@@ -9,6 +11,7 @@ import fini.main.model.FiniParser;
 import fini.main.model.StatusSaver;
 import fini.main.model.Storage;
 import fini.main.model.Task;
+import fini.main.util.ModsLoader;
 import fini.main.util.Sorter;
 import fini.main.view.RootController;
 import javafx.collections.FXCollections;
@@ -63,6 +66,8 @@ public class Brain {
 //	}
 	
 	public void executeCommand(String userInput) {
+		boolean searchDisplayTrigger = false;
+		
 		Command newCommand = new Command(userInput);
 		CommandType commandType = newCommand.getCommandType();
 		int objectIndex = newCommand.getObjectIndex();
@@ -89,6 +94,10 @@ public class Brain {
 		case UNDO:
 			display = undo();
 			break;
+		case SEARCH:
+			searchDisplayTrigger = true;
+			searchTask(commandParameters);
+			break;
 //		case MODE:
 //			MainApp.switchMode();
 //			break;
@@ -110,7 +119,9 @@ public class Brain {
 		}
 
 		sortTaskMasterList();
-		taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+		if (!searchDisplayTrigger) {
+			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+		}
 		
 		rootController.updateMainDisplay(taskObservableList);
 		rootController.updateProjectsOverviewPanel(taskObservableList);
@@ -141,7 +152,7 @@ public class Brain {
 //		(interval == null ? "Null" : interval.toString()) 
 //		isCompleted
 //		taskType.toString()
-		System.out.println("task detail - addTask: " + newTask);
+//		System.out.println("task detail - addTask: " + newTask);
 		
 		taskMasterList.add(newTask);
 		taskOrganiser.updateFile(taskMasterList);
@@ -206,9 +217,27 @@ public class Brain {
 		Task taskToComplete;
 		try {
 			taskToComplete = taskObservableList.get(objectIndex - 1);
-			taskToComplete.setIncomplete();
 		} catch (IndexOutOfBoundsException e) {
 			return "Task not found";
+		}
+		
+		if (taskToComplete.isRecurring()) {
+			if (taskToComplete.hasNext()) {
+				Task copyTask = taskToComplete.makeCopy();
+				copyTask.setIsComplete();
+				for (Iterator<Task> iterator = taskMasterList.iterator(); iterator.hasNext(); ) {
+					Task taskToRemove = iterator.next();
+					if (taskToRemove.getRecurUniqueID().equals(copyTask.getRecurUniqueID())) {
+						iterator.remove();
+					}
+				}
+				taskMasterList.add(copyTask);
+				taskToComplete.toNext();
+			} else {
+				taskToComplete.setIncomplete();
+			}
+		} else {
+			taskToComplete.setIsComplete();
 		}
 		return "Complete: " + (objectIndex + 1) + taskToComplete.getTitle();
 	}
@@ -237,6 +266,16 @@ public class Brain {
 		taskMasterList = statusSaver.getLastTaskMasterList();
 		taskObservableList = statusSaver.getLastTaskObservableList();
 		return "Undo~do~do~do~do~";
+	}
+	
+	private void searchTask(String commandParameters) {
+		ObservableList<Task> tempObservableList = FXCollections.observableArrayList(); 
+		for (Task task : taskObservableList) {
+			if (task.getTitle().contains("commandParameters")) {
+				tempObservableList.add(task);
+			}
+		}
+		taskObservableList = tempObservableList;
 	}
 	
 	private void saveThisStatus() {
