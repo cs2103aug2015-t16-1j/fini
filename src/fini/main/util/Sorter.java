@@ -1,6 +1,7 @@
 package fini.main.util;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,7 +58,7 @@ public class Sorter {
 		}
 	}
 	
-	class SortByTime implements Comparator<Task> {		
+	class SortByDateTime implements Comparator<Task> {		
 		/**
 		 * Possible combination:
 		 * NULL EXIST -> -1
@@ -69,8 +70,8 @@ public class Sorter {
 		 */
 		@Override
 		public int compare(Task lhs, Task rhs) {
-			LocalTime t1 = lhs.getStartTime();
-			LocalTime t2 = rhs.getStartTime();
+			LocalDateTime t1 = lhs.getStartDateTime();
+			LocalDateTime t2 = rhs.getStartDateTime();
 			
 			if (t1 == null && t2 != null) {
 				return LOWER_THAN;
@@ -81,32 +82,6 @@ public class Sorter {
 			} else if (t1.isBefore(t2)) {
 				return LOWER_THAN;
 			} else if (t1.isAfter(t2)) {
-				return HIGHER_THAN;
-			} else {
-				return EQUAL;
-			}
-		}
-	}
-	
-	class SortByDate implements Comparator<Task> {
-		/**
-		 * Possible combination:
-		 * Same as SortByTime
-		 */
-		@Override
-		public int compare(Task lhs, Task rhs) {
-			LocalDate d1 = lhs.getStartDate();
-			LocalDate d2 = rhs.getStartDate();
-			
-			if (d1 == null && d2 != null) {
-				return LOWER_THAN;
-			} else if (d1 != null && d2 == null) {
-				return HIGHER_THAN;
-			} else if (d1 == null && d2 == null) {
-				return EQUAL;
-			} else if (d1.isBefore(d2)) {
-				return LOWER_THAN;
-			} else if (d1.isAfter(d2)) {
 				return HIGHER_THAN;
 			} else {
 				return EQUAL;
@@ -137,9 +112,8 @@ public class Sorter {
 		this.listToSort = listToSort;
 		comparators = new ArrayList<Comparator<Task>>();
 		comparators.add(new SortByType());
-		comparators.add(new SortByTime());
-		comparators.add(new SortByDate());
-//		comparators.add(new SortByOverdue());
+		comparators.add(new SortByDateTime());
+		comparators.add(new SortByOverdue());
 	}
 	
 	public ArrayList<Task> getSortedList() {

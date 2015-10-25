@@ -1,19 +1,16 @@
 package fini.main;
 
 import java.io.File;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Spliterator;
+import java.util.Iterator;
 import java.util.stream.Collectors;
 
-import javax.swing.undo.UndoableEdit;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
+import fini.main.model.Command;
+import fini.main.model.Command.CommandType;
 import fini.main.model.FiniParser;
 import fini.main.model.StatusSaver;
 import fini.main.model.Storage;
 import fini.main.model.Task;
-import fini.main.model.FiniParser.CommandType;
 import fini.main.util.ModsLoader;
 import fini.main.util.Sorter;
 import fini.main.view.RootController;
@@ -63,37 +60,32 @@ public class Brain {
 		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
 
+//	public static void main(String[] args) {
+//		Brain testBrain = Brain.getInstance();
+//		testBrain.executeCommand("add curry chicken tomorrow repeat everyday until dec priority high");
+//	}
+	
 	public void executeCommand(String userInput) {
+		boolean searchDisplayTrigger = false;
+		
+		Command newCommand = new Command(userInput);
+		CommandType commandType = newCommand.getCommandType();
+		int objectIndex = newCommand.getObjectIndex();
+		String commandParameters = newCommand.getCommandParameters();
+		
 		String display = "";
-
-		finiParser.parse(userInput);
-
-		System.out.println(">>>>>");
-		System.out.println("StoredInput: " + finiParser.getStoredUserInput());
-		System.out.println("CommandType: " + finiParser.getCommandType());
-		System.out.println("CommandParameters: " + finiParser.getCommandParameters());
-		System.out.println("CleanParameters: " + finiParser.getCleanParameters());
-		System.out.println("Priority: " + finiParser.getPriority());
-		System.out.println("ProjectName: " + finiParser.getProjectName());
-		for (LocalDateTime ldt : finiParser.getDatetimes()) {
-			System.out.println("Datetime: " + ldt.toString());
-		}
-		System.out.println("NotParsed: " + finiParser.getNotParsed());
-		System.out.println("<<<<<");
-
-		CommandType commandType = finiParser.getCommandType();
 		switch (commandType) {
 		case ADD:
 			saveThisStatus();
-			display = addTask();
+			display = addTask(commandParameters);
 			break;
 		case UPDATE:
 			saveThisStatus();
-			display = updateTask();
+			display = updateTask(objectIndex, commandParameters);
 			break;
 		case DELETE:
 			saveThisStatus();
-			display = deleteTask();
+			display = deleteTask(objectIndex);
 			break;
 		case CLEAR:
 			saveThisStatus();
@@ -102,10 +94,13 @@ public class Brain {
 		case UNDO:
 			display = undo();
 			break;
-		case MODE:
-			// TODO: NighMODE! :)
-//			MainApp.switchMode();
+		case SEARCH:
+			searchDisplayTrigger = true;
+			searchTask(commandParameters);
 			break;
+//		case MODE:
+//			MainApp.switchMode();
+//			break;
 		case MODS:
 			saveThisStatus();
 			display = loadNUSMods();
@@ -114,59 +109,68 @@ public class Brain {
 			System.exit(0);
 		case COMPLETE:
 			saveThisStatus();
-			display = completeTask();
+			display = completeTask(objectIndex);
 			break;
 		case INVALID:
-			display = "You have provided an invalid command. Enter help for more info.";
+			display = "commandType INVALID";
+			break;
+		default:
 			break;
 		}
 
 		sortTaskMasterList();
-		taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+		if (!searchDisplayTrigger) {
+			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+		}
+		
 		rootController.updateMainDisplay(taskObservableList);
 		rootController.updateProjectsOverviewPanel(taskObservableList);
 		rootController.updateTasksOverviewPanel(taskObservableList);
 		rootController.updateDisplayToUser(display);
-		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
 	
 	// Logic Methods
-	private String addTask() {
-		if (finiParser.getCommandParameters().isEmpty()) {
-			return "You have not provided any parameters for your command.";
+	private String addTask(String commandParameters) {
+		if (commandParameters.isEmpty()) {
+			return "CommandParameters is empty";
 		}
 		
-		// TODO if recurring, then create multiple tasks at the same time
-		Task newTask = new Task(finiParser.getNotParsed(), 
-								finiParser.getDatetimes(), 
-								finiParser.getPriority(),
-								finiParser.getProjectName(),
-								finiParser.getIsRecurring(),
-								finiParser.getRecursUntil());
+		finiParser.parse(commandParameters);
+		
+		Task newTask = new Task.TaskBuilder(finiParser.getNotParsed(), finiParser.getIsRecurring())
+						   .setDatetimes(finiParser.getDatetimes())
+						   .setPriority(finiParser.getPriority())
+						   .setInterval(finiParser.getInterval())
+						   .setRecursUntil(finiParser.getRecursUntil()).build();
+		
+//		taskTitle 
+//		isRecurring 
+//		priority.toString()
+//		(taskStartDateTime == null ? "Null" : taskStartDateTime.toString())
+//		(taskEndDateTime == null ? "Null" : taskEndDateTime.toString())
+//		(recursUntil == null ? "Null" : recursUntil)
+//		(interval == null ? "Null" : interval.toString()) 
+//		isCompleted
+//		taskType.toString()
+//		System.out.println("task detail - addTask: " + newTask);
+		
 		taskMasterList.add(newTask);
 		taskOrganiser.updateFile(taskMasterList);
 		return "Added: " + finiParser.getNotParsed();
 	}
 	
-	private String updateTask() {
-		int taskIndex;
+	private String updateTask(int objectIndex, String commandParameters) {
 		Task taskToUpdate;
 		
-		if (finiParser.getCommandParameters().split(" ").length < 2) {
-			return "Update insufficient parameters INVALID";
+		if (commandParameters.isEmpty()) {
+			return "CommandParameters is empty";
 		}
-		
-		String[] splitNotParsed = finiParser.getNotParsed().split(" ");
 		
 		try {
-			taskIndex = Integer.parseInt(splitNotParsed[0]) - 1;
-			taskToUpdate = taskObservableList.get(taskIndex);
-		} catch (IndexOutOfBoundsException | NumberFormatException e) {
-			return "Task not found!";
+			taskToUpdate = taskObservableList.get(objectIndex - 1);
+		} catch (IndexOutOfBoundsException e) {
+			return "Task not found";
 		}
-		
-		String[] fixedSplitNotParsed = (String[]) Arrays.copyOfRange(splitNotParsed, 1, splitNotParsed.length);
-		String fixedNotParsed = String.join(" ", fixedSplitNotParsed);
 		
 		// delete first
 		taskObservableList.remove(taskToUpdate);
@@ -174,16 +178,18 @@ public class Brain {
 		taskOrganiser.updateFile(taskMasterList);
 		
 		// add then
-		Task newTask = new Task(fixedNotParsed, 
-								finiParser.getDatetimes(), 
-								finiParser.getPriority(),
-								finiParser.getProjectName(),
-								finiParser.getIsRecurring(),
-								finiParser.getRecursUntil());
+		finiParser.parse(commandParameters);
+		
+		Task newTask = new Task.TaskBuilder(finiParser.getNotParsed(), finiParser.getIsRecurring())
+						   .setDatetimes(finiParser.getDatetimes())
+						   .setPriority(finiParser.getPriority())
+						   .setInterval(finiParser.getInterval())
+						   .setRecursUntil(finiParser.getRecursUntil()).build();
+		
 		taskMasterList.add(newTask);
 		taskOrganiser.updateFile(taskMasterList);
 		
-		return "Update: " + (taskIndex + 1) + taskToUpdate.getTitle();
+		return "Update: " + (objectIndex + 1) + taskToUpdate.getTitle();
 	}
 	
 	// @author A0121828H
@@ -193,37 +199,51 @@ public class Brain {
 		return "All tasks have been cleared";
 	}
 	
-	private String deleteTask() {
-		int taskIndex;
+	private String deleteTask(int objectIndex) {
 		Task taskToDelete;
 		try {
-			taskIndex = Integer.parseInt(finiParser.getCleanParameters()) - 1;
-			taskToDelete = taskObservableList.get(taskIndex);
-		} catch (IndexOutOfBoundsException | NumberFormatException e) {
+			taskToDelete = taskObservableList.get(objectIndex - 1);
+		} catch (IndexOutOfBoundsException e) {
 			return "Task not found";
 		}
 		
 		taskObservableList.remove(taskToDelete);
 		taskMasterList.remove(taskToDelete);
 		taskOrganiser.updateFile(taskMasterList);
-		return "Delete: " + (taskIndex + 1) + " " + taskToDelete.getTitle();
+		return "Delete: " + (objectIndex + 1) + " " + taskToDelete.getTitle();
 	}
 	
-	private String completeTask() {
-		int taskIndex;
+	private String completeTask(int objectIndex) {
 		Task taskToComplete;
 		try {
-			taskIndex = Integer.parseInt(finiParser.getCleanParameters()) - 1;
-			taskToComplete = taskObservableList.get(taskIndex);
-			taskToComplete.setComplete();
+			taskToComplete = taskObservableList.get(objectIndex - 1);
 		} catch (IndexOutOfBoundsException e) {
 			return "Task not found";
 		}
-		return "Completed: " + (taskIndex + 1) + taskToComplete.getTitle();
+		
+		if (taskToComplete.isRecurring()) {
+			if (taskToComplete.hasNext()) {
+				Task copyTask = taskToComplete.makeCopy();
+				copyTask.setIsComplete();
+				for (Iterator<Task> iterator = taskMasterList.iterator(); iterator.hasNext(); ) {
+					Task taskToRemove = iterator.next();
+					if (taskToRemove.getRecurUniqueID().equals(copyTask.getRecurUniqueID())) {
+						iterator.remove();
+					}
+				}
+				taskMasterList.add(copyTask);
+				taskToComplete.toNext();
+			} else {
+				taskToComplete.setIncomplete();
+			}
+		} else {
+			taskToComplete.setIsComplete();
+		}
+		return "Complete: " + (objectIndex + 1) + taskToComplete.getTitle();
 	}
 
 	/**
-	 * EXTRAORDINARY FEATURE - Sync with NUSMODS HTML file
+	 * EXTRAORDINARY FEATURE - Sync with nusmods html file
 	 * @author gaieepo
 	 */
 	private String loadNUSMods() {
@@ -240,12 +260,22 @@ public class Brain {
 	
 	private String undo() {
 		if (statusSaver.isMasterStackEmpty()) {
-			return "Hmmm...I can't undo when you haven't done anything yet!";
+			return "Cannot undo lah! You haven't done any changes yet.";
 		}
 		statusSaver.retrieveLastStatus();
 		taskMasterList = statusSaver.getLastTaskMasterList();
 		taskObservableList = statusSaver.getLastTaskObservableList();
-		return "Your action has been undone.";
+		return "Undo~do~do~do~do~";
+	}
+	
+	private void searchTask(String commandParameters) {
+		ObservableList<Task> tempObservableList = FXCollections.observableArrayList(); 
+		for (Task task : taskObservableList) {
+			if (task.getTitle().contains("commandParameters")) {
+				tempObservableList.add(task);
+			}
+		}
+		taskObservableList = tempObservableList;
 	}
 	
 	private void saveThisStatus() {
@@ -253,174 +283,6 @@ public class Brain {
 		assert taskObservableList != null;
 		statusSaver.saveStatus(taskMasterList, taskObservableList);
 	}
-
-	//	private void addTask(String commandParameters) {
-	//		boolean hasTaskParameters = checkIfHasParameters(commandParameters);
-	//		boolean isRecurringTask = checkIfRecurringTask(commandParameters);
-	//		boolean hasPriority = checkIfHasPriority(commandParameters);
-	//		boolean hasProject = checkIfHasProject(commandParameters);
-	//		boolean hasDate = checkIfDateIsAvailable(commandParameters);
-	//		boolean isEvent = checkIfTaskIsEvent(commandParameters);
-	//		boolean isDeadline = checkIfTaskIsDeadline(commandParameters);
-	//		String[] splitParameters = null;
-	//		String[] splitTaskDetails = null;
-	//		String taskDetails = "";
-	//		// System.out.println("PRINTING TASK DETAILS: " + taskDetails);
-	//
-	//		String priority = null;
-	//		String project = null;
-	//		String startTime = null;
-	//		String endTime = null;
-	//		String date = null;
-	//		String title = null;
-	//
-	//		if (hasTaskParameters) {
-	//			splitParameters = commandParameters.split(" ");
-	//			splitTaskDetails = commandParameters.split("//");
-	//			taskDetails = splitTaskDetails[1].substring(1);
-	//
-	//			int indexOfStartOfTaskDetails = commandParameters.indexOf(" //");
-	//			title = commandParameters.substring(0, indexOfStartOfTaskDetails);
-	//
-	//			if (hasPriority) {
-	//				priority = extractPriority(commandParameters);
-	//			}
-	//
-	//			if (hasProject) {
-	//				project = extractProject(commandParameters);
-	//			}
-	//
-	//			if (isRecurringTask) {
-	//				int indexOfEvery = taskDetails.indexOf("every ");
-	//				System.out.println("The task details for the recurring task: " + taskDetails);
-	//				String removeEveryKeyWord = taskDetails.substring(indexOfEvery);
-	//				removeEveryKeyWord = removeEveryKeyWord.replace("every ", "");
-	//				System.out
-	//				.println("The task details for the recurring task: " + removeEveryKeyWord);
-	//				String[] splitRemoveEveryKeyWord = removeEveryKeyWord.split(" ");
-	//				date = splitRemoveEveryKeyWord[0];
-	//				System.out.println("The task details for the recurring task: " + date);
-	//
-	//				if (isEvent) {
-	//					int indexOfFrom = taskDetails.indexOf("from");
-	//					int indexOfTo = taskDetails.indexOf("to");
-	//
-	//					String removeFromKeyword = taskDetails.substring(indexOfFrom);
-	//					removeFromKeyword = removeFromKeyword.replace("from ", "");
-	//					String[] splitRemoveFromKeyword = removeFromKeyword.split(" ");
-	//					startTime = splitRemoveFromKeyword[0];
-	//
-	//					String removeToKeyword = taskDetails.substring(indexOfTo);
-	//					removeToKeyword = removeToKeyword.replace("to ", "");
-	//					String[] splitRemoveToKeyword = removeToKeyword.split(" ");
-	//					endTime = splitRemoveToKeyword[0];
-	//
-	//				} else if (isDeadline) {
-	//					int indexOfAt = taskDetails.indexOf("at ");
-	//					String removeAtKeyword = taskDetails.substring(indexOfAt);
-	//					removeAtKeyword = removeAtKeyword.replace("at ", "");
-	//					String[] splitRemoveAtKeyword = removeAtKeyword.split(" ");
-	//					startTime = splitRemoveAtKeyword[0];
-	//					endTime = null;
-	//				}
-	//			} else {
-	//				System.out.println(taskDetails);
-	//				String[] taskDetailsArray = taskDetails.split(" ");
-	//				if(hasDate) {
-	//					date = taskDetailsArray[0];
-	//				} else {
-	//					date = null;
-	//				}
-	//				System.out.println(date);
-	//				if (isDeadline) {
-	//					int indexOfStartTime = taskDetails.indexOf("at ");
-	//					String removeAtKeyword = taskDetails.substring(indexOfStartTime);
-	//					removeAtKeyword = removeAtKeyword.replace("at ", "");
-	//					String[] splitRremoveAtKeyword = removeAtKeyword.split(" ");
-	//					startTime = splitRremoveAtKeyword[0];
-	//					endTime = null;
-	//				} else if (isEvent) {
-	//					int indexOfStartTime = taskDetails.indexOf("from ");
-	//					String removeFromKeyword = taskDetails.substring(indexOfStartTime);
-	//					removeFromKeyword = removeFromKeyword.replace("from ", "");
-	//					String[] splitRemoveFromKeyword = removeFromKeyword.split(" ");
-	//					startTime = splitRemoveFromKeyword[0];
-	//					System.out.println(startTime);
-	//
-	//					int indexOfEndTime = taskDetails.indexOf("to ");
-	//					String removeToKeyword = taskDetails.substring(indexOfEndTime);
-	//					removeToKeyword = removeToKeyword.replace("to ", "");
-	//					String[] splitRemoveToKeyword = removeToKeyword.split(" ");
-	//					endTime = splitRemoveToKeyword[0];
-	//					System.out.println(endTime);
-	//				} else {
-	//					startTime = null;
-	//					endTime = null;
-	//				}
-	//			}
-	//		} else {
-	//			title = commandParameters.trim();
-	//		}
-	//		Task newTask =
-	//				new Task(isRecurringTask, title, date, startTime, endTime, priority, project);
-	//		taskOrganiser.addNewTask(newTask);
-	//	}
-	//
-	//	private void updateTask(String commandParameters) {
-	//		Integer taskId = checkTaskId(commandParameters);
-	//		boolean hasTaskParameters = checkIfHasParameters(commandParameters);
-	//		if (0 < taskId && taskId < taskOrganiser.getSize() + 2 && hasTaskParameters) {
-	//			Task taskForUpdate = taskOrganiser.getTasks().get(taskId - 1);
-	//			System.out.println("updating task number " + taskId + ": "+ taskForUpdate.getTitle());
-	//			String taskUpdateDetails = commandParameters.split("//")[1].trim();
-	//
-	//			boolean needToChangeTitle = checkIfHasTitle(taskUpdateDetails);
-	//			boolean needToChangePriority = checkIfHasPriority(taskUpdateDetails);
-	//			boolean needToChangeProject = checkIfHasProject(taskUpdateDetails);
-	//			boolean needToChangeDate = checkIfHasDate(taskUpdateDetails);
-	//			boolean needToChangeTime = checkIfHasTime(taskUpdateDetails);
-	//			boolean isEvent = taskForUpdate.checkIfDeadline();
-	//			boolean isDeadline = taskForUpdate.checkIfDeadline();
-	//			boolean isRecurringTask = taskForUpdate.checkIfRecurring();
-	//
-	//			// TODO cannot add more than one word for title. need to fix
-	//			if (needToChangeTitle) {
-	//				taskForUpdate.setTitle(extractInformation("title", taskUpdateDetails));
-	//			}
-	//			if (needToChangePriority) {
-	//				taskForUpdate.setPriority(extractInformation("priority", taskUpdateDetails));
-	//			}
-	//			if (needToChangeProject) {
-	//				taskForUpdate.setProject(extractInformation("project", taskUpdateDetails));
-	//			}
-	//			if(needToChangeDate) {
-	//				taskForUpdate.setTaskDate(extractInformation("date", taskUpdateDetails));
-	//			}
-	//			if (needToChangeTime) {
-	//				/* recurring function not implemented
-	//				 * if (isRecurringTask) {
-	//				if(isDeadline) {
-	//					setRecurTaskDate(taskUpdateDetails);
-	//				} else if(isEvent) {
-	//					setRecurTaskStartAndEndTime(taskUpdateDetails);
-	//				}
-	//			} else {
-	//				 */
-	//				if(isDeadline) {
-	//					taskForUpdate.setStartTime(extractInformation("time", taskUpdateDetails));
-	//				} else if (isEvent) {
-	//					String timeDetail = extractInformation("time", taskUpdateDetails);
-	//					taskForUpdate.setStartTime(extractInformation("from", timeDetail));
-	//					taskForUpdate.setEndTime(extractInformation("to", timeDetail));
-	//				}
-	//			}
-	//
-	//			taskOrganiser.getTasks().set(taskId - 1, taskForUpdate);
-	//		} else {
-	//			System.out.println("Invalid UPDATE input");
-	//		}
-	//	}
-
 
 	// Initialization Methods
 	public void setRootController(RootController rootController) {
@@ -432,15 +294,5 @@ public class Brain {
 		sorter = new Sorter(taskMasterList);
 		sorter.sort();
 		taskMasterList = sorter.getSortedList();
-	}
-	
-	public ArrayList<Task> getCompletedTasks() {
-		ArrayList<Task> completedTasks = new ArrayList<Task>();
-		for(Task task : taskMasterList) {
-			if(task.isCompleted()) {
-				completedTasks.add(task);
-			}
-		}
-		return completedTasks;
 	}
 }

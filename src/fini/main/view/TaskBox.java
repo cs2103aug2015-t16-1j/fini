@@ -1,6 +1,5 @@
 package fini.main.view;
 
-import fini.main.MainApp;
 import fini.main.model.Task.Priority;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,7 +29,10 @@ public class TaskBox extends HBox {
 	private Label project;
 
 	@FXML
-	private Label date;
+	private Label startDate;
+	
+	@FXML
+	private Label endDate;
 
 	@FXML
 	private Label startTime;
@@ -38,7 +40,7 @@ public class TaskBox extends HBox {
 	@FXML
 	private Label endTime;
 
-	public TaskBox(int taskId, String typeOfTask, String taskTitle, String taskDate, String taskStartTime,
+	public TaskBox(int taskId, String typeOfTask, String taskTitle, String taskStartDate, String taskEndDate, String taskStartTime,
 			String taskEndTime, Priority taskPriority, String taskProject, boolean isRecurringTask) {
 
 		loadFxml();
@@ -70,10 +72,16 @@ public class TaskBox extends HBox {
 			this.recurring.setOpacity(0);
 		} 
 
-		if(taskDate != null) {
-			this.date.setText(taskDate);
+		if(taskStartDate != null) {
+			this.startDate.setText(taskStartDate);
 		} else {
-			hideLabel(date);
+			hideLabel(startDate);
+		}
+		
+		if(taskEndDate != null) {
+			this.endDate.setText(taskEndDate);
+		} else {
+			hideLabel(endDate);
 		}
 
 		if(taskStartTime != null) {
@@ -93,7 +101,8 @@ public class TaskBox extends HBox {
 		}
 
 		this.index.setText(Integer.toString(taskId));
-		this.date.setText(taskDate);
+		this.startDate.setText(taskStartDate);
+		this.endDate.setText(taskEndDate);
 		this.title.setText(taskTitle);
 
 		//		HBox hbox = new HBox();
@@ -152,7 +161,7 @@ public class TaskBox extends HBox {
 			//taskBoxLoader.setController(this);
 			//taskBoxLoader.load();
 
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("TaskBox.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("TaskBox2.fxml"));
 			loader.setRoot(this);
 			loader.setController(this);
 			loader.load();
