@@ -6,14 +6,12 @@ import java.util.ArrayList;
 import java.util.Spliterator;
 import java.util.stream.Collectors;
 
-import javax.swing.undo.UndoableEdit;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
+import fini.main.model.Command;
 import fini.main.model.FiniParser;
 import fini.main.model.StatusSaver;
 import fini.main.model.Storage;
 import fini.main.model.Task;
-import fini.main.model.FiniParser.CommandType;
+import fini.main.model.Command.CommandType;
 import fini.main.util.ModsLoader;
 import fini.main.util.Sorter;
 import fini.main.view.RootController;
@@ -60,131 +58,158 @@ public class Brain {
 		rootController.updateMainDisplay(taskObservableList);
 		rootController.updateProjectsOverviewPanel(taskObservableList);
 		rootController.updateTasksOverviewPanel(taskObservableList);
-		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
 
+//	public static void main(String[] args) {
+//		Brain testBrain = Brain.getInstance();
+//		testBrain.executeCommand("add curry chicken tomorrow repeat everyday until dec priority high");
+//	}
+	
 	public void executeCommand(String userInput) {
+//		finiParser.parse(userInput);
+
+//		System.out.println(">>>>>");
+//		System.out.println("StoredInput: " + finiParser.getStoredUserInput());
+//		System.out.println("CommandType: " + finiParser.getCommandType());
+//		System.out.println("CommandParameters: " + finiParser.getCommandParameters());
+//		System.out.println("CleanParameters: " + finiParser.getCleanParameters());
+//		System.out.println("Priority: " + finiParser.getPriority());
+//		System.out.println("ProjectName: " + finiParser.getProjectName());
+//		for (LocalDateTime ldt : finiParser.getDatetimes()) {
+//			System.out.println("Datetime: " + ldt.toString());
+//		}
+//		System.out.println("NotParsed: " + finiParser.getNotParsed());
+//		System.out.println("<<<<<");
+
+		Command newCommand = new Command(userInput);
+		CommandType commandType = newCommand.getCommandType();
+		int objectIndex = newCommand.getObjectIndex();
+		String commandParameters = newCommand.getCommandParameters();
+		
+//		System.out.println(commandType);
+		
 		String display = "";
-
-		finiParser.parse(userInput);
-
-		System.out.println(">>>>>");
-		System.out.println("StoredInput: " + finiParser.getStoredUserInput());
-		System.out.println("CommandType: " + finiParser.getCommandType());
-		System.out.println("CommandParameters: " + finiParser.getCommandParameters());
-		System.out.println("CleanParameters: " + finiParser.getCleanParameters());
-		System.out.println("Priority: " + finiParser.getPriority());
-		System.out.println("ProjectName: " + finiParser.getProjectName());
-		for (LocalDateTime ldt : finiParser.getDatetimes()) {
-			System.out.println("Datetime: " + ldt.toString());
-		}
-		System.out.println("NotParsed: " + finiParser.getNotParsed());
-		System.out.println("<<<<<");
-
-		CommandType commandType = finiParser.getCommandType();
 		switch (commandType) {
 		case ADD:
 			saveThisStatus();
-			display = addTask();
+			display = addTask(commandParameters);
 			break;
-		case UPDATE:
-			saveThisStatus();
-			display = updateTask();
-			break;
+//		case UPDATE:
+//			saveThisStatus();
+//			display = updateTask(objectIndex, commandParameters);
+//			break;
 		case DELETE:
 			saveThisStatus();
-			display = deleteTask();
+			display = deleteTask(objectIndex);
 			break;
 		case CLEAR:
 			saveThisStatus();
 			display = clearAllTasks();
 			break;
-		case UNDO:
-			display = undo();
-			break;
-		case MODE:
-			// TODO: NighMODE! :)
-//			MainApp.switchMode();
-			break;
-		case MODS:
-			saveThisStatus();
-			display = loadNUSMods();
-			break;
+//		case UNDO:
+//			display = undo();
+//			break;
+//		case MODE:
+////			MainApp.switchMode();
+//			break;
+//		case MODS:
+//			saveThisStatus();
+//			display = loadNUSMods(commandParameters);
+//			break;
 		case EXIT:
 			System.exit(0);
-		case COMPLETE:
-			saveThisStatus();
-			display = completeTask();
-			break;
+//		case COMPLETE:
+//			saveThisStatus();
+//			display = completeTask(objectIndex, );
+//			break;
 		case INVALID:
-			display = "You have provided an invalid command. Enter help for more info.";
+			display = "commandType INVALID";
+			break;
+		default:
 			break;
 		}
 
 		sortTaskMasterList();
 		taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+		
+//		System.out.println("display - Bain execute: " + display);
+		
 		rootController.updateMainDisplay(taskObservableList);
 		rootController.updateProjectsOverviewPanel(taskObservableList);
 		rootController.updateTasksOverviewPanel(taskObservableList);
 		rootController.updateDisplayToUser(display);
-		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
 	
 	// Logic Methods
-	private String addTask() {
-		if (finiParser.getCommandParameters().isEmpty()) {
-			return "You have not provided any parameters for your command.";
+	private String addTask(String commandParameters) {
+		if (commandParameters.isEmpty()) {
+			return "CommandParameters is empty";
 		}
 		
-		// TODO if recurring, then create multiple tasks at the same time
-		Task newTask = new Task(finiParser.getNotParsed(), 
-								finiParser.getDatetimes(), 
-								finiParser.getPriority(),
-								finiParser.getProjectName(),
-								finiParser.getIsRecurring(),
-								finiParser.getRecursUntil());
+		finiParser.parse(commandParameters);
+		
+		Task newTask = new Task.TaskBuilder(finiParser.getNotParsed(), finiParser.getIsRecurring())
+						   .setDatetimes(finiParser.getDatetimes())
+						   .setPriority(finiParser.getPriority())
+						   .setInterval(finiParser.getInterval())
+						   .setRecursUntil(finiParser.getRecursUntil()).build();
+		
+//		@Override
+//		public String toString() {
+//			return taskTitle + " " + 
+//				   isRecurring + " " + 
+//				   priority.toString() + " " + 
+//				   (taskStartDateTime == null ? "Null" : taskStartDateTime.toString()) + " " +
+//				   (taskEndDateTime == null ? "Null" : taskEndDateTime.toString()) + " " +
+//				   (recursUntil == null ? "Null" : recursUntil) + " " +
+//				   (interval == null ? "Null" : interval.toString()) + " " +
+//				   isCompleted + " " +
+//				   taskType.toString();
+//		}
+		System.out.println("task detail - addTask: " + newTask);
+		
 		taskMasterList.add(newTask);
 		taskOrganiser.updateFile(taskMasterList);
 		return "Added: " + finiParser.getNotParsed();
 	}
 	
-	private String updateTask() {
-		int taskIndex;
-		Task taskToUpdate;
-		
-		if (finiParser.getCommandParameters().split(" ").length < 2) {
-			return "Update insufficient parameters INVALID";
-		}
-		
-		String[] splitNotParsed = finiParser.getNotParsed().split(" ");
-		
-		try {
-			taskIndex = Integer.parseInt(splitNotParsed[0]) - 1;
-			taskToUpdate = taskObservableList.get(taskIndex);
-		} catch (IndexOutOfBoundsException | NumberFormatException e) {
-			return "Task not found!";
-		}
-		
-		String[] fixedSplitNotParsed = (String[]) Arrays.copyOfRange(splitNotParsed, 1, splitNotParsed.length);
-		String fixedNotParsed = String.join(" ", fixedSplitNotParsed);
-		
-		// delete first
-		taskObservableList.remove(taskToUpdate);
-		taskMasterList.remove(taskToUpdate);
-		taskOrganiser.updateFile(taskMasterList);
-		
-		// add then
-		Task newTask = new Task(fixedNotParsed, 
-								finiParser.getDatetimes(), 
-								finiParser.getPriority(),
-								finiParser.getProjectName(),
-								finiParser.getIsRecurring(),
-								finiParser.getRecursUntil());
-		taskMasterList.add(newTask);
-		taskOrganiser.updateFile(taskMasterList);
-		
-		return "Update: " + (taskIndex + 1) + taskToUpdate.getTitle();
-	}
+//	private String updateTask() {
+//		int taskIndex;
+//		Task taskToUpdate;
+//		
+//		if (finiParser.getCommandParameters().split(" ").length < 2) {
+//			return "Update insufficient parameters INVALID";
+//		}
+//		
+//		String[] splitNotParsed = finiParser.getNotParsed().split(" ");
+//		
+//		try {
+//			taskIndex = Integer.parseInt(splitNotParsed[0]) - 1;
+//			taskToUpdate = taskObservableList.get(taskIndex);
+//		} catch (IndexOutOfBoundsException | NumberFormatException e) {
+//			return "Task not found";
+//		}
+//		
+//		String[] fixedSplitNotParsed = (String[]) Arrays.copyOfRange(splitNotParsed, 1, splitNotParsed.length);
+//		String fixedNotParsed = String.join(" ", fixedSplitNotParsed);
+//		
+//		// delete first
+//		taskObservableList.remove(taskToUpdate);
+//		taskMasterList.remove(taskToUpdate);
+//		taskOrganiser.updateFile(taskMasterList);
+//		
+//		// add then
+//		Task newTask = new Task(fixedNotParsed, 
+//								finiParser.getDatetimes(), 
+//								finiParser.getPriority(),
+//								finiParser.getProjectName(),
+//								finiParser.getIsRecurring(),
+//								finiParser.getRecursUntil());
+//		taskMasterList.add(newTask);
+//		taskOrganiser.updateFile(taskMasterList);
+//		
+//		return "Update: " + (taskIndex + 1) + taskToUpdate.getTitle();
+//	}
 	
 	// @author A0121828H
 	private String clearAllTasks() {
@@ -193,60 +218,58 @@ public class Brain {
 		return "All tasks have been cleared";
 	}
 	
-	private String deleteTask() {
-		int taskIndex;
+	private String deleteTask(int objectIndex) {
 		Task taskToDelete;
 		try {
-			taskIndex = Integer.parseInt(finiParser.getCleanParameters()) - 1;
-			taskToDelete = taskObservableList.get(taskIndex);
-		} catch (IndexOutOfBoundsException | NumberFormatException e) {
+			taskToDelete = taskObservableList.get(objectIndex);
+		} catch (IndexOutOfBoundsException e) {
 			return "Task not found";
 		}
 		
 		taskObservableList.remove(taskToDelete);
 		taskMasterList.remove(taskToDelete);
 		taskOrganiser.updateFile(taskMasterList);
-		return "Delete: " + (taskIndex + 1) + " " + taskToDelete.getTitle();
+		return "Delete: " + (objectIndex + 1) + " " + taskToDelete.getTitle();
 	}
 	
-	private String completeTask() {
-		int taskIndex;
-		Task taskToComplete;
-		try {
-			taskIndex = Integer.parseInt(finiParser.getCleanParameters()) - 1;
-			taskToComplete = taskObservableList.get(taskIndex);
-			taskToComplete.setComplete();
-		} catch (IndexOutOfBoundsException e) {
-			return "Task not found";
-		}
-		return "Completed: " + (taskIndex + 1) + taskToComplete.getTitle();
-	}
+//	private String completeTask() {
+//		int taskIndex;
+//		Task taskToComplete;
+//		try {
+//			taskIndex = Integer.parseInt(finiParser.getCleanParameters()) - 1;
+//			taskToComplete = taskObservableList.get(taskIndex);
+//			taskToComplete.setComplete();
+//		} catch (IndexOutOfBoundsException e) {
+//			return "Task not found";
+//		}
+//		return "Complete: " + (taskIndex + 1) + taskToComplete.getTitle();
+//	}
 
 	/**
-	 * EXTRAORDINARY FEATURE - Sync with NUSMODS HTML file
+	 * EXTRAORDINARY FEATURE - Sync with nusmods html file
 	 * @author gaieepo
 	 */
-	private String loadNUSMods() {
-		File modsFile = new File(finiParser.getCleanParameters());
-		if (modsFile.exists()) {
-			ModsLoader loader = new ModsLoader(modsFile);
-			taskMasterList.addAll(loader.getLessonTasks());
-		} else {
-			return "No nusmods file";
-		}
-		taskOrganiser.updateFile(taskMasterList);
-		return "NUSMODS loaded";
-	}
+//	private String loadNUSMods() {
+//		File modsFile = new File(finiParser.getCleanParameters());
+//		if (modsFile.exists()) {
+//			ModsLoader loader = new ModsLoader(modsFile);
+//			taskMasterList.addAll(loader.getLessonTasks());
+//		} else {
+//			return "No nusmods file";
+//		}
+//		taskOrganiser.updateFile(taskMasterList);
+//		return "NUSMODS loaded";
+//	}
 	
-	private String undo() {
-		if (statusSaver.isMasterStackEmpty()) {
-			return "Hmmm...I can't undo when you haven't done anything yet!";
-		}
-		statusSaver.retrieveLastStatus();
-		taskMasterList = statusSaver.getLastTaskMasterList();
-		taskObservableList = statusSaver.getLastTaskObservableList();
-		return "Your action has been undone.";
-	}
+//	private String undo() {
+//		if (statusSaver.isMasterStackEmpty()) {
+//			return "Cannot undo lah! You haven't done any changes yet.";
+//		}
+//		statusSaver.retrieveLastStatus();
+//		taskMasterList = statusSaver.getLastTaskMasterList();
+//		taskObservableList = statusSaver.getLastTaskObservableList();
+//		return "Undo~do~do~do~do~";
+//	}
 	
 	private void saveThisStatus() {
 		assert taskMasterList != null;
@@ -432,15 +455,5 @@ public class Brain {
 		sorter = new Sorter(taskMasterList);
 		sorter.sort();
 		taskMasterList = sorter.getSortedList();
-	}
-	
-	public ArrayList<Task> getCompletedTasks() {
-		ArrayList<Task> completedTasks = new ArrayList<Task>();
-		for(Task task : taskMasterList) {
-			if(task.isCompleted()) {
-				completedTasks.add(task);
-			}
-		}
-		return completedTasks;
 	}
 }

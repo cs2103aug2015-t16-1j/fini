@@ -1,104 +1,58 @@
 package fini.main.model;
 
+import java.time.Period;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.joestelmach.natty.DateGroup;
+import com.joestelmach.natty.ParseLocation;
 import com.joestelmach.natty.Parser;
 
-import fini.main.MainApp;
 import fini.main.model.Task.Priority;
 
 public class FiniParser {
-	public static enum CommandType {
-		ADD, UPDATE, DELETE, CLEAR, UNDO, REDO, SEARCH, MODE, EXIT, COMPLETE, MODS, INVALID
-	};
-
 	private static FiniParser finiParser;
 	private Parser parser;
-
-	private String storedUserInput;
-	private CommandType commandType;
-	private String commandParameters;
+	
+	private String storedParameters;
 	private String cleanParameters;
 	private Priority priority;
-	private String projectName;
+//	private String projectName;
 	private ArrayList<LocalDateTime> datetimes;
 	private boolean isRecurring;
 	private LocalDateTime recursUntil;
+	private Period interval;
 	private String notParsed;
 
 	public FiniParser() {
 		initializeFields();
 	}
 
-	public String parse(String userInput) {
+	public String parse(String commandParameters) {
 		try {
 			initializeFields();
-			storedUserInput = userInput;
-			//		String cleanInput = getCleanString(userInput);
-			String cleanInput = getSimpleCleanString(userInput);
-			System.out.println("Clean input: " + cleanInput);
-			String[] userInputSplitArray = cleanInput.split(" ");
-			if (userInputSplitArray.length > 1) {
-				commandParameters = userInput.replaceFirst(userInputSplitArray[0], "").substring(1);
-				commandType = determineUserCommandType(userInputSplitArray[0].toLowerCase());	
-				System.out.println("CMD: " + commandType);
-
-				cleanParameters = commandParameters;
-				priority = determinePriority(userInputSplitArray);
-				//			projectName = determineProjectName(userInputSplitArray);
-
-				boolean isNattySuccessful = evaluateParameters(cleanParameters);
-
-				if (isNattySuccessful) {
-					return "Parse Successful";
-				}
-
-				return "Parse Error";
-			} else {
-				commandType = determineUserCommandType(userInputSplitArray[0]);
-			}
-			return "SUCCESS";
+			storedParameters = commandParameters;
+			cleanParameters = storedParameters; // init of clean
+//			System.out.println("CleanParameters - FiniParser parse(): " + cleanParameters);
+			
+			String[] splitStoredParameters = storedParameters.split(" ");
+			priority = determinePriority(splitStoredParameters);
+			// projectName = determineProjectName(userInputSplitArray);
+			notParsed = determineDatetimes(cleanParameters);
+			return "FiniParser.parse SUCCESS";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "ERROR";
-		}
-
-
-	}
-
-	private CommandType determineUserCommandType(String command) {
-		switch (command) {
-		case "add":
-			return CommandType.ADD;
-		case "update":
-			return CommandType.UPDATE;
-		case "delete":
-			return CommandType.DELETE;
-		case "clear":
-			return CommandType.CLEAR;
-		case "undo":
-			return CommandType.UNDO;
-		case "exit":
-			return CommandType.EXIT;
-		case "complete":
-			return CommandType.COMPLETE;
-		case "mods":
-			return CommandType.MODS;
-		case "mode":
-			return CommandType.MODE;
-		default:
-			return CommandType.INVALID;
+			return "FiniParser.parse ERROR";
 		}
 	}
 
-	private Priority determinePriority(String[] userInputSplitArray) {
-		ArrayList<String> words = new ArrayList<String>(Arrays.asList(userInputSplitArray));
+	private Priority determinePriority(String[] splitStoredParameters) {
+		List<String> words = Arrays.asList(splitStoredParameters);
 		for (String word : words) {
 			if (word.toLowerCase().equals("priority")) {
 				if (words.indexOf(word) != words.size() - 1) {
@@ -125,6 +79,7 @@ public class FiniParser {
 						return returnPriority;
 					}
 				} else {
+					// "priority" keyword appears at the end
 					break;
 				}
 			}
@@ -149,44 +104,105 @@ public class FiniParser {
 	//		return null;
 	//	}
 
-	private boolean evaluateParameters(String cleanParameters) {
-		List<DateGroup> groups = parser.parse(cleanParameters);
-
-		if (!groups.isEmpty()) {
+	private String determineDatetimes(String cleanParameters) {
+		String tempParameters = cleanParameters;
+		List<DateGroup> groups = parser.parse(tempParameters);
+		
+		if (groups.size() == 1) {
 			DateGroup group = groups.get(0);
+			if (group.isRecurring()) {
+				List<Date> dateList = group.getDates();
+				Map<String, List<ParseLocation>> parseMap = group.getParseLocations();
+				
+				for (Date date : dateList) {
+					datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+				}
+				
+				notParsed = tempParameters;
+				for (ParseLocation parsedWord : parseMap.get("parse")) {
+					notParsed = notParsed.substring(0, parsedWord.getStart() - 1) + notParsed.substring(parsedWord.getEnd() - 1);
+				}
+				return getSimpleCleanString(notParsed);
+			} else {
+				if (tempParameters.contains("repeat everyday")) { // add xxx repeat everyday
+					isRecurring = true;
+					interval = Period.ofDays(1);
+					notParsed = tempParameters.replaceAll("repeat everyday", "");
+					return getSimpleCleanString(notParsed);
+				}
+				
+				List<Date> dateList = group.getDates();
+				for (Date date : dateList) {
+					datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+				}
 
-			List<Date> dateList = group.getDates();
-			for (Date date : dateList) {
-				datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+				String matchingValue = group.getText();
+				notParsed = tempParameters;
+				notParsed = notParsed.replaceAll(matchingValue, "");
+				return getSimpleCleanString(notParsed);
 			}
-
-			isRecurring = group.isRecurring();
-			if (isRecurring && group.getRecursUntil() != null) {
-				recursUntil = LocalDateTime.ofInstant(group.getRecursUntil().toInstant(), ZoneId.systemDefault());
+		} else if (groups.size() == 2) {
+			if (tempParameters.contains("repeat every") && !groups.get(0).isRecurring()) {
+				DateGroup group1 = groups.get(0);
+				List<Date> dateList1 = group1.getDates();
+				Map<String, List<ParseLocation>> parseMap1 = group1.getParseLocations();
+				for (Date date : dateList1) {
+					datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+				}
+				
+				notParsed = tempParameters;
+				for (ParseLocation parsedWord : parseMap1.get("parse")) {
+					notParsed = notParsed.substring(0, parsedWord.getStart() - 1) + notParsed.substring(parsedWord.getEnd() - 1);
+				}
+				notParsed = getSimpleCleanString(notParsed);
+				
+				DateGroup group2 = groups.get(1);
+				if (group2.isRecurring()) {
+					Map<String, List<ParseLocation>> parseMap2 = group2.getParseLocations();
+					String potentialInterval = "every " + parseMap2.get("date_time_alternative").get(0).getText();
+					boolean validIntervalFormat = checkIntervalFormat(potentialInterval);
+					if (validIntervalFormat) {
+						isRecurring = true;
+						interval = determineInterval(potentialInterval);
+						recursUntil = group2.getRecursUntil() == null ? null : LocalDateTime.ofInstant(group2.getRecursUntil().toInstant(), ZoneId.systemDefault());
+					}
+					
+					for (ParseLocation parsedWord : parseMap2.get("parse")) {
+						notParsed = notParsed.substring(0, parsedWord.getStart() - 1) + notParsed.substring(parsedWord.getEnd() - 1);
+					}
+					return getSimpleCleanString(notParsed);
+				} else { // add xxx repeat everyday until xxx / add xxx repeat every minute until
+					String potentialInterval = tempParameters.substring(tempParameters.indexOf("repeat") + 6, tempParameters.indexOf("until")).trim();
+					boolean validIntervalFormat = checkIntervalFormat(potentialInterval);
+					if (validIntervalFormat) {
+						isRecurring = true;
+						interval = determineInterval(potentialInterval);
+						recursUntil = LocalDateTime.ofInstant(group2.getDates().get(0).toInstant(), ZoneId.systemDefault());
+					}
+					notParsed = notParsed.replaceAll("repeat.*until", "");
+					return getSimpleCleanString(notParsed);
+				}
+			} else {
+				DateGroup group = groups.get(0);
+				List<Date> dateList = group.getDates();
+				Map<String, List<ParseLocation>> parseMap = group.getParseLocations();
+				for (Date date : dateList) {
+					datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+				}
+				notParsed = tempParameters;
+				for (ParseLocation parsedWord : parseMap.get("parse")) {
+					notParsed = notParsed.substring(0, parsedWord.getStart() - 1) + notParsed.substring(parsedWord.getEnd() - 1);
+				}
+				return getSimpleCleanString(notParsed);
 			}
-
-			String matchingValue = group.getText();
-			notParsed = cleanParameters;
-			notParsed = notParsed.replaceAll(matchingValue, "");
-			notParsed = getSimpleCleanString(notParsed);
-			return true;
 		} else {
-			notParsed = cleanParameters;
+			return cleanParameters;
 		}
-		return false;
 	}
 
 	// Public Getters
-	public String getStoredUserInput() {
-		return storedUserInput;
-	}
-
-	public CommandType getCommandType() {
-		return commandType;
-	}
-
-	public String getCommandParameters() {
-		return commandParameters;
+	public String getStoredParameters() {
+		return storedParameters;
 	}
 
 	public String getCleanParameters() {
@@ -197,9 +213,9 @@ public class FiniParser {
 		return priority;
 	}
 
-	public String getProjectName() {
-		return projectName;
-	}
+//	public String getProjectName() {
+//		return projectName;
+//	}
 
 	public ArrayList<LocalDateTime> getDatetimes() {
 		return datetimes;
@@ -212,109 +228,92 @@ public class FiniParser {
 	public LocalDateTime getRecursUntil() {
 		return recursUntil;
 	}
+	
+	public Period getInterval() {
+		return interval;
+	}
 
 	public String getNotParsed() {
 		return notParsed;
 	}
 
-	// Checking Methods
-	//	private Integer checkTaskId(String commandParameters) {
-	//		String taskIdStr = commandParameters.split("//")[0].trim();
-	//		boolean isNum = false;
-	//		for (char ch : taskIdStr.toCharArray()) {
-	//			if (!Character.isDigit(ch)) {
-	//				isNum = false;
-	//			}
-	//			isNum = true;
-	//		}
-	//		Integer taskId;
-	//		if (isNum) {
-	//			taskId = Integer.valueOf(taskIdStr);
-	//		} else {
-	//			taskId = -1;
-	//		}
-	//		return taskId;
-	//	}
-	//
-	//	private boolean checkIfHasTitle(String commandParameters) {
-	//		return commandParameters.toLowerCase().contains("title");
-	//	}
-	//
-	//	private boolean checkIfHasDate(String commandParameters) {
-	//		return commandParameters.toLowerCase().contains("date");
-	//	}
-	//
-	//	private boolean checkIfHasTime(String commandParameters) {
-	//		return commandParameters.toLowerCase().contains("time");
-	//	}
-	//
-	//	private boolean checkIfHasParameters(String commandParameters) {
-	//		return commandParameters.contains("//");
-	//	}
-	//
-	//	private boolean checkIfHasProject(String commandParameters) {
-	//		return commandParameters.contains("project");
-	//	}
-	//
-	//	private boolean checkIfTaskIsDeadline(String commandParameters) {
-	//		return commandParameters.contains("at");
-	//	}
-	//
-	//	private boolean checkIfTaskIsEvent(String commandParameters) {
-	//		return commandParameters.contains("from") && commandParameters.contains("to");
-	//	}
-	//
-	//	private boolean checkIfHasPriority(String commandParameters) {
-	//		return commandParameters.contains("priority");
-	//	}
-	//
-	//	private boolean checkIfRecurringTask(String commandParameters) {
-	//		return commandParameters.contains("every");
-	//	}
-	//	
-	//	
-	//	// Utility Methods
-	//	private String getCleanString(String userInput) {
-	//		String cleanStr;
-	//		cleanStr = userInput.trim();
-	//		cleanStr = cleanStr.replaceAll("[^A-Za-z0-9/\\s+]", "");
-	//		cleanStr = cleanStr.replaceAll("\\s+", " ");
-	//		return cleanStr;
-	//	}
-
-	public String getSimpleCleanString(String userInput) {
-		String cleanStr;
-		cleanStr = userInput.trim();
-		cleanStr = cleanStr.replaceAll("\\s+", " ");
-		return cleanStr;
+	// Utility Methods
+	private String getSimpleCleanString(String input) {
+		return input.trim().replaceAll("\\s+", " ");
 	}
-
-	//	private String extractProject(String commandParameters) {
-	//		int indexOfProject = commandParameters.toLowerCase().indexOf("project");
-	//		String projectDetails = commandParameters.substring(indexOfProject);
-	//		projectDetails = projectDetails.replace("project ", "");
-	//		String[] removeProjectKeyword = projectDetails.split(" ");
-	//		return removeProjectKeyword[0];
-	//	}
-	//
-	//	private String extractInformation(String keyword, String commandParameters) {
-	//		commandParameters = commandParameters.trim();
-	//		int indexOfKeyword = commandParameters.toLowerCase().indexOf(keyword);
-	//		String commandDetails = commandParameters.substring(indexOfKeyword).trim();
-	//		commandDetails  = commandDetails .replace(keyword, "").trim();
-	//		String[] removeKeyword = commandDetails.split(" ");
-	//		System.out.println(removeKeyword[0]);
-	//		return removeKeyword[0];
-	//	}
-	//
-	//	private String extractPriority(String commandParameters) {
-	//		int indexOfPriority = commandParameters.toLowerCase().indexOf("priority");
-	//		String priorityDetails = commandParameters.substring(indexOfPriority);
-	//		priorityDetails = priorityDetails.replace("priority ", "");
-	//		String[] removePriorityKeyword = priorityDetails.split(" ");
-	//		System.out.println(removePriorityKeyword[0]);
-	//		return removePriorityKeyword[0];
-	//	}
+	
+	private boolean checkIntervalFormat(String potentialInterval) {
+		String[] splitPotentialInterval = potentialInterval.split(" ");
+		if (splitPotentialInterval.length == 1) {
+			if (splitPotentialInterval[0].toLowerCase().equals("everyday")) {
+				return true;
+			}
+		} else if (splitPotentialInterval.length == 2) {
+			if (splitPotentialInterval[0].toLowerCase().equals("every")) {
+				String intervalUnit = splitPotentialInterval[1].toLowerCase();
+				if (intervalUnit.equals("day") ||
+					intervalUnit.equals("week") ||
+					intervalUnit.equals("month") ||
+					intervalUnit.equals("year")) {
+					return true;
+				}
+			}
+		} else if (splitPotentialInterval.length == 3) {
+			if (splitPotentialInterval[0].toLowerCase().equals("every")) {
+				try {
+					int prefix = Integer.parseInt(splitPotentialInterval[1]);
+					String intervalUnit = splitPotentialInterval[2].toLowerCase();
+					if (intervalUnit.equals("days") ||
+						intervalUnit.equals("weeks") ||
+						intervalUnit.equals("months") ||
+						intervalUnit.equals("years")) {
+						return true;
+					}
+				} catch (NumberFormatException e) {
+					return false;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private Period determineInterval(String potentialInterval) {
+		String[] splitPotentialInterval = potentialInterval.split(" ");
+		if (splitPotentialInterval.length == 1) {
+			return Period.ofDays(1);
+		} 
+		
+		if (splitPotentialInterval.length == 2) {
+			String intervalUnit = splitPotentialInterval[1].toLowerCase();
+			switch (intervalUnit) {
+			case "day":
+				return Period.ofDays(1);
+			case "week":
+				return Period.ofWeeks(1);
+			case "month":
+				return Period.ofMonths(1);
+			case "year":
+				return Period.ofYears(1);
+			}
+		}
+		
+		if (splitPotentialInterval.length == 3) {
+			int prefix = Integer.parseInt(splitPotentialInterval[1]);
+			String intervalUnit = splitPotentialInterval[2].toLowerCase();
+			switch (intervalUnit) {
+			case "days":
+				return Period.ofDays(prefix);
+			case "weeks":
+				return Period.ofWeeks(prefix);
+			case "months":
+				return Period.ofMonths(prefix);
+			case "years":
+				return Period.ofYears(prefix);
+			}
+		}
+		
+		return Period.ZERO;
+	}
 
 	// Initialization Methods
 	public static FiniParser getInstance() {
@@ -325,14 +324,14 @@ public class FiniParser {
 	}
 
 	private void initializeFields() {
-		storedUserInput = "";
-		commandType = null;
+		parser = new Parser();
+		storedParameters = "";
 		priority = null;
-		projectName = null;
+//		projectName = null;
 		datetimes = new ArrayList<LocalDateTime>();
 		isRecurring = false;
 		recursUntil = null;
+		interval = null;
 		notParsed = "";
-		parser = new Parser();
 	}
 }
