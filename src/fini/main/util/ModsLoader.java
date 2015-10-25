@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -42,7 +43,9 @@ public class ModsLoader {
 					ArrayList<LocalDateTime> lessonDateTimes = new ArrayList<LocalDateTime>();
 					lessonDateTimes.add(LocalDateTime.of(lessonDate, lessonStartTime));
 					lessonDateTimes.add(LocalDateTime.of(lessonDate, lessonEndTime));
-					lessonTasks.add(new Task(title, lessonDateTimes, Priority.NORMAL, "", false, null));
+					lessonTasks.add(new Task.TaskBuilder(title, true)
+							            .setDatetimes(lessonDateTimes)
+							            .setInterval(Period.ofWeeks(1)).build());
 				}
 			}
 		} catch (IOException e) {

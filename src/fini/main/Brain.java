@@ -95,10 +95,10 @@ public class Brain {
 //		case MODE:
 //			MainApp.switchMode();
 //			break;
-//		case MODS:
-//			saveThisStatus();
-//			display = loadNUSMods(commandParameters);
-//			break;
+		case MODS:
+			saveThisStatus();
+			display = loadNUSMods();
+			break;
 		case EXIT:
 			System.exit(0);
 		case COMPLETE:
@@ -220,17 +220,17 @@ public class Brain {
 	 * EXTRAORDINARY FEATURE - Sync with nusmods html file
 	 * @author gaieepo
 	 */
-//	private String loadNUSMods() {
-//		File modsFile = new File(finiParser.getCleanParameters());
-//		if (modsFile.exists()) {
-//			ModsLoader loader = new ModsLoader(modsFile);
-//			taskMasterList.addAll(loader.getLessonTasks());
-//		} else {
-//			return "No nusmods file";
-//		}
-//		taskOrganiser.updateFile(taskMasterList);
-//		return "NUSMODS loaded";
-//	}
+	private String loadNUSMods() {
+		File modsFile = new File(finiParser.getCleanParameters());
+		if (modsFile.exists()) {
+			ModsLoader loader = new ModsLoader(modsFile);
+			taskMasterList.addAll(loader.getLessonTasks());
+		} else {
+			return "No nusmods file";
+		}
+		taskOrganiser.updateFile(taskMasterList);
+		return "NUSMODS loaded";
+	}
 	
 	private String undo() {
 		if (statusSaver.isMasterStackEmpty()) {
