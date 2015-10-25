@@ -1,6 +1,0 @@
-{"taskTitle":"harish","priority":"NORMAL","isRecurring":false,"isCompleted":false,"taskType":"DEFAULT"}
-{"taskTitle":"an event","priority":"HIGH","taskStartDate":{"year":2015,"month":10,"day":23},"taskStartTime":{"hour":0,"minute":35,"second":47,"nano":163000000},"isRecurring":false,"isCompleted":false,"taskType":"DEADLINE"}
-{"taskTitle":"CS2101 Project Conferencing","priority":"HIGH","taskStartDate":{"year":2015,"month":10,"day":24},"taskStartTime":{"hour":10,"minute":0,"second":0,"nano":0},"isRecurring":false,"isCompleted":false,"taskType":"DEADLINE"}
-{"taskTitle":"another event with","priority":"MEDIUM","taskStartDate":{"year":2015,"month":10,"day":24},"taskStartTime":{"hour":12,"minute":0,"second":0,"nano":0},"isRecurring":false,"isCompleted":false,"taskType":"DEADLINE"}
-{"taskTitle":"all izz well","priority":"MEDIUM","taskStartDate":{"year":2015,"month":10,"day":24},"taskStartTime":{"hour":14,"minute":0,"second":0,"nano":0},"taskEndDate":{"year":2015,"month":10,"day":24},"taskEndTime":{"hour":16,"minute":0,"second":0,"nano":0},"isRecurring":false,"isCompleted":false,"taskType":"EVENT"}
-{"taskTitle":"very important meeting","projectName":"Inbox","priority":"NORMAL","taskStartDate":{"year":2015,"month":10,"day":25},"taskStartTime":{"hour":17,"minute":0,"second":0,"nano":0},"isRecurring":false,"isCompleted":false,"taskType":"DEADLINE"}
