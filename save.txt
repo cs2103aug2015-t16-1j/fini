@@ -1,1 +1,0 @@
-{"taskTitle":"curry chicken","isRecurring":false,"projectName":"Inbox","priority":"NORMAL","taskStartDateTime":{"date":{"year":2015,"month":10,"day":26},"time":{"hour":2,"minute":0,"second":0,"nano":0}},"taskEndDateTime":{"date":{"year":2015,"month":10,"day":26},"time":{"hour":17,"minute":0,"second":0,"nano":0}},"isCompleted":false,"taskType":"EVENT"}
