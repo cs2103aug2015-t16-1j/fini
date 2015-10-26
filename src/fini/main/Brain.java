@@ -67,6 +67,7 @@ public class Brain {
 	
 	public void executeCommand(String userInput) {
 		boolean searchDisplayTrigger = false;
+		boolean displayComplete = false;
 		
 		Command newCommand = new Command(userInput);
 		CommandType commandType = newCommand.getCommandType();
@@ -94,6 +95,10 @@ public class Brain {
 		case UNDO:
 			display = undo();
 			break;
+		case DISPLAY:
+			displayComplete = true;
+			display = displayTask(commandParameters);
+			break;
 //		case SEARCH:
 //			searchDisplayTrigger = true;
 //			searchTask(commandParameters);
@@ -119,7 +124,7 @@ public class Brain {
 		}
 
 		sortTaskMasterList();
-		if (!searchDisplayTrigger) {
+		if (!searchDisplayTrigger && !displayComplete) {
 			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
 		}
 		
@@ -238,7 +243,7 @@ public class Brain {
 		} else {
 			taskToComplete.setIsComplete();
 		}
-		
+		taskOrganiser.updateFile(taskMasterList);
 		return "Complete: " + (objectIndex + 1) + taskToComplete.getTitle();
 	}
 
@@ -265,7 +270,15 @@ public class Brain {
 		statusSaver.retrieveLastStatus();
 		taskMasterList = statusSaver.getLastTaskMasterList();
 		taskObservableList = statusSaver.getLastTaskObservableList();
+		taskOrganiser.updateFile(taskMasterList);
 		return "Undo~do~do~do~do~";
+	}
+	
+	private String displayTask(String commandParameters) {
+		if (commandParameters.equals("completed")) {
+			taskObservableList.setAll(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
+		}
+		return "displayTask method";
 	}
 	
 	private void searchTask(String commandParameters) {
