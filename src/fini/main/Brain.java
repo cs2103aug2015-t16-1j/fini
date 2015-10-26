@@ -143,17 +143,6 @@ public class Brain {
 						   .setInterval(finiParser.getInterval())
 						   .setRecursUntil(finiParser.getRecursUntil()).build();
 		
-//		taskTitle 
-//		isRecurring 
-//		priority.toString()
-//		(taskStartDateTime == null ? "Null" : taskStartDateTime.toString())
-//		(taskEndDateTime == null ? "Null" : taskEndDateTime.toString())
-//		(recursUntil == null ? "Null" : recursUntil)
-//		(interval == null ? "Null" : interval.toString()) 
-//		isCompleted
-//		taskType.toString()
-//		System.out.println("task detail - addTask: " + newTask);
-		
 		taskMasterList.add(newTask);
 		taskOrganiser.updateFile(taskMasterList);
 		return "Added: " + finiParser.getNotParsed();
@@ -214,6 +203,16 @@ public class Brain {
 	}
 	
 	private String completeTask(int objectIndex) {
+//		taskTitle 
+//		isRecurring 
+//		priority.toString()
+//		(taskStartDateTime == null ? "Null" : taskStartDateTime.toString())
+//		(taskEndDateTime == null ? "Null" : taskEndDateTime.toString())
+//		(recursUntil == null ? "Null" : recursUntil)
+//		(interval == null ? "Null" : interval.toString()) 
+//		isCompleted
+//		taskType.toString()
+		
 		Task taskToComplete;
 		try {
 			taskToComplete = taskObservableList.get(objectIndex - 1);
@@ -221,21 +220,23 @@ public class Brain {
 			return "Task not found";
 		}
 		
-		if (taskToComplete.isRecurring()) {
-			if (taskToComplete.hasNext()) {
-				Task copyTask = taskToComplete.makeCopy();
-				copyTask.setIsComplete();
-				for (Iterator<Task> iterator = taskMasterList.iterator(); iterator.hasNext(); ) {
-					Task taskToRemove = iterator.next();
-					if (taskToRemove.getRecurUniqueID().equals(copyTask.getRecurUniqueID())) {
-						iterator.remove();
-					}
+		System.out.println("task to complete " + taskToComplete);
+		
+		if (taskToComplete.isRecurring() && taskToComplete.hasNext()) {
+			Task copyTask = taskToComplete.makeCopy();
+			copyTask.setIsComplete();
+			copyTask.updateObjectID();
+			for (Iterator<Task> iterator = taskMasterList.iterator(); iterator.hasNext(); ) {
+				Task taskToRemove = iterator.next();
+				if (!taskToRemove.getObjectID().equals(copyTask.getObjectID()) &&
+						taskToRemove.hasRecurUniqueID() &&
+						taskToRemove.getRecurUniqueID().equals(copyTask.getRecurUniqueID())) {
+					iterator.remove();
 				}
-				taskMasterList.add(copyTask);
-				taskToComplete.toNext();
-			} else {
-				taskToComplete.setIncomplete();
 			}
+			taskMasterList.add(copyTask);
+			taskToComplete.toNext();
+			System.out.println("Next task: " + taskToComplete);
 		} else {
 			taskToComplete.setIsComplete();
 		}
