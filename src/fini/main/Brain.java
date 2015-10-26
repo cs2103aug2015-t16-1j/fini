@@ -278,7 +278,6 @@ public class Brain {
 		taskMasterList = statusSaver.getLastTaskMasterList();
 		taskObservableList = statusSaver.getLastTaskObservableList();
 		taskOrganiser.updateFile(taskMasterList);
-		statusSaver.printer();
 		return "Undo~do~do~do~do~";
 	}
 	
@@ -290,7 +289,6 @@ public class Brain {
 		taskMasterList = statusSaver.getLastTaskMasterList();
 		taskObservableList = statusSaver.getLastTaskObservableList();
 		taskOrganiser.updateFile(taskMasterList);
-		statusSaver.printer();
 		return "Redo~do~do~do~do~";
 	}
 	

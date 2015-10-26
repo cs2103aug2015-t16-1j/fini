@@ -40,26 +40,26 @@ public class StatusSaver {
 		return statusSaver;
 	}
 	
-	public void printer() {
-		System.out.print("Undo{");
-		for (ArrayList<Task> at : undoMasterStack) {
-			System.out.print("[");
-			for (Task t : at) {
-				System.out.print(t.getTitle() + ",");
-			}
-			System.out.print("]");
-		}
-		System.out.print("}");
-		System.out.print("Redo{");
-		for (ArrayList<Task> at : redoMasterStack) {
-			System.out.print("[");
-			for (Task t : at) {
-				System.out.print(t.getTitle() + ",");
-			}
-			System.out.print("]");
-		}
-		System.out.print("}");
-	}
+//	public void printer() {
+//		System.out.print("Undo{");
+//		for (ArrayList<Task> at : undoMasterStack) {
+//			System.out.print("[");
+//			for (Task t : at) {
+//				System.out.print(t.getTitle() + ",");
+//			}
+//			System.out.print("]");
+//		}
+//		System.out.print("}");
+//		System.out.print("Redo{");
+//		for (ArrayList<Task> at : redoMasterStack) {
+//			System.out.print("[");
+//			for (Task t : at) {
+//				System.out.print(t.getTitle() + ",");
+//			}
+//			System.out.print("]");
+//		}
+//		System.out.print("}");
+//	}
 	
 	// Public Methods
 	public void saveStatus(ArrayList<Task> taskMasterList, ObservableList<Task> taskObservableList) {
