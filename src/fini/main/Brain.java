@@ -119,6 +119,10 @@ public class Brain {
 			saveThisStatus();
 			display = completeTask(objectIndex);
 			break;
+		case UNCOMPLETE:
+			saveThisStatus();
+			display = uncompleteTask(objectIndex);
+			break;
 		case INVALID:
 			display = "commandType INVALID";
 			break;
@@ -212,16 +216,6 @@ public class Brain {
 	}
 	
 	private String completeTask(int objectIndex) {
-//		taskTitle 
-//		isRecurring 
-//		priority.toString()
-//		(taskStartDateTime == null ? "Null" : taskStartDateTime.toString())
-//		(taskEndDateTime == null ? "Null" : taskEndDateTime.toString())
-//		(recursUntil == null ? "Null" : recursUntil)
-//		(interval == null ? "Null" : interval.toString()) 
-//		isCompleted
-//		taskType.toString()
-		
 		Task taskToComplete;
 		try {
 			taskToComplete = taskObservableList.get(objectIndex - 1);
@@ -249,6 +243,29 @@ public class Brain {
 		}
 		taskOrganiser.updateFile(taskMasterList);
 		return "Complete: " + (objectIndex + 1) + taskToComplete.getTitle();
+	}
+	
+	private String uncompleteTask(int objectIndex) {
+		Task taskToUncomplete;
+		try {
+			taskToUncomplete = taskObservableList.get(objectIndex - 1);
+		} catch (IndexOutOfBoundsException e) {
+			return "Task not found";
+		}
+		
+		taskToUncomplete.setIncomplete();
+		if (taskToUncomplete.isRecurring()) {
+			for (Iterator<Task> iterator = taskMasterList.iterator(); iterator.hasNext(); ) {
+				Task taskToRemove = iterator.next();
+				if (!taskToRemove.getObjectID().equals(taskToUncomplete.getObjectID()) &&
+						taskToRemove.hasRecurUniqueID() &&
+						taskToRemove.getRecurUniqueID().equals(taskToUncomplete.getRecurUniqueID())) {
+					iterator.remove();
+				}
+			}
+		}
+		taskOrganiser.updateFile(taskMasterList);
+		return "Uncomplete: " + (objectIndex + 1) + taskToUncomplete.getTitle();
 	}
 
 	/**
@@ -317,7 +334,6 @@ public class Brain {
 		assert taskMasterList != null;
 		assert taskObservableList != null;
 		statusSaver.saveStatus(taskMasterList, taskObservableList);
-		statusSaver.printer();
 	}
 	
 	// Initialization Methods
