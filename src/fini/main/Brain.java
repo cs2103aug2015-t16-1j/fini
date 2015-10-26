@@ -135,6 +135,7 @@ public class Brain {
 		rootController.updateProjectsOverviewPanel(taskObservableList);
 		rootController.updateTasksOverviewPanel(taskObservableList);
 		rootController.updateDisplayToUser(display);
+		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
 	
 	// Logic Methods
@@ -296,6 +297,10 @@ public class Brain {
 	private String displayTask(String commandParameters) {
 		if (commandParameters.equals("completed")) {
 			taskObservableList.setAll(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
+		} else if(commandParameters.equals("") || commandParameters.equals("main")) {
+			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+		} else if(commandParameters.equals("all")) {
+			taskObservableList.setAll(taskMasterList);
 		}
 		return "displayTask method";
 	}
