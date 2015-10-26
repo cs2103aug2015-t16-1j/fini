@@ -278,6 +278,10 @@ public class Brain {
 	private String displayTask(String commandParameters) {
 		if (commandParameters.equals("completed")) {
 			taskObservableList.setAll(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
+		} else if(commandParameters.equals("") || commandParameters.equals("main")) {
+			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+		} else if(commandParameters.equals("all")) {
+			taskObservableList.setAll(taskMasterList);
 		}
 		return "displayTask method";
 	}
