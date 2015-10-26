@@ -21,6 +21,9 @@ public class Storage {
 	private static Storage taskOrganiser;
 
 	private File saveFile;
+	private File configFile;
+	private File userPrefFile;
+	private String userPrefFileName;
 	private BufferedReader reader;
 	private PrintWriter writer;
 
@@ -38,6 +41,13 @@ public class Storage {
 
 		saveFile = new File("save.txt");
 		createIfNotExists(saveFile);
+		
+//		configFile = new File("config.txt");
+//		createIfNotExists(configFile);
+//		
+//		userPrefFileName = getUserPrefFileName(configFile);
+//		userPrefFile = new File(userPrefFileName);
+//		createIfNotExists(userPrefFile);
 	}
 
 	public ArrayList<Task> readFile() {
@@ -94,13 +104,27 @@ public class Storage {
 	}
 
 	// Utility Methods
-	private void createIfNotExists(File saveFile) {
+	private void createIfNotExists(File file) {
 		try {
-			if (!saveFile.exists()) {
-				saveFile.createNewFile();
+			if (!file.exists()) {
+				file.createNewFile();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private String getUserPrefFileName(File configFile) {
+		initReader(configFile);
+		String fileName = "";
+		try {
+			if ((fileName = reader.readLine()) == null) {
+				fileName = "Fini_untitledd.txt";
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		closeReader();
+		return fileName;
 	}
 }

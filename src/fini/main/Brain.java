@@ -95,6 +95,9 @@ public class Brain {
 		case UNDO:
 			display = undo();
 			break;
+		case REDO:
+			display = redo();
+			break;
 		case DISPLAY:
 			displayComplete = true;
 			display = displayTask(commandParameters);
@@ -264,14 +267,30 @@ public class Brain {
 	}
 	
 	private String undo() {
-		if (statusSaver.isMasterStackEmpty()) {
+		if (statusSaver.isUndoMasterStackEmpty()) {
 			return "Cannot undo lah! You haven't done any changes yet.";
+		}
+		if (statusSaver.isRedoMasterStackEmpty()) {
+			statusSaver.saveStatusToRedo(taskMasterList, taskObservableList);
 		}
 		statusSaver.retrieveLastStatus();
 		taskMasterList = statusSaver.getLastTaskMasterList();
 		taskObservableList = statusSaver.getLastTaskObservableList();
 		taskOrganiser.updateFile(taskMasterList);
+		statusSaver.printer();
 		return "Undo~do~do~do~do~";
+	}
+	
+	private String redo() {
+		if (statusSaver.isRedoMasterStackEmpty()) {
+			return "Cannot redo lah! You dun have anything to redo alrdy.";
+		}
+		statusSaver.retrieveRedoStatus();
+		taskMasterList = statusSaver.getLastTaskMasterList();
+		taskObservableList = statusSaver.getLastTaskObservableList();
+		taskOrganiser.updateFile(taskMasterList);
+		statusSaver.printer();
+		return "Redo~do~do~do~do~";
 	}
 	
 	private String displayTask(String commandParameters) {
@@ -295,8 +314,9 @@ public class Brain {
 		assert taskMasterList != null;
 		assert taskObservableList != null;
 		statusSaver.saveStatus(taskMasterList, taskObservableList);
+		statusSaver.printer();
 	}
-
+	
 	// Initialization Methods
 	public void setRootController(RootController rootController) {
 		this.rootController = rootController;

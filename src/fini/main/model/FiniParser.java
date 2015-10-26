@@ -19,6 +19,8 @@ public class FiniParser {
 	private static FiniParser finiParser;
 	private Parser parser;
 	
+	private static final String[] REDUNDANT_WORDS = {"on", "from", "by"};
+	
 	private String storedParameters;
 	private String cleanParameters;
 	private Priority priority;
@@ -44,6 +46,7 @@ public class FiniParser {
 			priority = determinePriority(splitStoredParameters);
 			// projectName = determineProjectName(userInputSplitArray);
 			notParsed = determineDatetimes(cleanParameters);
+			notParsed = eliminateRedundantWords(notParsed);
 			return "FiniParser.parse SUCCESS";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -198,6 +201,14 @@ public class FiniParser {
 		} else {
 			return cleanParameters;
 		}
+	}
+	
+	private String eliminateRedundantWords(String notParsed) {
+		String cleanString = notParsed;
+		for (String word : REDUNDANT_WORDS) {
+			cleanString = cleanString.replaceAll(word, "");
+		}
+		return getSimpleCleanString(cleanString);
 	}
 
 	// Public Getters
