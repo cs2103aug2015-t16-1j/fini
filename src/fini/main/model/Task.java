@@ -284,6 +284,7 @@ public class Task implements TaskInterface {
 			   (interval == null ? "Null" : interval.toString()) + "\n" +
 			   isCompleted + "\n" +
 			   taskType.toString() + "\n" +
+			   objectID + "\n" +
 			   recurUniqueID + "\n" +
 			   "<<<<<<<<<";
 	}

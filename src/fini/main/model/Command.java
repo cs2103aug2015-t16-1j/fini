@@ -22,7 +22,7 @@ public class Command {
 			commandType == CommandType.COMPLETE) {
 			try {
 				objectIndex = Integer.parseInt(splitUserInput[1]);
-			} catch (NumberFormatException e) {
+			} catch (IndexOutOfBoundsException | NumberFormatException e) {
 				commandType = CommandType.INVALID;
 			}
 			commandParameters = String.join(" ", Arrays.copyOfRange(splitUserInput, 2, splitUserInput.length));

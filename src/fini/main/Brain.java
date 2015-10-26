@@ -94,10 +94,10 @@ public class Brain {
 		case UNDO:
 			display = undo();
 			break;
-		case SEARCH:
-			searchDisplayTrigger = true;
-			searchTask(commandParameters);
-			break;
+//		case SEARCH:
+//			searchDisplayTrigger = true;
+//			searchTask(commandParameters);
+//			break;
 //		case MODE:
 //			MainApp.switchMode();
 //			break;
@@ -220,15 +220,14 @@ public class Brain {
 			return "Task not found";
 		}
 		
-		System.out.println("task to complete " + taskToComplete);
-		
 		if (taskToComplete.isRecurring() && taskToComplete.hasNext()) {
 			Task copyTask = taskToComplete.makeCopy();
 			copyTask.setIsComplete();
 			copyTask.updateObjectID();
+			
 			for (Iterator<Task> iterator = taskMasterList.iterator(); iterator.hasNext(); ) {
 				Task taskToRemove = iterator.next();
-				if (!taskToRemove.getObjectID().equals(copyTask.getObjectID()) &&
+				if (!taskToRemove.getObjectID().equals(taskToComplete.getObjectID()) &&
 						taskToRemove.hasRecurUniqueID() &&
 						taskToRemove.getRecurUniqueID().equals(copyTask.getRecurUniqueID())) {
 					iterator.remove();
@@ -236,10 +235,10 @@ public class Brain {
 			}
 			taskMasterList.add(copyTask);
 			taskToComplete.toNext();
-			System.out.println("Next task: " + taskToComplete);
 		} else {
 			taskToComplete.setIsComplete();
 		}
+		
 		return "Complete: " + (objectIndex + 1) + taskToComplete.getTitle();
 	}
 
