@@ -67,6 +67,7 @@ public class Brain {
 	
 	public void executeCommand(String userInput) {
 		boolean searchDisplayTrigger = false;
+		boolean displayComplete = false;
 		
 		Command newCommand = new Command(userInput);
 		CommandType commandType = newCommand.getCommandType();
@@ -94,10 +95,14 @@ public class Brain {
 		case UNDO:
 			display = undo();
 			break;
-		case SEARCH:
-			searchDisplayTrigger = true;
-			searchTask(commandParameters);
+		case DISPLAY:
+			displayComplete = true;
+			display = displayTask(commandParameters);
 			break;
+//		case SEARCH:
+//			searchDisplayTrigger = true;
+//			searchTask(commandParameters);
+//			break;
 //		case MODE:
 //			MainApp.switchMode();
 //			break;
@@ -119,7 +124,7 @@ public class Brain {
 		}
 
 		sortTaskMasterList();
-		if (!searchDisplayTrigger) {
+		if (!searchDisplayTrigger && !displayComplete) {
 			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
 		}
 		
@@ -142,17 +147,6 @@ public class Brain {
 						   .setPriority(finiParser.getPriority())
 						   .setInterval(finiParser.getInterval())
 						   .setRecursUntil(finiParser.getRecursUntil()).build();
-		
-//		taskTitle 
-//		isRecurring 
-//		priority.toString()
-//		(taskStartDateTime == null ? "Null" : taskStartDateTime.toString())
-//		(taskEndDateTime == null ? "Null" : taskEndDateTime.toString())
-//		(recursUntil == null ? "Null" : recursUntil)
-//		(interval == null ? "Null" : interval.toString()) 
-//		isCompleted
-//		taskType.toString()
-//		System.out.println("task detail - addTask: " + newTask);
 		
 		taskMasterList.add(newTask);
 		taskOrganiser.updateFile(taskMasterList);
@@ -214,6 +208,16 @@ public class Brain {
 	}
 	
 	private String completeTask(int objectIndex) {
+//		taskTitle 
+//		isRecurring 
+//		priority.toString()
+//		(taskStartDateTime == null ? "Null" : taskStartDateTime.toString())
+//		(taskEndDateTime == null ? "Null" : taskEndDateTime.toString())
+//		(recursUntil == null ? "Null" : recursUntil)
+//		(interval == null ? "Null" : interval.toString()) 
+//		isCompleted
+//		taskType.toString()
+		
 		Task taskToComplete;
 		try {
 			taskToComplete = taskObservableList.get(objectIndex - 1);
@@ -221,24 +225,25 @@ public class Brain {
 			return "Task not found";
 		}
 		
-		if (taskToComplete.isRecurring()) {
-			if (taskToComplete.hasNext()) {
-				Task copyTask = taskToComplete.makeCopy();
-				copyTask.setIsComplete();
-				for (Iterator<Task> iterator = taskMasterList.iterator(); iterator.hasNext(); ) {
-					Task taskToRemove = iterator.next();
-					if (taskToRemove.getRecurUniqueID().equals(copyTask.getRecurUniqueID())) {
-						iterator.remove();
-					}
+		if (taskToComplete.isRecurring() && taskToComplete.hasNext()) {
+			Task copyTask = taskToComplete.makeCopy();
+			copyTask.setIsComplete();
+			copyTask.updateObjectID();
+			
+			for (Iterator<Task> iterator = taskMasterList.iterator(); iterator.hasNext(); ) {
+				Task taskToRemove = iterator.next();
+				if (!taskToRemove.getObjectID().equals(taskToComplete.getObjectID()) &&
+						taskToRemove.hasRecurUniqueID() &&
+						taskToRemove.getRecurUniqueID().equals(copyTask.getRecurUniqueID())) {
+					iterator.remove();
 				}
-				taskMasterList.add(copyTask);
-				taskToComplete.toNext();
-			} else {
-				taskToComplete.setIncomplete();
 			}
+			taskMasterList.add(copyTask);
+			taskToComplete.toNext();
 		} else {
 			taskToComplete.setIsComplete();
 		}
+		taskOrganiser.updateFile(taskMasterList);
 		return "Complete: " + (objectIndex + 1) + taskToComplete.getTitle();
 	}
 
@@ -265,7 +270,15 @@ public class Brain {
 		statusSaver.retrieveLastStatus();
 		taskMasterList = statusSaver.getLastTaskMasterList();
 		taskObservableList = statusSaver.getLastTaskObservableList();
+		taskOrganiser.updateFile(taskMasterList);
 		return "Undo~do~do~do~do~";
+	}
+	
+	private String displayTask(String commandParameters) {
+		if (commandParameters.equals("completed")) {
+			taskObservableList.setAll(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
+		}
+		return "displayTask method";
 	}
 	
 	private void searchTask(String commandParameters) {

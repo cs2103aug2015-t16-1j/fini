@@ -34,6 +34,8 @@ public class Task implements TaskInterface {
 	
 	private boolean isCompleted = false;
 	private Type taskType;
+	
+	private String objectID = null;
 	private String recurUniqueID = null;
 
 	private static final String defaultProject = "Inbox";
@@ -93,6 +95,8 @@ public class Task implements TaskInterface {
 		if (isRecurring) {
 			recurUniqueID = UUID.randomUUID().toString();
 		}
+		
+		objectID = UUID.randomUUID().toString();
 		
 		// Optional
 		projectName = taskBuilder.projectName;
@@ -169,6 +173,14 @@ public class Task implements TaskInterface {
 		return recurUniqueID;
 	}
 	
+	public boolean hasRecurUniqueID() {
+		return recurUniqueID != null;
+	}
+	
+	public String getObjectID() {
+		return objectID;
+	}
+	
 	public boolean isCompleted() {
 		return isCompleted;
 	}
@@ -238,6 +250,10 @@ public class Task implements TaskInterface {
 		isCompleted = false;
 	}
 	
+	public void updateObjectID() {
+		objectID = UUID.randomUUID().toString();
+	}
+	
 	// Utility Methods
 	public boolean hasNext() {
 		assert isRecurring != false;
@@ -247,8 +263,12 @@ public class Task implements TaskInterface {
 	
 	public void toNext() {
 		if (hasNext()) {
-			taskStartDateTime = taskStartDateTime.plus(interval);
-			taskEndDateTime = taskEndDateTime.plus(interval);
+			if (taskStartDateTime != null) {
+				taskStartDateTime = taskStartDateTime.plus(interval);
+			}
+			if (taskEndDateTime != null) {
+				taskEndDateTime = taskEndDateTime.plus(interval);
+			}
 		}
 	}
 	
@@ -264,6 +284,7 @@ public class Task implements TaskInterface {
 			   (interval == null ? "Null" : interval.toString()) + "\n" +
 			   isCompleted + "\n" +
 			   taskType.toString() + "\n" +
+			   objectID + "\n" +
 			   recurUniqueID + "\n" +
 			   "<<<<<<<<<";
 	}

@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Command {
 	public static enum CommandType {
-		ADD, UPDATE, DELETE, CLEAR, UNDO, SEARCH, MODE, EXIT, COMPLETE, MODS, INVALID
+		ADD, UPDATE, DELETE, CLEAR, UNDO, DISPLAY, SEARCH, MODE, EXIT, COMPLETE, MODS, INVALID
 	};
 	
 	private CommandType commandType;
@@ -25,7 +25,7 @@ public class Command {
 			commandType == CommandType.COMPLETE) {
 			try {
 				objectIndex = Integer.parseInt(splitUserInput[1]);
-			} catch (NumberFormatException e) {
+			} catch (IndexOutOfBoundsException | NumberFormatException e) {
 				commandType = CommandType.INVALID;
 			}
 			commandParameters = String.join(" ", Arrays.copyOfRange(splitUserInput, 2, splitUserInput.length));
@@ -58,6 +58,8 @@ public class Command {
 			return CommandType.CLEAR;
 		case "undo":
 			return CommandType.UNDO;
+		case "display":
+			return CommandType.DISPLAY;
 		case "mode":
 			return CommandType.MODE;
 		case "exit":
