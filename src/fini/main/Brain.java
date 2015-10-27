@@ -33,7 +33,6 @@ public class Brain {
 	private ObservableList<Task> taskObservableList = FXCollections.observableArrayList();
 	private ObservableList<Task> taskAuxiliaryList = FXCollections.observableArrayList(); 
 	
-	private boolean searchDisplayTrigger = false;
 	private boolean completeDisplayTrigger = false;
 	private boolean allDisplayTrigger = false;
 
@@ -67,11 +66,6 @@ public class Brain {
 		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
 
-//	public static void main(String[] args) {
-//		Brain testBrain = Brain.getInstance();
-//		testBrain.executeCommand("add curry chicken tomorrow repeat everyday until dec priority high");
-//	}
-	
 	public void executeCommand(String userInput) {
 		Command newCommand = new Command(userInput);
 		CommandType commandType = newCommand.getCommandType();
@@ -105,11 +99,6 @@ public class Brain {
 		case DISPLAY:
 			display = displayTask(commandParameters);
 			break;
-//		case SEARCH:
-//			searchDisplayTrigger = true;
-//			display = "Searching...";
-//			searchTask(commandParameters);
-//			break;
 //		case MODE:
 //			MainApp.switchMode();
 //			break;
@@ -150,8 +139,6 @@ public class Brain {
 		if (completeDisplayTrigger) {
 			taskObservableList.setAll(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 			rootController.updateCompletedDisplay(taskObservableList);
-		} else if (searchDisplayTrigger) {
-			// TODO
 		} else if (allDisplayTrigger) {
 			rootController.updateAllDisplay(taskObservableList);
 		} else {
@@ -327,16 +314,13 @@ public class Brain {
 	private String displayTask(String commandParameters) {
 		if (commandParameters.equals("completed")) {
 			completeDisplayTrigger = true;
-			searchDisplayTrigger = false;
 			allDisplayTrigger = false;
 			return "display completed";
 		} else if(commandParameters.equals("") || commandParameters.equals("main")) {
-			searchDisplayTrigger = false;
 			completeDisplayTrigger = false;
 			allDisplayTrigger = false;
 			return "display main";
 		} else if(commandParameters.equals("all")) {
-			searchDisplayTrigger = false;
 			completeDisplayTrigger = false;
 			allDisplayTrigger = true;
 			sortTaskMasterListWithIncomplete();
@@ -345,16 +329,6 @@ public class Brain {
 		} else {
 			return "displayTask method";
 		}
-	}
-	
-	private void searchTask(String commandParameters) {
-		ObservableList<Task> tempObservableList = FXCollections.observableArrayList(); 
-		for (Task task : taskObservableList) {
-			if (task.getTitle().contains("commandParameters")) {
-				tempObservableList.add(task);
-			}
-		}
-		taskObservableList = tempObservableList;
 	}
 	
 	private void saveThisStatus() {

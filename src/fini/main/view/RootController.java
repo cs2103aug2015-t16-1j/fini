@@ -250,10 +250,6 @@ public class RootController {
 		listView.setItems(displayBoxes);
 	}
 
-	public void updateSearchDisplay() {
-		// TODO
-	}
-	
 	public void updateMainDisplay(ObservableList<Task> taskObservableList) {
 		ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
 
