@@ -61,6 +61,8 @@ public class Command {
 			return CommandType.REDO;
 		case "display":
 			return CommandType.DISPLAY;
+		case "search":
+		    return CommandType.SEARCH;
 		case "mode":
 			return CommandType.MODE;
 		case "exit":
