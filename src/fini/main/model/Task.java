@@ -204,7 +204,7 @@ public class Task implements TaskInterface {
 		}
 	}
 	
-	public boolean isRecurring() {
+	public boolean getIsRecurring() {
 		return isRecurring;
 	}
 	
