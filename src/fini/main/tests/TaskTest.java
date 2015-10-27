@@ -18,7 +18,7 @@ public class TaskTest {
     // isRecurring: true/false
     // projectName: same as title
     // priority: 4 types
-    // dateTimes:
+    // dateTimes: 0,1,2 (shouldnt have size() > 2)
     // recursUntil: have/dont have
     // interval: have/dont have
 
@@ -45,6 +45,7 @@ public class TaskTest {
         // TODO how to test objectID???
         // assertEquals(null, testTask.getObjectID());
         assertEquals(null, testTask.getRecurUniqueID());
+        assertFalse(testTask.hasRecurUniqueID());
     }
 
     @Test
@@ -75,6 +76,7 @@ public class TaskTest {
         // TODO how to test objectID???
         // assertEquals(null, testTask.getObjectID());
         assertEquals(null, testTask.getRecurUniqueID());
+        assertFalse(testTask.hasRecurUniqueID());
     }
     
     @Test
@@ -107,6 +109,7 @@ public class TaskTest {
         // TODO how to test objectID???
         // assertEquals(null, testTask.getObjectID());
         assertEquals(null, testTask.getRecurUniqueID());
+        assertFalse(testTask.hasRecurUniqueID());
     }
     
     @Test
@@ -116,7 +119,7 @@ public class TaskTest {
 
         Priority priority = Priority.MEDIUM;
         ArrayList<LocalDateTime> dateTimes = new ArrayList<LocalDateTime>();
-        LocalDateTime date = LocalDateTime.of(2016, 12, 10, 21, 56);
+        LocalDateTime date = LocalDateTime.of(2015, 12, 10, 21, 56);
         dateTimes.add(date);
         Period interval = Period.ofDays(1);
         LocalDateTime recursUntil = LocalDateTime.of(2016, 12, 20, 21, 56);
@@ -145,37 +148,96 @@ public class TaskTest {
         // assertEquals(null, testTask.getObjectID());
         // TODO how to test recurID if isRecurring = true
         // assertEquals(null, testTask.getRecurUniqueID());
+        assertTrue(testTask.hasRecurUniqueID());
     }
     
+    @Test
+    public void testEventTask() {
+        String taskTitle = "21238013291038102928319032";
+        boolean isRecurring = false;
+        // TODO what will happen if I set endDate before startDate
+        ArrayList<LocalDateTime> dateTimes = new ArrayList<LocalDateTime>();
+        LocalDateTime dateStart = LocalDateTime.of(2015, 12, 10, 9, 56);
+        LocalDateTime dateEnd = LocalDateTime.of(2016, 2, 10, 0, 00);
+        dateTimes.add(dateStart);
+        dateTimes.add(dateEnd);
+        
+        Task testTask = new Task.TaskBuilder(taskTitle, isRecurring)
+                .setDatetimes(dateTimes).build();
+
+        assertEquals("21238013291038102928319032", testTask.getTitle());
+        assertFalse(isRecurring);
+        assertEquals("Inbox", testTask.getProject());
+        assertEquals(Priority.NORMAL, testTask.getPriority());
+
+        assertEquals(LocalDateTime.of(2015, 12, 10, 9, 56), testTask.getStartDateTime());
+        assertEquals(LocalDateTime.of(2016, 2, 10, 0, 00), testTask.getEndDateTime());
+        assertEquals(null, testTask.getRecursUntil());
+        assertEquals(null, testTask.getInterval());
+
+        assertFalse(testTask.getIsCompleted());
+        assertEquals(Type.EVENT, testTask.getTaskType());
+
+        // TODO how to test objectID???
+        // assertEquals(null, testTask.getObjectID());
+        assertFalse(testTask.hasRecurUniqueID());
+        assertEquals(null, testTask.getRecurUniqueID());
+    }
+  
+    @Test
+    public void testEventTaskRecurAndToStringMethod() {
+        String taskTitle = "21238013291038102928319032";
+        boolean isRecurring = false;
+        // TODO what will happen if I set endDate before startDate
+        ArrayList<LocalDateTime> dateTimes = new ArrayList<LocalDateTime>();
+        LocalDateTime dateStart = LocalDateTime.of(2015, 12, 10, 9, 56);
+        LocalDateTime dateEnd = LocalDateTime.of(2016, 2, 10, 0, 00);
+        dateTimes.add(dateStart);
+        dateTimes.add(dateEnd);
+        
+        Task testTask = new Task.TaskBuilder(taskTitle, isRecurring)
+                .setDatetimes(dateTimes).build();
+
+        assertEquals("21238013291038102928319032", testTask.getTitle());
+        assertFalse(isRecurring);
+        assertEquals("Inbox", testTask.getProject());
+        assertEquals(Priority.NORMAL, testTask.getPriority());
+
+        assertEquals(LocalDateTime.of(2015, 12, 10, 9, 56), testTask.getStartDateTime());
+        assertEquals(LocalDateTime.of(2016, 2, 10, 0, 00), testTask.getEndDateTime());
+        assertEquals(null, testTask.getRecursUntil());
+        assertEquals(null, testTask.getInterval());
+
+        assertFalse(testTask.getIsCompleted());
+        assertEquals(Type.EVENT, testTask.getTaskType());
+
+        // TODO how to test objectID???
+        // assertEquals(null, testTask.getObjectID());
+        assertFalse(testTask.hasRecurUniqueID());
+        assertEquals(null, testTask.getRecurUniqueID());
+        
+        
+        String expectedResult = ">>>>>>>>>\n" + 
+                taskTitle + "\n" + 
+                isRecurring + "\n" + 
+                priority.toString() + "\n" + 
+                (taskStartDateTime == null ? "Null" : taskStartDateTime.toString()) + "\n" +
+                (taskEndDateTime == null ? "Null" : taskEndDateTime.toString()) + "\n" +
+                (recursUntil == null ? "Null" : recursUntil) + "\n" +
+                (interval == null ? "Null" : interval.toString()) + "\n" +
+                isCompleted + "\n" +
+                taskType.toString() + "\n" +
+                objectID + "\n" +
+                recurUniqueID + "\n" +
+                "<<<<<<<<<";
+    }
     
-    // @Test
-    // public void testFloatTask() {
-    // String notParsed = "attend meeting";
-    // ArrayList<LocalDateTime> datetimes = null;
-    // Priority priority = Task.Priority.NORMAL;
-    // String projectName = "school";
-    // boolean isRecurring = false;
-    // LocalDateTime recursUntil = null;
-    //
-    // Task testingTask = new Task(notParsed, datetimes, priority,
-    // projectName, isRecurring, recursUntil);
-
-    // Testing type and the info
-    // assertEquals(Task.Type.DEFAULT, testingTask.getTaskType());
-    // assertEquals("attend meeting", testingTask.getTitle());
-    // assertEquals("school", testingTask.getProject());
-    // assertEquals(Task.Priority.NORMAL, testingTask.getPriority());
-
-    // Testing LocalDateTime
-    // assertEquals(null, testingTask.getStartDate());
-    // assertEquals(null, testingTask.getEndDate());
-    // assertEquals(null, testingTask.getStartTime());
-    // assertEquals(null, testingTask.getEndTime());
-    // assertEquals(null, testingTask.getRecursUntil());
-
-    // Testing other attributes
-    // assertFalse(testingTask.isCompleted());
-    // assertFalse(testingTask.getIsOverdue());
-    // assertFalse(testingTask.getIsRecurring());
-    // }
+    @Test
+    public void testIsOverdueMethod() {
+        
+    }
+  
+    // TODO methods not tested yet: updateObjectID, hasNext, toNext, makeCopy
+    // TODO methods not tested yet: DISPLAY related methods
+    
 }

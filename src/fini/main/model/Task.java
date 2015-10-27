@@ -128,16 +128,6 @@ public class Task implements TaskInterface {
 			break;
 		}
 	}
-	
-	// constructor with only taskTitle. dont delete. for testing purpose
-	public Task(String taskTitle){
-	    setTaskTitle(taskTitle);
-	}
-
-	// TODO only a stub
-	public String getLabelForTaskOverviewPane() {
-		return "Inbox";
-	}
 
 	// Public Getters
 	public String getTitle() {
@@ -322,4 +312,8 @@ public class Task implements TaskInterface {
 	public boolean isTaskDueWithinSevenDays() {
 		return taskStartDateTime == null ? false : taskStartDateTime.toLocalDate().isBefore(LocalDate.now().plusDays(7));
 	}
+	
+    public String getLabelForTaskOverviewPane() {
+        return "Inbox";
+    }
 }
