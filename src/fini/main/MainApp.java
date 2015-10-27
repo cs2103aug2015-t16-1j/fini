@@ -88,6 +88,7 @@ public class MainApp extends Application {
 						
 						Scene scene = new Scene(main);
 						primaryStage.setScene(scene); 
+						primaryStage.setAlwaysOnTop(true);
 
 						rootController = loader.getController();
 

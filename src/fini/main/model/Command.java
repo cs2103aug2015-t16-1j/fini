@@ -9,10 +9,8 @@ public class Command {
 	
 	private CommandType commandType;
 	private String userCommand;
-<<<<<<< HEAD
-=======
 	private int objectIndex = -1;
->>>>>>> 2f9d35bc2936355566bb35e047631274023f7fbb
+
 	private String commandParameters = null;
 	
 	public Command(String userInput) {

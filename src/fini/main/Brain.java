@@ -104,6 +104,7 @@ public class Brain {
 			break;
 //		case SEARCH:
 //			searchDisplayTrigger = true;
+//			display = "Searching...";
 //			searchTask(commandParameters);
 //			break;
 //		case MODE:
@@ -130,16 +131,19 @@ public class Brain {
 			break;
 		}
 
+//		displayControl();
 		sortTaskMasterList();
-		if (!searchDisplayTrigger && !displayComplete) {
-			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
-		}
+		taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
 		
 		rootController.updateMainDisplay(taskObservableList);
 		rootController.updateProjectsOverviewPanel(taskObservableList);
 		rootController.updateTasksOverviewPanel(taskObservableList);
 		rootController.updateDisplayToUser(display);
 		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
+	}
+	
+	// Display Control Methods
+	private void displayControl() {
 	}
 	
 	// Logic Methods
