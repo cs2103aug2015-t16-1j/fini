@@ -16,16 +16,21 @@ import javafx.collections.ObservableList;
 public class StatusSaver {
 	private static StatusSaver statusSaver;
 	
-	private Stack<ArrayList<Task>> masterStack;
-	private Stack<ObservableList<Task>> observableStack;
+	private Stack<ArrayList<Task>> undoMasterStack;
+	private Stack<ObservableList<Task>> undoObservableStack;
+	
+	private Stack<ArrayList<Task>> redoMasterStack;
+	private Stack<ObservableList<Task>> redoObservableStack;
 	
 	private ArrayList<Task> tempTaskMasterList;
 	private ObservableList<Task> tempTaskObservableList;
 	
 	
 	private StatusSaver() {
-		masterStack = new Stack<ArrayList<Task>>();
-		observableStack = new Stack<ObservableList<Task>>();
+		undoMasterStack = new Stack<ArrayList<Task>>();
+		undoObservableStack = new Stack<ObservableList<Task>>();
+		redoMasterStack = new Stack<ArrayList<Task>>();
+		redoObservableStack = new Stack<ObservableList<Task>>();
 	}
 	
 	public static StatusSaver getInstance() {
@@ -35,23 +40,70 @@ public class StatusSaver {
 		return statusSaver;
 	}
 	
+//	public void printer() {
+//		System.out.print("Undo{");
+//		for (ArrayList<Task> at : undoMasterStack) {
+//			System.out.print("[");
+//			for (Task t : at) {
+//				System.out.print(t.getTitle() + ",");
+//			}
+//			System.out.print("]");
+//		}
+//		System.out.print("}");
+//		System.out.print("Redo{");
+//		for (ArrayList<Task> at : redoMasterStack) {
+//			System.out.print("[");
+//			for (Task t : at) {
+//				System.out.print(t.getTitle() + ",");
+//			}
+//			System.out.print("]");
+//		}
+//		System.out.print("}");
+//	}
+	
 	// Public Methods
 	public void saveStatus(ArrayList<Task> taskMasterList, ObservableList<Task> taskObservableList) {
-		masterStack.push(copyArrayList(taskMasterList));
-		observableStack.push(copyObservableList(taskObservableList));
+		undoMasterStack.push(copyArrayList(taskMasterList));
+		undoObservableStack.push(copyObservableList(taskObservableList));
+		redoMasterStack.clear();
+		redoObservableStack.clear();
+	}
+	
+	public void saveStatusToRedo(ArrayList<Task> taskMasterList, ObservableList<Task> taskObservableList) {
+		redoMasterStack.push(copyArrayList(taskMasterList));
+		redoObservableStack.push(copyObservableList(taskObservableList));
 	}
 	
 	public void retrieveLastStatus() {
 		try {
-			tempTaskMasterList = masterStack.pop();
-			tempTaskObservableList = observableStack.pop();
+			tempTaskMasterList = undoMasterStack.pop();
+			tempTaskObservableList = undoObservableStack.pop();
+			
+			if (!isUndoMasterStackEmpty()) {
+				redoMasterStack.push(copyArrayList(tempTaskMasterList));
+				redoObservableStack.push(copyObservableList(tempTaskObservableList));
+			}
+		} catch (EmptyStackException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void retrieveRedoStatus() {
+		try {
+			tempTaskMasterList = redoMasterStack.pop();
+			tempTaskObservableList = redoObservableStack.pop();
+			
+			if (!isRedoMasterStackEmpty()) {
+				undoMasterStack.push(copyArrayList(tempTaskMasterList));
+				undoObservableStack.push(copyObservableList(tempTaskObservableList));
+			}
 		} catch (EmptyStackException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public ArrayList<Task> getLastTaskMasterList() {
-		assert  tempTaskMasterList != null;
+		assert tempTaskMasterList != null;
 		return tempTaskMasterList;
 	}
 	
@@ -61,8 +113,12 @@ public class StatusSaver {
 	}
 	
 	// Utility Methods
-	public boolean isMasterStackEmpty() {
-		return masterStack.isEmpty();
+	public boolean isUndoMasterStackEmpty() {
+		return undoMasterStack.isEmpty();
+	}
+	
+	public boolean isRedoMasterStackEmpty() {
+		return redoMasterStack.isEmpty();
 	}
 	
 	private ArrayList<Task> copyArrayList(ArrayList<Task> origin) {

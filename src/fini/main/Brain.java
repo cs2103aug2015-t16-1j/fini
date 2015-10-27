@@ -95,6 +95,9 @@ public class Brain {
 		case UNDO:
 			display = undo();
 			break;
+		case REDO:
+			display = redo();
+			break;
 		case DISPLAY:
 			displayComplete = true;
 			display = displayTask(commandParameters);
@@ -116,6 +119,10 @@ public class Brain {
 			saveThisStatus();
 			display = completeTask(objectIndex);
 			break;
+		case UNCOMPLETE:
+			saveThisStatus();
+			display = uncompleteTask(objectIndex);
+			break;
 		case INVALID:
 			display = "commandType INVALID";
 			break;
@@ -132,6 +139,7 @@ public class Brain {
 		rootController.updateProjectsOverviewPanel(taskObservableList);
 		rootController.updateTasksOverviewPanel(taskObservableList);
 		rootController.updateDisplayToUser(display);
+		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
 	
 	// Logic Methods
@@ -208,16 +216,6 @@ public class Brain {
 	}
 	
 	private String completeTask(int objectIndex) {
-//		taskTitle 
-//		isRecurring 
-//		priority.toString()
-//		(taskStartDateTime == null ? "Null" : taskStartDateTime.toString())
-//		(taskEndDateTime == null ? "Null" : taskEndDateTime.toString())
-//		(recursUntil == null ? "Null" : recursUntil)
-//		(interval == null ? "Null" : interval.toString()) 
-//		isCompleted
-//		taskType.toString()
-		
 		Task taskToComplete;
 		try {
 			taskToComplete = taskObservableList.get(objectIndex - 1);
@@ -246,6 +244,29 @@ public class Brain {
 		taskOrganiser.updateFile(taskMasterList);
 		return "Complete: " + (objectIndex + 1) + taskToComplete.getTitle();
 	}
+	
+	private String uncompleteTask(int objectIndex) {
+		Task taskToUncomplete;
+		try {
+			taskToUncomplete = taskObservableList.get(objectIndex - 1);
+		} catch (IndexOutOfBoundsException e) {
+			return "Task not found";
+		}
+		
+		taskToUncomplete.setIncomplete();
+		if (taskToUncomplete.isRecurring()) {
+			for (Iterator<Task> iterator = taskMasterList.iterator(); iterator.hasNext(); ) {
+				Task taskToRemove = iterator.next();
+				if (!taskToRemove.getObjectID().equals(taskToUncomplete.getObjectID()) &&
+						taskToRemove.hasRecurUniqueID() &&
+						taskToRemove.getRecurUniqueID().equals(taskToUncomplete.getRecurUniqueID())) {
+					iterator.remove();
+				}
+			}
+		}
+		taskOrganiser.updateFile(taskMasterList);
+		return "Uncomplete: " + (objectIndex + 1) + taskToUncomplete.getTitle();
+	}
 
 	/**
 	 * EXTRAORDINARY FEATURE - Sync with nusmods html file
@@ -264,8 +285,11 @@ public class Brain {
 	}
 	
 	private String undo() {
-		if (statusSaver.isMasterStackEmpty()) {
+		if (statusSaver.isUndoMasterStackEmpty()) {
 			return "Cannot undo lah! You haven't done any changes yet.";
+		}
+		if (statusSaver.isRedoMasterStackEmpty()) {
+			statusSaver.saveStatusToRedo(taskMasterList, taskObservableList);
 		}
 		statusSaver.retrieveLastStatus();
 		taskMasterList = statusSaver.getLastTaskMasterList();
@@ -274,9 +298,24 @@ public class Brain {
 		return "Undo~do~do~do~do~";
 	}
 	
+	private String redo() {
+		if (statusSaver.isRedoMasterStackEmpty()) {
+			return "Cannot redo lah! You dun have anything to redo alrdy.";
+		}
+		statusSaver.retrieveRedoStatus();
+		taskMasterList = statusSaver.getLastTaskMasterList();
+		taskObservableList = statusSaver.getLastTaskObservableList();
+		taskOrganiser.updateFile(taskMasterList);
+		return "Redo~do~do~do~do~";
+	}
+	
 	private String displayTask(String commandParameters) {
 		if (commandParameters.equals("completed")) {
 			taskObservableList.setAll(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
+		} else if(commandParameters.equals("") || commandParameters.equals("main")) {
+			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+		} else if(commandParameters.equals("all")) {
+			taskObservableList.setAll(taskMasterList);
 		}
 		return "displayTask method";
 	}
@@ -296,7 +335,7 @@ public class Brain {
 		assert taskObservableList != null;
 		statusSaver.saveStatus(taskMasterList, taskObservableList);
 	}
-
+	
 	// Initialization Methods
 	public void setRootController(RootController rootController) {
 		this.rootController = rootController;

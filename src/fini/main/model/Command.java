@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Command {
 	public static enum CommandType {
-		ADD, UPDATE, DELETE, CLEAR, UNDO, DISPLAY, SEARCH, MODE, EXIT, COMPLETE, MODS, INVALID
+		ADD, UPDATE, DELETE, CLEAR, UNDO, REDO, DISPLAY, SEARCH, MODE, EXIT, COMPLETE, UNCOMPLETE, MODS, INVALID
 	};
 	
 	private CommandType commandType;
@@ -58,6 +58,8 @@ public class Command {
 			return CommandType.CLEAR;
 		case "undo":
 			return CommandType.UNDO;
+		case "redo":
+			return CommandType.REDO;
 		case "display":
 			return CommandType.DISPLAY;
 		case "mode":
@@ -66,6 +68,8 @@ public class Command {
 			return CommandType.EXIT;
 		case "complete":
 			return CommandType.COMPLETE;
+		case "uncomplete":
+			return CommandType.UNCOMPLETE;
 		case "mods":
 			return CommandType.MODS;
 		default:
