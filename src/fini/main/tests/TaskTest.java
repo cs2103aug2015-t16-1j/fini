@@ -4,53 +4,75 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.util.ArrayList;
-
 import fini.main.model.Task;
 import fini.main.model.Task.Priority;
-import fini.main.model.Task.TaskBuilder;
 import fini.main.model.Task.Type;
 
 import org.junit.Test;
 
 public class TaskTest {
+    // title: 0 to max words/numbers/symbols
+    // isRecurring: true/false
+    // projectName: same as title
+    // priority: 4 types
+    // dateTimes:
+    // recursUntil: have/dont have
+    // interval: have/dont have
+    
     @Test
     public void testFloatingTask() {
-        String taskTitle = "happy";    // 0 to max words/numbers/symbols
-        boolean isRecurring = false;        // true/false
-        
-        String projectName = "Inbox";
-        Priority priority = Priority.NORMAL;    // 4 diff priority
-        ArrayList<LocalDateTime> dateTimes = new ArrayList<LocalDateTime>();
-        LocalDateTime recursUntil = null;       // have / dont have
-        Period interval = null;                 // have / dont have
+        String taskTitle = "happy";    
+        boolean isRecurring = false;        
         
         Task testTask = new Task.TaskBuilder(taskTitle, isRecurring).build();
-//                .setDatetimes(finiParser.getDatetimes())
-//                .setPriority(finiParser.getPriority())
-//                .setInterval(finiParser.getInterval())
-//                .setRecursUntil(finiParser.getRecursUntil()).build();
+
         assertEquals("happy", testTask.getTitle());
         assertFalse(testTask.getIsRecurring());
+       
+        assertEquals("Inbox", testTask.getProject());
+        assertEquals(Priority.NORMAL, testTask.getPriority());
+        assertEquals(null, testTask.getStartDateTime());
+        assertEquals(null, testTask.getEndDateTime());
+        assertEquals(null, testTask.getRecursUntil());
+        assertEquals(null, testTask.getInterval());
+        
+        assertFalse(testTask.getIsCompleted());
+        assertEquals(Type.DEFAULT, testTask.getTaskType());
+        
+        // TODO how to test objectID???
+        // assertEquals(null, testTask.getObjectID());
+        assertEquals(null, testTask.getRecurUniqueID());
     }
     
     @Test
     public void testFloatingTaskWithprojectAndPriority() {
-        String taskTitle = "eat a b c d e i u s ss asd";    // 0 to max words/numbers/symbols
-        boolean isRecurring = true;        // true/false
+        String taskTitle = "eat a b c d e i u s ss asd";   
+        boolean isRecurring = true;        
         
-        String projectName = "Inbox";
-        Priority priority = Priority.NORMAL; 
+        String projectName = "School CCA";
+        Priority priority = Priority.HIGH; 
         
         Task testTask = new Task.TaskBuilder(taskTitle, isRecurring)
                 .setPriority(priority)
                 .setProjectName(projectName).build();
-        assertEquals("", testTask.getTitle());
+        
+        assertEquals("eat a b c d e i u s ss asd", testTask.getTitle());
         assertTrue(isRecurring);
-        assertEquals("Inbox", testTask.getProject());
-        assertEquals(Priority.NORMAL, testTask.getPriority());
+        assertEquals("School CCA", testTask.getProject());
+        assertEquals(Priority.HIGH, testTask.getPriority());
+        
+        assertEquals(null, testTask.getStartDateTime());
+        assertEquals(null, testTask.getEndDateTime());
+        assertEquals(null, testTask.getRecursUntil());
+        assertEquals(null, testTask.getInterval());
+        
+        assertFalse(testTask.getIsCompleted());
+        assertEquals(Type.DEFAULT, testTask.getTaskType());
+        
+        // TODO how to test objectID???
+        // assertEquals(null, testTask.getObjectID());
+        // TODO howo to test recurID when isRecurring = true
+        // assertEquals(null, testTask.getRecurUniqueID());
     }
 //    @Test
 //    public void testFloatTask() {

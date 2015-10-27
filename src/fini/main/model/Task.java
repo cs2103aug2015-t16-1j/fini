@@ -181,7 +181,11 @@ public class Task implements TaskInterface {
 		return objectID;
 	}
 	
-	public boolean isCompleted() {
+	public Period getInterval() {
+        return interval;
+    }
+	
+	public boolean getIsCompleted() {
 		return isCompleted;
 	}
 	
