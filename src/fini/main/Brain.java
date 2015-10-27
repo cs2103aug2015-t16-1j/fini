@@ -31,6 +31,10 @@ public class Brain {
 
 	private ArrayList<Task> taskMasterList;
 	private ObservableList<Task> taskObservableList = FXCollections.observableArrayList();
+	
+	private boolean searchDisplayTrigger = false;
+	private boolean completeDisplayTrigger = false;
+	private boolean allDisplayTrigger = false;
 
 	private Brain() {
 		finiParser = FiniParser.getInstance();
@@ -67,9 +71,6 @@ public class Brain {
 //	}
 	
 	public void executeCommand(String userInput) {
-		boolean searchDisplayTrigger = false;
-		boolean displayComplete = false;
-		
 		Command newCommand = new Command(userInput);
 		CommandType commandType = newCommand.getCommandType();
 		int objectIndex = newCommand.getObjectIndex();
@@ -100,7 +101,6 @@ public class Brain {
 			display = redo();
 			break;
 		case DISPLAY:
-			displayComplete = true;
 			display = displayTask(commandParameters);
 			break;
 //		case SEARCH:
@@ -139,12 +139,28 @@ public class Brain {
 	
 	// Display Control Methods
 	private void displayControl() {
-		sortTaskMasterList();
-		taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
-		
-		rootController.updateMainDisplay(taskObservableList);
-		rootController.updateProjectsOverviewPanel(taskObservableList);
-		rootController.updateTasksOverviewPanel(taskObservableList);
+		if (completeDisplayTrigger) {
+			rootController.updateCompletedDisplay(taskObservableList);
+			sortTaskMasterList();
+			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+			rootController.updateProjectsOverviewPanel(taskObservableList);
+			rootController.updateTasksOverviewPanel(taskObservableList);
+		} else if (searchDisplayTrigger) {
+			// TODO
+		} else if (allDisplayTrigger) {
+			rootController.updateAllDisplay(taskObservableList);
+			sortTaskMasterList();
+			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+			rootController.updateProjectsOverviewPanel(taskObservableList);
+			rootController.updateTasksOverviewPanel(taskObservableList);
+		} else {
+			sortTaskMasterList();
+			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+			
+			rootController.updateMainDisplay(taskObservableList);
+			rootController.updateProjectsOverviewPanel(taskObservableList);
+			rootController.updateTasksOverviewPanel(taskObservableList);
+		}
 	}
 	
 	// Logic Methods
@@ -313,13 +329,26 @@ public class Brain {
 	
 	private String displayTask(String commandParameters) {
 		if (commandParameters.equals("completed")) {
+			completeDisplayTrigger = true;
+			searchDisplayTrigger = false;
+			allDisplayTrigger = false;
 			taskObservableList.setAll(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
+			return "display completed";
 		} else if(commandParameters.equals("") || commandParameters.equals("main")) {
-			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+			searchDisplayTrigger = false;
+			completeDisplayTrigger = false;
+			allDisplayTrigger = false;
+			return "display main";
 		} else if(commandParameters.equals("all")) {
+			searchDisplayTrigger = false;
+			completeDisplayTrigger = false;
+			allDisplayTrigger = true;
+			sortTaskMasterListWithIncomplete();
 			taskObservableList.setAll(taskMasterList);
+			return "display all";
+		} else {
+			return "displayTask method";
 		}
-		return "displayTask method";
 	}
 	
 	private void searchTask(String commandParameters) {
@@ -346,6 +375,14 @@ public class Brain {
 	private void sortTaskMasterList() {
 		assert taskMasterList != null;
 		sorter = new Sorter(taskMasterList);
+		sorter.sort();
+		taskMasterList = sorter.getSortedList();
+	}
+	
+	private void sortTaskMasterListWithIncomplete() {
+		assert taskMasterList != null;
+		sorter = new Sorter(taskMasterList);
+		sorter.addSortByIncomplete();
 		sorter.sort();
 		taskMasterList = sorter.getSortedList();
 	}

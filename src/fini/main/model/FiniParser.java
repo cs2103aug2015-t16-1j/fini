@@ -117,8 +117,15 @@ public class FiniParser {
 				List<Date> dateList = group.getDates();
 				Map<String, List<ParseLocation>> parseMap = group.getParseLocations();
 				
-				for (Date date : dateList) {
-					datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+				if (!parseMap.containsKey("explicit_time")) {
+					for (Date date : dateList) {
+						LocalDateTime temp = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+						datetimes.add(LocalDateTime.of(temp.toLocalDate(), temp.toLocalTime().MAX));
+					}
+				} else {
+					for (Date date : dateList) {
+						datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+					}
 				}
 				
 				notParsed = tempParameters;
@@ -135,8 +142,16 @@ public class FiniParser {
 				}
 				
 				List<Date> dateList = group.getDates();
-				for (Date date : dateList) {
-					datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+				Map<String, List<ParseLocation>> parseMap = group.getParseLocations();
+				if (!parseMap.containsKey("explicit_time")) {
+					for (Date date : dateList) {
+						LocalDateTime temp = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+						datetimes.add(LocalDateTime.of(temp.toLocalDate(), temp.toLocalTime().MAX));
+					}
+				} else {
+					for (Date date : dateList) {
+						datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+					}
 				}
 
 				String matchingValue = group.getText();
@@ -149,8 +164,15 @@ public class FiniParser {
 				DateGroup group1 = groups.get(0);
 				List<Date> dateList1 = group1.getDates();
 				Map<String, List<ParseLocation>> parseMap1 = group1.getParseLocations();
-				for (Date date : dateList1) {
-					datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+				if (!parseMap1.containsKey("explicit_time")) {
+					for (Date date : dateList1) {
+						LocalDateTime temp = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+						datetimes.add(LocalDateTime.of(temp.toLocalDate(), temp.toLocalTime().MAX));
+					}
+				} else {
+					for (Date date : dateList1) {
+						datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+					}
 				}
 				
 				notParsed = tempParameters;
@@ -189,8 +211,15 @@ public class FiniParser {
 				DateGroup group = groups.get(0);
 				List<Date> dateList = group.getDates();
 				Map<String, List<ParseLocation>> parseMap = group.getParseLocations();
-				for (Date date : dateList) {
-					datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+				if (!parseMap.containsKey("explicit_time")) {
+					for (Date date : dateList) {
+						LocalDateTime temp = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+						datetimes.add(LocalDateTime.of(temp.toLocalDate(), temp.toLocalTime().MAX));
+					}
+				} else {
+					for (Date date : dateList) {
+						datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+					}
 				}
 				notParsed = tempParameters;
 				for (ParseLocation parsedWord : parseMap.get("parse")) {
