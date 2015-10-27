@@ -101,11 +101,18 @@ public class RootController {
 			//			taskOrganiser.updateFile();
 		} else if (event.getCode() == KeyCode.SPACE) {
             userInput = commandBox.getText();
-            brain.executeCommand(userInput);
+            if (userInput.toLowerCase().equals("search")) {
+                brain.executeCommand(userInput);
+            }
         } else if (event.getCode().isDigitKey() || event.getCode().isLetterKey()){
             userInput = commandBox.getText();
             if (userInput.toLowerCase().startsWith("search ")) {
                 brain.executeCommand(userInput + event.getCode().toString().toLowerCase());
+            }
+        } else if (event.getCode() == KeyCode.BACK_SPACE) {
+            userInput = commandBox.getText();
+            if (userInput.toLowerCase().startsWith("search ")) {
+                brain.executeCommand(userInput.substring(0, userInput.length() - 1));
             }
         }
 		// TODO
@@ -259,7 +266,9 @@ public class RootController {
 	}
 	
 	public void updateSearchDisplay(ObservableList<Task> taskObservableList) {
+	    ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
 	    // TODO
+	    listView.setItems(displayBoxes);
 	}
 	
 	public void updateMainDisplay(ObservableList<Task> taskObservableList) {
