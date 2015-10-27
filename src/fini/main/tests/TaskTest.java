@@ -31,7 +31,7 @@ public class TaskTest {
         Task testTask = new Task.TaskBuilder(taskTitle, isRecurring).build();
 
         assertEquals("happy", testTask.getTitle());
-        assertFalse(testTask.getIsRecurring());
+        assertFalse(testTask.isRecurring());
 
         assertEquals("Inbox", testTask.getProject());
         assertEquals(Priority.NORMAL, testTask.getPriority());
@@ -40,7 +40,7 @@ public class TaskTest {
         assertEquals(null, testTask.getRecursUntil());
         assertEquals(null, testTask.getInterval());
 
-        assertFalse(testTask.getIsCompleted());
+        assertFalse(testTask.isCompleted());
         assertEquals(Type.DEFAULT, testTask.getTaskType());
 
         // TODO how to test objectID???
@@ -77,7 +77,7 @@ public class TaskTest {
                 .setProjectName(projectName).build();
 
         assertEquals("eat a b c d e i u s ss asd", testTask.getTitle());
-        assertFalse(isRecurring);
+        assertFalse(testTask.isRecurring());
         assertEquals("School CCA", testTask.getProject());
         assertEquals(Priority.HIGH, testTask.getPriority());
 
@@ -86,7 +86,7 @@ public class TaskTest {
         assertEquals(null, testTask.getRecursUntil());
         assertEquals(null, testTask.getInterval());
 
-        assertFalse(testTask.getIsCompleted());
+        assertFalse(testTask.isCompleted());
         assertEquals(Type.DEFAULT, testTask.getTaskType());
 
         // TODO how to test objectID???
@@ -110,7 +110,7 @@ public class TaskTest {
                 .setDatetimes(dateTimes).build();
 
         assertEquals("123E Dr", testTask.getTitle());
-        assertFalse(isRecurring);
+        assertFalse(testTask.isRecurring());
         assertEquals("Inbox", testTask.getProject());
         assertEquals(Priority.LOW, testTask.getPriority());
 
@@ -119,7 +119,7 @@ public class TaskTest {
         assertEquals(null, testTask.getRecursUntil());
         assertEquals(null, testTask.getInterval());
 
-        assertFalse(testTask.getIsCompleted());
+        assertFalse(testTask.isCompleted());
         assertEquals(Type.DEADLINE, testTask.getTaskType());
 
         // TODO how to test objectID???
@@ -148,7 +148,7 @@ public class TaskTest {
                 .setRecursUntil(recursUntil).build();
 
         assertEquals("1 23", testTask.getTitle());
-        assertTrue(isRecurring);
+        assertTrue(testTask.isRecurring());
         assertEquals("Inbox", testTask.getProject());
         assertEquals(Priority.MEDIUM, testTask.getPriority());
 
@@ -157,7 +157,7 @@ public class TaskTest {
         assertEquals(LocalDateTime.of(2016, 12, 20, 21, 56), testTask.getRecursUntil());
         assertEquals(Period.ofDays(1), testTask.getInterval());
 
-        assertFalse(testTask.getIsCompleted());
+        assertFalse(testTask.isCompleted());
         assertEquals(Type.DEADLINE, testTask.getTaskType());
 
         // TODO how to test objectID???
@@ -182,7 +182,7 @@ public class TaskTest {
                 .setDatetimes(dateTimes).build();
 
         assertEquals("21238013291038102928319032", testTask.getTitle());
-        assertFalse(isRecurring);
+        assertFalse(testTask.isRecurring());
         assertEquals("Inbox", testTask.getProject());
         assertEquals(Priority.NORMAL, testTask.getPriority());
 
@@ -191,7 +191,7 @@ public class TaskTest {
         assertEquals(null, testTask.getRecursUntil());
         assertEquals(null, testTask.getInterval());
 
-        assertFalse(testTask.getIsCompleted());
+        assertFalse(testTask.isCompleted());
         assertEquals(Type.EVENT, testTask.getTaskType());
 
         // TODO how to test objectID???
@@ -220,7 +220,7 @@ public class TaskTest {
                 .setInterval(interval).build();
 
         assertEquals("i am a long long long long long long long name", testTask.getTitle());
-        assertTrue(isRecurring);
+        assertTrue(testTask.isRecurring());
         assertEquals("Inbox", testTask.getProject());
         assertEquals(Priority.NORMAL, testTask.getPriority());
 
@@ -229,7 +229,7 @@ public class TaskTest {
         assertEquals(LocalDateTime.of(2016, 5, 5, 11, 56), testTask.getRecursUntil());
         assertEquals(Period.ofWeeks(2), testTask.getInterval());
 
-        assertFalse(testTask.getIsCompleted());
+        assertFalse(testTask.isCompleted());
         assertEquals(Type.EVENT, testTask.getTaskType());
 
         // TODO how to test objectID???
@@ -274,7 +274,7 @@ public class TaskTest {
 
         // Check that the copied task has the same properties as the original
         assertEquals(testTaskOriginal.getTitle(), testTaskCopied.getTitle());
-        assertEquals(testTaskOriginal.getIsRecurring(), testTaskCopied.getIsRecurring());
+        assertEquals(testTaskOriginal.isRecurring(), testTaskCopied.isRecurring());
 
         assertEquals(testTaskOriginal.getProject(), testTaskCopied.getProject());
         assertEquals(testTaskOriginal.getPriority(), testTaskCopied.getPriority());
@@ -283,7 +283,7 @@ public class TaskTest {
         assertEquals(testTaskOriginal.getRecursUntil(), testTaskCopied.getRecursUntil());
         assertEquals(testTaskOriginal.getInterval(), testTaskCopied.getInterval());
 
-        assertEquals(testTaskOriginal.getIsCompleted(), testTaskCopied.getIsCompleted());
+        assertEquals(testTaskOriginal.isCompleted(), testTaskCopied.isCompleted());
         assertEquals(testTaskOriginal.getTaskType(), testTaskCopied.getTaskType());
 
         assertEquals(testTaskOriginal.getObjectID(), testTaskCopied.getObjectID());
