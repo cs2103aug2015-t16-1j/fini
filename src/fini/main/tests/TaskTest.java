@@ -256,7 +256,11 @@ public class TaskTest {
     
     @Test
     public void testIsOverdueMethod() {
-        
+        // TODO
+//        String taskTitle = "0";
+//        boolean isRecurring = false;
+//
+//        Task testTask = new Task.TaskBuilder(taskTitle, isRecurring).build();
     }
     
     @Test
@@ -291,8 +295,21 @@ public class TaskTest {
         assertNotEquals(testTaskOriginal.getTitle(), testTaskCopied.getTitle());
         assertEquals("gggggg", testTaskCopied.getTitle());
     }
-  
-    // TODO methods not tested yet: updateObjectID, hasNext, toNext
+    
+    @Test
+    public void testUpdateObjectIDMethod() {
+        String taskTitle = "L";
+        boolean isRecurring = false;
+
+        Task testTask = new Task.TaskBuilder(taskTitle, isRecurring).build();
+        
+        String objectIdBefore = testTask.getObjectID();
+        testTask.updateObjectID();
+        String objectIdAfter = testTask.getObjectID();
+        assertNotEquals(objectIdBefore, objectIdAfter);
+    }
+    
+    // TODO methods not tested yet: hasNext, toNext
     // TODO methods not tested yet: DISPLAY related methods
     
 }
