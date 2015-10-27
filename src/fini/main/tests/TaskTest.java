@@ -2,7 +2,10 @@ package fini.main.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 
 import fini.main.model.Task;
@@ -76,7 +79,7 @@ public class TaskTest {
     
     @Test
     public void testDeadlineTask() {
-        String taskTitle = "eat a b c d e i u s ss asd";
+        String taskTitle = "123E Dr";
         boolean isRecurring = false;
 
         Priority priority = Priority.LOW;
@@ -88,7 +91,7 @@ public class TaskTest {
                 .setPriority(priority)
                 .setDatetimes(dateTimes).build();
 
-        assertEquals("eat a b c d e i u s ss asd", testTask.getTitle());
+        assertEquals("123E Dr", testTask.getTitle());
         assertFalse(isRecurring);
         assertEquals("Inbox", testTask.getProject());
         assertEquals(Priority.LOW, testTask.getPriority());
@@ -105,6 +108,46 @@ public class TaskTest {
         // assertEquals(null, testTask.getObjectID());
         assertEquals(null, testTask.getRecurUniqueID());
     }
+    
+    @Test
+    public void testDeadlineTaskRecurr() {
+        String taskTitle = "1 23";
+        boolean isRecurring = true;
+
+        Priority priority = Priority.MEDIUM;
+        ArrayList<LocalDateTime> dateTimes = new ArrayList<LocalDateTime>();
+        LocalDateTime date = LocalDateTime.of(2016, 12, 10, 21, 56);
+        dateTimes.add(date);
+        Period interval = Period.ofDays(1);
+        LocalDateTime recursUntil = LocalDateTime.of(2016, 12, 20, 21, 56);
+        
+        // TODO what will happen if I set recursUntil same as/before deadline date
+        Task testTask = new Task.TaskBuilder(taskTitle, isRecurring)
+                .setPriority(priority)
+                .setDatetimes(dateTimes)
+                .setInterval(interval)
+                .setRecursUntil(recursUntil).build();
+
+        assertEquals("1 23", testTask.getTitle());
+        assertTrue(isRecurring);
+        assertEquals("Inbox", testTask.getProject());
+        assertEquals(Priority.MEDIUM, testTask.getPriority());
+
+        assertEquals(LocalDateTime.of(2015, 12, 10, 21, 56), testTask.getStartDateTime());
+        assertEquals(null, testTask.getEndDateTime());
+        assertEquals(LocalDateTime.of(2016, 12, 20, 21, 56), testTask.getRecursUntil());
+        assertEquals(Period.ofDays(1), testTask.getInterval());
+
+        assertFalse(testTask.getIsCompleted());
+        assertEquals(Type.DEADLINE, testTask.getTaskType());
+
+        // TODO how to test objectID???
+        // assertEquals(null, testTask.getObjectID());
+        // TODO how to test recurID if isRecurring = true
+        // assertEquals(null, testTask.getRecurUniqueID());
+    }
+    
+    
     // @Test
     // public void testFloatTask() {
     // String notParsed = "attend meeting";
