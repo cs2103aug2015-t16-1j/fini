@@ -31,6 +31,7 @@ public class Brain {
 
 	private ArrayList<Task> taskMasterList;
 	private ObservableList<Task> taskObservableList = FXCollections.observableArrayList();
+	private ObservableList<Task> taskAuxiliaryList = FXCollections.observableArrayList(); 
 	
 	private boolean searchDisplayTrigger = false;
 	private boolean completeDisplayTrigger = false;
@@ -46,7 +47,8 @@ public class Brain {
 		// taskObservableList: all displayed tasks
 		taskMasterList = taskOrganiser.readFile();
 		sortTaskMasterList();
-		taskObservableList.addAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+		taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+		taskAuxiliaryList.setAll(taskObservableList); 
 		statusSaver.saveStatus(taskMasterList, taskObservableList);
 	}
 
@@ -59,9 +61,9 @@ public class Brain {
 
 	// Initialize first display when Fini is started - executed in MainApp 
 	public void initDisplay() {
-		rootController.updateMainDisplay(taskObservableList);
-		rootController.updateProjectsOverviewPanel(taskObservableList);
-		rootController.updateTasksOverviewPanel(taskObservableList);
+		rootController.updateMainDisplay(taskAuxiliaryList);
+		rootController.updateProjectsOverviewPanel(taskAuxiliaryList);
+		rootController.updateTasksOverviewPanel(taskAuxiliaryList);
 		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
 
@@ -133,6 +135,12 @@ public class Brain {
 		}
 
 		displayControl();
+		
+		sortTaskMasterList();
+		taskAuxiliaryList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+		rootController.updateProjectsOverviewPanel(taskAuxiliaryList);
+		rootController.updateTasksOverviewPanel(taskAuxiliaryList);
+		
 		rootController.updateDisplayToUser(display);
 		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
@@ -140,26 +148,16 @@ public class Brain {
 	// Display Control Methods
 	private void displayControl() {
 		if (completeDisplayTrigger) {
+			taskObservableList.setAll(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 			rootController.updateCompletedDisplay(taskObservableList);
-			sortTaskMasterList();
-			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
-			rootController.updateProjectsOverviewPanel(taskObservableList);
-			rootController.updateTasksOverviewPanel(taskObservableList);
 		} else if (searchDisplayTrigger) {
 			// TODO
 		} else if (allDisplayTrigger) {
 			rootController.updateAllDisplay(taskObservableList);
-			sortTaskMasterList();
-			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
-			rootController.updateProjectsOverviewPanel(taskObservableList);
-			rootController.updateTasksOverviewPanel(taskObservableList);
 		} else {
 			sortTaskMasterList();
 			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
-			
 			rootController.updateMainDisplay(taskObservableList);
-			rootController.updateProjectsOverviewPanel(taskObservableList);
-			rootController.updateTasksOverviewPanel(taskObservableList);
 		}
 	}
 	
@@ -212,7 +210,7 @@ public class Brain {
 		taskMasterList.add(newTask);
 		taskOrganiser.updateFile(taskMasterList);
 		
-		return "Update: " + (objectIndex + 1) + taskToUpdate.getTitle();
+		return "Update: " + objectIndex + taskToUpdate.getTitle();
 	}
 	
 	// @author A0121828H
@@ -233,7 +231,7 @@ public class Brain {
 		taskObservableList.remove(taskToDelete);
 		taskMasterList.remove(taskToDelete);
 		taskOrganiser.updateFile(taskMasterList);
-		return "Delete: " + (objectIndex + 1) + " " + taskToDelete.getTitle();
+		return "Delete: " + objectIndex + " " + taskToDelete.getTitle();
 	}
 	
 	private String completeTask(int objectIndex) {
@@ -263,7 +261,7 @@ public class Brain {
 			taskToComplete.setIsComplete();
 		}
 		taskOrganiser.updateFile(taskMasterList);
-		return "Complete: " + (objectIndex + 1) + taskToComplete.getTitle();
+		return "Complete: " + objectIndex + taskToComplete.getTitle();
 	}
 	
 	private String uncompleteTask(int objectIndex) {
@@ -273,7 +271,7 @@ public class Brain {
 		} catch (IndexOutOfBoundsException e) {
 			return "Task not found";
 		}
-		
+		System.out.println(taskToUncomplete);
 		taskToUncomplete.setIncomplete();
 		if (taskToUncomplete.isRecurring()) {
 			for (Iterator<Task> iterator = taskMasterList.iterator(); iterator.hasNext(); ) {
@@ -286,7 +284,7 @@ public class Brain {
 			}
 		}
 		taskOrganiser.updateFile(taskMasterList);
-		return "Uncomplete: " + (objectIndex + 1) + taskToUncomplete.getTitle();
+		return "Uncomplete: " + objectIndex + taskToUncomplete.getTitle();
 	}
 
 	/**
@@ -332,7 +330,6 @@ public class Brain {
 			completeDisplayTrigger = true;
 			searchDisplayTrigger = false;
 			allDisplayTrigger = false;
-			taskObservableList.setAll(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 			return "display completed";
 		} else if(commandParameters.equals("") || commandParameters.equals("main")) {
 			searchDisplayTrigger = false;

@@ -194,14 +194,62 @@ public class RootController {
 	}
 	
 	public void updateAllDisplay(ObservableList<Task> taskObservableList) {
-		 ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
-		 
-		 displayBoxes.add(new TaskCategory("Complete"));
-		 for (Task task : taskObservableList) {
-			 
-		 }
+		ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
+
+		boolean overdueAdded = false;
+		boolean floatingAdded = false;
+		boolean todayAdded = false;
+		boolean tomorrowAdded = false;
+		boolean othersAdded = false;
+		
+		displayBoxes.add(new TaskCategory("Complete"));
+		for (Task task : taskObservableList) {
+			if (!task.isCompleted() && task.isOverdue() && !overdueAdded) {
+				displayBoxes.add(new TaskCategory("Overdue"));
+				overdueAdded = true;
+			} else if (!task.isOverdue() && task.getTaskType() == Type.DEFAULT && !floatingAdded) {
+				displayBoxes.add(new TaskCategory("Floating"));
+				floatingAdded = true;
+			} else if (task.getTaskType() != Type.DEFAULT && task.isTaskDueToday() && !todayAdded) {
+				displayBoxes.add(new TaskCategory("Today"));
+				todayAdded = true;
+			} else if (!task.isTaskDueToday() && task.isTaskDueTomorrow() && !tomorrowAdded) {
+				displayBoxes.add(new TaskCategory("Tomorrow"));
+				tomorrowAdded = true;
+			} else if (!task.isTaskDueTomorrow() && !othersAdded) {
+				displayBoxes.add(new TaskCategory("Other tasks"));
+				othersAdded = true;
+			}
+			int taskId = taskObservableList.indexOf(task) + 1;
+			String taskStartTime = task.getStartDateTime() == null ? null : timeFormatter.format(task.getStartDateTime());
+			String taskEndTime = task.getEndDateTime() == null ? null : timeFormatter.format(task.getEndDateTime());
+			String taskStartDate = task.getStartDateTime() == null ? null : task.getStartDateTime().toLocalDate().toString();
+			String taskEndDate = task.getEndDateTime() == null ? null : task.getEndDateTime().toLocalDate().toString();
+
+			String typeOfTask = "";
+			if (task.getTaskType() == Type.DEFAULT) {
+				typeOfTask = "floating";
+			} else if (task.getTaskType() == Type.DEADLINE) {
+				typeOfTask = "deadline";
+			} else {
+				typeOfTask = "event";
+			}
+
+			TaskBox newTaskBox = new TaskBox(taskId, 
+					typeOfTask, 
+					task.getTitle(), 
+					taskStartDate,
+					taskEndDate,
+					taskStartTime, 
+					taskEndTime, 
+					task.getPriority(), 
+					task.getProject(), 
+					task.isRecurring());
+			displayBoxes.add(newTaskBox);
+		}
+		listView.setItems(displayBoxes);
 	}
-	
+
 	public void updateSearchDisplay() {
 		// TODO
 	}

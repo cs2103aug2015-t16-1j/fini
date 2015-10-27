@@ -20,7 +20,8 @@ public class Command {
 		
 		if (commandType == CommandType.UPDATE ||
 			commandType == CommandType.DELETE ||
-			commandType == CommandType.COMPLETE) {
+			commandType == CommandType.COMPLETE ||
+			commandType == CommandType.UNCOMPLETE) {
 			try {
 				objectIndex = Integer.parseInt(splitUserInput[1]);
 			} catch (IndexOutOfBoundsException | NumberFormatException e) {
