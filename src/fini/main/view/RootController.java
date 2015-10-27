@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.junit.internal.runners.TestMethod;
 
@@ -17,8 +18,6 @@ import org.junit.internal.runners.TestMethod;
  */
 
 import fini.main.Brain;
-import fini.main.model.FiniParser;
-import fini.main.model.Storage;
 import fini.main.model.Task;
 import fini.main.model.Task.Priority;
 import fini.main.model.Task.Type;
@@ -67,12 +66,12 @@ public class RootController {
 	private Brain brain = Brain.getInstance();
 
 	private String userInput;
+	private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d MMMM");
 	private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 	
 	private Integer scrollIndex = 0;
 	private static final Integer MAX_DISPLAY_TASK_BOXES = 10;
 	private static final Integer SCROLL_INCREMENT = 7;
-	
 	
 	public RootController() {
 		// TODO With the Brain fully functioning, here we do not initialize anything
@@ -103,6 +102,34 @@ public class RootController {
             userInput = commandBox.getText();
             if (userInput.toLowerCase().equals("search")) {
                 brain.executeCommand(userInput);
+            } else if (Pattern.matches("update\\s+[0-9]+", userInput.toLowerCase())) {
+            	int updateIndex = Integer.parseInt(userInput.split("\\s+")[1]);
+            	if (updateIndex > 0) {
+					ObservableList<Task> taskObservableList = brain.getTaskObservableList();
+					if (updateIndex < taskObservableList.size() + 1) {
+						Task task = taskObservableList.get(updateIndex - 1);
+						Task.Type taskType = task.getTaskType();
+						
+						commandBox.appendText(" " + task.getTitle());
+						switch (taskType) {
+						case DEFAULT:
+							break;
+						case DEADLINE:
+							commandBox.appendText(" ");
+							commandBox.appendText(task.getStartDateTime().toLocalDate().format(dateFormatter) + " " + 
+												  task.getStartDateTime().toLocalTime().format(timeFormatter));
+							break;
+						case EVENT:
+							commandBox.appendText(" ");
+							commandBox.appendText(task.getStartDateTime().toLocalDate().format(dateFormatter) + " " +
+												  task.getStartDateTime().toLocalTime().format(timeFormatter) + " to " +
+												  task.getEndDateTime().toLocalDate().format(dateFormatter) + " " + 
+												  task.getEndDateTime().toLocalTime().format(timeFormatter));
+							break;
+						}
+						commandBox.end();
+					}
+				}
             }
         } else if (event.getCode().isDigitKey() || event.getCode().isLetterKey()){
             userInput = commandBox.getText();

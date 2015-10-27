@@ -1,8 +1,9 @@
 TODO FOR V0.3
 
-1. Search
-2. Task add date stuff
+1. Search (Check)
+2. Task add date stuff (Check)
 3. Scroll (Page Up and Down)
 4. Command History
 5. NUS MODS Implementation (Fully)
 6. Night Mode
+7. Start time should be earlier than end time

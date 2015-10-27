@@ -358,10 +358,15 @@ public class Brain {
         taskObservableList.setAll(tempObservableList);
     }
 	
+	// Utilization Methods
 	private void saveThisStatus() {
 		assert taskMasterList != null;
 		assert taskObservableList != null;
 		statusSaver.saveStatus(taskMasterList, taskObservableList);
+	}
+	
+	public ObservableList<Task> getTaskObservableList() {
+		return taskObservableList;
 	}
 	
 	// Initialization Methods
