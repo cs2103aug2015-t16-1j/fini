@@ -13,6 +13,7 @@ import java.util.Comparator;
  */
 
 import fini.main.model.Task;
+import fini.main.model.Command.CommandType;
 import fini.main.model.Task.Type;
 public class Sorter {
 	private ArrayList<Task> listToSort;
@@ -108,6 +109,25 @@ public class Sorter {
 		}
 	}
 	
+	class SortByIncomplete implements Comparator<Task> {
+		/**
+		 * Possible combination:
+		 * complete incomplete -> -1
+		 * incomplete complete -> 1
+		 * same -> 0
+		 */
+		@Override
+		public int compare(Task lhs, Task rhs) {
+			if (lhs.isCompleted() && !rhs.isCompleted()) {
+				return LOWER_THAN;
+			} else if (!lhs.isCompleted() && rhs.isCompleted()) {
+				return HIGHER_THAN;
+			} else {
+				return EQUAL;
+			}
+		}
+	}
+	
 	public Sorter(ArrayList<Task> listToSort) {
 		this.listToSort = listToSort;
 		comparators = new ArrayList<Comparator<Task>>();
@@ -125,5 +145,9 @@ public class Sorter {
 		for (Comparator<Task> comparator : comparators) {
 			Collections.sort(listToSort, comparator);
 		}
+	}
+	
+	public void addSortByIncomplete() {
+		comparators.add(new SortByIncomplete());
 	}
 }

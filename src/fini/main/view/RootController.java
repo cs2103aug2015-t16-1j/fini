@@ -68,7 +68,12 @@ public class RootController {
 
 	private String userInput;
 	private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-
+	
+	private Integer scrollIndex = 0;
+	private static final Integer MAX_DISPLAY_TASK_BOXES = 10;
+	private static final Integer SCROLL_INCREMENT = 7;
+	
+	
 	public RootController() {
 		// TODO With the Brain fully functioning, here we do not initialize anything
 	}
@@ -100,35 +105,30 @@ public class RootController {
 		// 2. COMMAND + TAB -> auto-complete command (Veto's idea)
 		// 3. UP/DOWN -> previous/next command
 		// 4. PAGEUP/PAGEDOWN -> scroll up/down
+		
+		// TODO: JONAS
+//		if(event.getCode() == KeyCode.PAGE_DOWN) {
+//			int currentNumOfTaskBoxes = listView.getItems().size();
+//			if(currentNumOfTaskBoxes > MAX_DISPLAY_TASK_BOXES) {
+//				scrollIndex += SCROLL_INCREMENT;
+//			}
+//		}
 	}
-
-	//	private void sortForMainDisplay(ObservableList<Task> tasks) {
-	//		ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
-	//		HBox floatingCategory = createCategoryBox("Floating Tasks");
-	//		displayBoxes.add(floatingCategory);
-	//		
-	//		for(Task task : tasks) {
-	//			if(task.getDate() == null) {
-	//				displayBoxes.add(getFloatingTaskBox(task));
-	//			}
-	//		}
-	//		listView.setItems(displayBoxes);
-	//	}
 
 	// Update Display
 	public void updateDisplayToUser(String display) {
 		displayToUser.setText(display);
 	}
 
-	public void updateTasksOverviewPanel(ObservableList<Task> taskMasterList) {
+	public void updateTasksOverviewPanel(ObservableList<Task> taskObservableList) {
 		ObservableList<HBox> tasksOverview = FXCollections.observableArrayList();
 
 		Integer tasksInInbox = 0;
 		Integer tasksDueToday = 0;
 		Integer tasksDueThisWeek = 0;
-		Integer totalTasks = taskMasterList.size();
+		Integer totalTasks = taskObservableList.size();
 
-		for (Task task : taskMasterList) {
+		for (Task task : taskObservableList) {
 			if(task.getProject().equals("Inbox")) {
 				tasksInInbox += 1;
 			}
@@ -148,9 +148,9 @@ public class RootController {
 		totalNumberOfTasks.setText(totalTasks.toString());
 	}
 
-	public void updateProjectsOverviewPanel(ObservableList<Task> taskMasterList) {
+	public void updateProjectsOverviewPanel(ObservableList<Task> taskObservableList) {
 		ObservableList<String> projectsOverview = FXCollections.observableArrayList();
-		for (Task task : taskMasterList) {
+		for (Task task : taskObservableList) {
 			if (projectsOverview.contains(task.getProject()) == false) {
 				projectsOverview.add(task.getProject());
 			}
@@ -158,7 +158,55 @@ public class RootController {
 		projectsOverviewPanel.setItems(projectsOverview);
 	}
 
-	public void updateMainDisplay(ObservableList<Task> taskMasterList) {
+	public void updateCompletedDisplay(ObservableList<Task> taskObservableList) {
+		ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
+		
+		for (Task task : taskObservableList) {
+			int taskId = taskObservableList.indexOf(task) + 1;
+
+			String taskStartTime = task.getStartDateTime() == null ? null : timeFormatter.format(task.getStartDateTime());
+			String taskEndTime = task.getEndDateTime() == null ? null : timeFormatter.format(task.getEndDateTime());
+			String taskStartDate = task.getStartDateTime() == null ? null : task.getStartDateTime().toLocalDate().toString();
+			String taskEndDate = task.getEndDateTime() == null ? null : task.getEndDateTime().toLocalDate().toString();
+
+			String typeOfTask = "";
+			if (task.getTaskType() == Type.DEFAULT) {
+				typeOfTask = "floating";
+			} else if (task.getTaskType() == Type.DEADLINE) {
+				typeOfTask = "deadline";
+			} else {
+				typeOfTask = "event";
+			}
+			
+			TaskBox newTaskBox = new TaskBox(taskId, 
+											 typeOfTask, 
+											 task.getTitle(), 
+											 taskStartDate,
+											 taskEndDate,
+											 taskStartTime, 
+											 taskEndTime, 
+											 task.getPriority(), 
+											 task.getProject(), 
+											 task.isRecurring());
+			displayBoxes.add(newTaskBox);
+		}
+		listView.setItems(displayBoxes);
+	}
+	
+	public void updateAllDisplay(ObservableList<Task> taskObservableList) {
+		 ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
+		 
+		 displayBoxes.add(new TaskCategory("Complete"));
+		 for (Task task : taskObservableList) {
+			 
+		 }
+	}
+	
+	public void updateSearchDisplay() {
+		// TODO
+	}
+	
+	public void updateMainDisplay(ObservableList<Task> taskObservableList) {
 		ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
 
 		// All category boxes
@@ -168,8 +216,8 @@ public class RootController {
 		ObservableList<HBox> tomorrowBoxes = FXCollections.observableArrayList();
 		ObservableList<HBox> otherBoxes = FXCollections.observableArrayList();
 
-		for (Task task : taskMasterList) {
-			int taskId = taskMasterList.indexOf(task) + 1;
+		for (Task task : taskObservableList) {
+			int taskId = taskObservableList.indexOf(task) + 1;
 
 			String taskTitle = task.getTitle();
 			String taskProject = task.getProject();

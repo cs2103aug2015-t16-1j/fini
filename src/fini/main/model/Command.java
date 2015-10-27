@@ -10,6 +10,7 @@ public class Command {
 	private CommandType commandType;
 	private String userCommand;
 	private int objectIndex = -1;
+
 	private String commandParameters = null;
 	
 	public Command(String userInput) {

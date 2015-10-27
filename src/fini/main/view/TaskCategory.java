@@ -3,6 +3,8 @@
  */
 package fini.main.view;
 
+import java.io.IOException;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -13,7 +15,7 @@ public class TaskCategory extends HBox {
     @FXML
     private Label category;
 
-    public TaskCategory(String taskCategory) throws Exception {
+    public TaskCategory(String taskCategory) {
         initialiseFxmlFiles();
         this.category.setText(taskCategory);
         if(taskCategory.equals("Overdue")) {
@@ -21,10 +23,14 @@ public class TaskCategory extends HBox {
         }
     }
 
-    private void initialiseFxmlFiles() throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("TaskCategory.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
-        loader.load();
+    private void initialiseFxmlFiles() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("TaskCategory.fxml"));
+            loader.setRoot(this);
+            loader.setController(this);
+			loader.load();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 }
