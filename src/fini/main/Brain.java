@@ -43,6 +43,7 @@ public class Brain {
 		taskMasterList = taskOrganiser.readFile();
 		sortTaskMasterList();
 		taskObservableList.addAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+		statusSaver.saveStatus(taskMasterList, taskObservableList);
 	}
 
 	public static Brain getInstance() {
@@ -77,20 +78,20 @@ public class Brain {
 		String display = "";
 		switch (commandType) {
 		case ADD:
-			saveThisStatus();
 			display = addTask(commandParameters);
+			saveThisStatus();
 			break;
 		case UPDATE:
-			saveThisStatus();
 			display = updateTask(objectIndex, commandParameters);
+			saveThisStatus();
 			break;
 		case DELETE:
-			saveThisStatus();
 			display = deleteTask(objectIndex);
+			saveThisStatus();
 			break;
 		case CLEAR:
-			saveThisStatus();
 			display = clearAllTasks();
+			saveThisStatus();
 			break;
 		case UNDO:
 			display = undo();
@@ -111,18 +112,18 @@ public class Brain {
 //			MainApp.switchMode();
 //			break;
 		case MODS:
-			saveThisStatus();
 			display = loadNUSMods();
+			saveThisStatus();
 			break;
 		case EXIT:
 			System.exit(0);
 		case COMPLETE:
-			saveThisStatus();
 			display = completeTask(objectIndex);
+			saveThisStatus();
 			break;
 		case UNCOMPLETE:
-			saveThisStatus();
 			display = uncompleteTask(objectIndex);
+			saveThisStatus();
 			break;
 		case INVALID:
 			display = "commandType INVALID";
@@ -131,19 +132,19 @@ public class Brain {
 			break;
 		}
 
-//		displayControl();
-		sortTaskMasterList();
-		taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
-		
-		rootController.updateMainDisplay(taskObservableList);
-		rootController.updateProjectsOverviewPanel(taskObservableList);
-		rootController.updateTasksOverviewPanel(taskObservableList);
+		displayControl();
 		rootController.updateDisplayToUser(display);
 		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
 	
 	// Display Control Methods
 	private void displayControl() {
+		sortTaskMasterList();
+		taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+		
+		rootController.updateMainDisplay(taskObservableList);
+		rootController.updateProjectsOverviewPanel(taskObservableList);
+		rootController.updateTasksOverviewPanel(taskObservableList);
 	}
 	
 	// Logic Methods
@@ -292,10 +293,11 @@ public class Brain {
 		if (statusSaver.isUndoMasterStackEmpty()) {
 			return "Cannot undo lah! You haven't done any changes yet.";
 		}
-		if (statusSaver.isRedoMasterStackEmpty()) {
-			statusSaver.saveStatusToRedo(taskMasterList, taskObservableList);
-		}
+//		if (statusSaver.isRedoMasterStackEmpty()) {
+//			statusSaver.saveStatusToRedo(taskMasterList, taskObservableList);
+//		}
 		statusSaver.retrieveLastStatus();
+		statusSaver.printer();
 		taskMasterList = statusSaver.getLastTaskMasterList();
 		taskObservableList = statusSaver.getLastTaskObservableList();
 		taskOrganiser.updateFile(taskMasterList);
@@ -307,6 +309,7 @@ public class Brain {
 			return "Cannot redo lah! You dun have anything to redo alrdy.";
 		}
 		statusSaver.retrieveRedoStatus();
+		statusSaver.printer();
 		taskMasterList = statusSaver.getLastTaskMasterList();
 		taskObservableList = statusSaver.getLastTaskObservableList();
 		taskOrganiser.updateFile(taskMasterList);
