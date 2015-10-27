@@ -99,7 +99,15 @@ public class RootController {
 			//			updateTasksOverviewPanel(taskOrganiser.getTasks());
 			//			updateDisplayToUser(isOperationSuccessful);
 			//			taskOrganiser.updateFile();
-		}
+		} else if (event.getCode() == KeyCode.SPACE) {
+            userInput = commandBox.getText();
+            brain.executeCommand(userInput);
+        } else if (event.getCode().isDigitKey() || event.getCode().isLetterKey()){
+            userInput = commandBox.getText();
+            if (userInput.toLowerCase().startsWith("search ")) {
+                brain.executeCommand(userInput + event.getCode().toString().toLowerCase());
+            }
+        }
 		// TODO
 		// 1. SEARCH/EDIT + SPACE -> auto-trigger for instant search and auto-complete for edit
 		// 2. COMMAND + TAB -> auto-complete command (Veto's idea)
@@ -249,7 +257,11 @@ public class RootController {
 		}
 		listView.setItems(displayBoxes);
 	}
-
+	
+	public void updateSearchDisplay(ObservableList<Task> taskObservableList) {
+	    // TODO
+	}
+	
 	public void updateMainDisplay(ObservableList<Task> taskObservableList) {
 		ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
 
