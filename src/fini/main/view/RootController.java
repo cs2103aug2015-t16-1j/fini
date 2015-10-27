@@ -68,7 +68,12 @@ public class RootController {
 
 	private String userInput;
 	private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-
+	
+	private Integer scrollIndex = 0;
+	private static final Integer MAX_DISPLAY_TASK_BOXES = 10;
+	private static final Integer SCROLL_INCREMENT = 7;
+	
+	
 	public RootController() {
 		// TODO With the Brain fully functioning, here we do not initialize anything
 	}
@@ -100,6 +105,14 @@ public class RootController {
 		// 2. COMMAND + TAB -> auto-complete command (Veto's idea)
 		// 3. UP/DOWN -> previous/next command
 		// 4. PAGEUP/PAGEDOWN -> scroll up/down
+		
+		// TODO: JONAS
+//		if(event.getCode() == KeyCode.PAGE_DOWN) {
+//			int currentNumOfTaskBoxes = listView.getItems().size();
+//			if(currentNumOfTaskBoxes > MAX_DISPLAY_TASK_BOXES) {
+//				scrollIndex += SCROLL_INCREMENT;
+//			}
+//		}
 	}
 
 	//	private void sortForMainDisplay(ObservableList<Task> tasks) {
