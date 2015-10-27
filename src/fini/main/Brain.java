@@ -293,11 +293,7 @@ public class Brain {
 		if (statusSaver.isUndoMasterStackEmpty()) {
 			return "Cannot undo lah! You haven't done any changes yet.";
 		}
-//		if (statusSaver.isRedoMasterStackEmpty()) {
-//			statusSaver.saveStatusToRedo(taskMasterList, taskObservableList);
-//		}
 		statusSaver.retrieveLastStatus();
-		statusSaver.printer();
 		taskMasterList = statusSaver.getLastTaskMasterList();
 		taskObservableList = statusSaver.getLastTaskObservableList();
 		taskOrganiser.updateFile(taskMasterList);
@@ -309,7 +305,6 @@ public class Brain {
 			return "Cannot redo lah! You dun have anything to redo alrdy.";
 		}
 		statusSaver.retrieveRedoStatus();
-		statusSaver.printer();
 		taskMasterList = statusSaver.getLastTaskMasterList();
 		taskObservableList = statusSaver.getLastTaskObservableList();
 		taskOrganiser.updateFile(taskMasterList);
