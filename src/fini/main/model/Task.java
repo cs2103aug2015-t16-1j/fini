@@ -175,7 +175,7 @@ public class Task implements TaskInterface {
         return interval;
     }
 	
-	public boolean getIsCompleted() {
+	public boolean isCompleted() {
 		return isCompleted;
 	}
 	
@@ -198,7 +198,7 @@ public class Task implements TaskInterface {
 		}
 	}
 	
-	public boolean getIsRecurring() {
+	public boolean isRecurring() {
 		return isRecurring;
 	}
 	

@@ -135,6 +135,7 @@ public class Brain {
 		}
 
 		displayControl();
+		
 		sortTaskMasterList();
 		taskAuxiliaryList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
 		rootController.updateProjectsOverviewPanel(taskAuxiliaryList);
@@ -270,7 +271,6 @@ public class Brain {
 		} catch (IndexOutOfBoundsException e) {
 			return "Task not found";
 		}
-		System.out.println(taskToUncomplete);
 		taskToUncomplete.setIncomplete();
 		if (taskToUncomplete.isRecurring()) {
 			for (Iterator<Task> iterator = taskMasterList.iterator(); iterator.hasNext(); ) {
