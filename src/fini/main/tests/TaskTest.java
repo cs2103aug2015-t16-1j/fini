@@ -2,6 +2,7 @@ package fini.main.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDateTime;
@@ -57,8 +58,8 @@ public class TaskTest {
                 "Null" + "\n" +
                 "false" + "\n" +
                 "DEFAULT" + "\n" +
-                "objectID" + "\n" +  // TODO ID cannot test
-                "Null" + "\n" +
+//                "objectID" + "\n" +  // TODO ID cannot test
+//                "Null" + "\n" +
                 "<<<<<<<<<";
         assertEquals(expectedResult, testTask.toString());
     }
@@ -247,8 +248,8 @@ public class TaskTest {
                 interval.toString() + "\n" +
                 "false" + "\n" +
                 "EVENT" + "\n" +
-                "objectID" + "\n" +
-                "recurUniqueID" + "\n" +  // TODO cannot test IDs for toString
+//                "objectID" + "\n" +
+//                "recurUniqueID" + "\n" +  // TODO cannot test IDs for toString
                 "<<<<<<<<<";
         assertEquals(expectedResult, testTask.toString());
     }
@@ -257,8 +258,41 @@ public class TaskTest {
     public void testIsOverdueMethod() {
         
     }
+    
+    @Test
+    public void testMakeCopyMethod() {
+        String taskTitle = "happy";
+        boolean isRecurring = false;
+
+        Task testTaskOriginal = new Task.TaskBuilder(taskTitle, isRecurring).build();
+
+        Task testTaskCopied = testTaskOriginal.makeCopy();
+
+        // Check that the copied task has the same properties as the original
+        assertEquals(testTaskOriginal.getTitle(), testTaskCopied.getTitle());
+        assertEquals(testTaskOriginal.getIsRecurring(), testTaskCopied.getIsRecurring());
+
+        assertEquals(testTaskOriginal.getProject(), testTaskCopied.getProject());
+        assertEquals(testTaskOriginal.getPriority(), testTaskCopied.getPriority());
+        assertEquals(testTaskOriginal.getStartDateTime(), testTaskCopied.getStartDateTime());
+        assertEquals(testTaskOriginal.getEndDateTime(), testTaskCopied.getEndDateTime());
+        assertEquals(testTaskOriginal.getRecursUntil(), testTaskCopied.getRecursUntil());
+        assertEquals(testTaskOriginal.getInterval(), testTaskCopied.getInterval());
+
+        assertEquals(testTaskOriginal.getIsCompleted(), testTaskCopied.getIsCompleted());
+        assertEquals(testTaskOriginal.getTaskType(), testTaskCopied.getTaskType());
+
+        assertEquals(testTaskOriginal.getObjectID(), testTaskCopied.getObjectID());
+        assertEquals(testTaskOriginal.getRecursUntil(), testTaskCopied.getRecurUniqueID());
+        assertEquals(testTaskOriginal.hasRecurUniqueID(), testTaskCopied.hasRecurUniqueID());
+
+        // Check that when we change copied task, it doesnt affect original one
+        testTaskCopied.setTaskTitle("gggggg");
+        assertNotEquals(testTaskOriginal.getTitle(), testTaskCopied.getTitle());
+        assertEquals("gggggg", testTaskCopied.getTitle());
+    }
   
-    // TODO methods not tested yet: updateObjectID, hasNext, toNext, makeCopy
+    // TODO methods not tested yet: updateObjectID, hasNext, toNext
     // TODO methods not tested yet: DISPLAY related methods
     
 }
