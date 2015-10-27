@@ -135,7 +135,6 @@ public class Brain {
 		}
 
 		displayControl();
-		
 		sortTaskMasterList();
 		taskAuxiliaryList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
 		rootController.updateProjectsOverviewPanel(taskAuxiliaryList);
