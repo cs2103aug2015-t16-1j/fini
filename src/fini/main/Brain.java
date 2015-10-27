@@ -33,6 +33,8 @@ public class Brain {
 	private ObservableList<Task> taskObservableList = FXCollections.observableArrayList();
 	private ObservableList<Task> taskAuxiliaryList = FXCollections.observableArrayList(); 
 	
+	private boolean searchDisplayTrigger = false;
+	
 	private boolean completeDisplayTrigger = false;
 	private boolean allDisplayTrigger = false;
 
@@ -99,6 +101,10 @@ public class Brain {
 		case DISPLAY:
 			display = displayTask(commandParameters);
 			break;
+		case SEARCH:
+		    display = "Searching...";
+		    searchTask(commandParameters);
+		    break;
 //		case MODE:
 //			MainApp.switchMode();
 //			break;
@@ -139,6 +145,8 @@ public class Brain {
 		if (completeDisplayTrigger) {
 			taskObservableList.setAll(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 			rootController.updateCompletedDisplay(taskObservableList);
+		} else if (searchDisplayTrigger) {
+		    rootController.updateSearchDisplay(taskObservableList);
 		} else if (allDisplayTrigger) {
 			rootController.updateAllDisplay(taskObservableList);
 		} else {
@@ -314,14 +322,17 @@ public class Brain {
 	private String displayTask(String commandParameters) {
 		if (commandParameters.equals("completed")) {
 			completeDisplayTrigger = true;
+			searchDisplayTrigger = false;
 			allDisplayTrigger = false;
 			return "display completed";
 		} else if(commandParameters.equals("") || commandParameters.equals("main")) {
 			completeDisplayTrigger = false;
+			searchDisplayTrigger = false;
 			allDisplayTrigger = false;
 			return "display main";
 		} else if(commandParameters.equals("all")) {
 			completeDisplayTrigger = false;
+			searchDisplayTrigger = false;
 			allDisplayTrigger = true;
 			sortTaskMasterListWithIncomplete();
 			taskObservableList.setAll(taskMasterList);
@@ -330,6 +341,10 @@ public class Brain {
 			return "displayTask method";
 		}
 	}
+	
+	private void searchTask(String commandParameters) {
+        
+    }
 	
 	private void saveThisStatus() {
 		assert taskMasterList != null;
