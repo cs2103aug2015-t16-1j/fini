@@ -23,7 +23,7 @@ public class TaskTest {
     // interval: have/dont have
 
     @Test
-    public void testFloatingTask() {
+    public void testFloatingTaskAndToStringMethod() {
         String taskTitle = "happy";
         boolean isRecurring = false;
 
@@ -46,6 +46,21 @@ public class TaskTest {
         // assertEquals(null, testTask.getObjectID());
         assertEquals(null, testTask.getRecurUniqueID());
         assertFalse(testTask.hasRecurUniqueID());
+        
+        String expectedResult = ">>>>>>>>>\n" + 
+                "happy" + "\n" + 
+                "false" + "\n" + 
+                "NORMAL" + "\n" + 
+                "Null" + "\n" +
+                "Null" + "\n" +
+                "Null" + "\n" +
+                "Null" + "\n" +
+                "false" + "\n" +
+                "DEFAULT" + "\n" +
+                "objectID" + "\n" +  // TODO ID cannot test
+                "Null" + "\n" +
+                "<<<<<<<<<";
+        assertEquals(expectedResult, testTask.toString());
     }
 
     @Test
@@ -186,50 +201,56 @@ public class TaskTest {
   
     @Test
     public void testEventTaskRecurAndToStringMethod() {
-        String taskTitle = "21238013291038102928319032";
-        boolean isRecurring = false;
+        String taskTitle = "i am a long long long long long long long name";
+        boolean isRecurring = true;
         // TODO what will happen if I set endDate before startDate
         ArrayList<LocalDateTime> dateTimes = new ArrayList<LocalDateTime>();
         LocalDateTime dateStart = LocalDateTime.of(2015, 12, 10, 9, 56);
-        LocalDateTime dateEnd = LocalDateTime.of(2016, 2, 10, 0, 00);
+        LocalDateTime dateEnd = LocalDateTime.of(2015, 12, 10, 11, 56);
         dateTimes.add(dateStart);
         dateTimes.add(dateEnd);
         
+        LocalDateTime recursUntil = LocalDateTime.of(2016, 5, 5, 11, 56);
+        Period interval = Period.ofWeeks(2);
+                
         Task testTask = new Task.TaskBuilder(taskTitle, isRecurring)
-                .setDatetimes(dateTimes).build();
+                .setDatetimes(dateTimes)
+                .setRecursUntil(recursUntil)
+                .setInterval(interval).build();
 
-        assertEquals("21238013291038102928319032", testTask.getTitle());
-        assertFalse(isRecurring);
+        assertEquals("i am a long long long long long long long name", testTask.getTitle());
+        assertTrue(isRecurring);
         assertEquals("Inbox", testTask.getProject());
         assertEquals(Priority.NORMAL, testTask.getPriority());
 
         assertEquals(LocalDateTime.of(2015, 12, 10, 9, 56), testTask.getStartDateTime());
-        assertEquals(LocalDateTime.of(2016, 2, 10, 0, 00), testTask.getEndDateTime());
-        assertEquals(null, testTask.getRecursUntil());
-        assertEquals(null, testTask.getInterval());
+        assertEquals(LocalDateTime.of(2015, 12, 10, 11, 56), testTask.getEndDateTime());
+        assertEquals(LocalDateTime.of(2016, 5, 5, 11, 56), testTask.getRecursUntil());
+        assertEquals(Period.ofWeeks(2), testTask.getInterval());
 
         assertFalse(testTask.getIsCompleted());
         assertEquals(Type.EVENT, testTask.getTaskType());
 
         // TODO how to test objectID???
         // assertEquals(null, testTask.getObjectID());
-        assertFalse(testTask.hasRecurUniqueID());
-        assertEquals(null, testTask.getRecurUniqueID());
-        
+        assertTrue(testTask.hasRecurUniqueID());
+        // assertEquals(null, testTask.getRecurUniqueID());
+
         
         String expectedResult = ">>>>>>>>>\n" + 
-                taskTitle + "\n" + 
-                isRecurring + "\n" + 
-                priority.toString() + "\n" + 
-                (taskStartDateTime == null ? "Null" : taskStartDateTime.toString()) + "\n" +
-                (taskEndDateTime == null ? "Null" : taskEndDateTime.toString()) + "\n" +
-                (recursUntil == null ? "Null" : recursUntil) + "\n" +
-                (interval == null ? "Null" : interval.toString()) + "\n" +
-                isCompleted + "\n" +
-                taskType.toString() + "\n" +
-                objectID + "\n" +
-                recurUniqueID + "\n" +
+                "i am a long long long long long long long name" + "\n" + 
+                "true" + "\n" + 
+                "NORMAL" + "\n" + 
+                "2015-12-10T09:56" + "\n" +
+                "2015-12-10T11:56" + "\n" +
+                "2016-05-05T11:56"+ "\n" +
+                interval.toString() + "\n" +
+                "false" + "\n" +
+                "EVENT" + "\n" +
+                "objectID" + "\n" +
+                "recurUniqueID" + "\n" +  // TODO cannot test IDs for toString
                 "<<<<<<<<<";
+        assertEquals(expectedResult, testTask.toString());
     }
     
     @Test

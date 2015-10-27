@@ -279,7 +279,7 @@ public class Task implements TaskInterface {
 			   isCompleted + "\n" +
 			   taskType.toString() + "\n" +
 			   objectID + "\n" +
-			   recurUniqueID + "\n" +
+			   (recurUniqueID == null ? "Null" : recurUniqueID.toString()) + "\n" +
 			   "<<<<<<<<<";
 	}
 	
