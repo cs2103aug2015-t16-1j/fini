@@ -1,6 +1,7 @@
 package fini.main;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.stream.Collectors;
@@ -343,7 +344,18 @@ public class Brain {
 	}
 	
 	private void searchTask(String commandParameters) {
-        
+        searchDisplayTrigger = true;
+        ObservableList<Task> tempObservableList = FXCollections.observableArrayList();
+        finiParser.parse(commandParameters);
+        ArrayList<LocalDateTime> searchDateTimes = finiParser.getDatetimes();
+        for (Task task : taskMasterList) {
+            if (task.getTitle().contains(commandParameters)) {
+                tempObservableList.add(task);
+            } else if (searchDateTimes.size() > 0 && searchDateTimes.get(0).toLocalDate().equals(task.getStartDateTime().toLocalDate())) {
+                tempObservableList.add(task);
+            }
+        }
+        taskObservableList.setAll(tempObservableList);
     }
 	
 	private void saveThisStatus() {
