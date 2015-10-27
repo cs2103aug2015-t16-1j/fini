@@ -262,14 +262,14 @@ public class RootController {
 					task.isRecurring());
 			displayBoxes.add(newTaskBox);
 		}
-		listView.setItems(displayBoxes);
-	}
-	
-	public void updateSearchDisplay(ObservableList<Task> taskObservableList) {
+        listView.setItems(displayBoxes);
+    }
+
+    public void updateSearchDisplay(ObservableList<Task> taskObservableList) {
         ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
 
         for (Task task : taskObservableList) {
-            int taskId = taskObservableList.indexOf(task);
+            int taskId = taskObservableList.indexOf(task) + 1;
 
             String taskStartTime = task.getStartDateTime() == null ? null : timeFormatter.format(task.getStartDateTime());
             String taskEndTime = task.getEndDateTime() == null ? null : timeFormatter.format(task.getEndDateTime());
