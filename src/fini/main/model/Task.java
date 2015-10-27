@@ -292,6 +292,7 @@ public class Task implements TaskInterface {
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
+		taskObject.updateObjectID();
 		return taskObject;
 	}
 	

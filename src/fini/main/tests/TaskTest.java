@@ -286,7 +286,7 @@ public class TaskTest {
         assertEquals(testTaskOriginal.isCompleted(), testTaskCopied.isCompleted());
         assertEquals(testTaskOriginal.getTaskType(), testTaskCopied.getTaskType());
 
-        assertEquals(testTaskOriginal.getObjectID(), testTaskCopied.getObjectID());
+        assertNotEquals(testTaskOriginal.getObjectID(), testTaskCopied.getObjectID());
         assertEquals(testTaskOriginal.getRecursUntil(), testTaskCopied.getRecurUniqueID());
         assertEquals(testTaskOriginal.hasRecurUniqueID(), testTaskCopied.hasRecurUniqueID());
 
