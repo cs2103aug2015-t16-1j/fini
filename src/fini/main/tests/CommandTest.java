@@ -21,6 +21,7 @@ public class CommandTest {
 	Command updateCommand;
 	Command clearCommand;
 	Command exitCommand;
+	Command undoCommand;
 	int result;
 	
 	
@@ -32,6 +33,7 @@ public class CommandTest {
 		updateCommand = new Command("update 1");
 		clearCommand = new Command("clear");
 		exitCommand = new Command("exit");
+		undoCommand = new Command("undo");
 	}
 	
 	static public String test(int value) {
@@ -69,6 +71,11 @@ public class CommandTest {
 	@Test
 	public void testExitCommand() {
 		assertEquals("EXIT", exitCommand.getCommandType().toString());
+	}
+	
+	@Test
+	public void testUndoCommand() {
+		assertEquals("UNDO", undoCommand.getCommandType().toString());
 	}
 
 }
