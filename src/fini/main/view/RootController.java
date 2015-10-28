@@ -21,6 +21,7 @@ import fini.main.Brain;
 import fini.main.model.Task;
 import fini.main.model.Task.Priority;
 import fini.main.model.Task.Type;
+import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -31,6 +32,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class RootController {
 	@FXML
@@ -493,6 +495,14 @@ public class RootController {
 				break;
 			}
 		}
+		FadeTransition fadeOut = new FadeTransition(Duration.millis(500), finiPoints);
+		FadeTransition fadeIn = new FadeTransition(Duration.millis(500), finiPoints);
+		fadeOut.setFromValue(1.0);
+		fadeOut.setToValue(0.0);
+		fadeOut.play();
 		finiPoints.setText(points.toString());
+		fadeIn.setFromValue(0.0);
+		fadeIn.setToValue(1.0);
+		fadeIn.play();
 	}
 }
