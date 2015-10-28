@@ -70,11 +70,11 @@ public class RootController {
 	private String userInput;
 	private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d MMMM");
 	private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-	
+
 	private Integer scrollIndex = 0;
-	private static final Integer MAX_DISPLAY_TASK_BOXES = 10;
-	private static final Integer SCROLL_INCREMENT = 7;
-	
+	private static final Integer MAX_DISPLAY_BOXES = 12;
+	private static final Integer SCROLL_INCREMENT = 1;
+
 	public RootController() {
 		// TODO With the Brain fully functioning, here we do not initialize anything
 	}
@@ -101,17 +101,17 @@ public class RootController {
 			//			updateDisplayToUser(isOperationSuccessful);
 			//			taskOrganiser.updateFile();
 		} else if (event.getCode() == KeyCode.SPACE) {
-            userInput = commandBox.getText();
-            if (userInput.toLowerCase().equals("search")) {
-                brain.executeCommand(userInput);
-            } else if (Pattern.matches("update\\s+[0-9]+", userInput.toLowerCase())) {
-            	int updateIndex = Integer.parseInt(userInput.split("\\s+")[1]);
-            	if (updateIndex > 0) {
+			userInput = commandBox.getText();
+			if (userInput.toLowerCase().equals("search")) {
+				brain.executeCommand(userInput);
+			} else if (Pattern.matches("update\\s+[0-9]+", userInput.toLowerCase())) {
+				int updateIndex = Integer.parseInt(userInput.split("\\s+")[1]);
+				if (updateIndex > 0) {
 					ObservableList<Task> taskObservableList = brain.getTaskObservableList();
 					if (updateIndex < taskObservableList.size() + 1) {
 						Task task = taskObservableList.get(updateIndex - 1);
 						Task.Type taskType = task.getTaskType();
-						
+
 						commandBox.appendText(" " + task.getTitle());
 						switch (taskType) {
 						case DEFAULT:
@@ -119,44 +119,56 @@ public class RootController {
 						case DEADLINE:
 							commandBox.appendText(" ");
 							commandBox.appendText(task.getStartDateTime().toLocalDate().format(dateFormatter) + " " + 
-												  task.getStartDateTime().toLocalTime().format(timeFormatter));
+									task.getStartDateTime().toLocalTime().format(timeFormatter));
 							break;
 						case EVENT:
 							commandBox.appendText(" ");
 							commandBox.appendText(task.getStartDateTime().toLocalDate().format(dateFormatter) + " " +
-												  task.getStartDateTime().toLocalTime().format(timeFormatter) + " to " +
-												  task.getEndDateTime().toLocalDate().format(dateFormatter) + " " + 
-												  task.getEndDateTime().toLocalTime().format(timeFormatter));
+									task.getStartDateTime().toLocalTime().format(timeFormatter) + " to " +
+									task.getEndDateTime().toLocalDate().format(dateFormatter) + " " + 
+									task.getEndDateTime().toLocalTime().format(timeFormatter));
 							break;
 						}
 						commandBox.end();
 					}
 				}
-            }
-        } else if (event.getCode().isDigitKey() || event.getCode().isLetterKey()){
-            userInput = commandBox.getText();
-            if (userInput.toLowerCase().startsWith("search ")) {
-                brain.executeCommand(userInput + event.getCode().toString().toLowerCase());
-            }
-        } else if (event.getCode() == KeyCode.BACK_SPACE) {
-            userInput = commandBox.getText();
-            if (userInput.toLowerCase().startsWith("search ")) {
-                brain.executeCommand(userInput.substring(0, userInput.length() - 1));
-            }
-        }
+			}
+		} else if (event.getCode().isDigitKey() || event.getCode().isLetterKey()){
+			userInput = commandBox.getText();
+			if (userInput.toLowerCase().startsWith("search ")) {
+				brain.executeCommand(userInput + event.getCode().toString().toLowerCase());
+			}
+		} else if (event.getCode() == KeyCode.BACK_SPACE) {
+			userInput = commandBox.getText();
+			if (userInput.toLowerCase().startsWith("search ")) {
+				brain.executeCommand(userInput.substring(0, userInput.length() - 1));
+			}
+		}
 		// TODO
 		// 1. SEARCH/EDIT + SPACE -> auto-trigger for instant search and auto-complete for edit
 		// 2. COMMAND + TAB -> auto-complete command (Veto's idea)
 		// 3. UP/DOWN -> previous/next command
 		// 4. PAGEUP/PAGEDOWN -> scroll up/down
-		
-		// TODO: JONAS
-//		if(event.getCode() == KeyCode.PAGE_DOWN) {
-//			int currentNumOfTaskBoxes = listView.getItems().size();
-//			if(currentNumOfTaskBoxes > MAX_DISPLAY_TASK_BOXES) {
-//				scrollIndex += SCROLL_INCREMENT;
-//			}
-//		}
+
+		if(event.getCode() == KeyCode.PAGE_DOWN) {
+			int currentNumOfBoxes = listView.getItems().size();
+			int excessBoxes = listView.getItems().size() - MAX_DISPLAY_BOXES;
+			if ((currentNumOfBoxes > MAX_DISPLAY_BOXES) && (scrollIndex < excessBoxes)) {
+				scrollIndex += SCROLL_INCREMENT;
+			} else if (currentNumOfBoxes < MAX_DISPLAY_BOXES) {
+				scrollIndex = 0;
+			}
+			listView.scrollTo(scrollIndex);
+			System.out.println(scrollIndex);
+		}
+
+		if(event.getCode() == KeyCode.PAGE_UP) {
+			if(scrollIndex >= SCROLL_INCREMENT) {
+				scrollIndex -= SCROLL_INCREMENT;
+			} 
+			listView.scrollTo(scrollIndex);
+			System.out.println(scrollIndex);
+		}	
 	}
 
 	// Update Display
@@ -204,7 +216,7 @@ public class RootController {
 
 	public void updateCompletedDisplay(ObservableList<Task> taskObservableList) {
 		ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
-		
+
 		for (Task task : taskObservableList) {
 			int taskId = taskObservableList.indexOf(task) + 1;
 
@@ -221,22 +233,22 @@ public class RootController {
 			} else {
 				typeOfTask = "event";
 			}
-			
+
 			TaskBox newTaskBox = new TaskBox(taskId, 
-											 typeOfTask, 
-											 task.getTitle(), 
-											 taskStartDate,
-											 taskEndDate,
-											 taskStartTime, 
-											 taskEndTime, 
-											 task.getPriority(), 
-											 task.getProject(), 
-											 task.isRecurring());
+					typeOfTask, 
+					task.getTitle(), 
+					taskStartDate,
+					taskEndDate,
+					taskStartTime, 
+					taskEndTime, 
+					task.getPriority(), 
+					task.getProject(), 
+					task.isRecurring());
 			displayBoxes.add(newTaskBox);
 		}
 		listView.setItems(displayBoxes);
 	}
-	
+
 	public void updateAllDisplay(ObservableList<Task> taskObservableList) {
 		ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
 
@@ -245,7 +257,7 @@ public class RootController {
 		boolean todayAdded = false;
 		boolean tomorrowAdded = false;
 		boolean othersAdded = false;
-		
+
 		displayBoxes.add(new TaskCategory("Complete"));
 		for (Task task : taskObservableList) {
 			if (!task.isCompleted() && task.isOverdue() && !overdueAdded) {
@@ -291,44 +303,44 @@ public class RootController {
 					task.isRecurring());
 			displayBoxes.add(newTaskBox);
 		}
-        listView.setItems(displayBoxes);
-    }
+		listView.setItems(displayBoxes);
+	}
 
-    public void updateSearchDisplay(ObservableList<Task> taskObservableList) {
-        ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
+	public void updateSearchDisplay(ObservableList<Task> taskObservableList) {
+		ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
 
-        for (Task task : taskObservableList) {
-            int taskId = taskObservableList.indexOf(task) + 1;
+		for (Task task : taskObservableList) {
+			int taskId = taskObservableList.indexOf(task) + 1;
 
-            String taskStartTime = task.getStartDateTime() == null ? null : timeFormatter.format(task.getStartDateTime());
-            String taskEndTime = task.getEndDateTime() == null ? null : timeFormatter.format(task.getEndDateTime());
-            String taskStartDate = task.getStartDateTime() == null ? null : task.getStartDateTime().toLocalDate().toString();
-            String taskEndDate = task.getEndDateTime() == null ? null : task.getEndDateTime().toLocalDate().toString();
+			String taskStartTime = task.getStartDateTime() == null ? null : timeFormatter.format(task.getStartDateTime());
+			String taskEndTime = task.getEndDateTime() == null ? null : timeFormatter.format(task.getEndDateTime());
+			String taskStartDate = task.getStartDateTime() == null ? null : task.getStartDateTime().toLocalDate().toString();
+			String taskEndDate = task.getEndDateTime() == null ? null : task.getEndDateTime().toLocalDate().toString();
 
-            String typeOfTask = "";
-            if (task.getTaskType() == Type.DEFAULT) {
-                typeOfTask = "floating";
-            } else if (task.getTaskType() == Type.DEADLINE) {
-                typeOfTask = "deadline";
-            } else {
-                typeOfTask = "event";
-            }
+			String typeOfTask = "";
+			if (task.getTaskType() == Type.DEFAULT) {
+				typeOfTask = "floating";
+			} else if (task.getTaskType() == Type.DEADLINE) {
+				typeOfTask = "deadline";
+			} else {
+				typeOfTask = "event";
+			}
 
-            TaskBox newTaskBox = new TaskBox(taskId, 
-                    typeOfTask, 
-                    task.getTitle(), 
-                    taskStartDate,
-                    taskEndDate,
-                    taskStartTime, 
-                    taskEndTime, 
-                    task.getPriority(), 
-                    task.getProject(), 
-                    task.isRecurring());
-            displayBoxes.add(newTaskBox);
-        }
-        listView.setItems(displayBoxes);
-    }
-	
+			TaskBox newTaskBox = new TaskBox(taskId, 
+					typeOfTask, 
+					task.getTitle(), 
+					taskStartDate,
+					taskEndDate,
+					taskStartTime, 
+					taskEndTime, 
+					task.getPriority(), 
+					task.getProject(), 
+					task.isRecurring());
+			displayBoxes.add(newTaskBox);
+		}
+		listView.setItems(displayBoxes);
+	}
+
 	public void updateMainDisplay(ObservableList<Task> taskObservableList) {
 		ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
 
@@ -358,12 +370,12 @@ public class RootController {
 			boolean isFloating = task.getTaskType() == Type.DEFAULT;
 			boolean isOverdue = task.isOverdue();
 
-//			if (isRecurringTask) {
-//				taskStartDate = task.getStartDateTime().toLocalDate().toString();
-//				System.out.println("Recurring day is " + taskStartDate);
-//			} else {
-//				taskDateTime = task.getStartDateTime() == null ? "Null" : task.getStartDateTime().toString();
-//			}
+			//			if (isRecurringTask) {
+			//				taskStartDate = task.getStartDateTime().toLocalDate().toString();
+			//				System.out.println("Recurring day is " + taskStartDate);
+			//			} else {
+			//				taskDateTime = task.getStartDateTime() == null ? "Null" : task.getStartDateTime().toString();
+			//			}
 			if (isFloating) {
 				typeOfTask = "floating";
 			} else if (isDeadline) {
@@ -371,17 +383,17 @@ public class RootController {
 			} else {
 				typeOfTask = "event";
 			}
-			
+
 			TaskBox newTaskBox = new TaskBox(taskId, 
-											 typeOfTask, 
-											 taskTitle, 
-											 taskStartDate,
-											 taskEndDate,
-											 taskStartTime, 
-											 taskEndTime, 
-											 taskPriority, 
-											 taskProject, 
-											 task.isRecurring());
+					typeOfTask, 
+					taskTitle, 
+					taskStartDate,
+					taskEndDate,
+					taskStartTime, 
+					taskEndTime, 
+					taskPriority, 
+					taskProject, 
+					task.isRecurring());
 
 			if(isOverdue) {
 				overdueBoxes.add(newTaskBox);
