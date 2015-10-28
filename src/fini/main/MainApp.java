@@ -42,7 +42,6 @@ public class MainApp extends Application {
 	private static Scene scene;
 	private static boolean isNormalMode;
 
-
 	public static void main(String[] args) {
 		launch(args);
 	}
