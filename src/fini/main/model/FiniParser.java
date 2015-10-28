@@ -18,13 +18,13 @@ import fini.main.model.Task.Priority;
 public class FiniParser {
 	private static FiniParser finiParser;
 	private Parser parser;
-	
+
 	private static final String[] REDUNDANT_WORDS = {"on", "from", "by"};
-	
+
 	private String storedParameters;
 	private String cleanParameters;
 	private Priority priority;
-//	private String projectName;
+	//	private String projectName;
 	private ArrayList<LocalDateTime> datetimes;
 	private boolean isRecurring;
 	private LocalDateTime recursUntil;
@@ -40,8 +40,8 @@ public class FiniParser {
 			initializeFields();
 			storedParameters = commandParameters;
 			cleanParameters = storedParameters; // init of clean
-//			System.out.println("CleanParameters - FiniParser parse(): " + cleanParameters);
-			
+			//			System.out.println("CleanParameters - FiniParser parse(): " + cleanParameters);
+
 			String[] splitStoredParameters = storedParameters.split(" ");
 			priority = determinePriority(splitStoredParameters);
 			// projectName = determineProjectName(userInputSplitArray);
@@ -110,13 +110,13 @@ public class FiniParser {
 	private String determineDatetimes(String cleanParameters) {
 		String tempParameters = cleanParameters;
 		List<DateGroup> groups = parser.parse(tempParameters);
-		
+
 		if (groups.size() == 1) {
 			DateGroup group = groups.get(0);
 			if (group.isRecurring()) {
 				List<Date> dateList = group.getDates();
 				Map<String, List<ParseLocation>> parseMap = group.getParseLocations();
-				
+
 				if (!parseMap.containsKey("explicit_time")) {
 					for (Date date : dateList) {
 						LocalDateTime temp = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
@@ -127,7 +127,7 @@ public class FiniParser {
 						datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
 					}
 				}
-				
+
 				notParsed = tempParameters;
 				for (ParseLocation parsedWord : parseMap.get("parse")) {
 					notParsed = notParsed.substring(0, parsedWord.getStart() - 1) + notParsed.substring(parsedWord.getEnd() - 1);
@@ -140,7 +140,7 @@ public class FiniParser {
 					notParsed = tempParameters.replaceAll("repeat everyday", "");
 					return getSimpleCleanString(notParsed);
 				}
-				
+
 				List<Date> dateList = group.getDates();
 				Map<String, List<ParseLocation>> parseMap = group.getParseLocations();
 				if (!parseMap.containsKey("explicit_time")) {
@@ -174,13 +174,13 @@ public class FiniParser {
 						datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
 					}
 				}
-				
+
 				notParsed = tempParameters;
 				for (ParseLocation parsedWord : parseMap1.get("parse")) {
 					notParsed = notParsed.substring(0, parsedWord.getStart() - 1) + notParsed.substring(parsedWord.getEnd() - 1);
 				}
 				notParsed = getSimpleCleanString(notParsed);
-				
+
 				DateGroup group2 = groups.get(1);
 				if (group2.isRecurring()) {
 					Map<String, List<ParseLocation>> parseMap2 = group2.getParseLocations();
@@ -191,7 +191,7 @@ public class FiniParser {
 						interval = determineInterval(potentialInterval);
 						recursUntil = group2.getRecursUntil() == null ? null : LocalDateTime.ofInstant(group2.getRecursUntil().toInstant(), ZoneId.systemDefault());
 					}
-					
+
 					for (ParseLocation parsedWord : parseMap2.get("parse")) {
 						notParsed = notParsed.substring(0, parsedWord.getStart() - 1) + notParsed.substring(parsedWord.getEnd() - 1);
 					}
@@ -231,7 +231,7 @@ public class FiniParser {
 			return cleanParameters;
 		}
 	}
-	
+
 	private String eliminateRedundantWords(String notParsed) {
 		String cleanString = notParsed;
 		for (String word : REDUNDANT_WORDS) {
@@ -253,9 +253,9 @@ public class FiniParser {
 		return priority;
 	}
 
-//	public String getProjectName() {
-//		return projectName;
-//	}
+	//	public String getProjectName() {
+	//		return projectName;
+	//	}
 
 	public ArrayList<LocalDateTime> getDatetimes() {
 		return datetimes;
@@ -268,7 +268,7 @@ public class FiniParser {
 	public LocalDateTime getRecursUntil() {
 		return recursUntil;
 	}
-	
+
 	public Period getInterval() {
 		return interval;
 	}
@@ -281,7 +281,7 @@ public class FiniParser {
 	private String getSimpleCleanString(String input) {
 		return input.trim().replaceAll("\\s+", " ");
 	}
-	
+
 	private boolean checkIntervalFormat(String potentialInterval) {
 		String[] splitPotentialInterval = potentialInterval.split(" ");
 		if (splitPotentialInterval.length == 1) {
@@ -292,9 +292,9 @@ public class FiniParser {
 			if (splitPotentialInterval[0].toLowerCase().equals("every")) {
 				String intervalUnit = splitPotentialInterval[1].toLowerCase();
 				if (intervalUnit.equals("day") ||
-					intervalUnit.equals("week") ||
-					intervalUnit.equals("month") ||
-					intervalUnit.equals("year")) {
+						intervalUnit.equals("week") ||
+						intervalUnit.equals("month") ||
+						intervalUnit.equals("year")) {
 					return true;
 				}
 			}
@@ -304,9 +304,9 @@ public class FiniParser {
 					int prefix = Integer.parseInt(splitPotentialInterval[1]);
 					String intervalUnit = splitPotentialInterval[2].toLowerCase();
 					if (intervalUnit.equals("days") ||
-						intervalUnit.equals("weeks") ||
-						intervalUnit.equals("months") ||
-						intervalUnit.equals("years")) {
+							intervalUnit.equals("weeks") ||
+							intervalUnit.equals("months") ||
+							intervalUnit.equals("years")) {
 						return true;
 					}
 				} catch (NumberFormatException e) {
@@ -316,13 +316,13 @@ public class FiniParser {
 		}
 		return false;
 	}
-	
+
 	private Period determineInterval(String potentialInterval) {
 		String[] splitPotentialInterval = potentialInterval.split(" ");
 		if (splitPotentialInterval.length == 1) {
 			return Period.ofDays(1);
 		} 
-		
+
 		if (splitPotentialInterval.length == 2) {
 			String intervalUnit = splitPotentialInterval[1].toLowerCase();
 			switch (intervalUnit) {
@@ -336,7 +336,7 @@ public class FiniParser {
 				return Period.ofYears(1);
 			}
 		}
-		
+
 		if (splitPotentialInterval.length == 3) {
 			int prefix = Integer.parseInt(splitPotentialInterval[1]);
 			String intervalUnit = splitPotentialInterval[2].toLowerCase();
@@ -351,7 +351,7 @@ public class FiniParser {
 				return Period.ofYears(prefix);
 			}
 		}
-		
+
 		return Period.ZERO;
 	}
 
@@ -367,7 +367,7 @@ public class FiniParser {
 		parser = new Parser();
 		storedParameters = "";
 		priority = null;
-//		projectName = null;
+		//		projectName = null;
 		datetimes = new ArrayList<LocalDateTime>();
 		isRecurring = false;
 		recursUntil = null;
