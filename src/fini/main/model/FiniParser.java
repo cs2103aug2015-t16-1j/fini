@@ -1,13 +1,17 @@
 package fini.main.model;
 
 import java.time.Period;
+import java.security.acl.Group;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.transform.Templates;
 
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.ParseLocation;
@@ -90,131 +94,194 @@ public class FiniParser {
 		return Priority.NORMAL;
 	}
 
+//////////// Recur Related ///////////////////////////////////////////////
 	private String determineDatetimes(String cleanParameters) {
-		String tempParameters = cleanParameters;
-		List<DateGroup> groups = parser.parse(tempParameters);
-
-		if (groups.size() == 1) {
-			DateGroup group = groups.get(0);
-			if (group.isRecurring()) {
-				List<Date> dateList = group.getDates();
-				Map<String, List<ParseLocation>> parseMap = group.getParseLocations();
-
-				if (!parseMap.containsKey("explicit_time")) {
-					for (Date date : dateList) {
-						LocalDateTime temp = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
-						datetimes.add(LocalDateTime.of(temp.toLocalDate(), temp.toLocalTime().MAX));
-					}
-				} else {
-					for (Date date : dateList) {
-						datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
-					}
-				}
-
-				notParsed = tempParameters;
-				for (ParseLocation parsedWord : parseMap.get("parse")) {
-					notParsed = notParsed.substring(0, parsedWord.getStart() - 1) + notParsed.substring(parsedWord.getEnd() - 1);
-				}
-				return getSimpleCleanString(notParsed);
-			} else {
-				if (tempParameters.contains("repeat everyday")) { // add xxx repeat everyday
-					isRecurring = true;
-					interval = Period.ofDays(1);
-					notParsed = tempParameters.replaceAll("repeat everyday", "");
-					return getSimpleCleanString(notParsed);
-				}
-
-				List<Date> dateList = group.getDates();
-				Map<String, List<ParseLocation>> parseMap = group.getParseLocations();
-				if (!parseMap.containsKey("explicit_time")) {
-					for (Date date : dateList) {
-						LocalDateTime temp = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
-						datetimes.add(LocalDateTime.of(temp.toLocalDate(), temp.toLocalTime().MAX));
-					}
-				} else {
-					for (Date date : dateList) {
-						datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
-					}
-				}
-
-				String matchingValue = group.getText();
-				notParsed = tempParameters;
-				notParsed = notParsed.replaceAll(matchingValue, "");
-				return getSimpleCleanString(notParsed);
-			}
-		} else if (groups.size() == 2) {
-			if (tempParameters.contains("repeat every") && !groups.get(0).isRecurring()) {
-				DateGroup group1 = groups.get(0);
-				List<Date> dateList1 = group1.getDates();
-				Map<String, List<ParseLocation>> parseMap1 = group1.getParseLocations();
-				if (!parseMap1.containsKey("explicit_time")) {
-					for (Date date : dateList1) {
-						LocalDateTime temp = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
-						datetimes.add(LocalDateTime.of(temp.toLocalDate(), temp.toLocalTime().MAX));
-					}
-				} else {
-					for (Date date : dateList1) {
-						datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
-					}
-				}
-
-				notParsed = tempParameters;
-				for (ParseLocation parsedWord : parseMap1.get("parse")) {
-					notParsed = notParsed.substring(0, parsedWord.getStart() - 1) + notParsed.substring(parsedWord.getEnd() - 1);
-				}
-				notParsed = getSimpleCleanString(notParsed);
-
-				DateGroup group2 = groups.get(1);
-				if (group2.isRecurring()) {
-					Map<String, List<ParseLocation>> parseMap2 = group2.getParseLocations();
-					String potentialInterval = "every " + parseMap2.get("date_time_alternative").get(0).getText();
-					boolean validIntervalFormat = checkIntervalFormat(potentialInterval);
-					if (validIntervalFormat) {
-						isRecurring = true;
-						interval = determineInterval(potentialInterval);
-						recursUntil = group2.getRecursUntil() == null ? null : LocalDateTime.ofInstant(group2.getRecursUntil().toInstant(), ZoneId.systemDefault());
-					}
-
-					for (ParseLocation parsedWord : parseMap2.get("parse")) {
-						notParsed = notParsed.substring(0, parsedWord.getStart() - 1) + notParsed.substring(parsedWord.getEnd() - 1);
-					}
-					return getSimpleCleanString(notParsed);
-				} else { // add xxx repeat everyday until xxx / add xxx repeat every minute until
-					String potentialInterval = tempParameters.substring(tempParameters.indexOf("repeat") + 6, tempParameters.indexOf("until")).trim();
-					boolean validIntervalFormat = checkIntervalFormat(potentialInterval);
-					if (validIntervalFormat) {
-						isRecurring = true;
-						interval = determineInterval(potentialInterval);
-						recursUntil = LocalDateTime.ofInstant(group2.getDates().get(0).toInstant(), ZoneId.systemDefault());
-					}
-					notParsed = notParsed.replaceAll("repeat.*until", "");
-					return getSimpleCleanString(notParsed);
-				}
-			} else {
-				DateGroup group = groups.get(0);
-				List<Date> dateList = group.getDates();
-				Map<String, List<ParseLocation>> parseMap = group.getParseLocations();
-				if (!parseMap.containsKey("explicit_time")) {
-					for (Date date : dateList) {
-						LocalDateTime temp = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
-						datetimes.add(LocalDateTime.of(temp.toLocalDate(), temp.toLocalTime().MAX));
-					}
-				} else {
-					for (Date date : dateList) {
-						datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
-					}
-				}
-				notParsed = tempParameters;
-				for (ParseLocation parsedWord : parseMap.get("parse")) {
-					notParsed = notParsed.substring(0, parsedWord.getStart() - 1) + notParsed.substring(parsedWord.getEnd() - 1);
-				}
-				return getSimpleCleanString(notParsed);
-			}
+		if (cleanParameters.contains("repeat")) {
+			System.out.println("HERE1");
+			String[] splitParameters = cleanParameters.split("repeat");
+			notParsed = processFrontPart(getSimpleCleanString(splitParameters[0])) + processBackPart(getSimpleCleanString(splitParameters[1]));
 		} else {
-			return cleanParameters;
+			notParsed = processFrontPart(cleanParameters);
+		}
+		return getSimpleCleanString(notParsed);
+	}
+	
+	private String processBackPart(String parameters) {
+		System.out.println("HERE2");
+		isRecurring = true;
+		List<DateGroup> groups = parser.parse(parameters);
+		if (!parameters.startsWith("every")) {
+			return parameters;
+		}
+		String returnNotParsed = "";
+		
+		if (groups.size() != 0) {
+			System.out.println(groups.size() + "|" + parameters.contains("until") + "|" + groups.get(0).isRecurring());
+		} else {
+			System.out.println("ZERORORO");
+		}
+		
+		if (groups.size() == 0) { // everyday/every week (no until)
+			returnNotParsed = everyWeekNoUntil(parameters);
+		} else if (groups.size() == 1 && parameters.contains("until") && !groups.get(0).isRecurring()) {
+			returnNotParsed = everyWeekUntil(parameters, groups.get(0));
+		} else if (groups.size() == 1 && !parameters.contains("until") && groups.get(0).isRecurring()) {
+			returnNotParsed = everyTwoWeeksNoUntil(parameters);
+		} else if (groups.size() == 1 && parameters.contains("until") && groups.get(0).isRecurring()) {
+			returnNotParsed = everyTwoWeeksUntil(parameters, groups.get(0));
+		} else { // default: everyday endlessly
+			interval = Period.ofDays(1);
+		}
+		return returnNotParsed;
+	}
+	
+	private String everyTwoWeeksUntil(String parameters, DateGroup group) {
+		recursUntil = LocalDateTime.ofInstant(group.getRecursUntil().toInstant(), ZoneId.systemDefault());
+		String returnNotParsed = parameters;
+		String[] splitParameters = parameters.split(" ");
+		if (isValidNumbering(splitParameters[1]) && isIntervalUnits(splitParameters[2])) {
+			System.out.println("HERE4");
+			interval = determineIntervalUnits(splitParameters[1], splitParameters[2]);
+			returnNotParsed = returnNotParsed.replaceAll("every " + splitParameters[1] + " " + splitParameters[2], "");
+		}
+		return returnNotParsed;
+	}
+	
+	private String everyTwoWeeksNoUntil(String parameters) {
+		String returnNotParsed = parameters;
+		String[] splitParameters = parameters.split(" ");
+		if (splitParameters[0].equals("every") && isValidNumbering(splitParameters[1]) && isIntervalUnits(splitParameters[2])) {
+			interval = determineIntervalUnits(splitParameters[1], splitParameters[2]);
+			returnNotParsed = returnNotParsed.replaceAll(splitParameters[0] + " " + splitParameters[1] + " " + splitParameters[2], "");
+		}
+		return returnNotParsed;
+	}
+	
+	private String everyWeekUntil(String parameters, DateGroup group) {
+		String returnNotParsed = parameters;
+		recursUntil = LocalDateTime.ofInstant(group.getDates().get(0).toInstant(), ZoneId.systemDefault());
+		String[] splitParameters = parameters.split(" ");
+		if (parameters.startsWith("everyday")) {
+			interval = Period.ofDays(1);
+			returnNotParsed = returnNotParsed.replaceAll("everyday", "");
+		} else if (splitParameters[0].equals("every") && isIntervalUnit(splitParameters[1])) {
+			interval = determineIntervalUnit(splitParameters[1]);
+			returnNotParsed = returnNotParsed.replaceAll("every", "");
+			returnNotParsed = returnNotParsed.replaceAll(splitParameters[1], "");
+		}
+		returnNotParsed = returnNotParsed.replaceAll("until", "");
+		returnNotParsed = returnNotParsed.replaceAll(group.getText(), "");
+		return returnNotParsed;
+	}
+	
+	private String everyWeekNoUntil(String parameters) {
+		String returnNotParsed = parameters;
+		String[] splitParameters = parameters.split(" ");
+		if (parameters.startsWith("everyday")) {
+			interval = Period.ofDays(1);
+			returnNotParsed = returnNotParsed.replaceAll("everyday", "");
+		} else if (splitParameters[0].equals("every") && isIntervalUnit(splitParameters[1])) {
+			interval = determineIntervalUnit(splitParameters[1]);
+			returnNotParsed = returnNotParsed.replaceAll("every", "");
+			returnNotParsed = returnNotParsed.replaceAll(splitParameters[1], "");
+		}
+		return returnNotParsed;
+	}
+	
+	private Period determineIntervalUnits(String numbering, String word) {
+		String[] numWithinTen = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
+		int number = 0;
+		for (int i = 0; i < numWithinTen.length; ++i) {
+			if (numWithinTen[i].equals(numbering)) {
+				number = i + 1;
+				break;
+			}
+		}
+		
+		if (number == 0) {
+			try {
+				number = Integer.parseInt(numbering);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		switch (word) {
+		case "days":
+			return Period.ofDays(number);
+		case "weeks":
+			return Period.ofWeeks(number);
+		case "months":
+			return Period.ofMonths(number);
+		case "years":
+			return Period.ofYears(number);
+		default:
+			return Period.ofDays(1);
 		}
 	}
-
+	
+	private Period determineIntervalUnit(String word) {
+		switch (word) {
+		case "day":
+			return Period.ofDays(1);
+		case "week":
+			return Period.ofWeeks(1);
+		case "month":
+			return Period.ofMonths(1);
+		case "year":
+			return Period.ofYears(1);
+		default:
+			return Period.ofDays(1);
+		}
+	}
+	
+	private boolean isValidNumbering(String word) {
+		String[] numWithinTen = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
+		for (String num : numWithinTen) {
+			if (word.equals(num)) {
+				return true;
+			}
+		}
+		
+		try {
+			Integer.parseInt(word);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	
+	private boolean isIntervalUnits(String word) {
+		return word.equals("days") || word.equals("weeks") || word.equals("months") || word.equals("years");
+	}
+	
+	private boolean isIntervalUnit(String word) {
+		return word.equals("day") || word.equals("week") || word.equals("month") || word.equals("year");
+	}
+	
+	private String processFrontPart(String parameters) {
+		List<DateGroup> groups = parser.parse(parameters);
+		DateGroup group = groups.get(0);
+		List<Date> dateList = group.getDates(); 
+		Map<String, List<ParseLocation>> parseMap = group.getParseLocations();
+		if (!parseMap.containsKey("explicit_time")) {
+			for (Date date : dateList) {
+				LocalDateTime temp = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+				datetimes.add(LocalDateTime.of(temp.toLocalDate(), LocalTime.MAX));
+			}
+		} else {
+			for (Date date : dateList) {
+				datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+			}
+		}
+		String returnNotParsed = parameters;
+		for (ParseLocation parsedWord : parseMap.get("parse")) {
+			returnNotParsed = returnNotParsed.substring(0, parsedWord.getStart() - 1) + returnNotParsed.substring(parsedWord.getEnd() - 1);
+		}
+		return getSimpleCleanString(returnNotParsed);
+	}
+////////////////////////////////////////////////
+	
 	private String eliminateRedundantWords(String notParsed) {
 		String cleanString = notParsed;
 		for (String word : REDUNDANT_WORDS) {

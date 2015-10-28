@@ -250,9 +250,13 @@ public class Task implements TaskInterface {
 	
 	// Utility Methods
 	public boolean hasNext() {
-		assert isRecurring != false;
-		assert recursUntil != null;
-		return taskStartDateTime.plus(interval).isBefore(recursUntil); // Should not be !isAfter
+		if (isRecurring) {
+			if (recursUntil != null) {
+				return taskStartDateTime.plus(interval).isBefore(recursUntil);
+			}
+			return true;
+		}
+		return false;
 	}
 	
 	public void toNext() {
