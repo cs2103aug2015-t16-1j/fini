@@ -90,23 +90,6 @@ public class FiniParser {
 		return Priority.NORMAL;
 	}
 
-	//	private String determineProjectName(String[] userInputSplitArray) {
-	//		ArrayList<String> words = new ArrayList<String>(Arrays.asList(userInputSplitArray));
-	//		for (String word : words) {
-	//			if (word.toLowerCase().equals("project")) {
-	//				if (words.indexOf(word) != words.size() - 1) {
-	//					String projectName = words.get(words.indexOf(word) + 1);
-	//										
-	//					cleanParameters = cleanParameters.replaceAll(word + " " + projectName, "");
-	//					cleanParameters = getSimpleCleanString(cleanParameters);
-	//				} else {
-	//					break;
-	//				}
-	//			}
-	//		}
-	//		return null;
-	//	}
-
 	private String determineDatetimes(String cleanParameters) {
 		String tempParameters = cleanParameters;
 		List<DateGroup> groups = parser.parse(tempParameters);
