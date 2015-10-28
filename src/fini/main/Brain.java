@@ -153,6 +153,9 @@ public class Brain {
 		} else {
 			sortTaskMasterList();
 			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+			for (Task task : taskObservableList) {
+				System.out.println(task);
+			}
 			rootController.updateMainDisplay(taskObservableList);
 		}
 	}
@@ -164,6 +167,11 @@ public class Brain {
 		}
 		
 		finiParser.parse(commandParameters);
+		
+		if (finiParser.getDatetimes() != null && finiParser.getDatetimes().size() == 2 &&
+				!finiParser.getDatetimes().get(0).isBefore(finiParser.getDatetimes().get(1))) {
+			return "Start date and time should be earlier than end date time";
+		}
 		
 		Task newTask = new Task.TaskBuilder(finiParser.getNotParsed(), finiParser.getIsRecurring())
 						   .setDatetimes(finiParser.getDatetimes())
@@ -196,6 +204,11 @@ public class Brain {
 		
 		// add then
 		finiParser.parse(commandParameters);
+		
+		if (finiParser.getDatetimes() != null && finiParser.getDatetimes().size() == 2 &&
+				!finiParser.getDatetimes().get(0).isBefore(finiParser.getDatetimes().get(1))) {
+			return "Start date and time should be earlier than end date time";
+		}
 		
 		Task newTask = new Task.TaskBuilder(finiParser.getNotParsed(), finiParser.getIsRecurring())
 						   .setDatetimes(finiParser.getDatetimes())
