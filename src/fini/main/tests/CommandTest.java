@@ -41,5 +41,10 @@ public class CommandTest {
 	public void testAddCommand() {
 		assertEquals("ADD", addCommand.getCommandType().toString());
 	}
+	
+	@Test
+	public void testDeleteInvalidCommand() {
+		assertEquals("INVALID", deleteCommand.getCommandType().toString());
+	}
 
 }
