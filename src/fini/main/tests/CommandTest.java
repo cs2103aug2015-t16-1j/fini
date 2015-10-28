@@ -20,6 +20,7 @@ public class CommandTest {
 	Command deleteInvalidCommand;
 	Command updateCommand;
 	Command clearCommand;
+	Command exitCommand;
 	int result;
 	
 	
@@ -30,6 +31,7 @@ public class CommandTest {
 		deleteCommand = new Command("delete 1");
 		updateCommand = new Command("update 1");
 		clearCommand = new Command("clear");
+		exitCommand = new Command("exit");
 	}
 	
 	static public String test(int value) {
@@ -57,6 +59,16 @@ public class CommandTest {
 	@Test
 	public void testUpdateCommand() {
 		assertEquals("UPDATE", updateCommand.getCommandType().toString());
+	}
+	
+	@Test
+	public void testClearCommand() {
+		assertEquals("CLEAR", clearCommand.getCommandType().toString());
+	}
+	
+	@Test
+	public void testExitCommand() {
+		assertEquals("EXIT", exitCommand.getCommandType().toString());
 	}
 
 }
