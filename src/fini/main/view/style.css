@@ -41,8 +41,13 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 
 /* MAIN DISPLAY */
 .display {
-	/*	-fx-background-image: url("bluebg.jpg");*/
+/*		-fx-background-image: url("blue2.jpg");*/
 	/*	-fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);*/
+}
+
+/* TASK OVERVIEW PANEL */
+.inboxBox {
+	-fx-padding: 0 5 0 5;	
 }
 
 .display #tasksOverviewPanel {
@@ -152,11 +157,6 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 	-fx-padding: 0 5 0 5;
 	-fx-font-size: 10px;
 	-fx-font-family: "Open Sans", sans-serif, serif;
-}
-
-/* TASK OVERVIEW PANEL */
-.inboxBox {
-	-fx-padding: 0 5 0 5;	
 }
 
 /* TASK CATEGORY BOX */
