@@ -54,5 +54,9 @@ public class CommandTest {
 		assertEquals("DELETE", deleteCommand.getCommandType().toString());
 	}
 	
+	@Test
+	public void testUpdateCommand() {
+		assertEquals("UPDATE", updateCommand.getCommandType().toString());
+	}
 
 }
