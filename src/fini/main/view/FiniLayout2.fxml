@@ -8,7 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fini.main.view.RootController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="820.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fini.main.view.RootController">
    <children>
       <VBox layoutX="214.0" layoutY="45.0" prefHeight="500.0" prefWidth="600.0" styleClass="display" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -82,7 +82,7 @@
                         <ListView fx:id="listView" prefHeight="573.0" prefWidth="600.0" />
                      </children>
                   </HBox>
-                  <HBox prefHeight="20.0" prefWidth="119.0" styleClass="pointsBox" StackPane.alignment="TOP_RIGHT">
+                  <HBox maxHeight="20.0" maxWidth="105.0" prefHeight="20.0" prefWidth="105.0" styleClass="pointsBox" StackPane.alignment="TOP_RIGHT">
                      <children>
                         <Label text="Fini Points:">
                            <padding>
@@ -92,7 +92,7 @@
                         <Label fx:id="finiPoints" text="Label" />
                      </children>
                      <StackPane.margin>
-                        <Insets bottom="510.0" left="660.0" />
+                        <Insets bottom="510.0" left="660.0" right="20.0" />
                      </StackPane.margin>
                      <padding>
                         <Insets left="5.0" />
