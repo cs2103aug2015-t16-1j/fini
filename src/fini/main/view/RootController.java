@@ -72,7 +72,7 @@ public class RootController {
 	private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
 	private Integer scrollIndex = 0;
-	private static final Integer MAX_DISPLAY_BOXES = 12;
+	private static final Integer MAX_DISPLAY_BOXES = 11;
 	private static final Integer SCROLL_INCREMENT = 1;
 
 	public RootController() {
