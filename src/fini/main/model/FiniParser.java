@@ -23,7 +23,7 @@ public class FiniParser {
 	private static FiniParser finiParser;
 	private Parser parser;
 
-	private static final String[] REDUNDANT_WORDS = {"on", "from", "by"};
+	private static final String[] REDUNDANT_WORDS = {" on ", " from ", " by "};
 
 	private String storedParameters;
 	private String cleanParameters;
