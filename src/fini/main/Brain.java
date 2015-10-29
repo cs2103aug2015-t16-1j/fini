@@ -364,8 +364,6 @@ public class Brain {
         for (Task task : taskMasterList) {
             if (task.getTitle().contains(commandParameters)) {
                 tempObservableList.add(task);
-            } else if (searchDateTimes.size() > 0 && searchDateTimes.get(0).toLocalDate().equals(task.getStartDateTime().toLocalDate())) {
-                tempObservableList.add(task);
             }
         }
         taskObservableList.setAll(tempObservableList);
