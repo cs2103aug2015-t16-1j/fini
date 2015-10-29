@@ -153,9 +153,9 @@ public class Brain {
 		} else {
 			sortTaskMasterList();
 			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
-			for (Task task : taskObservableList) {
-				System.out.println(task);
-			}
+//			for (Task task : taskObservableList) {
+//				System.out.println(task);
+//			}
 			rootController.updateMainDisplay(taskObservableList);
 		}
 	}

@@ -261,24 +261,29 @@ public class FiniParser {
 	
 	private String processFrontPart(String parameters) {
 		List<DateGroup> groups = parser.parse(parameters);
-		DateGroup group = groups.get(0);
-		List<Date> dateList = group.getDates(); 
-		Map<String, List<ParseLocation>> parseMap = group.getParseLocations();
-		if (!parseMap.containsKey("explicit_time")) {
-			for (Date date : dateList) {
-				LocalDateTime temp = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
-				datetimes.add(LocalDateTime.of(temp.toLocalDate(), LocalTime.MAX));
-			}
+		
+		if (groups.size() == 0) {
+			return getSimpleCleanString(parameters);
 		} else {
-			for (Date date : dateList) {
-				datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+			DateGroup group = groups.get(0);
+			List<Date> dateList = group.getDates(); 
+			Map<String, List<ParseLocation>> parseMap = group.getParseLocations();
+			if (!parseMap.containsKey("explicit_time")) {
+				for (Date date : dateList) {
+					LocalDateTime temp = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+					datetimes.add(LocalDateTime.of(temp.toLocalDate(), LocalTime.MAX));
+				}
+			} else {
+				for (Date date : dateList) {
+					datetimes.add(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+				}
 			}
+			String returnNotParsed = parameters;
+			for (ParseLocation parsedWord : parseMap.get("parse")) {
+				returnNotParsed = returnNotParsed.substring(0, parsedWord.getStart() - 1) + returnNotParsed.substring(parsedWord.getEnd() - 1);
+			}
+			return getSimpleCleanString(returnNotParsed);
 		}
-		String returnNotParsed = parameters;
-		for (ParseLocation parsedWord : parseMap.get("parse")) {
-			returnNotParsed = returnNotParsed.substring(0, parsedWord.getStart() - 1) + returnNotParsed.substring(parsedWord.getEnd() - 1);
-		}
-		return getSimpleCleanString(returnNotParsed);
 	}
 ////////////////////////////////////////////////
 	
