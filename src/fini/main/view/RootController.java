@@ -132,7 +132,21 @@ public class RootController {
 						commandBox.end();
 					}
 				}
-			}
+			} else if (userInput.toLowerCase().startsWith("add"))  {
+                displayToUser.setText("add <title> <startTime> <endTime>");
+            } else if (userInput.toLowerCase().startsWith("delete")) {
+                displayToUser.setText("delete <TASK_NUMBER>");
+            } else if (userInput.toLowerCase().startsWith("update")) {
+                displayToUser.setText("update <TASK_NUMBER>");
+            } else if (userInput.toLowerCase().startsWith("complete")) {
+                displayToUser.setText("complete <TASK_NUMBER>");
+            } else if (userInput.toLowerCase().startsWith("uncomplete")) {
+                displayToUser.setText("uncomplete <TASK_NUMBER>");
+            } else if (userInput.toLowerCase().startsWith("mods")) {
+                displayToUser.setText("mods <FILE_NAME>");
+            } else if (userInput.toLowerCase().startsWith("mode")) {
+                displayToUser.setText("mode normal/night");
+            }
 		} else if (event.getCode().isDigitKey() || event.getCode().isLetterKey()){
 			userInput = commandBox.getText();
 			if (userInput.toLowerCase().startsWith("search ")) {
