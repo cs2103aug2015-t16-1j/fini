@@ -110,7 +110,7 @@ public class Brain {
 //			MainApp.switchMode();
 //			break;
 		case MODS:
-			display = loadNUSMods();
+			display = loadNUSMods(commandParameters);
 			saveThisStatus();
 			break;
 		case EXIT:
@@ -299,8 +299,8 @@ public class Brain {
 	 * EXTRAORDINARY FEATURE - Sync with nusmods html file
 	 * @author gaieepo
 	 */
-	private String loadNUSMods() {
-		File modsFile = new File(finiParser.getCleanParameters());
+	private String loadNUSMods(String commandParameters) {
+		File modsFile = new File(commandParameters);
 		if (modsFile.exists()) {
 			ModsLoader loader = new ModsLoader(modsFile);
 			taskMasterList.addAll(loader.getLessonTasks());
