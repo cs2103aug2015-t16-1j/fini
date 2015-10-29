@@ -92,6 +92,7 @@ public class MainApp extends Application {
 						rootController = loader.getController();
 
 						primaryStage.show();
+						primaryStage.setResizable(false);
 						
 						initializeBrain();
 						isNormalMode = true;
