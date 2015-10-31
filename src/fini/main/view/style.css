@@ -35,8 +35,15 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 
 /*Welcome Scene*/
 .welcomePane {
-	-fx-background-color: navy;
-	-fx-background-image: url("blue.jpg");
+/*	-fx-background-color: navy;*/
+/*	-fx-background-image: url("blue.jpg");*/
+}
+
+.pressEnterText {
+	-fx-text-box-border: black;
+	-fx-border-insets: 1 1 1 5;
+	-fx-border-width: 1 1 1 1;
+	-fx-border-color: #000;
 }
 
 /* MAIN DISPLAY */
@@ -129,7 +136,7 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 .taskBox #project {
 	-fx-padding: 0 5 0 5;
 	-fx-text-fill: white;
-	-fx-background-color: blue;
+	-fx-background-color: navy;
 	-fx-border-radius: 10 10 10 10;
 	-fx-font-size: 12px;
 	-fx-font-family: "Open Sans", sans-serif, serif;
@@ -176,11 +183,12 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 	-fx-font-size: 12px;
 	-fx-font-style: italic;
 	-fx-font-weight: bolder;
-	-fx-background-color: #00EDFD;
+	-fx-background-color: #0D98BA;
+	-fx-opacity: 0.7;
 	-fx-border-radius: 2px;
 	-fx-font-family: "Handlee", sans-serif, serif;
 }
 
 .pointsBox #finiPoints {
-	
+	-fx-text-fill: white;
 }
