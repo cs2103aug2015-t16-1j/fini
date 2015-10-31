@@ -72,9 +72,8 @@ public class RootController {
 	public RootController() {
 		// TODO With the Brain fully functioning, here we do not initialize anything
 	}
-
-	@FXML
-	protected void initialize() {
+	
+	public void setFocusToCommandBox() {
 		commandBox.requestFocus();
 	}
 

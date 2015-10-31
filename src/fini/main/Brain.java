@@ -63,6 +63,7 @@ public class Brain {
 
 	// Initialize first display when Fini is started - executed in MainApp 
 	public void initDisplay() {
+		rootController.setFocusToCommandBox();
 		rootController.updateMainDisplay(taskAuxiliaryList);
 		rootController.updateProjectsOverviewPanel(taskAuxiliaryList);
 		rootController.updateTasksOverviewPanel(taskAuxiliaryList);
