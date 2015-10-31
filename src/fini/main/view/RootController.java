@@ -1,20 +1,14 @@
 package fini.main.view;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import org.junit.internal.runners.TestMethod;
 
 /*
  * This is the root controller class for the display (view). The interactions on the Graphical User
  * Interface (GUI), which are the commands entered by users in the command box are handled here.
  * 
- * @author A0121828H
+ * @@author A0121828H
  */
 
 import fini.main.Brain;

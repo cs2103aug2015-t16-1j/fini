@@ -84,12 +84,12 @@
                   </HBox>
                   <HBox maxHeight="20.0" maxWidth="105.0" prefHeight="20.0" prefWidth="105.0" styleClass="pointsBox" StackPane.alignment="TOP_RIGHT">
                      <children>
-                        <Label text="Fini Points:">
+                        <Label text="Fini Points:" textFill="WHITE">
                            <padding>
                               <Insets right="5.0" />
                            </padding>
                         </Label>
-                        <Label fx:id="finiPoints" text="Label" />
+                        <Label fx:id="finiPoints" text="Label" textFill="WHITE" />
                      </children>
                      <StackPane.margin>
                         <Insets bottom="510.0" left="660.0" right="20.0" />
