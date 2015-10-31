@@ -57,7 +57,7 @@ public class TaskBox extends HBox {
 				this.priority.setFill(Color.YELLOW);
 				break;
 			default:
-				this.priority.setFill(Color.BLUE);
+				this.priority.setFill(Color.CORNFLOWERBLUE);
 				break;
 			}
 		}
