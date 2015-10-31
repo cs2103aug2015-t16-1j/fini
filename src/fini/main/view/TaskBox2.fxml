@@ -30,7 +30,7 @@
             <Image url="@../resources/images/recurring.png" />
          </image>
       </ImageView>
-		<Label fx:id="project" text="Project" translateY="3.0">
+		<Label fx:id="project" text="Project" translateY="5.0">
 			<font>
 				<Font size="10.0" />
 			</font>

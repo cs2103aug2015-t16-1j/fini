@@ -48,13 +48,13 @@ public class TaskBox extends HBox {
 		if(taskPriority != null) {
 			switch(taskPriority) {
 			case HIGH:
-				this.priority.setFill(Color.RED);
+				this.priority.setFill(Color.INDIANRED);
 				break;
 			case MEDIUM:
-				this.priority.setFill(Color.ORANGE);
+				this.priority.setFill(Color.DARKORANGE);
 				break;
 			case LOW:
-				this.priority.setFill(Color.YELLOW);
+				this.priority.setFill(Color.GOLD);
 				break;
 			default:
 				this.priority.setFill(Color.CORNFLOWERBLUE);
