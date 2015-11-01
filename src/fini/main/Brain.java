@@ -107,9 +107,6 @@ public class Brain {
 		    display = "Searching...";
 		    searchTask(commandParameters);
 		    break;
-//		case MODE:
-//			MainApp.switchMode();
-//			break;
 		case MODS:
 			display = loadNUSMods(commandParameters);
 			saveThisStatus();
@@ -125,7 +122,7 @@ public class Brain {
 			saveThisStatus();
 			break;
 		case INVALID:
-			display = "commandType INVALID";
+			display = "Invalid command. Please type help for assistance.";
 			break;
 		default:
 			break;

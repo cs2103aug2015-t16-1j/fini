@@ -1,5 +1,6 @@
 package fini.main;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -17,6 +18,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 /*
@@ -49,7 +51,7 @@ public class MainApp extends Application {
 		primaryStage = stage;
 		welcomeButton = new Button();
 		try {
-			parent = FXMLLoader.load(getClass().getResource("view/Welcome.fxml"));
+			parent = FXMLLoader.load(getClass().getResource("view/Welcome3.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -59,7 +61,8 @@ public class MainApp extends Application {
 		primaryStage.setTitle("Fini");
 		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/images/icon.png")));
 		primaryStage.setScene(scene);
-		primaryStage.setResizable(true);
+		primaryStage.setResizable(true);		
+		primaryStage.initStyle(StageStyle.UNDECORATED);
 		primaryStage.show();
 	}
 
@@ -79,7 +82,9 @@ public class MainApp extends Application {
 						primaryStage.setAlwaysOnTop(true);
 
 						rootController = loader.getController();
-
+						
+						scene.getStylesheets().addAll(MainApp.class.getResource("view/style.css").toExternalForm());
+						
 						primaryStage.show();
 						primaryStage.setResizable(false);
 
@@ -93,7 +98,7 @@ public class MainApp extends Application {
 						fadeIn.setFromValue(0.0);
 						fadeIn.setToValue(1.0);
 						fadeIn.play();
-
+							
 						initializeBrain();
 					} catch (IOException e) {
 						System.out.println("Unable to find or load FXML file");
