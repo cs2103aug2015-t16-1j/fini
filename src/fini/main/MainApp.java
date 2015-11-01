@@ -70,44 +70,43 @@ public class MainApp extends Application {
 		welcomeSceneListener.setLayoutX(-200);
 		welcomeSceneListener.setLayoutY(-200);
 		welcomeSceneListener.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			public void handle(KeyEvent userPressesEnter) {
-				if (userPressesEnter.getCode().equals(KeyCode.ENTER)) {
-					try {
-						FXMLLoader loader = new FXMLLoader(getClass().getResource("view/FiniLayout2.fxml"));
-						main = (AnchorPane) loader.load();
+			public void handle(KeyEvent userPressesAKey) {
+				try {
+					FXMLLoader loader = new FXMLLoader(getClass().getResource("view/FiniLayout2.fxml"));
+					main = (AnchorPane) loader.load();
 
-						Scene scene = new Scene(main);
-						primaryStage.setScene(scene); 
-						primaryStage.setAlwaysOnTop(true);
+					Scene scene = new Scene(main);
+					primaryStage.setScene(scene); 
+					primaryStage.setAlwaysOnTop(true);
 
-						rootController = loader.getController();
-						
-						scene.getStylesheets().addAll(MainApp.class.getResource("view/style.css").toExternalForm());
-						
-						primaryStage.show();
-						primaryStage.setResizable(false);
+					rootController = loader.getController();
 
-						FadeTransition fadeIn = new FadeTransition(Duration.millis(1500), main);
-						FadeTransition fadeOut = new FadeTransition(Duration.millis(1500), parent);
+					scene.getStylesheets().addAll(MainApp.class.getResource("view/style.css").toExternalForm());
 
-						fadeOut.setFromValue(1.0);
-						fadeOut.setToValue(0.0);
-						fadeOut.play();
+					primaryStage.show();
+					primaryStage.setResizable(false);
 
-						fadeIn.setFromValue(0.0);
-						fadeIn.setToValue(1.0);
-						fadeIn.play();
-							
-						initializeBrain();
-						
-					} catch (IOException e) {
-						System.out.println("Unable to find or load FXML file");
-						e.printStackTrace();
-					}
+					FadeTransition fadeIn = new FadeTransition(Duration.millis(1500), main);
+					FadeTransition fadeOut = new FadeTransition(Duration.millis(1500), parent);
+
+					fadeOut.setFromValue(1.0);
+					fadeOut.setToValue(0.0);
+					fadeOut.play();
+
+					fadeIn.setFromValue(0.0);
+					fadeIn.setToValue(1.0);
+					fadeIn.play();
+
+					initializeBrain();
+
+				} catch (IOException e) {
+					System.out.println("Unable to find or load FXML file");
+					e.printStackTrace();
 				}
 			}
+
 		});
-		
+
 		parent.getChildren().add(welcomeSceneListener);
 		welcomeSceneListener.requestFocus();
 	}
