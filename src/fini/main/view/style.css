@@ -1,17 +1,77 @@
-/* @author A0121828H */
-/*@font-face {
-font-family: FontAwesome;
-font-weight: 400;
-font-style: normal;
-src: url("/resources/fonts/fontawesome-webfont.ttf");
-}*/
+/*
+ * LIST OF FONTS
+*/
 
-/*@font-face {
-font-family: "Open Sans";
-font-weight: 400;
-font-style: normal;
-src: url("/resources/fonts/fontawesome-webfont.ttf");
-}*/
+@font-face {
+	font-family: "Open Sans";
+	font-weight: 400;
+	font-style: normal;
+	src: url('./resources/fonts/Open_Sans/OpenSans-Regular.ttf');
+}
+
+@font-face {
+	font-family: "Open Sans";
+	font-weight: 400;
+	font-style: italic;
+	src: url("./resources/fonts/Open_Sans/OpenSans-Italic.ttf");
+}
+
+@font-face {
+	font-family: "Open Sans";
+	font-weight: 300;
+	font-style: normal;
+	src: url("./resources/fonts/Open_Sans/OpenSans-Light.ttf");
+}
+
+@font-face {
+	font-family: "Open Sans";
+	font-weight: 300;
+	font-style: italic;
+	src: url("./resources/fonts/Open_Sans/OpenSans-LightItalic.ttf");
+}
+
+@font-face {
+	font-family: "Open Sans";
+	font-weight: 700;
+	font-style: normal;
+	src: url("./resources/fonts/Open_Sans/OpenSans-Bold.ttf");
+}
+
+@font-face {
+	font-family: "Open Sans";
+	font-weight: 700;
+	font-style: italic;
+	src: url("./resources/fonts/Open_Sans/OpenSans-BoldItalic.ttf");
+}
+
+@font-face {
+	font-family: "Open Sans";
+	font-weight: 800;
+	font-style: normal;
+	src: url("./resources/fonts/Open_Sans/OpenSans-ExtraBold.ttf");
+}
+
+@font-face {
+	font-family: "Open Sans";
+	font-weight: 800;
+	font-style: italic;
+	src: url("./resources/fonts/Open_Sans/OpenSans-ExtraBoldItalic.ttf");
+}
+
+@font-face {
+	font-family: "Open Sans";
+	font-weight: 600;
+	font-style: normal;
+	src: url("./resources/fonts/Open_Sans/OpenSans-Semibold.ttf");
+}
+
+@font-face {
+	font-family: "Open Sans";
+	font-weight: 600;
+	font-style: italic;
+	src: url("./resources/fonts/Open_Sans/OpenSans-SemiboldItalic.ttf");
+}
+
 
 .root {
 	-fx-background-color: white;
@@ -31,14 +91,6 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
-
-
-/*Welcome Scene*/
-.welcomePane {
-/*	-fx-background-color: navy;*/
-/*	-fx-background-image: url("blue.jpg");*/
-}
-
 .pressEnterText {
 	-fx-text-box-border: black;
 	-fx-border-insets: 1 1 1 5;
@@ -48,8 +100,7 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 
 /* MAIN DISPLAY */
 .display {
-/*		-fx-background-image: url("blue2.jpg");*/
-	/*	-fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);*/
+	-fx-border-color: transparent;
 }
 
 /* TASK OVERVIEW PANEL */
@@ -63,6 +114,7 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 	-fx-font-weight: lighter;
 	-fx-text-box-border: white;
 	-fx-text-fill: white;
+	-fx-border-color: transparent;
 }
 
 .display #projectsOverviewPanel {
@@ -70,12 +122,14 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 	-fx-font-family: "Open Sans";
 	-fx-font-weight: lighter;
 	-fx-text-box-border: white;
+	-fx-border-color: transparent;
 }
 
 .display #listView {
 	-fx-font-size: 14px;
 	-fx-font-family: "Open Sans", sans-serif, serif;
 	-fx-text-box-border: white;
+	-fx-border-color: transparent;
 }
 
 .display #displayToUser {
@@ -96,7 +150,7 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 
 /* disable select */
 .list-cell: selected {
-/*	-fx-background-color: aqua;*/
+	/*	-fx-background-color: aqua;*/
 }
 
 /* TASKBOX STYLE */
@@ -107,7 +161,7 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 }
 
 .taskBox: hover {
-		-fx-background-color: aqua;
+	-fx-background-color: aqua;
 }
 
 .taskBox #priority {
@@ -183,7 +237,7 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 	-fx-font-size: 12px;
 	-fx-font-style: italic;
 	-fx-font-weight: bolder;
-	-fx-background-color: #0D98BA;
+	-fx-background-color: #483d8b;
 	-fx-opacity: 0.7;
 	-fx-border-radius: 2px;
 	-fx-font-family: "Handlee", sans-serif, serif;
@@ -192,3 +246,38 @@ src: url("/resources/fonts/fontawesome-webfont.ttf");
 .pointsBox #finiPoints {
 	-fx-text-fill: white;
 }
+
+/* SCROLLBAR */
+
+.display .scroll-bar: vertical {
+	-fx-background-color: transparent;
+}
+
+.display .scroll-bar:vertical .track{
+     -fx-background-color: transparent;
+}
+
+.display .scroll-bar:vertical .thumb {
+    -fx-background-color:derive(cornflowerblue,50%);
+	-fx-background-insets: 2, 2, 2;
+	-fx-background-radius: 7em;
+}
+
+/* .display .increment-button ,.display .decrement-button {
+    -fx-background-color:transparent;
+	-fx-border-color:derive(blue,80%);
+}
+
+
+.display .scroll-bar:vertical .track{
+     -fx-background-color: transparent;
+	 -fx-border-color:derive(yellow,50%);
+	 -fx-background-radius: 0em;
+}
+
+.display .scroll-bar:vertical .thumb {
+    -fx-background-color:derive(navy,50%);
+	-fx-background-insets: 0, 0, 0;
+	-fx-background-radius: 0em;
+
+} */
