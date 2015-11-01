@@ -1,6 +1,5 @@
 package fini.main;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -62,7 +61,7 @@ public class MainApp extends Application {
 		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/images/icon.png")));
 		primaryStage.setScene(scene);
 		primaryStage.setResizable(true);		
-		primaryStage.initStyle(StageStyle.UNDECORATED);
+		primaryStage.initStyle(StageStyle.UTILITY);
 		primaryStage.show();
 	}
 
@@ -100,6 +99,7 @@ public class MainApp extends Application {
 						fadeIn.play();
 							
 						initializeBrain();
+						
 					} catch (IOException e) {
 						System.out.println("Unable to find or load FXML file");
 						e.printStackTrace();
