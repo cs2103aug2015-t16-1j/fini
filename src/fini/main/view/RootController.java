@@ -72,7 +72,7 @@ public class RootController {
 	public RootController() {
 		// TODO With the Brain fully functioning, here we do not initialize anything
 	}
-	
+
 	public void setFocusToCommandBox() {
 		commandBox.requestFocus();
 	}
@@ -85,14 +85,6 @@ public class RootController {
 			commandBox.clear();
 
 			brain.executeCommand(userInput);
-
-			//			boolean isOperationSuccessful = parser.parse(userInput);
-			//			taskOrganiser.sortTaskMasterList();
-			//			updateMainDisplay(taskOrganiser.getTasks());
-			//			updateProjectsOverviewPanel(taskOrganiser.getTasks());
-			//			updateTasksOverviewPanel(taskOrganiser.getTasks());
-			//			updateDisplayToUser(isOperationSuccessful);
-			//			taskOrganiser.updateFile();
 		} else if (event.getCode() == KeyCode.SPACE) {
 			userInput = commandBox.getText();
 			if (userInput.toLowerCase().equals("search")) {
@@ -126,20 +118,20 @@ public class RootController {
 					}
 				}
 			} else if (userInput.toLowerCase().startsWith("add"))  {
-                displayToUser.setText("add <title> <startTime> <endTime>");
-            } else if (userInput.toLowerCase().startsWith("delete")) {
-                displayToUser.setText("delete <TASK_NUMBER>");
-            } else if (userInput.toLowerCase().startsWith("update")) {
-                displayToUser.setText("update <TASK_NUMBER>");
-            } else if (userInput.toLowerCase().startsWith("complete")) {
-                displayToUser.setText("complete <TASK_NUMBER>");
-            } else if (userInput.toLowerCase().startsWith("uncomplete")) {
-                displayToUser.setText("uncomplete <TASK_NUMBER>");
-            } else if (userInput.toLowerCase().startsWith("mods")) {
-                displayToUser.setText("mods <FILE_NAME>");
-            } else if (userInput.toLowerCase().startsWith("mode")) {
-                displayToUser.setText("mode normal/night");
-            }
+				displayToUser.setText("add <title> <startTime> <endTime>");
+			} else if (userInput.toLowerCase().startsWith("delete")) {
+				displayToUser.setText("delete <TASK_NUMBER>");
+			} else if (userInput.toLowerCase().startsWith("update")) {
+				displayToUser.setText("update <TASK_NUMBER>");
+			} else if (userInput.toLowerCase().startsWith("complete")) {
+				displayToUser.setText("complete <TASK_NUMBER>");
+			} else if (userInput.toLowerCase().startsWith("uncomplete")) {
+				displayToUser.setText("uncomplete <TASK_NUMBER>");
+			} else if (userInput.toLowerCase().startsWith("mods")) {
+				displayToUser.setText("mods <FILE_NAME>");
+			} else if (userInput.toLowerCase().startsWith("mode")) {
+				displayToUser.setText("mode normal/night");
+			}
 		} else if (event.getCode().isDigitKey() || event.getCode().isLetterKey()){
 			userInput = commandBox.getText();
 			if (userInput.toLowerCase().startsWith("search ")) {
@@ -514,12 +506,18 @@ public class RootController {
 				break;
 			}
 		}
+		updateFiniPointsWithFadeAnimation(points);
+	}
+
+	private void updateFiniPointsWithFadeAnimation(Integer points) {
 		FadeTransition fadeOut = new FadeTransition(Duration.millis(500), finiPoints);
-		FadeTransition fadeIn = new FadeTransition(Duration.millis(500), finiPoints);
 		fadeOut.setFromValue(1.0);
 		fadeOut.setToValue(0.0);
 		fadeOut.play();
+
 		finiPoints.setText(points.toString());
+
+		FadeTransition fadeIn = new FadeTransition(Duration.millis(500), finiPoints);
 		fadeIn.setFromValue(0.0);
 		fadeIn.setToValue(1.0);
 		fadeIn.play();
