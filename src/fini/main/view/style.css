@@ -1,5 +1,18 @@
 /*
- * LIST OF FONTS
+ ______ _____ _   _ _____    _____ _________     ___      ______  _____ _    _ ______ ______ ______ _______ 
+|  ____|_   _| \ | |_   _|  / ____|__   __\ \   / / |    |  ____|/ ____| |  | |  ____|  ____|  ____|__   __|
+| |__    | | |  \| | | |   | (___    | |   \ \_/ /| |    | |__  | (___ | |__| | |__  | |__  | |__     | |   
+|  __|   | | | . ` | | |    \___ \   | |    \   / | |    |  __|  \___ \|  __  |  __| |  __| |  __|    | |   
+| |     _| |_| |\  |_| |_   ____) |  | |     | |  | |____| |____ ____) | |  | | |____| |____| |____   | |   
+|_|    |_____|_| \_|_____| |_____/   |_|     |_|  |______|______|_____/|_|  |_|______|______|______|  |_|   
+
+		PROUDLY AUTHORED BY:	@@author A0121828H
+*/
+
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * LIST OF FONTS					
+ * :::::::::::::::::::::::::::::::::::
 */
 
 @font-face {
@@ -72,13 +85,22 @@
 	src: url("./resources/fonts/Open_Sans/OpenSans-SemiboldItalic.ttf");
 }
 
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * ROOT LAYOUT					
+ * :::::::::::::::::::::::::::::::::::
+*/
 
 .root {
 	-fx-background-color: white;
 	-fx-padding: 10;
 }
 
-/* COMMAND BOX */
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * COMMAND BOX					
+ * :::::::::::::::::::::::::::::::::::
+*/
 .vBoxDisplay #commandBox {
 	-fx-font-size: 14px;
 	-fx-font-family: "Open Sans", sans-serif, serif;
@@ -98,37 +120,56 @@
 	-fx-border-color: #000;
 }
 
-/* MAIN DISPLAY */
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * MAIN DISPLAY					
+ * :::::::::::::::::::::::::::::::::::
+*/
 .display {
 	-fx-border-color: transparent;
 }
 
-/* TASK OVERVIEW PANEL */
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * MAIN DISPLAY & ELEMENTS
+ * :::::::::::::::::::::::::::::::::::
+*/
 .inboxBox {
 	-fx-padding: 0 5 0 5;	
 }
 
 .display #tasksOverviewPanel {
 	-fx-font-size: 14px;
-	-fx-font-family: "Open Sans";
+	-fx-font-family: "Open Sans", sans-serif, serif;
 	-fx-font-weight: lighter;
 	-fx-text-box-border: white;
 	-fx-text-fill: white;
+	-fx-background-color: #FFF0F5;
 	-fx-border-color: transparent;
+	
+	-fx-border-insets: 0 0 0 5;
+	-fx-border-width: 0 0.5 0.5 0;
+	-fx-border-color: #87CEEB;
 }
 
 .display #projectsOverviewPanel {
 	-fx-font-size: 14px;
-	-fx-font-family: "Open Sans";
+	-fx-font-family: "Open Sans", sans-serif, serif;
 	-fx-font-weight: lighter;
 	-fx-text-box-border: white;
+	-fx-background-color: #FFF0F5;
 	-fx-border-color: transparent;
+
+	-fx-border-insets: 0 0 0 5;
+	-fx-border-width: 0 0.5 0 0;
+	-fx-border-color: #87CEEB;
 }
 
 .display #listView {
 	-fx-font-size: 14px;
 	-fx-font-family: "Open Sans", sans-serif, serif;
 	-fx-text-box-border: white;
+	-fx-background-color:white;
 	-fx-border-color: transparent;
 }
 
@@ -141,7 +182,10 @@
 	-fx-background-color: white;
 	-fx-padding: 7 10 7 10;
 	-fx-border-insets: 0 0 0 5;
-	/*	 -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );*/
+}
+
+.display #projectsOverviewPanel .list-cell {
+	-fx-background-color:  #FFF0F5;
 }
 
 .list-cell: hover {
@@ -153,11 +197,16 @@
 	/*	-fx-background-color: aqua;*/
 }
 
-/* TASKBOX STYLE */
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * TASKBOX (HBOX)					
+ * :::::::::::::::::::::::::::::::::::
+*/
 .taskBox {
 	-fx-border-insets: 0 0 0 5;
 	-fx-border-width: 0 0 0.25 0;
 	-fx-border-color: #318CE7;
+/*	-fx-background-color: aqua;*/
 }
 
 .taskBox: hover {
@@ -220,7 +269,11 @@
 	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
-/* TASK CATEGORY BOX */
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * CATEGORY BOXES (OVERDUE ETC.)				
+ * :::::::::::::::::::::::::::::::::::
+*/
 .categoryBox #category {
 	-fx-font-size: 18px;
 	-fx-font-family: "Open Sans", sans-serif, serif;
@@ -232,7 +285,11 @@
 	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
-/* FINI POINTS BOX */
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * FINI POINTS BOX					
+ * :::::::::::::::::::::::::::::::::::
+*/
 .pointsBox {
 	-fx-font-size: 12px;
 	-fx-font-style: italic;
@@ -247,8 +304,11 @@
 	-fx-text-fill: white;
 }
 
-/* SCROLLBAR */
-
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * SCROLLBAR					
+ * :::::::::::::::::::::::::::::::::::
+*/
 .display .scroll-bar: vertical {
 	-fx-background-color: transparent;
 }
