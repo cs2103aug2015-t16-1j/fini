@@ -318,7 +318,7 @@
 }
 
 .display .scroll-bar:vertical .thumb {
-    -fx-background-color:derive(cornflowerblue,50%);
+    -fx-background-color:derive(cornflowerblue, 50%);
 	-fx-background-insets: 2, 2, 2;
 	-fx-background-radius: 7em;
 }

@@ -33,14 +33,14 @@ add event // 12/12/2015 from 9am to 10pm project LAF1201 priority high
 
 
 REALISTIC 20 TEST CASES
-add Meeting Gaieepo for Interview on Saturday priority high
-add lunch with mom on saturday afternoon
-add CS2020 assignment on Sunday evening priority high
-add take medicine every sunday priority high
-add take out the thrash everyday priority low
-add feed my pet dog priority low
-add tennis training every thursday 6 pm to 8 pm
-add EE2020 test on next saturday from 10 am to 12 pm
+add Meet Prof for Interview on Saturday priority high
+add Lunch with mom saturday afternoon
+add CS2020 assignment Sunday evening priority high
+add take medicine sunday priority high repeat every week
+add Take out the thrash priority low repeat every day
+add Feed my pet dog priority medium repeat every day
+add Tennis training thursday 6 pm to 8 pm repeat every week
+add EE2020 test next saturday from 10 am to 12 pm
 add pay hostel fee tomorrow 4 pm priority high
 add EE2021 assignment next wednesday 12 pm priority high
 add Tennis match next Sunday 4pm priority medium
