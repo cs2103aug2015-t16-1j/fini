@@ -7,4 +7,4 @@ TODO FOR V0.3
 5. NUS MODS Implementation (Fully)
 6. Night Mode
 7. Start time should be earlier than end time (Done)
-8. Recur not showing any date and time
+8. Recur not showing any date and time (Done)
