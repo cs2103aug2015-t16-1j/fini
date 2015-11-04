@@ -31,11 +31,12 @@ public class Brain {
 	private StatusSaver statusSaver;
 
 	private ArrayList<Task> taskMasterList;
+	private ObservableList<String> projectNameList = FXCollections.observableArrayList();
 	private ObservableList<Task> taskObservableList = FXCollections.observableArrayList();
 	private ObservableList<Task> taskAuxiliaryList = FXCollections.observableArrayList(); 
 	
 	private boolean searchDisplayTrigger = false;
-	
+	private boolean projectDisplayTrigger = false;
 	private boolean completeDisplayTrigger = false;
 	private boolean allDisplayTrigger = false;
 
