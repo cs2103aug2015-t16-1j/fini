@@ -51,7 +51,12 @@ public class Brain {
 		taskMasterList = taskOrganiser.readFile();
 		sortTaskMasterList();
 		taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
-		taskAuxiliaryList.setAll(taskObservableList); 
+		taskAuxiliaryList.setAll(taskObservableList);
+		for (Task task : taskAuxiliaryList) {
+			if (!projectNameList.contains(task.getProjectName())) {
+				projectNameList.add(task.getProjectName());
+			}
+		}
 		statusSaver.saveStatus(taskMasterList, taskObservableList);
 	}
 
