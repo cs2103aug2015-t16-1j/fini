@@ -84,9 +84,8 @@ public class Storage {
 		return tasks;
 	}
 
-	public void updateFile(ArrayList<Task> tasks) {
-		updateTasks(saveFile, tasks);
-		updateTasks(userPrefFile, tasks);
+	public boolean updateFile(ArrayList<Task> tasks) {
+		return updateTasks(saveFile, tasks) && updateTasks(userPrefFile, tasks);
 	}
 	
 	private boolean updateTasks(File file, ArrayList<Task> tasks) {
