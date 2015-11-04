@@ -174,6 +174,12 @@ public class RootController {
 	public void updateDisplayToUser(String display) {
 		displayToUser.setText(display);
 	}
+	
+	// For Integration testing purposes
+	// Integration tests: testIntegrationDeleteTask
+	public Label getDisplayToUser() {
+		return displayToUser;
+	}
 
 	public void updateTasksOverviewPanel(ObservableList<Task> taskObservableList) {
 		ObservableList<HBox> tasksOverview = FXCollections.observableArrayList();
