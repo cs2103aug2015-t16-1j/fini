@@ -15,27 +15,35 @@ import fini.main.model.Storage;
 import fini.main.model.Task;
 
 public class StorageTest {
-	String saveFileName = "save.txt";
-	File saveFile = new File(saveFileName);
+	File saveFile = new File("save.txt");
+	File configFile = new File("config.txt");
+	File userPrefFile = new File("Fini_untitled.txt");
 	PrintWriter writer;
 	BufferedReader reader;
 	
 	@Test
-	public void testInit() {
+	public void testConstructor() {
 		saveFile.delete();
+		configFile.delete();
+		userPrefFile.delete();
 		
 		Storage testStorage = Storage.getInstance();
 		
-		assertEquals(true, saveFile.exists());		
+		assertEquals(true, saveFile.exists());
+		assertEquals(true, configFile.exists());
+		assertEquals(true, userPrefFile.exists());
+		
+//		assertEquals("The directory is set", testStorage.setUserPrefDirectory("/home/gaieepo/Videos/test.txt"));
+//		assertEquals("Invalid path", testStorage.setUserPrefDirectory("/home/Videos/test.txt"));
+//		assertEquals("Invalid path", testStorage.setUserPrefDirectory("/home/gaieepo/Videos/tes?t.txt"));
+//		assertEquals("Invalid path", testStorage.setUserPrefDirectory("/home/gaieepo/Videos/"));
 	}
 	
-	@Test
-	public void testReadFile() {
-		
-	}
 	
 	@After
 	public void cleanUp() {
 		saveFile.delete();
+		configFile.delete();
+		userPrefFile.delete();
 	}
 }

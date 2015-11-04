@@ -106,13 +106,16 @@ public class Storage {
 	public String setUserPrefDirectory(String filePath) {
 		userPrefFileName = filePath;
 		File userFile = new File(userPrefFileName);
+		
 		if (userFile.equals(userPrefFile)) {
 			return "Same file directory";
+		} else if (userFile.exists()) {
+			updateConfigFile(userPrefFileName);
+			userPrefFile = userFile;
+			return "The directory is set";
+		} else {
+			return "No such file";
 		}
-		createIfNotExists(userFile);
-		updateConfigFile(userPrefFileName);
-		userPrefFile = userFile;
-		return "The directory is set";
 	}
 	
 	private void updateConfigFile(String fileName) {
