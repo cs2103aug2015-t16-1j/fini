@@ -98,6 +98,11 @@
                         <Insets left="5.0" />
                      </padding>
                   </HBox>
+                  <ImageView fx:id="helpPanel" fitHeight="491.0" fitWidth="589.0" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../resources/images/help.png" />
+                     </image>
+                  </ImageView>
                </children>
             </StackPane>
             <VBox prefHeight="75.0" prefWidth="100.0" styleClass="vBoxDisplay">

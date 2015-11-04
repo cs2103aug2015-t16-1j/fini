@@ -124,6 +124,10 @@ public class Brain {
 			display = uncompleteTask(objectIndex);
 			saveThisStatus();
 			break;
+		case HELP:
+			display = displayHelp();
+			saveThisStatus();
+			break;
 		case INVALID:
 			display = "Invalid command. Please type help for assistance.";
 			break;
@@ -142,6 +146,11 @@ public class Brain {
 		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
 	
+	private String displayHelp() {
+		rootController.displayHelpPanel();
+		return "Check the help panel";
+	}
+
 	// Display Control Methods
 	private void displayControl() {
 		if (completeDisplayTrigger) {
