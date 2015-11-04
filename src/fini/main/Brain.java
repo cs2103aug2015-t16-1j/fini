@@ -174,6 +174,8 @@ public class Brain {
 		    rootController.updateSearchDisplay(taskObservableList);
 		} else if (allDisplayTrigger) {
 			rootController.updateAllDisplay(taskObservableList);
+		} else if (projectDisplayTrigger) {
+			rootController.updateProjectDisplay(taskObservableList);
 		} else {
 			sortTaskMasterList();
 			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
@@ -196,6 +198,8 @@ public class Brain {
 				!finiParser.getDatetimes().get(0).isBefore(finiParser.getDatetimes().get(1))) {
 			return "Start date and time should be earlier than end date time";
 		}
+		
+
 		
 		Task newTask = new Task.TaskBuilder(finiParser.getNotParsed(), finiParser.getIsRecurring())
 						   .setDatetimes(finiParser.getDatetimes())
