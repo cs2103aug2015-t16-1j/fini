@@ -321,6 +321,10 @@ public class FiniParser {
 		return priority;
 	}
 	
+	public String getProjectName() {
+		return projectName;
+	}
+	
 	public ArrayList<LocalDateTime> getDatetimes() {
 		return datetimes;
 	}
@@ -358,6 +362,7 @@ public class FiniParser {
 		parser = new Parser();
 		storedParameters = "";
 		priority = null;
+		projectName = "Inbox";
 		datetimes = new ArrayList<LocalDateTime>();
 		isRecurring = false;
 		recursUntil = null;
