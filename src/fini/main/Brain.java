@@ -145,6 +145,14 @@ public class Brain {
 		
 		sortTaskMasterList();
 		taskAuxiliaryList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+		
+		projectNameList = FXCollections.observableArrayList();
+		for (Task task : taskAuxiliaryList) {
+			if (!projectNameList.contains(task.getProjectName())) {
+				projectNameList.add(task.getProjectName());
+			}
+		}
+		
 		rootController.updateProjectsOverviewPanel(taskAuxiliaryList);
 		rootController.updateTasksOverviewPanel(taskAuxiliaryList);
 		
