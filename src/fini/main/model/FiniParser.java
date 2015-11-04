@@ -1,7 +1,6 @@
 package fini.main.model;
 
 import java.time.Period;
-import java.security.acl.Group;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -10,8 +9,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.transform.Templates;
 
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.ParseLocation;
@@ -28,7 +25,6 @@ public class FiniParser {
 	private String storedParameters;
 	private String cleanParameters;
 	private Priority priority;
-	//	private String projectName;
 	private ArrayList<LocalDateTime> datetimes;
 	private boolean isRecurring;
 	private LocalDateTime recursUntil;
@@ -44,11 +40,9 @@ public class FiniParser {
 			initializeFields();
 			storedParameters = commandParameters;
 			cleanParameters = storedParameters; // init of clean
-			//			System.out.println("CleanParameters - FiniParser parse(): " + cleanParameters);
 
 			String[] splitStoredParameters = storedParameters.split(" ");
 			priority = determinePriority(splitStoredParameters);
-			// projectName = determineProjectName(userInputSplitArray);
 			notParsed = determineDatetimes(cleanParameters);
 			notParsed = eliminateRedundantWords(notParsed);
 			return "FiniParser.parse SUCCESS";
@@ -94,7 +88,6 @@ public class FiniParser {
 		return Priority.NORMAL;
 	}
 
-//////////// Recur Related ///////////////////////////////////////////////
 	private String determineDatetimes(String cleanParameters) {
 		if (cleanParameters.contains("repeat")) {
 			System.out.println("HERE1");
@@ -308,10 +301,6 @@ public class FiniParser {
 		return priority;
 	}
 
-	//	public String getProjectName() {
-	//		return projectName;
-	//	}
-
 	public ArrayList<LocalDateTime> getDatetimes() {
 		return datetimes;
 	}
@@ -337,79 +326,6 @@ public class FiniParser {
 		return input.trim().replaceAll("\\s+", " ");
 	}
 
-	private boolean checkIntervalFormat(String potentialInterval) {
-		String[] splitPotentialInterval = potentialInterval.split(" ");
-		if (splitPotentialInterval.length == 1) {
-			if (splitPotentialInterval[0].toLowerCase().equals("everyday")) {
-				return true;
-			}
-		} else if (splitPotentialInterval.length == 2) {
-			if (splitPotentialInterval[0].toLowerCase().equals("every")) {
-				String intervalUnit = splitPotentialInterval[1].toLowerCase();
-				if (intervalUnit.equals("day") ||
-						intervalUnit.equals("week") ||
-						intervalUnit.equals("month") ||
-						intervalUnit.equals("year")) {
-					return true;
-				}
-			}
-		} else if (splitPotentialInterval.length == 3) {
-			if (splitPotentialInterval[0].toLowerCase().equals("every")) {
-				try {
-					int prefix = Integer.parseInt(splitPotentialInterval[1]);
-					String intervalUnit = splitPotentialInterval[2].toLowerCase();
-					if (intervalUnit.equals("days") ||
-							intervalUnit.equals("weeks") ||
-							intervalUnit.equals("months") ||
-							intervalUnit.equals("years")) {
-						return true;
-					}
-				} catch (NumberFormatException e) {
-					return false;
-				}
-			}
-		}
-		return false;
-	}
-
-	private Period determineInterval(String potentialInterval) {
-		String[] splitPotentialInterval = potentialInterval.split(" ");
-		if (splitPotentialInterval.length == 1) {
-			return Period.ofDays(1);
-		} 
-
-		if (splitPotentialInterval.length == 2) {
-			String intervalUnit = splitPotentialInterval[1].toLowerCase();
-			switch (intervalUnit) {
-			case "day":
-				return Period.ofDays(1);
-			case "week":
-				return Period.ofWeeks(1);
-			case "month":
-				return Period.ofMonths(1);
-			case "year":
-				return Period.ofYears(1);
-			}
-		}
-
-		if (splitPotentialInterval.length == 3) {
-			int prefix = Integer.parseInt(splitPotentialInterval[1]);
-			String intervalUnit = splitPotentialInterval[2].toLowerCase();
-			switch (intervalUnit) {
-			case "days":
-				return Period.ofDays(prefix);
-			case "weeks":
-				return Period.ofWeeks(prefix);
-			case "months":
-				return Period.ofMonths(prefix);
-			case "years":
-				return Period.ofYears(prefix);
-			}
-		}
-
-		return Period.ZERO;
-	}
-
 	// Initialization Methods
 	public static FiniParser getInstance() {
 		if (finiParser == null) {
@@ -422,7 +338,6 @@ public class FiniParser {
 		parser = new Parser();
 		storedParameters = "";
 		priority = null;
-		//		projectName = null;
 		datetimes = new ArrayList<LocalDateTime>();
 		isRecurring = false;
 		recursUntil = null;
