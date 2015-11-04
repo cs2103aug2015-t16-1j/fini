@@ -184,7 +184,7 @@ public class RootController {
 		Integer totalTasks = taskObservableList.size();
 
 		for (Task task : taskObservableList) {
-			if(task.getProject().equals("Inbox")) {
+			if(task.getProjectName().equals("Inbox")) {
 				tasksInInbox += 1;
 			}
 
@@ -206,8 +206,8 @@ public class RootController {
 	public void updateProjectsOverviewPanel(ObservableList<Task> taskObservableList) {
 		ObservableList<String> projectsOverview = FXCollections.observableArrayList();
 		for (Task task : taskObservableList) {
-			if (projectsOverview.contains(task.getProject()) == false) {
-				projectsOverview.add(task.getProject());
+			if (projectsOverview.contains(task.getProjectName()) == false) {
+				projectsOverview.add(task.getProjectName());
 			}
 		}
 		projectsOverviewPanel.setItems(projectsOverview);
@@ -241,7 +241,7 @@ public class RootController {
 					taskStartTime, 
 					taskEndTime, 
 					task.getPriority(), 
-					task.getProject(), 
+					task.getProjectName(), 
 					task.isRecurring());
 			displayBoxes.add(newTaskBox);
 		}
@@ -298,7 +298,7 @@ public class RootController {
 					taskStartTime, 
 					taskEndTime, 
 					task.getPriority(), 
-					task.getProject(), 
+					task.getProjectName(), 
 					task.isRecurring());
 			displayBoxes.add(newTaskBox);
 		}
@@ -333,7 +333,7 @@ public class RootController {
 					taskStartTime, 
 					taskEndTime, 
 					task.getPriority(), 
-					task.getProject(), 
+					task.getProjectName(), 
 					task.isRecurring());
 			displayBoxes.add(newTaskBox);
 		}
@@ -354,7 +354,7 @@ public class RootController {
 			int taskId = taskObservableList.indexOf(task) + 1;
 
 			String taskTitle = task.getTitle();
-			String taskProject = task.getProject();
+			String taskProject = task.getProjectName();
 			String taskStartTime = task.getStartDateTime() == null ? null : timeFormatter.format(task.getStartDateTime());
 			String taskEndTime = task.getEndDateTime() == null ? null : timeFormatter.format(task.getEndDateTime());
 			String taskStartDate = task.getStartDateTime() == null ? null : task.getStartDateTime().toLocalDate().toString();

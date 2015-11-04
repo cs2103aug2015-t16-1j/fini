@@ -135,7 +135,7 @@ public class Task implements TaskInterface {
 		return taskTitle;
 	}
 
-	public String getProject() {
+	public String getProjectName() {
 		return projectName;
 	}
 

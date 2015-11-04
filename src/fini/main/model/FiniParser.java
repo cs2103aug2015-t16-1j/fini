@@ -87,7 +87,7 @@ public class FiniParser {
 		}
 		return Priority.NORMAL;
 	}
-
+	
 	private String determineDatetimes(String cleanParameters) {
 		if (cleanParameters.contains("repeat")) {
 			System.out.println("HERE1");
@@ -300,7 +300,7 @@ public class FiniParser {
 	public Priority getPriority() {
 		return priority;
 	}
-
+	
 	public ArrayList<LocalDateTime> getDatetimes() {
 		return datetimes;
 	}
