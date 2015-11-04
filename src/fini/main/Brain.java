@@ -208,6 +208,7 @@ public class Brain {
 		Task newTask = new Task.TaskBuilder(finiParser.getNotParsed(), finiParser.getIsRecurring())
 						   .setDatetimes(finiParser.getDatetimes())
 						   .setPriority(finiParser.getPriority())
+						   .setProjectName(finiParser.getProjectName())
 						   .setInterval(finiParser.getInterval())
 						   .setRecursUntil(finiParser.getRecursUntil()).build();
 		
@@ -241,6 +242,12 @@ public class Brain {
 				!finiParser.getDatetimes().get(0).isBefore(finiParser.getDatetimes().get(1))) {
 			return "Start date and time should be earlier than end date time";
 		}
+		
+		if (!finiParser.getProjectName().equals("Inbox") &&
+				!projectNameList.contains(finiParser.getProjectName()) &&
+				projectNameList.size() == 5) {
+				return "Maximum 5 projects at the same time";
+			}
 		
 		Task newTask = new Task.TaskBuilder(finiParser.getNotParsed(), finiParser.getIsRecurring())
 						   .setDatetimes(finiParser.getDatetimes())
