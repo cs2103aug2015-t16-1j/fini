@@ -100,6 +100,9 @@ public class Brain {
 		case REDO:
 			display = redo();
 			break;
+		case SET:
+			display = setUserPrefDirectory(commandParameters);
+			break;
 		case DISPLAY:
 			display = displayTask(commandParameters);
 			break;
@@ -329,6 +332,10 @@ public class Brain {
 		taskObservableList = statusSaver.getLastTaskObservableList();
 		taskOrganiser.updateFile(taskMasterList);
 		return "Redo~do~do~do~do~";
+	}
+	
+	private String setUserPrefDirectory(String commandParameters) {
+		return taskOrganiser.setUserPrefDirectory(commandParameters);
 	}
 	
 	private String displayTask(String commandParameters) {

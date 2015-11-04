@@ -23,7 +23,9 @@ public class Storage {
 	private File saveFile;
 	private File configFile;
 	private File userPrefFile;
+	
 	private String userPrefFileName;
+	
 	private BufferedReader reader;
 	private PrintWriter writer;
 
@@ -42,20 +44,32 @@ public class Storage {
 		saveFile = new File("save.txt");
 		createIfNotExists(saveFile);
 		
-//		configFile = new File("config.txt");
-//		createIfNotExists(configFile);
-//		
-//		userPrefFileName = getUserPrefFileName(configFile);
-//		userPrefFile = new File(userPrefFileName);
-//		createIfNotExists(userPrefFile);
+		configFile = new File("config.txt");
+		createIfNotExists(configFile);
+		
+		userPrefFileName = getUserPrefFileName(configFile);
+		updateConfigFile(userPrefFileName);
+		userPrefFile = new File(userPrefFileName);
+		createIfNotExists(userPrefFile);
 	}
 
 	public ArrayList<Task> readFile() {
+		ArrayList<Task> tasks = new ArrayList<Task>();
+		tasks = readTasks(userPrefFile);
+		if (tasks == null || tasks.isEmpty()) {
+			tasks = readTasks(saveFile);
+			if (tasks == null || tasks.isEmpty()) {
+				tasks = new ArrayList<Task>();
+			}
+		}
+		return tasks;
+	}
+	
+	private ArrayList<Task> readTasks(File file) {
 		String text = "";
 		ArrayList<Task> tasks = new ArrayList<Task>();
-		
 		try {
-			if (!initReader(saveFile)) {
+			if (!initReader(file)) {
 				return tasks;
 			}
 			while ((text = reader.readLine()) != null) {
@@ -64,25 +78,51 @@ public class Storage {
 			}
 		} catch (IOException | JsonSyntaxException e) {
 			e.printStackTrace();
+			return null;
 		}
 		closeReader();
-		
-		if (tasks == null || tasks.isEmpty()) {
-			tasks = new ArrayList<Task>();
-		}
 		return tasks;
 	}
 
 	public void updateFile(ArrayList<Task> tasks) {
+		updateTasks(saveFile, tasks);
+		updateTasks(userPrefFile, tasks);
+	}
+	
+	private boolean updateTasks(File file, ArrayList<Task> tasks) {
 		try {
-			writer = new PrintWriter(saveFile, "UTF-8");
+			writer = new PrintWriter(file, "UTF-8");
 			for (Task task : tasks) {
 				writer.println(gson.toJson(task));
 			}
 		} catch (FileNotFoundException | UnsupportedEncodingException e) {
 			e.printStackTrace();
+			return false;
 		}
 		writer.close();
+		return true;
+	}
+	
+	public String setUserPrefDirectory(String filePath) {
+		userPrefFileName = filePath;
+		File userFile = new File(userPrefFileName);
+		if (userFile.equals(userPrefFile)) {
+			return "Same file directory";
+		}
+		createIfNotExists(userFile);
+		updateConfigFile(userPrefFileName);
+		userPrefFile = userFile;
+		return "The directory is set";
+	}
+	
+	private void updateConfigFile(String fileName) {
+		try {
+			writer = new PrintWriter(configFile, "UTF-8");
+			writer.println(fileName);
+			writer.close();
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// Initialization Methods
@@ -119,7 +159,7 @@ public class Storage {
 		String fileName = "";
 		try {
 			if ((fileName = reader.readLine()) == null) {
-				fileName = "Fini_untitledd.txt";
+				fileName = "Fini_untitled.txt";
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
