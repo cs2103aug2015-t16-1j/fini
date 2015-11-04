@@ -1,5 +1,6 @@
 package fini.main.tests;
 
+import fini.main.Brain;
 import fini.main.model.*;
 import fini.main.model.Command.CommandType;
 
@@ -16,10 +17,11 @@ public class IntegrationTest {
 	private static final String FAIL = new String("FAIL");
 	
 	int result;
-	
+	Brain testBrain;
 	
 	@Before
 	public void initialize() {
+		testBrain = Brain.getInstance();
 	}
 	
 	static public String test(int value) {
@@ -28,11 +30,11 @@ public class IntegrationTest {
 		else
 			return FAIL;
 	}
-	
 	//TODO
 	@Test
-	public void testIntegration() {
-		
+	public void testIntegrationDeleteTask() {
+		testBrain.executeCommand("delete 5");
+		assertEquals("Task not found", testBrain.getRootController().getDisplayToUser().toString() );
 	}
 
 }
