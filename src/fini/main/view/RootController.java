@@ -214,6 +214,41 @@ public class RootController {
 		projectsOverviewPanel.setItems(projectNameList);
 	}
 	
+	public void updateProjectDisplay(ObservableList<Task> taskObservableList) {
+		ObservableList<HBox> displayBoxes = FXCollections.observableArrayList();
+
+		for (Task task : taskObservableList) {
+			int taskId = taskObservableList.indexOf(task) + 1;
+
+			String taskStartTime = task.getStartDateTime() == null ? null : timeFormatter.format(task.getStartDateTime());
+			String taskEndTime = task.getEndDateTime() == null ? null : timeFormatter.format(task.getEndDateTime());
+			String taskStartDate = task.getStartDateTime() == null ? null : task.getStartDateTime().toLocalDate().toString();
+			String taskEndDate = task.getEndDateTime() == null ? null : task.getEndDateTime().toLocalDate().toString();
+
+			String typeOfTask = "";
+			if (task.getTaskType() == Type.DEFAULT) {
+				typeOfTask = "floating";
+			} else if (task.getTaskType() == Type.DEADLINE) {
+				typeOfTask = "deadline";
+			} else {
+				typeOfTask = "event";
+			}
+
+			TaskBox newTaskBox = new TaskBox(taskId, 
+					typeOfTask, 
+					task.getTitle(), 
+					taskStartDate,
+					taskEndDate,
+					taskStartTime, 
+					taskEndTime, 
+					task.getPriority(), 
+					task.getProjectName(), 
+					task.isRecurring());
+			displayBoxes.add(newTaskBox);
+		}
+		listView.setItems(displayBoxes);
+	}
+	
 	public void updateProjectsOverviewPanel(ObservableList<Task> taskObservableList) {
 		ObservableList<String> projectsOverview = FXCollections.observableArrayList();
 		for (Task task : taskObservableList) {
