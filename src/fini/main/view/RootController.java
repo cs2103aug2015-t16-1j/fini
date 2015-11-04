@@ -210,6 +210,10 @@ public class RootController {
 		totalNumberOfTasks.setText(totalTasks.toString());
 	}
 
+	public void updateProjectsOverviewPanel(ObservableList<String> projectNameList) {
+		projectsOverviewPanel.setItems(projectNameList);
+	}
+	
 	public void updateProjectsOverviewPanel(ObservableList<Task> taskObservableList) {
 		ObservableList<String> projectsOverview = FXCollections.observableArrayList();
 		for (Task task : taskObservableList) {
