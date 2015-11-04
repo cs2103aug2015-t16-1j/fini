@@ -89,7 +89,7 @@ public class FiniParser {
 		}
 		return Priority.NORMAL;
 	}
-	
+
 	private String determineProjectName(String[] splitStoredParameters) {
 		List<String> words = Arrays.asList(splitStoredParameters);
 		for (String word : words) {
@@ -107,7 +107,7 @@ public class FiniParser {
 		}
 		return "Inbox";
 	}
-	
+
 	private String determineDatetimes(String cleanParameters) {
 		if (cleanParameters.contains("repeat")) {
 			System.out.println("HERE1");
@@ -118,7 +118,7 @@ public class FiniParser {
 		}
 		return getSimpleCleanString(notParsed);
 	}
-	
+
 	private String processBackPart(String parameters) {
 		System.out.println("HERE2");
 		isRecurring = true;
@@ -127,13 +127,13 @@ public class FiniParser {
 			return parameters;
 		}
 		String returnNotParsed = "";
-		
+
 		if (groups.size() != 0) {
 			System.out.println(groups.size() + "|" + parameters.contains("until") + "|" + groups.get(0).isRecurring());
 		} else {
 			System.out.println("ZERORORO");
 		}
-		
+
 		if (groups.size() == 0) { // everyday/every week (no until)
 			returnNotParsed = everyWeekNoUntil(parameters);
 		} else if (groups.size() == 1 && parameters.contains("until") && !groups.get(0).isRecurring()) {
@@ -147,7 +147,7 @@ public class FiniParser {
 		}
 		return returnNotParsed;
 	}
-	
+
 	private String everyTwoWeeksUntil(String parameters, DateGroup group) {
 		recursUntil = LocalDateTime.ofInstant(group.getRecursUntil().toInstant(), ZoneId.systemDefault());
 		String returnNotParsed = parameters;
@@ -159,7 +159,7 @@ public class FiniParser {
 		}
 		return returnNotParsed;
 	}
-	
+
 	private String everyTwoWeeksNoUntil(String parameters) {
 		String returnNotParsed = parameters;
 		String[] splitParameters = parameters.split(" ");
@@ -169,7 +169,7 @@ public class FiniParser {
 		}
 		return returnNotParsed;
 	}
-	
+
 	private String everyWeekUntil(String parameters, DateGroup group) {
 		String returnNotParsed = parameters;
 		recursUntil = LocalDateTime.ofInstant(group.getDates().get(0).toInstant(), ZoneId.systemDefault());
@@ -186,7 +186,7 @@ public class FiniParser {
 		returnNotParsed = returnNotParsed.replaceAll(group.getText(), "");
 		return returnNotParsed;
 	}
-	
+
 	private String everyWeekNoUntil(String parameters) {
 		String returnNotParsed = parameters;
 		String[] splitParameters = parameters.split(" ");
@@ -200,7 +200,7 @@ public class FiniParser {
 		}
 		return returnNotParsed;
 	}
-	
+
 	private Period determineIntervalUnits(String numbering, String word) {
 		String[] numWithinTen = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
 		int number = 0;
@@ -210,7 +210,7 @@ public class FiniParser {
 				break;
 			}
 		}
-		
+
 		if (number == 0) {
 			try {
 				number = Integer.parseInt(numbering);
@@ -218,7 +218,7 @@ public class FiniParser {
 				e.printStackTrace();
 			}
 		}
-		
+
 		switch (word) {
 		case "days":
 			return Period.ofDays(number);
@@ -232,7 +232,7 @@ public class FiniParser {
 			return Period.ofDays(1);
 		}
 	}
-	
+
 	private Period determineIntervalUnit(String word) {
 		switch (word) {
 		case "day":
@@ -247,7 +247,7 @@ public class FiniParser {
 			return Period.ofDays(1);
 		}
 	}
-	
+
 	private boolean isValidNumbering(String word) {
 		String[] numWithinTen = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
 		for (String num : numWithinTen) {
@@ -255,7 +255,7 @@ public class FiniParser {
 				return true;
 			}
 		}
-		
+
 		try {
 			Integer.parseInt(word);
 			return true;
@@ -263,18 +263,18 @@ public class FiniParser {
 			return false;
 		}
 	}
-	
+
 	private boolean isIntervalUnits(String word) {
 		return word.equals("days") || word.equals("weeks") || word.equals("months") || word.equals("years");
 	}
-	
+
 	private boolean isIntervalUnit(String word) {
 		return word.equals("day") || word.equals("week") || word.equals("month") || word.equals("year");
 	}
-	
+
 	private String processFrontPart(String parameters) {
 		List<DateGroup> groups = parser.parse(parameters);
-		
+
 		if (groups.size() == 0) {
 			return getSimpleCleanString(parameters);
 		} else {
@@ -298,8 +298,8 @@ public class FiniParser {
 			return getSimpleCleanString(returnNotParsed);
 		}
 	}
-////////////////////////////////////////////////
-	
+	////////////////////////////////////////////////
+
 	private String eliminateRedundantWords(String notParsed) {
 		String cleanString = notParsed;
 		for (String word : REDUNDANT_WORDS) {
@@ -320,11 +320,11 @@ public class FiniParser {
 	public Priority getPriority() {
 		return priority;
 	}
-	
+
 	public String getProjectName() {
 		return projectName;
 	}
-	
+
 	public ArrayList<LocalDateTime> getDatetimes() {
 		return datetimes;
 	}
