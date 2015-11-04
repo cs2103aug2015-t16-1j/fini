@@ -25,6 +25,7 @@ public class FiniParser {
 	private String storedParameters;
 	private String cleanParameters;
 	private Priority priority;
+	private String projectName;
 	private ArrayList<LocalDateTime> datetimes;
 	private boolean isRecurring;
 	private LocalDateTime recursUntil;
@@ -43,6 +44,7 @@ public class FiniParser {
 
 			String[] splitStoredParameters = storedParameters.split(" ");
 			priority = determinePriority(splitStoredParameters);
+			projectName = determineProjectName(splitStoredParameters);
 			notParsed = determineDatetimes(cleanParameters);
 			notParsed = eliminateRedundantWords(notParsed);
 			return "FiniParser.parse SUCCESS";
@@ -86,6 +88,24 @@ public class FiniParser {
 			}
 		}
 		return Priority.NORMAL;
+	}
+	
+	private String determineProjectName(String[] splitStoredParameters) {
+		List<String> words = Arrays.asList(splitStoredParameters);
+		for (String word : words) {
+			if (word.toLowerCase().equals("project")) {
+				if (words.indexOf(word) != words.size() - 1) {
+					String projectName = words.get(words.indexOf(word) + 1);
+					cleanParameters = cleanParameters.replaceAll(word + " " + projectName, "");
+					cleanParameters = getSimpleCleanString(cleanParameters);
+					return projectName;
+				} else {
+					// "project" keyword appears at the end
+					break;
+				}
+			}
+		}
+		return "Inbox";
 	}
 	
 	private String determineDatetimes(String cleanParameters) {
