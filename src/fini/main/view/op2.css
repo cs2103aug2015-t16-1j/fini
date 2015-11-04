@@ -1,0 +1,324 @@
+/*
+ ______ _____ _   _ _____    _____ _________     ___      ______  _____ _    _ ______ ______ ______ _______ 
+|  ____|_   _| \ | |_   _|  / ____|__   __\ \   / / |    |  ____|/ ____| |  | |  ____|  ____|  ____|__   __|
+| |__    | | |  \| | | |   | (___    | |   \ \_/ /| |    | |__  | (___ | |__| | |__  | |__  | |__     | |   
+|  __|   | | | . ` | | |    \___ \   | |    \   / | |    |  __|  \___ \|  __  |  __| |  __| |  __|    | |   
+| |     _| |_| |\  |_| |_   ____) |  | |     | |  | |____| |____ ____) | |  | | |____| |____| |____   | |   
+|_|    |_____|_| \_|_____| |_____/   |_|     |_|  |______|______|_____/|_|  |_|______|______|______|  |_|   
+
+		PROUDLY AUTHORED BY:	@@author A0121828H
+*/
+
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * LIST OF FONTS					
+ * :::::::::::::::::::::::::::::::::::
+*/
+
+@font-face {
+	font-family: "montserrat";
+	font-weight: 400;
+	font-style: normal;
+	src: url('./resources/fonts/Open_Sans/OpenSans-Regular.ttf');
+}
+
+@font-face {
+	font-family: "montserrat";
+	font-weight: 400;
+	font-style: italic;
+	src: url("./resources/fonts/Open_Sans/OpenSans-Italic.ttf");
+}
+
+@font-face {
+	font-family: "montserrat";
+	font-weight: 300;
+	font-style: normal;
+	src: url("./resources/fonts/Open_Sans/OpenSans-Light.ttf");
+}
+
+@font-face {
+	font-family: "montserrat";
+	font-weight: 300;
+	font-style: italic;
+	src: url("./resources/fonts/Open_Sans/OpenSans-LightItalic.ttf");
+}
+
+@font-face {
+	font-family: "montserrat";
+	font-weight: 700;
+	font-style: normal;
+	src: url("./resources/fonts/Open_Sans/OpenSans-Bold.ttf");
+}
+
+@font-face {
+	font-family: "montserrat";
+	font-weight: 700;
+	font-style: italic;
+	src: url("./resources/fonts/Open_Sans/OpenSans-BoldItalic.ttf");
+}
+
+@font-face {
+	font-family: "montserrat";
+	font-weight: 800;
+	font-style: normal;
+	src: url("./resources/fonts/Open_Sans/OpenSans-ExtraBold.ttf");
+}
+
+@font-face {
+	font-family: "montserrat";
+	font-weight: 800;
+	font-style: italic;
+	src: url("./resources/fonts/Open_Sans/OpenSans-ExtraBoldItalic.ttf");
+}
+
+@font-face {
+	font-family: "montserrat";
+	font-weight: 600;
+	font-style: normal;
+	src: url("./resources/fonts/Open_Sans/OpenSans-Semibold.ttf");
+}
+
+@font-face {
+	font-family: "montserrat";
+	font-weight: 600;
+	font-style: italic;
+	src: url("./resources/fonts/Open_Sans/OpenSans-SemiboldItalic.ttf");
+}
+
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * ROOT LAYOUT					
+ * :::::::::::::::::::::::::::::::::::
+*/
+
+.root {
+	-fx-background-color: white;
+	-fx-padding: 10;
+}
+
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * COMMAND BOX					
+ * :::::::::::::::::::::::::::::::::::
+*/
+.vBoxDisplay #commandBox {
+	-fx-font-size: 14px;
+	-fx-font-family: "montserrat", sans-serif, serif;
+	-fx-text-box-border: navy;
+	-fx-focus-color: navy ;
+}
+
+.vBoxDisplay #displayToUser {
+	-fx-font-size: 14px;
+	-fx-font-family: "montserrat", sans-serif, serif;
+}
+
+.pressEnterText {
+	-fx-text-box-border: black;
+	-fx-border-insets: 1 1 1 5;
+	-fx-border-width: 1 1 1 1;
+	-fx-border-color: #000;
+}
+
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * MAIN DISPLAY					
+ * :::::::::::::::::::::::::::::::::::
+*/
+.display {
+	-fx-border-color: transparent;
+}
+
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * MAIN DISPLAY & ELEMENTS
+ * :::::::::::::::::::::::::::::::::::
+*/
+.inboxBox {
+	-fx-padding: 0 5 0 5;	
+}
+
+.display #tasksOverviewPanel {
+	-fx-font-size: 14px;
+	-fx-font-family: "montserrat", sans-serif, serif;
+	-fx-font-weight: lighter;
+	-fx-text-box-border: white;
+	-fx-text-fill: white;
+	-fx-background-color: #FFF0F5;
+	-fx-border-color: transparent;
+	
+	-fx-border-insets: 0 0 0 5;
+	-fx-border-width: 0 0.5 0.5 0;
+	-fx-border-color: #87CEEB;
+}
+
+.display #projectsOverviewPanel {
+	-fx-font-size: 14px;
+	-fx-font-family: "montserrat", sans-serif, serif;
+	-fx-font-weight: lighter;
+	-fx-text-box-border: white;
+	-fx-background-color: #FFF0F5;
+	-fx-border-color: transparent;
+
+	-fx-border-insets: 0 0 0 5;
+	-fx-border-width: 0 0.5 0 0;
+	-fx-border-color: #87CEEB;
+}
+
+.display #listView {
+	-fx-font-size: 14px;
+	-fx-font-family: "montserrat", sans-serif, serif;
+	-fx-text-box-border: white;
+	-fx-background-color:white;
+	-fx-border-color: transparent;
+}
+
+.display #displayToUser {
+	-fx-font-size: 14px;
+	-fx-font-family: "montserrat", sans-serif, serif;
+}
+
+.list-cell {
+	-fx-background-color: white;
+	-fx-padding: 7 10 7 10;
+	-fx-border-insets: 0 0 0 5;
+}
+
+.display #projectsOverviewPanel .list-cell {
+	-fx-background-color:  #FFF0F5;
+}
+
+.list-cell: hover {
+
+}
+
+/* disable select */
+.list-cell: selected {
+	/*	-fx-background-color: aqua;*/
+}
+
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * TASKBOX (HBOX)					
+ * :::::::::::::::::::::::::::::::::::
+*/
+.taskBox {
+	-fx-border-insets: 0 0 0 5;
+	-fx-border-width: 0 0 0.25 0;
+	-fx-border-color: #318CE7;
+/*	-fx-background-color: aqua;*/
+}
+
+.taskBox: hover {
+	-fx-background-color: aqua;
+}
+
+.taskBox #priority {
+	-fx-padding: 0 5 0 5;
+	-fx-font-family: "montserrat", sans-serif, serif;
+}
+
+.taskBox #index {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 14px;
+	-fx-font-family: "montserrat", sans-serif, serif;
+}
+
+.taskBox #title {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 14px;
+	-fx-font-family: "montserrat", sans-serif, serif;
+}
+
+.taskBox #recurring {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 12px;
+	-fx-font-family: "montserrat", sans-serif, serif;
+}
+
+.taskBox #project {
+	-fx-padding: 0 5 0 5;
+	-fx-text-fill: white;
+	-fx-background-color: navy;
+	-fx-border-radius: 10 10 10 10;
+	-fx-font-size: 12px;
+	-fx-font-family: "montserrat", sans-serif, serif;
+}
+
+.taskBox #startDate {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 10px;
+	-fx-font-family: "montserrat", sans-serif, serif;
+}
+
+.taskBox #endDate {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 10px;
+	-fx-font-family: "montserrat", sans-serif, serif;
+}
+
+.taskBox #startTime {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 10px;
+	-fx-font-family: "montserrat", sans-serif, serif;
+}
+
+.taskBox #endTime {
+	-fx-padding: 0 5 0 5;
+	-fx-font-size: 10px;
+	-fx-font-family: "montserrat", sans-serif, serif;
+}
+
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * CATEGORY BOXES (OVERDUE ETC.)				
+ * :::::::::::::::::::::::::::::::::::
+*/
+.categoryBox #category {
+	-fx-font-size: 18px;
+	-fx-font-family: "montserrat", sans-serif, serif;
+	-fx-font-weight: bold;
+}
+
+.categoryBox #date {
+	-fx-font-size: 12px;
+	-fx-font-family: "montserrat", sans-serif, serif;
+}
+
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * FINI POINTS BOX					
+ * :::::::::::::::::::::::::::::::::::
+*/
+.pointsBox {
+	-fx-font-size: 12px;
+	-fx-font-style: italic;
+	-fx-font-weight: bolder;
+	-fx-background-color: #483d8b;
+	-fx-opacity: 0.7;
+	-fx-border-radius: 2px;
+	-fx-font-family: "Handlee", sans-serif, serif;
+}
+
+.pointsBox #finiPoints {
+	-fx-text-fill: white;
+}
+
+/*
+ * :::::::::::::::::::::::::::::::::::
+ * SCROLLBAR					
+ * :::::::::::::::::::::::::::::::::::
+*/
+.display .scroll-bar: vertical {
+	-fx-background-color: transparent;
+}
+
+.display .scroll-bar:vertical .track{
+     -fx-background-color: transparent;
+}
+
+.display .scroll-bar:vertical .thumb {
+    -fx-background-color:derive(cornflowerblue, 50%);
+	-fx-background-insets: 2, 2, 2;
+	-fx-background-radius: 7em;
+}
