@@ -252,6 +252,7 @@ public class Brain {
 		Task newTask = new Task.TaskBuilder(finiParser.getNotParsed(), finiParser.getIsRecurring())
 						   .setDatetimes(finiParser.getDatetimes())
 						   .setPriority(finiParser.getPriority())
+						   .setProjectName(finiParser.getProjectName())
 						   .setInterval(finiParser.getInterval())
 						   .setRecursUntil(finiParser.getRecursUntil()).build();
 		
@@ -394,6 +395,19 @@ public class Brain {
 			sortTaskMasterListWithIncomplete();
 			taskObservableList.setAll(taskMasterList);
 			return "display all";
+		} else if (projectNameList.contains(commandParameters)) {
+			projectDisplayTrigger = true;
+			completeDisplayTrigger = false;
+			searchDisplayTrigger = false;
+			allDisplayTrigger = false;
+			ObservableList<Task> projectTasks = FXCollections.observableArrayList();
+			for (Task task : taskObservableList) {
+				if (task.getProjectName().equals(commandParameters)) {
+					projectTasks.add(task);
+				}
+			}
+			taskObservableList.setAll(projectTasks);
+			return "display project: " + commandParameters;
 		} else {
 			return "displayTask method";
 		}
