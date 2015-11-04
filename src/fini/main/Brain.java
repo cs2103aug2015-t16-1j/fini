@@ -66,6 +66,12 @@ public class Brain {
 		}
 		return brain;
 	}
+	
+	// For Integration testing purposes
+	// Integration tests: testIntegrationDeleteTask
+	public RootController getRootController() {
+		return rootController;
+	}
 
 	// Initialize first display when Fini is started - executed in MainApp 
 	public void initDisplay() {
