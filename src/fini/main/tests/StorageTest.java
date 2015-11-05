@@ -4,8 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import org.junit.After;
@@ -22,12 +24,13 @@ public class StorageTest {
 	File saveFile = new File("save.txt");
 	File configFile = new File("config.txt");
 	File userPrefFile = new File("Fini_untitled.txt");
-
+	File testFile = new File("/home/gaieepo/Videos/test.txt");
+	
 	PrintWriter writer;
 	BufferedReader reader;
 
 	@Test
-	public void testSettings() {
+	public void testStorageInit() {
 		saveFile.delete();
 		configFile.delete();
 		userPrefFile.delete();
@@ -41,28 +44,72 @@ public class StorageTest {
 
 	@Test
 	public void testReadAndUpdateFile() {
-		Storage testStorage = Storage.getInstance();
 		String[] data = {"curry chicken tomorrow morning project gai", 
 				"gaieepo the day before the third sat of dec", 
 		"harish tomorrow 5am repeat every two days priority high"};
 		ArrayList<Task> inputData = createTasks(data);
+		Storage testStorage = Storage.getInstance();
 		assertEquals(true, testStorage.updateFile(inputData));
 		ArrayList<Task> outputData = testStorage.readFile();
-		for (int i = 0; i < outputData.size(); ++i) {
-			assertEquals(inputData.get(i).getTitle(), inputData.get(i).getTitle());
-			assertEquals(inputData.get(i).getTaskType(), inputData.get(i).getTaskType());
-			assertEquals(inputData.get(i).isCompleted(), inputData.get(i).isCompleted());
-			assertEquals(inputData.get(i).getStartDateTime(), inputData.get(i).getStartDateTime());
-			assertEquals(inputData.get(i).getEndDateTime(), inputData.get(i).getEndDateTime());
-			assertEquals(inputData.get(i).getPriority(), inputData.get(i).getPriority());
-			assertEquals(inputData.get(i).getProjectName(), inputData.get(i).getProjectName());
-		}
+		compareTasks(inputData, outputData);
 	}
-
-	//	assertEquals("No such file", testStorage.setUserPrefDirectory("/home/gaieepo/Videos/test.txt"));
-	//	assertEquals("Invalid path", testStorage.setUserPrefDirectory("/home/g"));
-	//	assertEquals("Invalid path", testStorage.setUserPrefDirectory("/home/gaieepo/Videos/tes?t.txt"));
-	//	assertEquals("Invalid path", testStorage.setUserPrefDirectory("/home/gaieepo/Videos/"));
+	
+	@Test
+	public void testSetUserPrefDirectory() {
+		Storage testStorage = Storage.getInstance();
+		assertEquals("No such file", testStorage.setUserPrefDirectory("/home/gaieepo/Videos/test.txt"));
+		
+		if (!testFile.exists()) {
+			try {
+				testFile.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		assertEquals("The directory is set", testStorage.setUserPrefDirectory("/home/gaieepo/Videos/test.txt"));
+		assertEquals("Same file directory", testStorage.setUserPrefDirectory("/home/gaieepo/Videos/test.txt"));
+		assertEquals("No such file", testStorage.setUserPrefDirectory("/home/gaieepo/Videos/tes?t.txt"));
+		assertEquals("No such file", testStorage.setUserPrefDirectory("/home/Videos/test.txt"));
+	}
+	
+	@Test
+	public void testBackUpSaveFile() {
+		String[] data = {"curry chicken tomorrow morning project gai", 
+				"gaieepo the day before the third sat of dec", 
+		"harish tomorrow 5am repeat every two days priority high"};
+		ArrayList<Task> inputData = createTasks(data);
+		ArrayList<Task> outputData = new ArrayList<Task>();
+		Storage testStorage = Storage.getInstance();
+		assertEquals(true, testStorage.updateFile(inputData));
+		
+		// Spoil the userPrefFile
+		try {
+			writer = new PrintWriter(userPrefFile, "UTF-8");
+			writer.println("Victory Draws Near!");
+			writer.close();
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		outputData = testStorage.readFile();
+		compareTasks(inputData, outputData);
+		
+		// userPrefFile not found
+		userPrefFile.delete();
+		outputData = testStorage.readFile();
+		compareTasks(inputData, outputData);
+		
+		try {
+			writer = new PrintWriter(saveFile, "UTF-8");
+			writer.println("Victory Draws Near!");
+			writer.close();
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		outputData = testStorage.readFile();
+		assertEquals(true, outputData.isEmpty());
+		
+	}
 
 	private ArrayList<Task> createTasks(String[] data) {
 		FiniParser finiParser = FiniParser.getInstance();
@@ -78,11 +125,24 @@ public class StorageTest {
 		}
 		return tasks;
 	}
+	
+	private void compareTasks(ArrayList<Task> inputData, ArrayList<Task> outputData) {
+		for (int i = 0; i < outputData.size(); ++i) {
+			assertEquals(inputData.get(i).getTitle(), inputData.get(i).getTitle());
+			assertEquals(inputData.get(i).getTaskType(), inputData.get(i).getTaskType());
+			assertEquals(inputData.get(i).isCompleted(), inputData.get(i).isCompleted());
+			assertEquals(inputData.get(i).getStartDateTime(), inputData.get(i).getStartDateTime());
+			assertEquals(inputData.get(i).getEndDateTime(), inputData.get(i).getEndDateTime());
+			assertEquals(inputData.get(i).getPriority(), inputData.get(i).getPriority());
+			assertEquals(inputData.get(i).getProjectName(), inputData.get(i).getProjectName());
+		}
+	}
 
 	@After
 	public void cleanUp() {
 		saveFile.delete();
 		configFile.delete();
 		userPrefFile.delete();
+		testFile.delete();
 	}
 }
