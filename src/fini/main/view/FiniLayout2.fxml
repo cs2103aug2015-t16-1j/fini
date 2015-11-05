@@ -82,7 +82,7 @@
                         <ListView fx:id="listView" prefHeight="573.0" prefWidth="600.0" />
                      </children>
                   </HBox>
-                  <HBox maxHeight="20.0" maxWidth="105.0" prefHeight="20.0" prefWidth="105.0" styleClass="pointsBox" StackPane.alignment="TOP_RIGHT">
+                  <HBox maxHeight="20.0" maxWidth="105.0" prefHeight="20.0" prefWidth="105.0" styleClass="pointsBox" translateY="-10.0" StackPane.alignment="TOP_RIGHT">
                      <children>
                         <Label text="Fini Points:" textFill="WHITE">
                            <padding>
