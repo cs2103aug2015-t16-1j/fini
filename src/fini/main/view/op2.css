@@ -15,7 +15,7 @@
  * :::::::::::::::::::::::::::::::::::
 */
 
-@font-face {
+/*@font-face {
 	font-family: "montserrat";
 	font-weight: 400;
 	font-style: normal;
@@ -84,6 +84,8 @@
 	font-style: italic;
 	src: url("./resources/fonts/Open_Sans/OpenSans-SemiboldItalic.ttf");
 }
+*  
+*/
 
 /*
  * :::::::::::::::::::::::::::::::::::
@@ -188,12 +190,12 @@
 	-fx-background-color:  #FFF0F5;
 }
 
-.list-cell: hover {
+.list-cell:hover {
 
 }
 
 /* disable select */
-.list-cell: selected {
+.list-cell:selected {
 	/*	-fx-background-color: aqua;*/
 }
 
@@ -209,7 +211,7 @@
 /*	-fx-background-color: aqua;*/
 }
 
-.taskBox: hover {
+.taskBox:hover {
 	-fx-background-color: aqua;
 }
 
@@ -309,7 +311,7 @@
  * SCROLLBAR					
  * :::::::::::::::::::::::::::::::::::
 */
-.display .scroll-bar: vertical {
+.display .scroll-bar:vertical {
 	-fx-background-color: transparent;
 }
 
