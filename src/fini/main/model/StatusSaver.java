@@ -69,10 +69,10 @@ public class StatusSaver {
 		redoObservableStack.clear();
 	}
 	
-	public void saveStatusToRedo(ArrayList<Task> taskMasterList, ObservableList<Task> taskObservableList) {
-		redoMasterStack.push(copyArrayList(taskMasterList));
-		redoObservableStack.push(copyObservableList(taskObservableList));
-	}
+//	public void saveStatusToRedo(ArrayList<Task> taskMasterList, ObservableList<Task> taskObservableList) {
+//		redoMasterStack.push(copyArrayList(taskMasterList));
+//		redoObservableStack.push(copyObservableList(taskObservableList));
+//	}
 	
 	public void retrieveLastStatus() {
 		try {
@@ -115,6 +115,14 @@ public class StatusSaver {
 	
 	public boolean isRedoMasterStackEmpty() {
 		return redoMasterStack.isEmpty();
+	}
+	
+	public int getUndoMasterStackSize() {
+		return undoMasterStack.size();
+	}
+	
+	public int getRedoMasterStackSize() {
+		return redoMasterStack.size();
 	}
 	
 	private ArrayList<Task> copyArrayList(ArrayList<Task> origin) {
