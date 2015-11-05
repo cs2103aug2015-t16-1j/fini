@@ -19,9 +19,11 @@ import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -55,6 +57,9 @@ public class RootController {
 
 	@FXML
 	private Label totalNumberOfTasks;
+	
+	@FXML
+	private ImageView helpPanel;
 
 	@FXML
 	private Label finiPoints;
@@ -83,7 +88,9 @@ public class RootController {
 			userInput = commandBox.getText();
 			System.out.println("RootController: " + userInput);
 			commandBox.clear();
-
+			if(helpPanel.getOpacity() != 0.0) {
+				hideHelpPanel();
+			}
 			brain.executeCommand(userInput);
 		} else if (event.getCode() == KeyCode.SPACE) {
 			userInput = commandBox.getText();
@@ -550,16 +557,33 @@ public class RootController {
 	}
 
 	private void updateFiniPointsWithFadeAnimation(Integer points) {
-		FadeTransition fadeOut = new FadeTransition(Duration.millis(500), finiPoints);
-		fadeOut.setFromValue(1.0);
-		fadeOut.setToValue(0.0);
-		fadeOut.play();
+		fadeOut(finiPoints);
 
 		finiPoints.setText(points.toString());
 
-		FadeTransition fadeIn = new FadeTransition(Duration.millis(500), finiPoints);
+		fadeIn(finiPoints);
+	}
+
+	private void fadeOut(Node element) {
+		FadeTransition fadeOut = new FadeTransition(Duration.millis(500), element);
+		fadeOut.setFromValue(1.0);
+		fadeOut.setToValue(0.0);
+		fadeOut.play();
+	}
+
+	private void fadeIn(Node element) {
+		FadeTransition fadeIn = new FadeTransition(Duration.millis(500), element);
 		fadeIn.setFromValue(0.0);
 		fadeIn.setToValue(1.0);
 		fadeIn.play();
+	}
+
+	public String displayHelpPanel() {
+		fadeIn(helpPanel);
+		return "Check help panel for more info";
+	}
+	
+	public void hideHelpPanel() {
+		fadeOut(helpPanel);
 	}
 }

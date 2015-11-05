@@ -126,6 +126,9 @@ public class Brain {
 			display = loadNUSMods(commandParameters);
 			saveThisStatus();
 			break;
+		case HELP:
+			display = displayHelpPanel();
+			break;
 		case EXIT:
 			System.exit(0);
 		case COMPLETE:
@@ -158,6 +161,10 @@ public class Brain {
 
 		rootController.updateDisplayToUser(display);
 		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
+	}
+
+	private String displayHelpPanel() {
+		return rootController.displayHelpPanel();
 	}
 
 	// Display Control Methods
