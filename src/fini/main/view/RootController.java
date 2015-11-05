@@ -177,10 +177,15 @@ public class RootController {
 	
 	// For Integration testing purposes
 	// Integration tests: testIntegrationDeleteTask
+	//////////////////////////////////
 	public Label getDisplayToUser() {
 		return displayToUser;
 	}
 
+	public Brain getBrain() {
+		return brain;
+	}
+	//////////////////////////////////
 	public void updateTasksOverviewPanel(ObservableList<Task> taskObservableList) {
 		ObservableList<HBox> tasksOverview = FXCollections.observableArrayList();
 

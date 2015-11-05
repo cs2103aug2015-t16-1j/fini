@@ -68,7 +68,7 @@ public class Brain {
 	}
 	
 	// For Integration testing purposes
-	// Integration tests: testIntegrationDeleteTask
+	// Integration tests: testIntegrationDelete
 	public RootController getRootController() {
 		return rootController;
 	}
