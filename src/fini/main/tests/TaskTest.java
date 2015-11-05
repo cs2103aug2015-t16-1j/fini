@@ -33,7 +33,7 @@ public class TaskTest {
         assertEquals("happy", testTask.getTitle());
         assertFalse(testTask.isRecurring());
 
-        assertEquals("Inbox", testTask.getProject());
+        assertEquals("Inbox", testTask.getProjectName());
         assertEquals(Priority.NORMAL, testTask.getPriority());
         assertEquals(null, testTask.getStartDateTime());
         assertEquals(null, testTask.getEndDateTime());
@@ -78,7 +78,7 @@ public class TaskTest {
 
         assertEquals("eat a b c d e i u s ss asd", testTask.getTitle());
         assertFalse(testTask.isRecurring());
-        assertEquals("School CCA", testTask.getProject());
+        assertEquals("School CCA", testTask.getProjectName());
         assertEquals(Priority.HIGH, testTask.getPriority());
 
         assertEquals(null, testTask.getStartDateTime());
@@ -111,7 +111,7 @@ public class TaskTest {
 
         assertEquals("123E Dr", testTask.getTitle());
         assertFalse(testTask.isRecurring());
-        assertEquals("Inbox", testTask.getProject());
+        assertEquals("Inbox", testTask.getProjectName());
         assertEquals(Priority.LOW, testTask.getPriority());
 
         assertEquals(LocalDateTime.of(2015, 12, 10, 9, 56), testTask.getStartDateTime());
@@ -149,7 +149,7 @@ public class TaskTest {
 
         assertEquals("1 23", testTask.getTitle());
         assertTrue(testTask.isRecurring());
-        assertEquals("Inbox", testTask.getProject());
+        assertEquals("Inbox", testTask.getProjectName());
         assertEquals(Priority.MEDIUM, testTask.getPriority());
 
         assertEquals(LocalDateTime.of(2015, 12, 10, 21, 56), testTask.getStartDateTime());
@@ -183,7 +183,7 @@ public class TaskTest {
 
         assertEquals("21238013291038102928319032", testTask.getTitle());
         assertFalse(testTask.isRecurring());
-        assertEquals("Inbox", testTask.getProject());
+        assertEquals("Inbox", testTask.getProjectName());
         assertEquals(Priority.NORMAL, testTask.getPriority());
 
         assertEquals(LocalDateTime.of(2015, 12, 10, 9, 56), testTask.getStartDateTime());
@@ -221,7 +221,7 @@ public class TaskTest {
 
         assertEquals("i am a long long long long long long long name", testTask.getTitle());
         assertTrue(testTask.isRecurring());
-        assertEquals("Inbox", testTask.getProject());
+        assertEquals("Inbox", testTask.getProjectName());
         assertEquals(Priority.NORMAL, testTask.getPriority());
 
         assertEquals(LocalDateTime.of(2015, 12, 10, 9, 56), testTask.getStartDateTime());
@@ -276,7 +276,7 @@ public class TaskTest {
         assertEquals(testTaskOriginal.getTitle(), testTaskCopied.getTitle());
         assertEquals(testTaskOriginal.isRecurring(), testTaskCopied.isRecurring());
 
-        assertEquals(testTaskOriginal.getProject(), testTaskCopied.getProject());
+        assertEquals(testTaskOriginal.getProjectName(), testTaskCopied.getProjectName());
         assertEquals(testTaskOriginal.getPriority(), testTaskCopied.getPriority());
         assertEquals(testTaskOriginal.getStartDateTime(), testTaskCopied.getStartDateTime());
         assertEquals(testTaskOriginal.getEndDateTime(), testTaskCopied.getEndDateTime());
