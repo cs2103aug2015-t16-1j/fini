@@ -17,6 +17,7 @@ import fini.main.util.Sorter;
 import fini.main.view.RootController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 /**
  * A Half-damaged Brain
  * @author gaieepo

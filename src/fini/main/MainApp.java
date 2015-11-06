@@ -103,7 +103,6 @@ public class MainApp extends Application {
 					e.printStackTrace();
 				}
 			}
-
 		});
 
 		parent.getChildren().add(welcomeSceneListener);
