@@ -22,10 +22,25 @@ import com.joestelmach.natty.Parser;
 
 import fini.main.model.Task;
 
+/**
+ * This ModsLoader is to load file specifically from exported HTML document of NUSMODS
+ * It makes use of Jsoup to access the hierarchy of HTML DOM elements
+ * 
+ * Java HTML Parser
+ * http://jsoup.org/
+ * 
+ * @@author Wang Jie (gaieepo) A0127483B
+ */
 public class ModsLoader {
-    private ArrayList<Task> lessonTasks;
-
+    /* ***********************************
+     * Constants
+     * ***********************************/
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHMM");
+
+    /* ***********************************
+     * Lessons
+     * ***********************************/
+    private ArrayList<Task> lessonTasks;
 
     public ModsLoader(File modsFile) {
         lessonTasks = new ArrayList<Task>();
@@ -52,6 +67,9 @@ public class ModsLoader {
         }
     }
 
+    /* ***********************************
+     * Public getters
+     * ***********************************/
     public ArrayList<Task> getLessonTasks() {
         return lessonTasks;
     }
@@ -70,9 +88,5 @@ public class ModsLoader {
         Date date = dates.get(0);
         LocalDate lessonLocalDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         return lessonLocalDate;
-    }
-
-    public static void main(String[] args) {
-
     }
 }

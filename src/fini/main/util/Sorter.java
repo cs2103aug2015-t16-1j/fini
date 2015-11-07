@@ -10,7 +10,15 @@ import fini.main.model.Task.Type;
 
 /**
  * Sorting utility
- * @author gaieepo
+ * It has four inner class, each of them implements Comparator interface to achieve certain sorting outcome
+ * respectively are:
+ * 
+ * SortByType
+ * SortByDateTime
+ * SortByOverdue
+ * SortByIncomplete
+ * 
+ * @@author Wang Jie (gaieepo) A0127483B
  *
  */
 public class Sorter {
