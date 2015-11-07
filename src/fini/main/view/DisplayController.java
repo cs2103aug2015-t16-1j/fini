@@ -615,4 +615,8 @@ public class DisplayController {
     public void hideHelpPanel() {
         fadeOut(helpPanel);
     }
+
+    public void setFocusToCommandBox() {
+        commandBox.requestFocus();
+    }
 }

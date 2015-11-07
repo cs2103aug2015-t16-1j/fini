@@ -1,5 +1,6 @@
 /*
- * @author A0121828H
+ * TaskCategory models each category of tasks in the main display.
+ * @@author A0121828H
  */
 package fini.main.view;
 

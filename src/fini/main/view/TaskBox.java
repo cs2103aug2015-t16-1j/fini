@@ -1,5 +1,6 @@
 package fini.main.view;
 
+import fini.main.MainApp;
 import fini.main.model.Task.Priority;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,165 +10,125 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-// TODO: Incorporate this into RootController instead of addHBox
+/*
+ * This class structures each task into a displayable horizontal box that will be shown
+ * in the main display.
+ * 
+ * @@author A0121828H
+ */
+
 
 public class TaskBox extends HBox {
-	// FXML Components
-	@FXML
-	private Circle priority;
+    private static final double OPACITY_ZERO = 0.0;
 
-	@FXML
-	private Label index;
+    // FXML Components
+    @FXML
+    private Circle priority;
 
-	@FXML
-	private Label title;
+    @FXML
+    private Label index;
 
-	@FXML
-	private ImageView recurring;
+    @FXML
+    private Label title;
 
-	@FXML
-	private Label project;
+    @FXML
+    private ImageView recurring;
 
-	@FXML
-	private Label startDate;
-	
-	@FXML
-	private Label endDate;
+    @FXML
+    private Label project;
 
-	@FXML
-	private Label startTime;
+    @FXML
+    private Label startDate;
 
-	@FXML
-	private Label endTime;
+    @FXML
+    private Label endDate;
 
-	public TaskBox(int taskId, String typeOfTask, String taskTitle, String taskStartDate, String taskEndDate, String taskStartTime,
-			String taskEndTime, Priority taskPriority, String taskProject, boolean isRecurringTask) {
+    @FXML
+    private Label startTime;
 
-		loadFxml();
+    @FXML
+    private Label endTime;
 
-		if(taskPriority != null) {
-			switch(taskPriority) {
-			case HIGH:
-				this.priority.setFill(Color.INDIANRED);
-				break;
-			case MEDIUM:
-				this.priority.setFill(Color.DARKORANGE);
-				break;
-			case LOW:
-				this.priority.setFill(Color.GOLD);
-				break;
-			default:
-				this.priority.setFill(Color.CORNFLOWERBLUE);
-				break;
-			}
-		}
+    public TaskBox(int taskId, String typeOfTask, String taskTitle, String taskStartDate, String taskEndDate, String taskStartTime,
+            String taskEndTime, Priority taskPriority, String taskProject, boolean isRecurringTask) {
 
-		if(taskProject != null) {
-			this.project.setText(taskProject);
-		} else {
-			hideLabel(project);
-		}
+        loadFxml();
 
-		if(!isRecurringTask) {
-			this.recurring.setOpacity(0);
-		} 
+        if(taskPriority != null) {
+            switch(taskPriority) {
+                case HIGH:
+                    this.priority.setFill(Color.INDIANRED);
+                    break;
+                case MEDIUM:
+                    this.priority.setFill(Color.DARKORANGE);
+                    break;
+                case LOW:
+                    this.priority.setFill(Color.GOLD);
+                    break;
+                default:
+                    this.priority.setFill(Color.CORNFLOWERBLUE);
+                    break;
+            }
+        }
 
-		if(taskStartDate != null) {
-			this.startDate.setText(taskStartDate);
-		} else {
-			hideLabel(startDate);
-		}
-		
-		if(taskEndDate != null) {
-			this.endDate.setText(taskEndDate);
-		} else {
-			hideLabel(endDate);
-		}
+        if(taskProject != null) {
+            this.project.setText(taskProject);
+        } else {
+            hideLabel(project);
+        }
 
-		if(taskStartTime != null) {
-			startTime.setText(taskStartTime);
-		} else {
-			hideLabel(startTime);
-		}
+        if(!isRecurringTask) {
+            this.recurring.setOpacity(OPACITY_ZERO);
+        } 
 
-		if(taskEndTime != null) {
-			endTime.setText(taskEndTime);
-		} else {
-			if(taskStartTime != null) {
-				endTime.setText("-");
-			} else {
-				hideLabel(endTime);
-			}
-		}
+        if(taskStartDate != null) {
+            this.startDate.setText(taskStartDate);
+        } else {
+            hideLabel(startDate);
+        }
 
-		this.index.setText(Integer.toString(taskId));
-		this.startDate.setText(taskStartDate);
-		this.endDate.setText(taskEndDate);
-		this.title.setText(taskTitle);
+        if(taskEndDate != null) {
+            this.endDate.setText(taskEndDate);
+        } else {
+            hideLabel(endDate);
+        }
 
-		//		HBox hbox = new HBox();
-		//		hbox.setSpacing(10);
-		//		
-		//		Label id = new Label(Integer.toString(taskId));
-		//		Label title = new Label(taskTitle);
-		//		// title.setStyle("-fx-text-fill: white;");
-		//		Label date = new Label(taskDate);
-		//		Label startTime = new Label(taskStartTime);
-		//		Label endTime = new Label(taskEndTime);
-		//		Label priority = new Label(taskPriority);
-		//		Label project = new Label(taskProject);
-		//		Label isRecurring = null;
-		//		// Label recurringDay = null;
-		//
-		//		switch (typeOfTask) {
-		//		case "floating":
-		//			hbox.getChildren().addAll(id, title);
-		//			break;
-		//		case "deadline":
-		//			hbox.getChildren().addAll(id, title, date, startTime);
-		//			break;
-		//		case "event":
-		//			hbox.getChildren().addAll(id, title, date, startTime, endTime);
-		//			break;
-		//		default:
-		//			break;
-		//		}
-		//		if (taskPriority != null) {
-		//			hbox.getChildren().addAll(priority);
-		//		}
-		//
-		//		if (taskProject != null) {
-		//			hbox.getChildren().addAll(project);
-		//		}
-		//
-		//		if (isRecurringTask) {
-		//			// recurringDay
-		//			System.out.println("Recurring day is " + date.getText());
-		//			isRecurring = new Label("R");
-		//			hbox.getChildren().addAll(isRecurring);
-		//		}
-	}
+        if(taskStartTime != null) {
+            startTime.setText(taskStartTime);
+        } else {
+            hideLabel(startTime);
+        }
 
-	private void hideLabel(Label label) {
-		label.setText("");
-		label.setOpacity(0);
-	}
+        if(taskEndTime != null) {
+            endTime.setText(taskEndTime);
+        } else {
+            if(taskStartTime != null) {
+                endTime.setText("-");
+            } else {
+                hideLabel(endTime);
+            }
+        }
 
-	private void loadFxml() {
-		try {
-			//URL location = getClass().getResource("../view/TaskBox.fxml");
-			//FXMLLoader taskBoxLoader = new FXMLLoader();
-			//taskBoxLoader.setLocation(location);
-			//taskBoxLoader.setController(this);
-			//taskBoxLoader.load();
+        this.index.setText(Integer.toString(taskId));
+        this.startDate.setText(taskStartDate);
+        this.endDate.setText(taskEndDate);
+        this.title.setText(taskTitle);
+    }
 
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("TaskBox.fxml"));
-			loader.setRoot(this);
-			loader.setController(this);
-			loader.load();
+    private void hideLabel(Label label) {
+        label.setText("");
+        label.setOpacity(OPACITY_ZERO);
+    }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    private void loadFxml() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("TaskBox.fxml"));
+            loader.setRoot(this);
+            loader.setController(this);
+            loader.load();
+        } catch (Exception e) {
+            MainApp.finiLogger.severe("TaskBox.fxml is not loaded.");
+            e.printStackTrace();
+        }
+    }
 }
