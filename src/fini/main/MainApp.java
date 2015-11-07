@@ -20,12 +20,17 @@ import javafx.util.Duration;
 
 /*
  * This is the main class for FINI (the application). The two scenes, welcome scene and the main
- * scene are handled here.
+ * scene are loaded here.
  * 
  * @@author A0121828H
  */
 
 public class MainApp extends Application {
+	
+	/* ***********************************
+	 * DEFINE VARIABLES
+	 * ***********************************/ 
+	
 	// Global Logger
 	public final static Logger finiLogger = Logger.getLogger(MainApp.class.getName());
 
@@ -34,11 +39,14 @@ public class MainApp extends Application {
 	
 	private RootController rootController;
 	private Brain brain;
-	private Stage primaryStage = new Stage();
+	private Stage primaryStage;
 	private static Scene scene;
 	private AnchorPane parent = null;
 	private AnchorPane main = null;
 
+	/* ***********************************
+	 * METHODS
+	 * ***********************************/ 
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -53,13 +61,22 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 		scene = new Scene(parent);
-
+		loadStylesheet();
 		setListenerForWelcomeScene(parent);
+		
+		setUpPrimaryStage();		
+		primaryStage.show();
+	}
+
+	private void loadStylesheet() {
+		scene.getStylesheets().add(getClass().getResource("view/style.css").toExternalForm());
+	}
+
+	private void setUpPrimaryStage() {
 		primaryStage.setTitle("Fini");
 		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/images/icon.png")));
 		primaryStage.setScene(scene);
-		primaryStage.setResizable(true);		
-		primaryStage.show();
+		primaryStage.setResizable(false);
 	}
 
 	private void setListenerForWelcomeScene(AnchorPane parent) {
@@ -73,12 +90,11 @@ public class MainApp extends Application {
 					main = (AnchorPane) loader.load();
 
 					Scene scene = new Scene(main);
+					scene.getStylesheets().add(getClass().getResource("view/style.css").toExternalForm());
+					
 					primaryStage.setScene(scene); 
-					primaryStage.setAlwaysOnTop(true);
 
 					rootController = loader.getController();
-
-					scene.getStylesheets().addAll(MainApp.class.getResource("view/style.css").toExternalForm());
 
 					primaryStage.show();
 					primaryStage.setResizable(false);
@@ -112,16 +128,4 @@ public class MainApp extends Application {
 		brain.setRootController(this.rootController);
 		brain.initDisplay();
 	}
-
-	// TODO: NightMode Switching
-	//	public static void switchMode() {
-	//		String loadCss;
-	//		if(isNormalMode) {
-	//			loadCss = this.getClass().getResource("view/nightMode.css").toExternalForm();
-	//		} else {
-	//			loadCss = this.getClass().getResource("view/style.css").toExternalForm();
-	//		}
-	//		scene.getStylesheets().clear();
-	//		scene.getStylesheets().add(css);
-	//	}
 }

@@ -14,78 +14,48 @@
  * LIST OF FONTS					
  * :::::::::::::::::::::::::::::::::::
 */
-
-/* @font-face {
-	font-family: "Montserrat";
+/*
+ @font-face {
+	font-family: "Open Sans";
 	font-weight: 400;
 	font-style: normal;
 	src: url('./resources/fonts/Open_Sans/OpenSans-Regular.ttf');
 }
 
 @font-face {
-	font-family: "Montserrat";
+	font-family: "Open Sans";
 	font-weight: 400;
 	font-style: italic;
 	src: url("./resources/fonts/Open_Sans/OpenSans-Italic.ttf");
 }
 
 @font-face {
-	font-family: "Montserrat";
+	font-family: "Open Sans";
 	font-weight: 300;
 	font-style: normal;
 	src: url("./resources/fonts/Open_Sans/OpenSans-Light.ttf");
 }
 
 @font-face {
-	font-family: "Montserrat";
-	font-weight: 300;
-	font-style: italic;
-	src: url("./resources/fonts/Open_Sans/OpenSans-LightItalic.ttf");
-}
-
-@font-face {
-	font-family: "Montserrat";
+	font-family: "Open Sans";
 	font-weight: 700;
 	font-style: normal;
 	src: url("./resources/fonts/Open_Sans/OpenSans-Bold.ttf");
 }
 
 @font-face {
-	font-family: "Montserrat";
-	font-weight: 700;
-	font-style: italic;
-	src: url("./resources/fonts/Open_Sans/OpenSans-BoldItalic.ttf");
-}
-
-@font-face {
-	font-family: "Montserrat";
+	font-family: "Open Sans";
 	font-weight: 800;
 	font-style: normal;
 	src: url("./resources/fonts/Open_Sans/OpenSans-ExtraBold.ttf");
 }
 
 @font-face {
-	font-family: "Montserrat";
-	font-weight: 800;
-	font-style: italic;
-	src: url("./resources/fonts/Open_Sans/OpenSans-ExtraBoldItalic.ttf");
-}
-
-@font-face {
-	font-family: "Montserrat";
+	font-family: "Open Sans";
 	font-weight: 600;
 	font-style: normal;
 	src: url("./resources/fonts/Open_Sans/OpenSans-Semibold.ttf");
-}
-
-@font-face {
-	font-family: "Montserrat";
-	font-weight: 600;
-	font-style: italic;
-	src: url("./resources/fonts/Open_Sans/OpenSans-SemiboldItalic.ttf");
-}
-* 
-*/
+} */
 
 /*
  * :::::::::::::::::::::::::::::::::::
@@ -105,14 +75,14 @@
 */
 .vBoxDisplay #commandBox {
 	-fx-font-size: 14px;
-	-fx-font-family: "Montserrat", sans-serif, serif;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 	-fx-text-box-border: navy;
 	-fx-focus-color: navy ;
 }
 
 .vBoxDisplay #displayToUser {
 	-fx-font-size: 14px;
-	-fx-font-family: "Montserrat", sans-serif, serif;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
 .pressEnterText {
@@ -142,7 +112,7 @@
 
 .display #tasksOverviewPanel {
 	-fx-font-size: 14px;
-	-fx-font-family: "Montserrat", sans-serif, serif;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 	-fx-font-weight: lighter;
 	-fx-text-box-border: white;
 	-fx-text-fill: white;
@@ -156,7 +126,7 @@
 
 .display #projectsOverviewPanel {
 	-fx-font-size: 14px;
-	-fx-font-family: "Montserrat", sans-serif, serif;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 	-fx-font-weight: lighter;
 	-fx-text-box-border: white;
 	-fx-background-color: #FFF0F5;
@@ -169,7 +139,7 @@
 
 .display #listView {
 	-fx-font-size: 14px;
-	-fx-font-family: "Montserrat", sans-serif, serif;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 	-fx-text-box-border: white;
 	-fx-background-color:white;
 	-fx-border-color: transparent;
@@ -177,7 +147,7 @@
 
 .display #displayToUser {
 	-fx-font-size: 14px;
-	-fx-font-family: "Montserrat", sans-serif, serif;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
 .list-cell {
@@ -217,25 +187,25 @@
 
 .taskBox #priority {
 	-fx-padding: 0 5 0 5;
-	-fx-font-family: "Montserrat", sans-serif, serif;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
 .taskBox #index {
 	-fx-padding: 0 5 0 5;
 	-fx-font-size: 14px;
-	-fx-font-family: "Montserrat", sans-serif, serif;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
 .taskBox #title {
 	-fx-padding: 0 5 0 5;
 	-fx-font-size: 14px;
-	-fx-font-family: "Montserrat", sans-serif, serif;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
 .taskBox #recurring {
 	-fx-padding: 0 5 0 5;
 	-fx-font-size: 12px;
-	-fx-font-family: "Montserrat", sans-serif, serif;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
 .taskBox #project {
@@ -244,31 +214,31 @@
 	-fx-background-color: navy;
 	-fx-border-radius: 10 10 10 10;
 	-fx-font-size: 12px;
-	-fx-font-family: "Montserrat", sans-serif, serif;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
 .taskBox #startDate {
 	-fx-padding: 0 5 0 5;
 	-fx-font-size: 10px;
-	-fx-font-family: "Montserrat", sans-serif, serif;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
 .taskBox #endDate {
 	-fx-padding: 0 5 0 5;
 	-fx-font-size: 10px;
-	-fx-font-family: "Montserrat", sans-serif, serif;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
 .taskBox #startTime {
 	-fx-padding: 0 5 0 5;
 	-fx-font-size: 10px;
-	-fx-font-family: "Montserrat", sans-serif, serif;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
 .taskBox #endTime {
 	-fx-padding: 0 5 0 5;
 	-fx-font-size: 10px;
-	-fx-font-family: "Montserrat", sans-serif, serif;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
 /*
@@ -278,13 +248,13 @@
 */
 .categoryBox #category {
 	-fx-font-size: 18px;
-	-fx-font-family: "Montserrat", sans-serif, serif;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 	-fx-font-weight: bold;
 }
 
 .categoryBox #date {
 	-fx-font-size: 12px;
-	-fx-font-family: "Montserrat", sans-serif, serif;
+	-fx-font-family: "Open Sans", sans-serif, serif;
 }
 
 /*
