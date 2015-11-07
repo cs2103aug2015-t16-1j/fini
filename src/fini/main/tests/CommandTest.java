@@ -92,8 +92,21 @@ public class CommandTest {
 		assertEquals("DISPLAY", displayCommand.getCommandType().toString());
 	}
 	
-//	@Test
-//	public void testObjectIndex() {
-//		Command newCommand = new Command("delete 3");
-//	}
+	@Test
+	public void testObjectIndex() {
+		Command newCommand = new Command("delete 3");
+		assertEquals(CommandType.DELETE, newCommand.getCommandType());
+		assertEquals(3, newCommand.getObjectIndex());
+		assertEquals("", newCommand.getCommandParameters());
+		
+		newCommand = new Command("update gai");
+		assertEquals(CommandType.INVALID, newCommand.getCommandType());
+		assertEquals(-1, newCommand.getObjectIndex());
+		assertEquals("", newCommand.getCommandParameters());
+		
+		newCommand = new Command("update 3 gai");
+		assertEquals(CommandType.UPDATE, newCommand.getCommandType());
+		assertEquals(3, newCommand.getObjectIndex());
+		assertEquals("gai", newCommand.getCommandParameters());
+	}
 }
