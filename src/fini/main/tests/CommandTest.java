@@ -91,4 +91,9 @@ public class CommandTest {
 	public void testDisplayCommand() {
 		assertEquals("DISPLAY", displayCommand.getCommandType().toString());
 	}
+	
+//	@Test
+//	public void testObjectIndex() {
+//		Command newCommand = new Command("delete 3");
+//	}
 }

@@ -53,11 +53,13 @@ public class Brain {
 		sortTaskMasterList();
 		taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
 		taskAuxiliaryList.setAll(taskObservableList); 
+		
 		for (Task task : taskAuxiliaryList) {
 			if (!task.getProjectName().equals("Inbox") && !projectNameList.contains(task.getProjectName())) {
 				projectNameList.add(task.getProjectName());
 			}
 		}
+		
 		statusSaver.saveStatus(taskMasterList, taskObservableList);
 	}
 
@@ -152,11 +154,13 @@ public class Brain {
 		sortTaskMasterList();
 		taskAuxiliaryList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
 		projectNameList = FXCollections.observableArrayList();
+		
 		for (Task task : taskAuxiliaryList) {
 			if (!task.getProjectName().equals("Inbox") && !projectNameList.contains(task.getProjectName())) {
 				projectNameList.add(task.getProjectName());
 			}
 		}
+		
 		rootController.updateProjectsOverviewPanel(projectNameList);
 		rootController.updateTasksOverviewPanel(taskAuxiliaryList);
 
