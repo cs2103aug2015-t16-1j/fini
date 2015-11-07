@@ -5,7 +5,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import fini.main.view.RootController;
+import fini.main.view.DisplayController;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -40,7 +40,7 @@ public class MainApp extends Application {
     @FXML
     private Button welcomeButton;
 
-    private RootController rootController;
+    private DisplayController displayController;
     private Brain brain;
     private Stage primaryStage;
     private static Scene scene;
@@ -114,7 +114,7 @@ public class MainApp extends Application {
 
                     primaryStage.setScene(scene); 
 
-                    rootController = loader.getController();
+                    displayController = loader.getController();
 
                     primaryStage.show();
                     primaryStage.setResizable(false);
@@ -156,7 +156,7 @@ public class MainApp extends Application {
 
     private void initializeBrain() {
         brain = Brain.getInstance();
-        brain.setRootController(this.rootController);
+        brain.setRootController(this.displayController);
         brain.initDisplay();
     }
 }

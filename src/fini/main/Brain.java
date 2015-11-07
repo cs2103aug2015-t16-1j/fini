@@ -14,7 +14,7 @@ import fini.main.model.Storage;
 import fini.main.model.Task;
 import fini.main.util.ModsLoader;
 import fini.main.util.Sorter;
-import fini.main.view.RootController;
+import fini.main.view.DisplayController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -24,7 +24,7 @@ import javafx.collections.ObservableList;
  */
 public class Brain {
 	private static Brain brain;
-	private RootController rootController;
+	private DisplayController displayController;
 
 	private Storage taskOrganiser;
 	private FiniParser finiParser;
@@ -72,17 +72,17 @@ public class Brain {
 	
 	// For Integration testing purposes
 	// Integration tests: testIntegrationDelete
-	public RootController getRootController() {
-		return rootController;
+	public DisplayController getRootController() {
+		return displayController;
 	}
 
 	// Initialize first display when Fini is started - executed in MainApp 
 	public void initDisplay() {
-		rootController.setFocusToCommandBox();
-		rootController.updateMainDisplay(taskAuxiliaryList);
-		rootController.updateProjectsOverviewPanel(projectNameList);
-		rootController.updateTasksOverviewPanel(taskAuxiliaryList);
-		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
+		displayController.setFocusToCommandBox();
+		displayController.updateMainDisplay(taskAuxiliaryList);
+		displayController.updateProjectsOverviewPanel(projectNameList);
+		displayController.updateTasksOverviewPanel(taskAuxiliaryList);
+		displayController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
 
 	public void executeCommand(String userInput) {
@@ -161,15 +161,15 @@ public class Brain {
 			}
 		}
 		
-		rootController.updateProjectsOverviewPanel(projectNameList);
-		rootController.updateTasksOverviewPanel(taskAuxiliaryList);
+		displayController.updateProjectsOverviewPanel(projectNameList);
+		displayController.updateTasksOverviewPanel(taskAuxiliaryList);
 
-		rootController.updateDisplayToUser(display);
-		rootController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
+		displayController.updateDisplayToUser(display);
+		displayController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
 	}
 
 	private String displayHelpPanel() {
-		rootController.displayHelpPanel();
+		displayController.displayHelpPanel();
 		return "Check help panel for more info";
 	}
 
@@ -177,17 +177,17 @@ public class Brain {
 	private void displayControl() {
 		if (completeDisplayTrigger) {
 			taskObservableList.setAll(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
-			rootController.updateCompletedDisplay(taskObservableList);
+			displayController.updateCompletedDisplay(taskObservableList);
 		} else if (searchDisplayTrigger) {
-			rootController.updateSearchDisplay(taskObservableList);
+			displayController.updateSearchDisplay(taskObservableList);
 		} else if (allDisplayTrigger) {
-			rootController.updateAllDisplay(taskObservableList);
+			displayController.updateAllDisplay(taskObservableList);
 		} else if (projectDisplayTrigger) {
-			rootController.updateProjectDisplay(taskObservableList);
+			displayController.updateProjectDisplay(taskObservableList);
 		} else {
 			sortTaskMasterList();
 			taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
-			rootController.updateMainDisplay(taskObservableList);
+			displayController.updateMainDisplay(taskObservableList);
 		}
 	}
 
@@ -446,8 +446,8 @@ public class Brain {
 	}
 
 	// Initialization Methods
-	public void setRootController(RootController rootController) {
-		this.rootController = rootController;
+	public void setRootController(DisplayController displayController) {
+		this.displayController = displayController;
 	}
 
 	private void sortTaskMasterList() {

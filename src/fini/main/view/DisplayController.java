@@ -30,7 +30,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-public class RootController {
+public class DisplayController {
 	@FXML
 	private ListView<HBox> listView;
 
@@ -74,7 +74,7 @@ public class RootController {
 	private static final Integer MAX_DISPLAY_BOXES = 11;
 	private static final Integer SCROLL_INCREMENT = 1;
 	
-	public RootController() {
+	public DisplayController() {
 		
 	}
 
