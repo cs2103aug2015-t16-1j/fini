@@ -10,10 +10,14 @@ import javafx.collections.ObservableList;
 /**
  * This class handles the saving of past status of the application
  * Mainly for UNDO and REDO (possibly) functions
- * @author gaieepo
- *
+ * 
+ * @@author Wang Jie (gaieepo) A0127483B
  */
 public class StatusSaver {
+    /* ***********************************
+     * Fields
+     * ***********************************/
+    // Singleton
     private static StatusSaver statusSaver;
 
     private Stack<ArrayList<Task>> undoMasterStack;
@@ -25,14 +29,17 @@ public class StatusSaver {
     private ArrayList<Task> tempTaskMasterList;
     private ObservableList<Task> tempTaskObservableList;
 
-
+    /* ***********************************
+     * Private constructor
+     * ***********************************/
     private StatusSaver() {
         undoMasterStack = new Stack<ArrayList<Task>>();
         undoObservableStack = new Stack<ObservableList<Task>>();
         redoMasterStack = new Stack<ArrayList<Task>>();
         redoObservableStack = new Stack<ObservableList<Task>>();
     }
-
+    
+    // getInstance method
     public static StatusSaver getInstance() {
         if (statusSaver == null) {
             statusSaver = new StatusSaver();
@@ -40,39 +47,15 @@ public class StatusSaver {
         return statusSaver;
     }
 
-    public void printer() {
-        System.out.print("Undo{");
-        for (ArrayList<Task> at : undoMasterStack) {
-            System.out.print("[");
-            for (Task t : at) {
-                System.out.print(t.getTitle() + ",");
-            }
-            System.out.print("]");
-        }
-        System.out.print("}");
-        System.out.print("Redo{");
-        for (ArrayList<Task> at : redoMasterStack) {
-            System.out.print("[");
-            for (Task t : at) {
-                System.out.print(t.getTitle() + ",");
-            }
-            System.out.print("]");
-        }
-        System.out.print("}");
-    }
-
-    // Public Methods
+    /* ***********************************
+     * Public methods
+     * ***********************************/
     public void saveStatus(ArrayList<Task> taskMasterList, ObservableList<Task> taskObservableList) {
         undoMasterStack.push(copyArrayList(taskMasterList));
         undoObservableStack.push(copyObservableList(taskObservableList));
         redoMasterStack.clear();
         redoObservableStack.clear();
     }
-
-    //	public void saveStatusToRedo(ArrayList<Task> taskMasterList, ObservableList<Task> taskObservableList) {
-    //		redoMasterStack.push(copyArrayList(taskMasterList));
-    //		redoObservableStack.push(copyObservableList(taskObservableList));
-    //	}
 
     public void retrieveLastStatus() {
         try {
@@ -98,6 +81,9 @@ public class StatusSaver {
         }
     }
 
+    /* ***********************************
+     * Public getters
+     * ***********************************/
     public ArrayList<Task> getLastTaskMasterList() {
         assert tempTaskMasterList != null;
         return tempTaskMasterList;
@@ -107,8 +93,7 @@ public class StatusSaver {
         assert tempTaskObservableList != null;
         return tempTaskObservableList;
     }
-
-    // Utility Methods
+    
     public boolean isUndoMasterStackEmpty() {
         return undoMasterStack.size() == 1;
     }
@@ -124,7 +109,10 @@ public class StatusSaver {
     public int getRedoMasterStackSize() {
         return redoMasterStack.size();
     }
-
+    
+    /* ***********************************
+     * Utilization methods
+     * ***********************************/
     private ArrayList<Task> copyArrayList(ArrayList<Task> origin) {
         ArrayList<Task> duplicate = new ArrayList<Task>();
         for (Task task : origin) {

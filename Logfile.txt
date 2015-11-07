@@ -1,10 +1,26 @@
-Nov 07, 2015 9:42:20 PM fini.main.MainApp intialiseLogger
+Nov 07, 2015 10:28:35 PM fini.main.MainApp intialiseLogger
 INFO: Fini Logger Intialised. All is well.
-Nov 07, 2015 9:42:28 PM fini.main.Brain executeCommand
-INFO: User's input: exit
-Nov 07, 2015 9:42:28 PM fini.main.Brain executeCommand
-INFO: Command type: EXIT
-Nov 07, 2015 9:42:28 PM fini.main.Brain executeCommand
+Nov 07, 2015 10:28:46 PM fini.main.Brain executeCommand
+INFO: User's input: add good
+Nov 07, 2015 10:28:46 PM fini.main.Brain executeCommand
+INFO: Command type: ADD
+Nov 07, 2015 10:28:46 PM fini.main.Brain executeCommand
 INFO: Object index: -1
-Nov 07, 2015 9:42:28 PM fini.main.Brain executeCommand
+Nov 07, 2015 10:28:46 PM fini.main.Brain executeCommand
+INFO: Parameters: good
+Nov 07, 2015 10:28:47 PM fini.main.Brain executeCommand
+INFO: User's input: clear
+Nov 07, 2015 10:28:47 PM fini.main.Brain executeCommand
+INFO: Command type: CLEAR
+Nov 07, 2015 10:28:47 PM fini.main.Brain executeCommand
+INFO: Object index: -1
+Nov 07, 2015 10:28:47 PM fini.main.Brain executeCommand
+INFO: Parameters: 
+Nov 07, 2015 10:28:48 PM fini.main.Brain executeCommand
+INFO: User's input: exit
+Nov 07, 2015 10:28:48 PM fini.main.Brain executeCommand
+INFO: Command type: EXIT
+Nov 07, 2015 10:28:48 PM fini.main.Brain executeCommand
+INFO: Object index: -1
+Nov 07, 2015 10:28:48 PM fini.main.Brain executeCommand
 INFO: Parameters: 
