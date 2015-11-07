@@ -33,7 +33,7 @@ public class MainApp extends Application {
 
 	@FXML
 	private Button welcomeButton;
-
+	
 	private RootController rootController;
 	private Brain brain;
 	private Stage primaryStage = new Stage();
