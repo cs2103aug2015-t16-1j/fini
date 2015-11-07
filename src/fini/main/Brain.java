@@ -1,7 +1,6 @@
 package fini.main;
 
 import java.io.File;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.stream.Collectors;
@@ -26,6 +25,10 @@ import javafx.collections.ObservableList;
  * @author gaieepo A0127483B
  */
 public class Brain {
+    /* ***********************************
+     * Fields
+     * ***********************************/
+    // Singleton
     private static Brain brain;
     private DisplayController displayController;
 
@@ -44,14 +47,14 @@ public class Brain {
     private boolean completeDisplayTrigger = false;
     private boolean allDisplayTrigger = false;
 
+    /* ***********************************
+     * Private constructor
+     * ***********************************/
     private Brain() {
         finiParser = FiniParser.getInstance();
         taskOrganiser = Storage.getInstance();
         statusSaver = StatusSaver.getInstance();
 
-        // Everything stored here in Brain unless an updateFile is executed
-        // taskMasterList: all existing tasks
-        // taskObservableList: all displayed tasks
         taskMasterList = taskOrganiser.readFile();
         sortTaskMasterList();
         taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
@@ -62,21 +65,15 @@ public class Brain {
                 projectNameList.add(task.getProjectName());
             }
         }
-
         statusSaver.saveStatus(taskMasterList, taskObservableList);
     }
 
+    // getInstance method of singleton pattern for Brain
     public static Brain getInstance() {
         if (brain == null) {
             brain = new Brain();
         }
         return brain;
-    }
-
-    // For Integration testing purposes
-    // Integration tests: testIntegrationDelete
-    public DisplayController getRootController() {
-        return displayController;
     }
 
     // Initialize first display when Fini is started - executed in MainApp 
@@ -88,12 +85,21 @@ public class Brain {
         displayController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
     }
 
+    /* ***********************************
+     * Public execution method
+     * ***********************************/
     public void executeCommand(String userInput) {
         Command newCommand = new Command(userInput);
         CommandType commandType = newCommand.getCommandType();
         int objectIndex = newCommand.getObjectIndex();
         String commandParameters = newCommand.getCommandParameters();
 
+        MainApp.finiLogger.info("User's input: " + userInput);
+        MainApp.finiLogger.info("Command type: " + commandType.toString());
+        MainApp.finiLogger.info("Object index: " + objectIndex);
+        MainApp.finiLogger.info("Parameters: " + commandParameters);
+                
+        
         String display = "";
         switch (commandType) {
             case ADD:
@@ -128,13 +134,6 @@ public class Brain {
                 display = "Searching...";
                 searchTask(commandParameters);
                 break;
-            case MODS:
-                display = loadNUSMods(commandParameters);
-                saveThisStatus();
-                break;
-            case HELP:
-                display = displayHelpPanel();
-                break;
             case EXIT:
                 System.exit(0);
             case COMPLETE:
@@ -144,6 +143,13 @@ public class Brain {
             case UNCOMPLETE:
                 display = uncompleteTask(objectIndex);
                 saveThisStatus();
+                break;
+            case MODS:
+                display = loadNUSMods(commandParameters);
+                saveThisStatus();
+                break;
+            case HELP:
+                display = displayHelpPanel();
                 break;
             case INVALID:
                 display = "Invalid command. Please type help for assistance.";
@@ -171,30 +177,9 @@ public class Brain {
         displayController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
     }
 
-    private String displayHelpPanel() {
-        displayController.displayHelpPanel();
-        return "Check help panel for more info";
-    }
-
-    // Display Control Methods
-    private void displayControl() {
-        if (completeDisplayTrigger) {
-            taskObservableList.setAll(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
-            displayController.updateCompletedDisplay(taskObservableList);
-        } else if (searchDisplayTrigger) {
-            displayController.updateSearchDisplay(taskObservableList);
-        } else if (allDisplayTrigger) {
-            displayController.updateAllDisplay(taskObservableList);
-        } else if (projectDisplayTrigger) {
-            displayController.updateProjectDisplay(taskObservableList);
-        } else {
-            sortTaskMasterList();
-            taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
-            displayController.updateMainDisplay(taskObservableList);
-        }
-    }
-
-    // Logic Methods
+    /* ***********************************
+     * Logic methods
+     * ***********************************/
     private String addTask(String commandParameters) {
         if (commandParameters.isEmpty()) {
             return "CommandParameters is empty";
@@ -269,14 +254,7 @@ public class Brain {
 
         return "Update: " + objectIndex + taskToUpdate.getTitle();
     }
-
-    // @author A0121828H
-    private String clearAllTasks() {
-        taskMasterList.clear();
-        taskOrganiser.updateFile(taskMasterList);
-        return "All tasks have been cleared";
-    }
-
+    
     private String deleteTask(int objectIndex) {
         Task taskToDelete;
         try {
@@ -290,7 +268,91 @@ public class Brain {
         taskOrganiser.updateFile(taskMasterList);
         return "Delete: " + objectIndex + " " + taskToDelete.getTitle();
     }
+    
+    // @author A0121828H
+    private String clearAllTasks() {
+        taskMasterList.clear();
+        taskOrganiser.updateFile(taskMasterList);
+        return "All tasks have been cleared";
+    }
 
+    private String undo() {
+        if (statusSaver.isUndoMasterStackEmpty()) {
+            return "Cannot undo lah! You haven't done any changes yet.";
+        }
+        statusSaver.retrieveLastStatus();
+        taskMasterList = statusSaver.getLastTaskMasterList();
+        taskObservableList = statusSaver.getLastTaskObservableList();
+        taskOrganiser.updateFile(taskMasterList);
+        return "Undo~do~do~do~do~";
+    }
+
+    private String redo() {
+        if (statusSaver.isRedoMasterStackEmpty()) {
+            return "Cannot redo lah! You dun have anything to redo alrdy.";
+        }
+        statusSaver.retrieveRedoStatus();
+        taskMasterList = statusSaver.getLastTaskMasterList();
+        taskObservableList = statusSaver.getLastTaskObservableList();
+        taskOrganiser.updateFile(taskMasterList);
+        return "Redo~do~do~do~do~";
+    }
+    
+    private String setUserPrefDirectory(String commandParameters) {
+        return taskOrganiser.setUserPrefDirectory(commandParameters);
+    }
+    
+    private String displayTask(String commandParameters) {
+        if (commandParameters.equals("completed")) {
+            completeDisplayTrigger = true;
+            projectDisplayTrigger = false;
+            searchDisplayTrigger = false;
+            allDisplayTrigger = false;
+            return "display completed";
+        } else if(commandParameters.equals("") || commandParameters.equals("main")) {
+            completeDisplayTrigger = false;
+            projectDisplayTrigger = false;
+            searchDisplayTrigger = false;
+            allDisplayTrigger = false;
+            return "display main";
+        } else if(commandParameters.equals("all")) {
+            completeDisplayTrigger = false;
+            searchDisplayTrigger = false;
+            projectDisplayTrigger = false;
+            allDisplayTrigger = true;
+            sortTaskMasterListWithIncomplete();
+            taskObservableList.setAll(taskMasterList);
+            return "display all";
+        } else if (projectNameList.contains(commandParameters)) {
+            projectDisplayTrigger = true;
+            completeDisplayTrigger = false;
+            searchDisplayTrigger = false;
+            allDisplayTrigger = false;
+            ObservableList<Task> projectTasks = FXCollections.observableArrayList();
+            for (Task task : taskObservableList) {
+                if (task.getProjectName().equals(commandParameters)) {
+                    projectTasks.add(task);
+                }
+            }
+            taskObservableList.setAll(projectTasks);
+            return "display project: " + commandParameters;
+        } else {
+            return "displayTask method";
+        }
+    }
+    
+    private void searchTask(String commandParameters) {
+        searchDisplayTrigger = true;
+        ObservableList<Task> tempObservableList = FXCollections.observableArrayList();
+        finiParser.parse(commandParameters);
+        for (Task task : taskMasterList) {
+            if (task.getTitle().contains(commandParameters)) {
+                tempObservableList.add(task);
+            }
+        }
+        taskObservableList.setAll(tempObservableList);
+    }
+    
     private String completeTask(int objectIndex) {
         Task taskToComplete;
         try {
@@ -359,100 +421,37 @@ public class Brain {
         return "NUSMODS loaded";
     }
 
-    private String undo() {
-        if (statusSaver.isUndoMasterStackEmpty()) {
-            return "Cannot undo lah! You haven't done any changes yet.";
-        }
-        statusSaver.retrieveLastStatus();
-        taskMasterList = statusSaver.getLastTaskMasterList();
-        taskObservableList = statusSaver.getLastTaskObservableList();
-        taskOrganiser.updateFile(taskMasterList);
-        return "Undo~do~do~do~do~";
+    private String displayHelpPanel() {
+        displayController.displayHelpPanel();
+        return "Check help panel for more info";
     }
 
-    private String redo() {
-        if (statusSaver.isRedoMasterStackEmpty()) {
-            return "Cannot redo lah! You dun have anything to redo alrdy.";
-        }
-        statusSaver.retrieveRedoStatus();
-        taskMasterList = statusSaver.getLastTaskMasterList();
-        taskObservableList = statusSaver.getLastTaskObservableList();
-        taskOrganiser.updateFile(taskMasterList);
-        return "Redo~do~do~do~do~";
-    }
-
-    private String setUserPrefDirectory(String commandParameters) {
-        return taskOrganiser.setUserPrefDirectory(commandParameters);
-    }
-
-    private String displayTask(String commandParameters) {
-        if (commandParameters.equals("completed")) {
-            completeDisplayTrigger = true;
-            projectDisplayTrigger = false;
-            searchDisplayTrigger = false;
-            allDisplayTrigger = false;
-            return "display completed";
-        } else if(commandParameters.equals("") || commandParameters.equals("main")) {
-            completeDisplayTrigger = false;
-            projectDisplayTrigger = false;
-            searchDisplayTrigger = false;
-            allDisplayTrigger = false;
-            return "display main";
-        } else if(commandParameters.equals("all")) {
-            completeDisplayTrigger = false;
-            searchDisplayTrigger = false;
-            projectDisplayTrigger = false;
-            allDisplayTrigger = true;
-            sortTaskMasterListWithIncomplete();
-            taskObservableList.setAll(taskMasterList);
-            return "display all";
-        } else if (projectNameList.contains(commandParameters)) {
-            projectDisplayTrigger = true;
-            completeDisplayTrigger = false;
-            searchDisplayTrigger = false;
-            allDisplayTrigger = false;
-            ObservableList<Task> projectTasks = FXCollections.observableArrayList();
-            for (Task task : taskObservableList) {
-                if (task.getProjectName().equals(commandParameters)) {
-                    projectTasks.add(task);
-                }
-            }
-            taskObservableList.setAll(projectTasks);
-            return "display project: " + commandParameters;
-        } else {
-            return "displayTask method";
-        }
-    }
-
-    private void searchTask(String commandParameters) {
-        searchDisplayTrigger = true;
-        ObservableList<Task> tempObservableList = FXCollections.observableArrayList();
-        finiParser.parse(commandParameters);
-        ArrayList<LocalDateTime> searchDateTimes = finiParser.getDatetimes();
-        for (Task task : taskMasterList) {
-            if (task.getTitle().contains(commandParameters)) {
-                tempObservableList.add(task);
-            }
-        }
-        taskObservableList.setAll(tempObservableList);
-    }
-
-    // Utilization Methods
+    /* ***********************************
+     * Utilization methods
+     * ***********************************/
     private void saveThisStatus() {
         assert taskMasterList != null;
         assert taskObservableList != null;
         statusSaver.saveStatus(taskMasterList, taskObservableList);
     }
-
-    public ObservableList<Task> getTaskObservableList() {
-        return taskObservableList;
+    
+    private void displayControl() {
+        if (completeDisplayTrigger) {
+            taskObservableList.setAll(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
+            displayController.updateCompletedDisplay(taskObservableList);
+        } else if (searchDisplayTrigger) {
+            displayController.updateSearchDisplay(taskObservableList);
+        } else if (allDisplayTrigger) {
+            displayController.updateAllDisplay(taskObservableList);
+        } else if (projectDisplayTrigger) {
+            displayController.updateProjectDisplay(taskObservableList);
+        } else {
+            sortTaskMasterList();
+            taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+            displayController.updateMainDisplay(taskObservableList);
+        }
     }
-
-    // Initialization Methods
-    public void setRootController(DisplayController displayController) {
-        this.displayController = displayController;
-    }
-
+    
     private void sortTaskMasterList() {
         assert taskMasterList != null;
         sorter = new Sorter(taskMasterList);
@@ -466,5 +465,20 @@ public class Brain {
         sorter.addSortByIncomplete();
         sorter.sort();
         taskMasterList = sorter.getSortedList();
+    }
+
+    /* ***********************************
+     * Getter and setter
+     * ***********************************/
+    public ObservableList<Task> getTaskObservableList() {
+        return taskObservableList;
+    }
+
+    public void setRootController(DisplayController displayController) {
+        this.displayController = displayController;
+    }
+
+    public DisplayController getRootController() {
+        return displayController;
     }
 }

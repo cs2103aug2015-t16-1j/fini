@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Command {
     public static enum CommandType {
-        ADD, UPDATE, DELETE, CLEAR, HELP, SET, REDO, DISPLAY, SEARCH, UNDO, EXIT, COMPLETE, UNCOMPLETE, MODS, INVALID
+        ADD, UPDATE, DELETE, CLEAR, UNDO, REDO, SET, DISPLAY, SEARCH, EXIT, COMPLETE, UNCOMPLETE, MODS, HELP, INVALID
     };
 
     private CommandType commandType;
