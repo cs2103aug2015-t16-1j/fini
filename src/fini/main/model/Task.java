@@ -46,7 +46,7 @@ public class Task implements TaskInterface {
 		private final boolean isRecurring;
 		
 		// Optional
-		private String projectName = "Inbox";
+		private String projectName = defaultProject;
 		private Priority priority = Priority.NORMAL;
 		private ArrayList<LocalDateTime> dateTimes = new ArrayList<LocalDateTime>();
 		private LocalDateTime recursUntil = null;
@@ -302,9 +302,9 @@ public class Task implements TaskInterface {
 	
 	// Project Related Methods
 	// @author gaieepo
-//	public void update(String projectName, LocalDate projectEndDate, LocalTime projectEndTime, Boolean projectIsCompleted) {
-//		// TODO
-//	}
+	public void update(String projectName) {
+		this.projectName = projectName;
+	}
 	
 	// DISPLAY related methods
 	public boolean isTaskDueToday() {

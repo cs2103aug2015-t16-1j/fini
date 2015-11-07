@@ -1,11 +1,4 @@
 BUGS
 
-medication
-submission
-everyday
-Friday Hacks #101 —> becomes Hacks #101
 add CS2103
-
-add attend rock concert
-
-every day —> unable to complete task
+15/3/2015 American DateTime

@@ -54,7 +54,7 @@ public class Brain {
 		taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
 		taskAuxiliaryList.setAll(taskObservableList); 
 		for (Task task : taskAuxiliaryList) {
-			if (!projectNameList.contains(task.getProjectName())) {
+			if (!task.getProjectName().equals("Inbox") && !projectNameList.contains(task.getProjectName())) {
 				projectNameList.add(task.getProjectName());
 			}
 		}
@@ -153,7 +153,7 @@ public class Brain {
 		taskAuxiliaryList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
 		projectNameList = FXCollections.observableArrayList();
 		for (Task task : taskAuxiliaryList) {
-			if (!projectNameList.contains(task.getProjectName())) {
+			if (!task.getProjectName().equals("Inbox") && !projectNameList.contains(task.getProjectName())) {
 				projectNameList.add(task.getProjectName());
 			}
 		}
@@ -165,7 +165,8 @@ public class Brain {
 	}
 
 	private String displayHelpPanel() {
-		return rootController.displayHelpPanel();
+		rootController.displayHelpPanel();
+		return "Check help panel for more info";
 	}
 
 	// Display Control Methods

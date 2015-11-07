@@ -578,9 +578,8 @@ public class RootController {
 		fadeIn.play();
 	}
 
-	public String displayHelpPanel() {
+	public void displayHelpPanel() {
 		fadeIn(helpPanel);
-		return "Check help panel for more info";
 	}
 	
 	public void hideHelpPanel() {

@@ -20,7 +20,7 @@ public class FiniParser {
 	private static FiniParser finiParser;
 	private Parser parser;
 
-	private static final String[] REDUNDANT_WORDS = {" on ", " from ", " by "};
+	private static final String[] REDUNDANT_WORDS = {"on", "from", "by"};
 
 	private String storedParameters;
 	private String cleanParameters;
@@ -32,7 +32,7 @@ public class FiniParser {
 	private Period interval;
 	private String notParsed;
 
-	public FiniParser() {
+	private FiniParser() {
 		initializeFields();
 	}
 
@@ -301,9 +301,16 @@ public class FiniParser {
 	////////////////////////////////////////////////
 
 	private String eliminateRedundantWords(String notParsed) {
-		String cleanString = notParsed;
+		String cleanString = "";
+		ArrayList<String> splitCleanString = new ArrayList<String>(Arrays.asList(notParsed.split(" ")));
 		for (String word : REDUNDANT_WORDS) {
-			cleanString = cleanString.replaceAll(word, "");
+			while (splitCleanString.contains(word)) {
+				int removeIndex = splitCleanString.indexOf(word);
+				splitCleanString.set(removeIndex, "");
+			}
+		}
+		for (String word : splitCleanString) {
+			cleanString += word + " ";
 		}
 		return getSimpleCleanString(cleanString);
 	}
