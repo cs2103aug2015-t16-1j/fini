@@ -73,9 +73,9 @@ public class RootController {
 	private Integer scrollIndex = 0;
 	private static final Integer MAX_DISPLAY_BOXES = 11;
 	private static final Integer SCROLL_INCREMENT = 1;
-
+	
 	public RootController() {
-		// TODO With the Brain fully functioning, here we do not initialize anything
+		
 	}
 
 	public void setFocusToCommandBox() {
@@ -88,7 +88,7 @@ public class RootController {
 			userInput = commandBox.getText();
 			System.out.println("RootController: " + userInput);
 			commandBox.clear();
-			if(helpPanel.getOpacity() != 0.0) {
+			if(isHelpPanelVisible()) {
 				hideHelpPanel();
 			}
 			brain.executeCommand(userInput);
@@ -150,31 +150,38 @@ public class RootController {
 				brain.executeCommand(userInput.substring(0, userInput.length() - 1));
 			}
 		}
-		// TODO
-		// 1. SEARCH/EDIT + SPACE -> auto-trigger for instant search and auto-complete for edit
-		// 2. COMMAND + TAB -> auto-complete command (Veto's idea)
-		// 3. UP/DOWN -> previous/next command
-		// 4. PAGEUP/PAGEDOWN -> scroll up/down
 
 		if(event.getCode() == KeyCode.PAGE_DOWN) {
-			int currentNumOfBoxes = listView.getItems().size();
-			int excessBoxes = listView.getItems().size() - MAX_DISPLAY_BOXES;
-			if ((currentNumOfBoxes > MAX_DISPLAY_BOXES) && (scrollIndex < excessBoxes)) {
-				scrollIndex += SCROLL_INCREMENT;
-			} else if (currentNumOfBoxes < MAX_DISPLAY_BOXES) {
-				scrollIndex = 0;
-			}
-			listView.scrollTo(scrollIndex);
-			System.out.println(scrollIndex);
+			pageDown();
 		}
 
 		if(event.getCode() == KeyCode.PAGE_UP) {
-			if(scrollIndex >= SCROLL_INCREMENT) {
-				scrollIndex -= SCROLL_INCREMENT;
-			} 
-			listView.scrollTo(scrollIndex);
-			System.out.println(scrollIndex);
+			pageUp();
 		}	
+	}
+
+	private void pageUp() {
+		if(scrollIndex >= SCROLL_INCREMENT) {
+			scrollIndex -= SCROLL_INCREMENT;
+		} 
+		listView.scrollTo(scrollIndex);
+		System.out.println(scrollIndex);
+	}
+
+	private void pageDown() {
+		int currentNumOfBoxes = listView.getItems().size();
+		int excessBoxes = listView.getItems().size() - MAX_DISPLAY_BOXES;
+		if ((currentNumOfBoxes > MAX_DISPLAY_BOXES) && (scrollIndex < excessBoxes)) {
+			scrollIndex += SCROLL_INCREMENT;
+		} else if (currentNumOfBoxes < MAX_DISPLAY_BOXES) {
+			scrollIndex = 0;
+		}
+		listView.scrollTo(scrollIndex);
+		System.out.println(scrollIndex);
+	}
+
+	private boolean isHelpPanelVisible() {
+		return helpPanel.getOpacity() != 0.0;
 	}
 
 	// Update Display
@@ -192,10 +199,8 @@ public class RootController {
 	public Brain getBrain() {
 		return brain;
 	}
-	//////////////////////////////////
+	
 	public void updateTasksOverviewPanel(ObservableList<Task> taskObservableList) {
-		ObservableList<HBox> tasksOverview = FXCollections.observableArrayList();
-
 		Integer tasksInInbox = 0;
 		Integer tasksDueToday = 0;
 		Integer tasksDueThisWeek = 0;
