@@ -30,11 +30,31 @@ public class Brain {
      * ***********************************/
     private static final String DEFAULT_PROJECT = "Inbox";
     private static final String EMPTY_STRING = "";
-    private static final String ONE_SPACE = " ";
     private static final String SEARCHING_STRING = "Searching...";
     private static final String INVALID_FEEDBACK = "Invalid command. Please type help for assistance.";
     private static final String ADD_EMPTY_PARAMETER = "Add CommandParameters is empty";
     private static final String UPDATE_EMPTY_PARAMETER = "Update CommandParameters is empty";
+    private static final String START_EXCEEDS_END = "Start date and time should be earlier than end date time";
+    private static final String EXCEEDS_PROJECT_LIMIT = "Maximum 5 projects at the same time";
+    private static final String TASK_NOT_FOUND = "Task not found";
+    private static final String ADD_MESSAGE = "Added: %1$s";
+    private static final String UPDATE_MESSAGE = "Update: %1$s %2$s";
+    private static final String DELETE_MESSAGE = "Delete: %1$s %2$s";
+    private static final String CLEAR_MESSAGE = "All tasks have been cleared";
+    private static final String UNDO_LIMIT = "Cannot undo lah! You haven't done any changes yet.";
+    private static final String UNDO_MESSAGE = "Undo~do~do~do~do~";
+    private static final String REDO_LIMIT = "Cannot redo lah! You dun have anything to redo alrdy.";
+    private static final String REDO_MESSAGE = "Redo~do~do~do~do~";
+    private static final String DISPLAY_MESSAGE = "display project: %1$s";
+    private static final String UNKNOWN_DISPLAY = "Unknown displayTask method";
+    private static final String DISPLAY_COMPLETED_MESSAGE = "display completed";
+    private static final String DISPLAY_MAIN_MESSAGE = "display main";
+    private static final String DISPLAY_ALL_MESSAGE = "display all";
+    private static final String COMPLETE_MESSAGE = "Complete: %1$s %2$s";
+    private static final String UNCOMPLETE_MESSAGE = "Uncomplete: %1$s %2$s";
+    private static final String NO_MODS_FILE = "No nusmods file";
+    private static final String MODS_LOADED = "NUSMODS loaded";
+    private static final String HELP_MESSAGE = "Check help panel for more info";
     private static final int START_INDEX = 0;
     private static final int END_INDEX = 1;
 
@@ -202,13 +222,13 @@ public class Brain {
 
         if (finiParser.getDatetimes() != null && finiParser.getDatetimes().size() == 2 &&
                 !finiParser.getDatetimes().get(START_INDEX).isBefore(finiParser.getDatetimes().get(END_INDEX))) {
-            return "Start date and time should be earlier than end date time";
+            return START_EXCEEDS_END;
         }
 
         if (!finiParser.getProjectName().equals(DEFAULT_PROJECT) &&
                 !projectNameList.contains(finiParser.getProjectName()) &&
                 projectNameList.size() == 5) {
-            return "Maximum 5 projects at the same time";
+            return EXCEEDS_PROJECT_LIMIT;
         }
 
         Task newTask = new Task.TaskBuilder(finiParser.getNotParsed(), finiParser.getIsRecurring())
@@ -220,7 +240,7 @@ public class Brain {
 
         taskMasterList.add(newTask);
         taskOrganiser.updateFile(taskMasterList);
-        return "Added: " + finiParser.getNotParsed();
+        return String.format(ADD_MESSAGE, finiParser.getNotParsed());
     }
 
     private String updateTask(int objectIndex, String commandParameters) {
@@ -233,7 +253,7 @@ public class Brain {
         try {
             taskToUpdate = taskObservableList.get(objectIndex - 1);
         } catch (IndexOutOfBoundsException e) {
-            return "Task not found";
+            return TASK_NOT_FOUND;
         }
 
         // delete first
@@ -246,13 +266,13 @@ public class Brain {
 
         if (finiParser.getDatetimes() != null && finiParser.getDatetimes().size() == 2 &&
                 !finiParser.getDatetimes().get(START_INDEX).isBefore(finiParser.getDatetimes().get(END_INDEX))) {
-            return "Start date and time should be earlier than end date time";
+            return START_EXCEEDS_END;
         }
 
         if (!finiParser.getProjectName().equals(DEFAULT_PROJECT) &&
                 !projectNameList.contains(finiParser.getProjectName()) &&
                 projectNameList.size() == 5) {
-            return "Maximum 5 projects at the same time";
+            return EXCEEDS_PROJECT_LIMIT;
         }
 
         Task newTask = new Task.TaskBuilder(finiParser.getNotParsed(), finiParser.getIsRecurring())
@@ -265,7 +285,7 @@ public class Brain {
         taskMasterList.add(newTask);
         taskOrganiser.updateFile(taskMasterList);
 
-        return "Update: " + objectIndex + taskToUpdate.getTitle();
+        return String.format(UPDATE_MESSAGE, objectIndex, taskToUpdate.getTitle());
     }
 
     private String deleteTask(int objectIndex) {
@@ -273,43 +293,43 @@ public class Brain {
         try {
             taskToDelete = taskObservableList.get(objectIndex - 1);
         } catch (IndexOutOfBoundsException e) {
-            return "Task not found";
+            return TASK_NOT_FOUND;
         }
 
         taskObservableList.remove(taskToDelete);
         taskMasterList.remove(taskToDelete);
         taskOrganiser.updateFile(taskMasterList);
-        return "Delete: " + objectIndex + ONE_SPACE + taskToDelete.getTitle();
+        return String.format(DELETE_MESSAGE, objectIndex, taskToDelete.getTitle());
     }
 
     // @@author A0121828H
     private String clearAllTasks() {
         taskMasterList.clear();
         taskOrganiser.updateFile(taskMasterList);
-        return "All tasks have been cleared";
+        return CLEAR_MESSAGE;
     }
 
     private String undo() {
         assert statusSaver != null;
         if (statusSaver.isUndoMasterStackEmpty()) {
-            return "Cannot undo lah! You haven't done any changes yet.";
+            return UNDO_LIMIT;
         }
         statusSaver.retrieveLastStatus();
         taskMasterList = statusSaver.getLastTaskMasterList();
         taskObservableList = statusSaver.getLastTaskObservableList();
         taskOrganiser.updateFile(taskMasterList);
-        return "Undo~do~do~do~do~";
+        return UNDO_MESSAGE;
     }
 
     private String redo() {
         if (statusSaver.isRedoMasterStackEmpty()) {
-            return "Cannot redo lah! You dun have anything to redo alrdy.";
+            return REDO_LIMIT;
         }
         statusSaver.retrieveRedoStatus();
         taskMasterList = statusSaver.getLastTaskMasterList();
         taskObservableList = statusSaver.getLastTaskObservableList();
         taskOrganiser.updateFile(taskMasterList);
-        return "Redo~do~do~do~do~";
+        return REDO_MESSAGE;
     }
 
     private String setUserPrefDirectory(String commandParameters) {
@@ -322,13 +342,13 @@ public class Brain {
             projectDisplayTrigger = false;
             searchDisplayTrigger = false;
             allDisplayTrigger = false;
-            return "display completed";
+            return DISPLAY_COMPLETED_MESSAGE;
         } else if(commandParameters.equals(EMPTY_STRING) || commandParameters.equals("main")) {
             completeDisplayTrigger = false;
             projectDisplayTrigger = false;
             searchDisplayTrigger = false;
             allDisplayTrigger = false;
-            return "display main";
+            return DISPLAY_MAIN_MESSAGE;
         } else if(commandParameters.equals("all")) {
             completeDisplayTrigger = false;
             searchDisplayTrigger = false;
@@ -336,7 +356,7 @@ public class Brain {
             allDisplayTrigger = true;
             sortTaskMasterListWithIncomplete();
             taskObservableList.setAll(taskMasterList);
-            return "display all";
+            return DISPLAY_ALL_MESSAGE;
         } else if (projectNameList.contains(commandParameters)) {
             projectDisplayTrigger = true;
             completeDisplayTrigger = false;
@@ -349,9 +369,9 @@ public class Brain {
                 }
             }
             taskObservableList.setAll(projectTasks);
-            return "display project: " + commandParameters;
+            return String.format(DISPLAY_MESSAGE, commandParameters);
         } else {
-            return "displayTask method";
+            return UNKNOWN_DISPLAY;
         }
     }
 
@@ -372,7 +392,7 @@ public class Brain {
         try {
             taskToComplete = taskObservableList.get(objectIndex - 1);
         } catch (IndexOutOfBoundsException e) {
-            return "Task not found";
+            return TASK_NOT_FOUND;
         }
 
         if (taskToComplete.isRecurring() && taskToComplete.hasNext()) {
@@ -394,7 +414,7 @@ public class Brain {
             taskToComplete.setIsComplete();
         }
         taskOrganiser.updateFile(taskMasterList);
-        return "Complete: " + objectIndex + taskToComplete.getTitle();
+        return String.format(COMPLETE_MESSAGE, objectIndex, taskToComplete.getTitle());
     }
 
     private String uncompleteTask(int objectIndex) {
@@ -402,7 +422,7 @@ public class Brain {
         try {
             taskToUncomplete = taskObservableList.get(objectIndex - 1);
         } catch (IndexOutOfBoundsException e) {
-            return "Task not found";
+            return TASK_NOT_FOUND;
         }
         taskToUncomplete.setIncomplete();
         if (taskToUncomplete.isRecurring()) {
@@ -416,28 +436,24 @@ public class Brain {
             }
         }
         taskOrganiser.updateFile(taskMasterList);
-        return "Uncomplete: " + objectIndex + taskToUncomplete.getTitle();
+        return String.format(UNCOMPLETE_MESSAGE, objectIndex, taskToUncomplete.getTitle());
     }
 
-    /**
-     * EXTRAORDINARY FEATURE - Sync with nusmods html file
-     * @author gaieepo
-     */
     private String loadNUSMods(String commandParameters) {
         File modsFile = new File(commandParameters);
         if (modsFile.exists()) {
             ModsLoader loader = new ModsLoader(modsFile);
             taskMasterList.addAll(loader.getLessonTasks());
         } else {
-            return "No nusmods file";
+            return NO_MODS_FILE;
         }
         taskOrganiser.updateFile(taskMasterList);
-        return "NUSMODS loaded";
+        return MODS_LOADED;
     }
 
     private String displayHelpPanel() {
         displayController.displayHelpPanel();
-        return "Check help panel for more info";
+        return HELP_MESSAGE;
     }
 
     /* ***********************************
