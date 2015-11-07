@@ -32,6 +32,10 @@ import javafx.util.Duration;
 
 public class DisplayController {
 
+    /* ***********************************
+     * DEFINE CONSTANTS
+     * ***********************************/
+    
     private static final String CATEGORY_COMPLETE = "Complete";
     private static final String CATEGORY_OTHER_TASKS = "Other tasks";
     private static final String CATEGORY_TOMORROW = "Tomorrow";
@@ -39,9 +43,7 @@ public class DisplayController {
     private static final String CATEGORY_FLOATING = "Floating";
     private static final String CATEGORY_OVERDUE = "Overdue";
     private static final String PROJECT_INBOX = "Inbox";
-    /* ***********************************
-     * DEFINE VARIABLES
-     * ***********************************/
+
     // Types of tasks
     private static final String EVENT_TASK = "event";
     private static final String DEADLINE_TASK = "deadline";
@@ -65,7 +67,17 @@ public class DisplayController {
     private static final String COMMAND_DELETE = "delete";
     private static final String COMMAND_ADD = "add";
     private static final String COMMAND_SEARCH = "search";
+    
+    // Maximum number of boxes that can be displayed within the height of the stage
+    private static final Integer MAX_DISPLAY_BOXES = 11;
+    
+    // Shift amount for each PageUp
+    private static final Integer SCROLL_INCREMENT = 1;
 
+    /* ***********************************
+     * DEFINE VARIABLES
+     * ***********************************/
+    
     @FXML
     private ListView<HBox> listView;
 
@@ -106,19 +118,14 @@ public class DisplayController {
     private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
     private Integer scrollIndex = 0;
-    private static final Integer MAX_DISPLAY_BOXES = 11;
-    private static final Integer SCROLL_INCREMENT = 1;
-
 
     /* ***********************************
      * METHODS
      * ***********************************/ 
+    
+    // Empty Constructor
     public DisplayController() {
 
-    }
-
-    public void setFocusToCommandBox() {
-        commandBox.requestFocus();
     }
 
     @FXML
