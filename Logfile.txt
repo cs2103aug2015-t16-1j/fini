@@ -1,2 +1,10 @@
-Nov 07, 2015 8:35:09 PM fini.main.MainApp intialiseLogger
+Nov 07, 2015 9:42:20 PM fini.main.MainApp intialiseLogger
 INFO: Fini Logger Intialised. All is well.
+Nov 07, 2015 9:42:28 PM fini.main.Brain executeCommand
+INFO: User's input: exit
+Nov 07, 2015 9:42:28 PM fini.main.Brain executeCommand
+INFO: Command type: EXIT
+Nov 07, 2015 9:42:28 PM fini.main.Brain executeCommand
+INFO: Object index: -1
+Nov 07, 2015 9:42:28 PM fini.main.Brain executeCommand
+INFO: Parameters: 

@@ -16,11 +16,29 @@ import com.joestelmach.natty.Parser;
 
 import fini.main.model.Task.Priority;
 
+/**
+ * This FiniParser is created to evaluate user command, by extracting necessary information like:
+ * DateTimes, recur info, priority, project
+ * 
+ * The date & time parser is making use of an open-source Java project called Natty.
+ * 
+ * Natty is a natural language date parser written in Java.
+ * http://natty.joestelmach.com/
+ * 
+ * @@author Wang Jie (gaieepo) A0127483B
+ */
 public class FiniParser {
+    /* ***********************************
+     * Constants
+     * ***********************************/
+    private static final String[] REDUNDANT_WORDS = {"on", "from", "by"};
+    
+    /* ***********************************
+     * Fields
+     * ***********************************/
+    // Singleton
     private static FiniParser finiParser;
     private Parser parser;
-
-    private static final String[] REDUNDANT_WORDS = {"on", "from", "by"};
 
     private String storedParameters;
     private String cleanParameters;
@@ -33,10 +51,24 @@ public class FiniParser {
     private Period interval;
     private String notParsed;
 
+    /* ***********************************
+     * Private constructor
+     * ***********************************/
     private FiniParser() {
         initializeFields();
     }
+    
+    // getInstance method
+    public static FiniParser getInstance() {
+        if (finiParser == null) {
+            finiParser = new FiniParser();
+        }
+        return finiParser;
+    }
 
+    /* ***********************************
+     * Public parsing method
+     * ***********************************/    
     public String parse(String commandParameters) {
         try {
             initializeFields();
@@ -123,6 +155,52 @@ public class FiniParser {
         return getSimpleCleanString(notParsed);
     }
 
+    /* ***********************************
+     * Public getters
+     * ***********************************/
+    public String getStoredParameters() {
+        return storedParameters;
+    }
+
+    public String getCleanParameters() {
+        return cleanParameters;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public ArrayList<LocalDateTime> getDatetimes() {
+        return datetimes;
+    }
+
+    public boolean getIsRecurring() {
+        return isRecurring;
+    }
+
+    public LocalDateTime getRecursUntil() {
+        return recursUntil;
+    }
+
+    public Period getInterval() {
+        return interval;
+    }
+
+    public String getNotParsed() {
+        return notParsed;
+    }
+
+    /* ***********************************
+     * Utilization method
+     * ***********************************/
+    private String getSimpleCleanString(String input) {
+        return input.trim().replaceAll("\\s+", " ");
+    }
+    
     private String processBackPart(String parameters) {
         if (recurFlag) {
             isRecurring = true;
@@ -137,19 +215,19 @@ public class FiniParser {
 
         String returnNotParsed = "";
         if (groups.size() == 0) { // everyday/every week (no until)
-            //			System.out.println("A");
+            //          System.out.println("A");
             returnNotParsed = everyWeekNoUntil(parameters);
         } else if (groups.size() == 1 && parameters.contains("until") && !groups.get(0).isRecurring()) {
-            //			System.out.println("B");
+            //          System.out.println("B");
             returnNotParsed = everyWeekUntil(parameters, groups.get(0));
         } else if (groups.size() == 1 && !parameters.contains("until") && groups.get(0).isRecurring()) {
-            //			System.out.println("C");
+            //          System.out.println("C");
             returnNotParsed = everyTwoWeeksNoUntil(parameters);
         } else if (groups.size() == 1 && parameters.contains("until") && groups.get(0).isRecurring()) {
-            //			System.out.println("D");
+            //          System.out.println("D");
             returnNotParsed = everyTwoWeeksUntil(parameters, groups.get(0));
         } else { // default: everyday endlessly
-            //			System.out.println("E");
+            //          System.out.println("E");
             interval = Period.ofDays(1);
         }
         return returnNotParsed;
@@ -325,56 +403,9 @@ public class FiniParser {
         return getSimpleCleanString(cleanString);
     }
 
-    // Public Getters
-    public String getStoredParameters() {
-        return storedParameters;
-    }
-
-    public String getCleanParameters() {
-        return cleanParameters;
-    }
-
-    public Priority getPriority() {
-        return priority;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public ArrayList<LocalDateTime> getDatetimes() {
-        return datetimes;
-    }
-
-    public boolean getIsRecurring() {
-        return isRecurring;
-    }
-
-    public LocalDateTime getRecursUntil() {
-        return recursUntil;
-    }
-
-    public Period getInterval() {
-        return interval;
-    }
-
-    public String getNotParsed() {
-        return notParsed;
-    }
-
-    // Utility Methods
-    private String getSimpleCleanString(String input) {
-        return input.trim().replaceAll("\\s+", " ");
-    }
-
-    // Initialization Methods
-    public static FiniParser getInstance() {
-        if (finiParser == null) {
-            finiParser = new FiniParser();
-        }
-        return finiParser;
-    }
-
+    /* ***********************************
+     * Initialization method
+     * ***********************************/
     private void initializeFields() {
         parser = new Parser();
         storedParameters = "";
