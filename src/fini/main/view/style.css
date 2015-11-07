@@ -19,7 +19,7 @@
 	font-family: "Open Sans";
 	font-weight: 400;
 	font-style: normal;
-	src: url'/fonts/Open_Sans/OpenSans-Regular.ttf');
+	src: url("./fonts/Open_Sans/OpenSans-Regular.ttf");
 }
 /*
 @font-face {
