@@ -77,7 +77,7 @@ public class ParserTest {
 
 	@Test
 	public void testRecur() {
-		// TODO
+		// TODO All possible recur condition goes here
 	}
 	
 	private LocalDate createDate(int year, int month, int day) {
