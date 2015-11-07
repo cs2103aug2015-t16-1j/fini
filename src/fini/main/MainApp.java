@@ -33,9 +33,6 @@ import javafx.util.Duration;
 
 public class MainApp extends Application {
 
-    private static final int X_COORDINATE_WELCOME_LISTENER = -200;
-    private static final int Y_COORDINATE_WELCOME_LISTENER = -200;
-
     private static final String STAGE_TITLE = "Fini";
 
     // Opacities for Fade Animation
@@ -121,12 +118,9 @@ public class MainApp extends Application {
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
-
     }
 
     private void transitToMainScene(AnchorPane parent) {
-        final TextField welcomeSceneListener = new TextField();
-        positionWelcomeListener(welcomeSceneListener);
 
         try {  
             FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH_FINI_LAYOUT));
@@ -149,14 +143,6 @@ public class MainApp extends Application {
             exception.printStackTrace();
         }
 
-
-        parent.getChildren().add(welcomeSceneListener);
-        welcomeSceneListener.requestFocus();
-    }
-
-    private void positionWelcomeListener(final TextField welcomeSceneListener) {
-        welcomeSceneListener.setLayoutX(X_COORDINATE_WELCOME_LISTENER);
-        welcomeSceneListener.setLayoutY(Y_COORDINATE_WELCOME_LISTENER);
     }
 
     private void fadeOut(Node element) {

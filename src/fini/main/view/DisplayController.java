@@ -47,7 +47,7 @@ public class DisplayController {
     private static final String DEADLINE_TASK = "deadline";
     private static final String FLOATING_TASK = "floating";
     private static final String EMPTY_STRING = "";
-    
+
     // List of help commands displayed to user
     private static final String HELP_FOR_MODS_COMMAND = "mods <FILE_NAME>";
     private static final String HELP_FOR_UNCOMPLETE_COMMAND = "uncomplete <TASK_NUMBER>";
@@ -370,7 +370,7 @@ public class DisplayController {
                 displayBoxes.add(new TaskCategory(CATEGORY_OTHER_TASKS));
                 othersAdded = true;
             }
-            
+
             int taskId = getTaskId(taskObservableList, task);
             String taskStartTime = getTaskStartTime(task);
             String taskEndTime = getTaskEndTime(task);
