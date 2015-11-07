@@ -7,6 +7,9 @@ import java.util.logging.SimpleFormatter;
 
 import fini.main.view.DisplayController;
 import javafx.animation.FadeTransition;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.Transition;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -30,15 +33,18 @@ import javafx.util.Duration;
 
 public class MainApp extends Application {
 
+    private static final int X_COORDINATE_WELCOME_LISTENER = -200;
+    private static final int Y_COORDINATE_WELCOME_LISTENER = -200;
+
     private static final String STAGE_TITLE = "Fini";
-    
+
     // Opacities for Fade Animation
     private static final double OPACITY_FULL = 1.0;
     private static final double OPACITY_ZERO = 0.0;
 
     // Duration for Fade Animations
-    private static final int FADE_DURATION = 500;
-    
+    private static final int FADE_DURATION = 1000;
+
     // Path to relevant files
     private static final String PATH_FINI_LAYOUT = "view/FiniLayout.fxml";
     private static final String PATH_FINI_ICON = "resources/images/icon.png";
@@ -52,9 +58,6 @@ public class MainApp extends Application {
 
     // Global Logger
     public final static Logger finiLogger = Logger.getLogger(MainApp.class.getName());
-
-    @FXML
-    private Button welcomeButton;
 
     private DisplayController displayController;
     private Brain brain;
@@ -75,6 +78,12 @@ public class MainApp extends Application {
         primaryStage = stage;
         setUpPrimaryStage();		
         intialiseLogger();
+
+        fadeOut(parent);
+
+        SequentialTransition seqTransition = new SequentialTransition (new PauseTransition(Duration.millis(1000)));
+        seqTransition.setOnFinished(event ->  transitToMainScene(parent));
+        seqTransition.play();
     }
 
     private void intialiseLogger() {
@@ -86,7 +95,7 @@ public class MainApp extends Application {
             SimpleFormatter formatter = new SimpleFormatter();  
             fileHandler.setFormatter(formatter);  
 
-            // Intial Log Message
+            // Initial Log Message
             finiLogger.info("Fini Logger Intialised. All is well.");  
 
         } catch (Exception e) {
@@ -99,7 +108,6 @@ public class MainApp extends Application {
     }
 
     private void setUpPrimaryStage() {
-        welcomeButton = new Button();
         try {
             parent = FXMLLoader.load(getClass().getResource(PATH_WELCOME_FXML));
         } catch (IOException e) {
@@ -107,53 +115,48 @@ public class MainApp extends Application {
         }
         scene = new Scene(parent);
         loadStylesheet();
-        setListenerForWelcomeScene(parent);
 
         primaryStage.setTitle(STAGE_TITLE);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(PATH_FINI_ICON)));
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
+
     }
 
-    private void setListenerForWelcomeScene(AnchorPane parent) {
+    private void transitToMainScene(AnchorPane parent) {
         final TextField welcomeSceneListener = new TextField();
         positionWelcomeListener(welcomeSceneListener);
-        welcomeSceneListener.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent userPressesAKey) {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH_FINI_LAYOUT));
-                    main = (AnchorPane) loader.load();
 
-                    Scene scene = new Scene(main);
-                    scene.getStylesheets().add(getClass().getResource(PATH_STYLESHEET).toExternalForm());
+        try {  
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH_FINI_LAYOUT));
+            main = (AnchorPane) loader.load();
 
-                    primaryStage.setScene(scene); 
+            Scene scene = new Scene(main);
+            scene.getStylesheets().add(getClass().getResource(PATH_STYLESHEET).toExternalForm());
 
-                    displayController = loader.getController();
+            fadeIn(main);
+            primaryStage.setScene(scene);
 
-                    primaryStage.show();
-                    primaryStage.setResizable(false);
+            displayController = loader.getController();
 
-                    fadeOut(parent);   
-                    fadeIn(main);
+            primaryStage.show();
+            primaryStage.setResizable(false);
 
-                    initializeBrain();
+            initializeBrain();
+        } catch (IOException exception) {
+            finiLogger.severe("Unable to find or load FXML file");
+            exception.printStackTrace();
+        }
 
-                } catch (IOException e) {
-                    System.out.println("Unable to find or load FXML file");
-                    e.printStackTrace();
-                }
-            }
-        });
 
         parent.getChildren().add(welcomeSceneListener);
         welcomeSceneListener.requestFocus();
     }
 
     private void positionWelcomeListener(final TextField welcomeSceneListener) {
-        welcomeSceneListener.setLayoutX(-200);
-        welcomeSceneListener.setLayoutY(-200);
+        welcomeSceneListener.setLayoutX(X_COORDINATE_WELCOME_LISTENER);
+        welcomeSceneListener.setLayoutY(Y_COORDINATE_WELCOME_LISTENER);
     }
 
     private void fadeOut(Node element) {
