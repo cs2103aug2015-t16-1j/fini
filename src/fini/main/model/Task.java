@@ -25,6 +25,8 @@ public class Task implements TaskInterface {
     public static enum Priority {
         HIGH, MEDIUM, LOW, NORMAL
     }
+    
+    private static final String DEFAULT_PROJECT = "Inbox";
 
     /* ***********************************
      * Required fields
@@ -50,8 +52,6 @@ public class Task implements TaskInterface {
     private String objectID = null;
     private String recurUniqueID = null;
 
-    private static final String defaultProject = "Inbox";
-
     /* ***********************************
      * TaskBuilder
      * ***********************************/
@@ -61,7 +61,7 @@ public class Task implements TaskInterface {
         private final boolean isRecurring;
 
         // Optional
-        private String projectName = defaultProject;
+        private String projectName = DEFAULT_PROJECT;
         private Priority priority = Priority.NORMAL;
         private ArrayList<LocalDateTime> dateTimes = new ArrayList<LocalDateTime>();
         private LocalDateTime recursUntil = null;
@@ -238,7 +238,7 @@ public class Task implements TaskInterface {
         if (projectName != null) {
             this.projectName = projectName;
         } else {
-            this.projectName = defaultProject;
+            this.projectName = DEFAULT_PROJECT;
         }
     }
 
@@ -326,6 +326,6 @@ public class Task implements TaskInterface {
     }
 
     public String getLabelForTaskOverviewPane() {
-        return "Inbox";
+        return DEFAULT_PROJECT;
     }
 }

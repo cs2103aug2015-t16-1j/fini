@@ -32,6 +32,18 @@ import fini.main.MainApp;
  */
 public class Storage {
     /* ***********************************
+     * Constants
+     * ***********************************/
+    private static final String SAVE_FILE_NAME = "save.txt";
+    private static final String CONFIG_FILE_NAME = "config.txt";
+    private static final String DEFAULT_USER_PREF_NAME = "Fini_untitled.txt";
+    
+    private static final String SAME_DIRECTORY_MESSAGE = "Same file directory";
+    private static final String SET_SUCCESS_MESSAGE = "The directory is set";
+    private static final String SET_FAIL_MESSAGE = "No such file";
+    private static final String EMPTY_STRING = "";
+    
+    /* ***********************************
      * Fields
      * ***********************************/
     private static Storage taskOrganiser;
@@ -53,10 +65,10 @@ public class Storage {
     private Storage() {
         gson = new Gson();
 
-        saveFile = new File("save.txt");
+        saveFile = new File(SAVE_FILE_NAME);
         createIfNotExists(saveFile);
 
-        configFile = new File("config.txt");
+        configFile = new File(CONFIG_FILE_NAME);
         createIfNotExists(configFile);
 
         userPrefFileName = getUserPrefFileName(configFile);
@@ -99,13 +111,13 @@ public class Storage {
         File userFile = new File(userPrefFileName);
 
         if (userFile.equals(userPrefFile)) {
-            return "Same file directory";
+            return SAME_DIRECTORY_MESSAGE;
         } else if (userFile.exists()) {
             updateConfigFile(userPrefFileName);
             userPrefFile = userFile;
-            return "The directory is set";
+            return SET_SUCCESS_MESSAGE;
         } else {
-            return "No such file";
+            return SET_FAIL_MESSAGE;
         }
     }
 
@@ -117,7 +129,7 @@ public class Storage {
      * Private methods
      * ***********************************/
     private ArrayList<Task> readTasks(File file) {
-        String text = "";
+        String text = EMPTY_STRING;
         ArrayList<Task> tasks = new ArrayList<Task>();
         try {
             if (!initReader(file)) {
@@ -195,10 +207,10 @@ public class Storage {
 
     private String getUserPrefFileName(File configFile) {
         initReader(configFile);
-        String fileName = "";
+        String fileName = EMPTY_STRING;
         try {
             if ((fileName = reader.readLine()) == null) {
-                fileName = "Fini_untitled.txt";
+                fileName = DEFAULT_USER_PREF_NAME;
             }
         } catch (IOException e) {
             e.printStackTrace();

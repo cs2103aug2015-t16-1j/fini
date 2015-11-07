@@ -13,17 +13,27 @@ import java.util.Arrays;
  * @@author A0127483B
  */
 public class Command {
+    /* ***********************************
+     * Constants
+     * ***********************************/
     public static enum CommandType {
         ADD, UPDATE, DELETE, CLEAR, UNDO, REDO, SET, DISPLAY, SEARCH, EXIT, COMPLETE, UNCOMPLETE, MODS, HELP, INVALID
     };
+    
+    private static final String ONE_OR_MORE_SPACE = "\\s+";
+    private static final String EMPTY_SPACE = "";
+    private static final int INVALID_INDEX = -1;
 
+    /* ***********************************
+     * Fields
+     * ***********************************/
     private CommandType commandType;
     private String userCommand;
-    private int objectIndex = -1;
-    private String commandParameters = "";
+    private int objectIndex = INVALID_INDEX;
+    private String commandParameters = EMPTY_SPACE;
 
     public Command(String userInput) {
-        String[] splitUserInput = userInput.trim().split("\\s+");
+        String[] splitUserInput = userInput.trim().split(ONE_OR_MORE_SPACE);
         userCommand = splitUserInput[0].toLowerCase();
         commandType = determineCommandType(userCommand);
 

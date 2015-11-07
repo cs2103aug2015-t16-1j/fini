@@ -25,12 +25,18 @@ import fini.main.model.Task.Type;
  *
  */
 public class Sorter {
-    private ArrayList<Task> listToSort;
-    private ArrayList<Comparator<Task>> comparators;
-
+    /* ***********************************
+     * Constants
+     * ***********************************/
     private static final int LOWER_THAN = -1;
     private static final int EQUAL = 0;
     private static final int HIGHER_THAN = 1;
+    
+    /* ***********************************
+     * Fields
+     * ***********************************/
+    private ArrayList<Task> listToSort;
+    private ArrayList<Comparator<Task>> comparators;
 
     class SortByType implements Comparator<Task> {
         /**

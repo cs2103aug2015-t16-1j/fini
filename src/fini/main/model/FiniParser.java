@@ -33,6 +33,13 @@ public class FiniParser {
      * Constants
      * ***********************************/
     private static final String[] REDUNDANT_WORDS = {"on", "from", "by"};
+    private static final String[] NUM_WITHIN_TEN = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
+    private static final String DEFAULT_PROJECT = "Inbox";
+    private static final String ONE_SPACE = " ";
+    private static final String ONE_OR_MORE_SPACE = "\\s+";
+    private static final String EMPTY_STRING = "";
+    private static final String PARSE_SUCCESS = "FiniParser.parse SUCCESS";
+    private static final String PARSE_FAIL = "FiniParser.parse ERROR";
     
     /* ***********************************
      * Fields
@@ -76,7 +83,7 @@ public class FiniParser {
             storedParameters = commandParameters;
             cleanParameters = storedParameters; // init of clean
 
-            String[] splitStoredParameters = storedParameters.split(" ");
+            String[] splitStoredParameters = storedParameters.split(ONE_SPACE);
             priority = determinePriority(splitStoredParameters);
             projectName = determineProjectName(splitStoredParameters);
             notParsed = determineDatetimes(cleanParameters);
@@ -85,10 +92,10 @@ public class FiniParser {
             MainApp.finiLogger.info("Clean parameters: " + cleanParameters);
             MainApp.finiLogger.info("Not parsed words: " + notParsed);
             
-            return "FiniParser.parse SUCCESS";
+            return PARSE_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
-            return "FiniParser.parse ERROR";
+            return PARSE_FAIL;
         }
     }
 
@@ -115,7 +122,7 @@ public class FiniParser {
                     }
 
                     if (!returnPriority.equals(Priority.NORMAL)) {
-                        cleanParameters = cleanParameters.replaceAll(word + " " + priority, "");
+                        cleanParameters = cleanParameters.replaceAll(word + ONE_SPACE + priority, EMPTY_STRING);
                         cleanParameters = getSimpleCleanString(cleanParameters);
                         return returnPriority;
                     }
@@ -134,7 +141,7 @@ public class FiniParser {
             if (word.toLowerCase().equals("project")) {
                 if (words.indexOf(word) != words.size() - 1) {
                     String projectName = words.get(words.indexOf(word) + 1);
-                    cleanParameters = cleanParameters.replaceAll(word + " " + projectName, "");
+                    cleanParameters = cleanParameters.replaceAll(word + ONE_SPACE + projectName, EMPTY_STRING);
                     cleanParameters = getSimpleCleanString(cleanParameters);
                     return projectName;
                 } else {
@@ -143,7 +150,7 @@ public class FiniParser {
                 }
             }
         }
-        return "Inbox";
+        return DEFAULT_PROJECT;
     }
 
     private String determineDatetimes(String cleanParameters) {
@@ -204,7 +211,7 @@ public class FiniParser {
      * Utility method
      * ***********************************/
     private String getSimpleCleanString(String input) {
-        return input.trim().replaceAll("\\s+", " ");
+        return input.trim().replaceAll(ONE_OR_MORE_SPACE, ONE_SPACE);
     }
     
     private String processBackPart(String parameters) {
@@ -219,7 +226,7 @@ public class FiniParser {
             return parameters;
         }
 
-        String returnNotParsed = "";
+        String returnNotParsed = EMPTY_STRING;
         if (groups.size() == 0) { // everyday/every week (no until)
             //          System.out.println("A");
             returnNotParsed = everyWeekNoUntil(parameters);
@@ -242,10 +249,10 @@ public class FiniParser {
     private String everyTwoWeeksUntil(String parameters, DateGroup group) {
         recursUntil = LocalDateTime.ofInstant(group.getRecursUntil().toInstant(), ZoneId.systemDefault());
         String returnNotParsed = parameters;
-        String[] splitParameters = parameters.split(" ");
+        String[] splitParameters = parameters.split(ONE_SPACE);
         if (isValidNumbering(splitParameters[1]) && isIntervalUnits(splitParameters[2])) {
             interval = determineIntervalUnits(splitParameters[1], splitParameters[2]);
-            returnNotParsed = returnNotParsed.replaceAll("every " + splitParameters[1] + " " + splitParameters[2], "");
+            returnNotParsed = returnNotParsed.replaceAll("every " + splitParameters[1] + ONE_SPACE + splitParameters[2], EMPTY_STRING);
         } else {
             interval = Period.ofDays(1);
         }
@@ -254,10 +261,10 @@ public class FiniParser {
 
     private String everyTwoWeeksNoUntil(String parameters) {
         String returnNotParsed = parameters;
-        String[] splitParameters = parameters.split(" ");
+        String[] splitParameters = parameters.split(ONE_SPACE);
         if (splitParameters[0].equals("every") && isValidNumbering(splitParameters[1]) && isIntervalUnits(splitParameters[2])) {
             interval = determineIntervalUnits(splitParameters[1], splitParameters[2]);
-            returnNotParsed = returnNotParsed.replaceAll(splitParameters[0] + " " + splitParameters[1] + " " + splitParameters[2], "");
+            returnNotParsed = returnNotParsed.replaceAll(splitParameters[0] + ONE_SPACE + splitParameters[1] + ONE_SPACE + splitParameters[2], EMPTY_STRING);
         } else {
             interval = Period.ofDays(1);
         }
@@ -267,39 +274,38 @@ public class FiniParser {
     private String everyWeekUntil(String parameters, DateGroup group) {
         String returnNotParsed = parameters;
         recursUntil = LocalDateTime.ofInstant(group.getDates().get(0).toInstant(), ZoneId.systemDefault());
-        String[] splitParameters = parameters.split(" ");
+        String[] splitParameters = parameters.split(ONE_SPACE);
         if (parameters.startsWith("everyday")) {
             interval = Period.ofDays(1);
-            returnNotParsed = returnNotParsed.replaceAll("everyday", "");
+            returnNotParsed = returnNotParsed.replaceAll("everyday", EMPTY_STRING);
         } else if (splitParameters[0].equals("every") && isIntervalUnit(splitParameters[1])) {
             interval = determineIntervalUnit(splitParameters[1]);
-            returnNotParsed = returnNotParsed.replaceAll("every", "");
-            returnNotParsed = returnNotParsed.replaceAll(splitParameters[1], "");
+            returnNotParsed = returnNotParsed.replaceAll("every", EMPTY_STRING);
+            returnNotParsed = returnNotParsed.replaceAll(splitParameters[1], EMPTY_STRING);
         }
-        returnNotParsed = returnNotParsed.replaceAll("until", "");
-        returnNotParsed = returnNotParsed.replaceAll(group.getText(), "");
+        returnNotParsed = returnNotParsed.replaceAll("until", EMPTY_STRING);
+        returnNotParsed = returnNotParsed.replaceAll(group.getText(), EMPTY_STRING);
         return returnNotParsed;
     }
 
     private String everyWeekNoUntil(String parameters) {
         String returnNotParsed = parameters;
-        String[] splitParameters = parameters.split(" ");
+        String[] splitParameters = parameters.split(ONE_SPACE);
         if (parameters.startsWith("everyday")) {
             interval = Period.ofDays(1);
-            returnNotParsed = returnNotParsed.replaceAll("everyday", "");
+            returnNotParsed = returnNotParsed.replaceAll("everyday", EMPTY_STRING);
         } else if (splitParameters[0].equals("every") && isIntervalUnit(splitParameters[1])) {
             interval = determineIntervalUnit(splitParameters[1]);
-            returnNotParsed = returnNotParsed.replaceAll("every", "");
-            returnNotParsed = returnNotParsed.replaceAll(splitParameters[1], "");
+            returnNotParsed = returnNotParsed.replaceAll("every", EMPTY_STRING);
+            returnNotParsed = returnNotParsed.replaceAll(splitParameters[1], EMPTY_STRING);
         }
         return returnNotParsed;
     }
 
     private Period determineIntervalUnits(String numbering, String word) {
-        String[] numWithinTen = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
         int number = 0;
-        for (int i = 0; i < numWithinTen.length; ++i) {
-            if (numWithinTen[i].equals(numbering)) {
+        for (int i = 0; i < NUM_WITHIN_TEN.length; ++i) {
+            if (NUM_WITHIN_TEN[i].equals(numbering)) {
                 number = i + 1;
                 break;
             }
@@ -343,8 +349,7 @@ public class FiniParser {
     }
 
     private boolean isValidNumbering(String word) {
-        String[] numWithinTen = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
-        for (String num : numWithinTen) {
+        for (String num : NUM_WITHIN_TEN) {
             if (word.equals(num)) {
                 return true;
             }
@@ -395,16 +400,16 @@ public class FiniParser {
     }
 
     private String eliminateRedundantWords(String notParsed) {
-        String cleanString = "";
-        ArrayList<String> splitCleanString = new ArrayList<String>(Arrays.asList(notParsed.split(" ")));
+        String cleanString = EMPTY_STRING;
+        ArrayList<String> splitCleanString = new ArrayList<String>(Arrays.asList(notParsed.split(ONE_SPACE)));
         for (String word : REDUNDANT_WORDS) {
             while (splitCleanString.contains(word)) {
                 int removeIndex = splitCleanString.indexOf(word);
-                splitCleanString.set(removeIndex, "");
+                splitCleanString.set(removeIndex, EMPTY_STRING);
             }
         }
         for (String word : splitCleanString) {
-            cleanString += word + " ";
+            cleanString += word + ONE_SPACE;
         }
         return getSimpleCleanString(cleanString);
     }
@@ -414,14 +419,14 @@ public class FiniParser {
      * ***********************************/
     private void initializeFields() {
         parser = new Parser();
-        storedParameters = "";
+        storedParameters = EMPTY_STRING;
         priority = null;
-        projectName = "Inbox";
+        projectName = DEFAULT_PROJECT;
         datetimes = new ArrayList<LocalDateTime>();
         recurFlag = true;
         isRecurring = false;
         recursUntil = null;
         interval = null;
-        notParsed = "";
+        notParsed = EMPTY_STRING;
     }
 }
