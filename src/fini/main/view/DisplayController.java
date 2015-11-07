@@ -32,6 +32,12 @@ import javafx.util.Duration;
 
 public class DisplayController {
 
+    private static final String CATEGORY_COMPLETE = "Complete";
+    private static final String CATEGORY_OTHER_TASKS = "Other tasks";
+    private static final String CATEGORY_TOMORROW = "Tomorrow";
+    private static final String CATEGORY_TODAY = "Today";
+    private static final String CATEGORY_FLOATING = "Floating";
+    private static final String CATEGORY_OVERDUE = "Overdue";
     private static final String PROJECT_INBOX = "Inbox";
     /* ***********************************
      * DEFINE VARIABLES
@@ -346,24 +352,25 @@ public class DisplayController {
         boolean tomorrowAdded = false;
         boolean othersAdded = false;
 
-        displayBoxes.add(new TaskCategory("Complete"));
+        displayBoxes.add(new TaskCategory(CATEGORY_COMPLETE));
         for (Task task : taskObservableList) {
             if (!task.isCompleted() && task.isOverdue() && !overdueAdded) {
-                displayBoxes.add(new TaskCategory("Overdue"));
+                displayBoxes.add(new TaskCategory(CATEGORY_OVERDUE));
                 overdueAdded = true;
             } else if (!task.isOverdue() && task.getTaskType() == Type.DEFAULT && !floatingAdded) {
-                displayBoxes.add(new TaskCategory("Floating"));
+                displayBoxes.add(new TaskCategory(CATEGORY_FLOATING));
                 floatingAdded = true;
             } else if (task.getTaskType() != Type.DEFAULT && task.isTaskDueToday() && !todayAdded) {
-                displayBoxes.add(new TaskCategory("Today"));
+                displayBoxes.add(new TaskCategory(CATEGORY_TODAY));
                 todayAdded = true;
             } else if (!task.isTaskDueToday() && task.isTaskDueTomorrow() && !tomorrowAdded) {
-                displayBoxes.add(new TaskCategory("Tomorrow"));
+                displayBoxes.add(new TaskCategory(CATEGORY_TOMORROW));
                 tomorrowAdded = true;
             } else if (!task.isTaskDueTomorrow() && !othersAdded) {
-                displayBoxes.add(new TaskCategory("Other tasks"));
+                displayBoxes.add(new TaskCategory(CATEGORY_OTHER_TASKS));
                 othersAdded = true;
             }
+            
             int taskId = getTaskId(taskObservableList, task);
             String taskStartTime = getTaskStartTime(task);
             String taskEndTime = getTaskEndTime(task);
@@ -472,10 +479,10 @@ public class DisplayController {
 
         // Create all category boxes
         try {
-            overdueCategory = new TaskCategory("Overdue");
-            floatingCategory = new TaskCategory("Floating");
-            todayCategory = new TaskCategory("Today");
-            tomorrowCategory = new TaskCategory("Tomorrow");
+            overdueCategory = new TaskCategory(CATEGORY_OVERDUE);
+            floatingCategory = new TaskCategory(CATEGORY_FLOATING);
+            todayCategory = new TaskCategory(CATEGORY_TODAY);
+            tomorrowCategory = new TaskCategory(CATEGORY_TOMORROW);
             othersCategory = new TaskCategory("Other Tasks");
         } catch (Exception e) {
             e.printStackTrace();
@@ -520,7 +527,6 @@ public class DisplayController {
         Label priority = new Label(taskPriority);
         Label project = new Label(taskProject);
         Label isRecurring = null;
-        // Label recurringDay = null;
 
         switch (typeOfTask) {
             case FLOATING_TASK:

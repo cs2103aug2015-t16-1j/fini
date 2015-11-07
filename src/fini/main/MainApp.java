@@ -30,6 +30,22 @@ import javafx.util.Duration;
 
 public class MainApp extends Application {
 
+    private static final String STAGE_TITLE = "Fini";
+    
+    // Opacities for Fade Animation
+    private static final double OPACITY_FULL = 1.0;
+    private static final double OPACITY_ZERO = 0.0;
+
+    // Duration for Fade Animations
+    private static final int FADE_DURATION = 500;
+    
+    // Path to relevant files
+    private static final String PATH_FINI_LAYOUT = "view/FiniLayout.fxml";
+    private static final String PATH_FINI_ICON = "resources/images/icon.png";
+    private static final String PATH_WELCOME_FXML = "view/Welcome.fxml";
+    private static final String PATH_STYLESHEET = "view/style.css";
+    private static final String PATH_LOGFILE = "Logfile.txt";
+
     /* ***********************************
      * DEFINE VARIABLES
      * ***********************************/ 
@@ -65,7 +81,7 @@ public class MainApp extends Application {
         FileHandler fileHandler;  
 
         try {  
-            fileHandler = new FileHandler("Logfile.txt");  
+            fileHandler = new FileHandler(PATH_LOGFILE);  
             finiLogger.addHandler(fileHandler);
             SimpleFormatter formatter = new SimpleFormatter();  
             fileHandler.setFormatter(formatter);  
@@ -79,13 +95,13 @@ public class MainApp extends Application {
     }
 
     private void loadStylesheet() {
-        scene.getStylesheets().add(getClass().getResource("view/style.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource(PATH_STYLESHEET).toExternalForm());
     }
 
     private void setUpPrimaryStage() {
         welcomeButton = new Button();
         try {
-            parent = FXMLLoader.load(getClass().getResource("view/Welcome.fxml"));
+            parent = FXMLLoader.load(getClass().getResource(PATH_WELCOME_FXML));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -93,8 +109,8 @@ public class MainApp extends Application {
         loadStylesheet();
         setListenerForWelcomeScene(parent);
 
-        primaryStage.setTitle("Fini");
-        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/images/icon.png")));
+        primaryStage.setTitle(STAGE_TITLE);
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(PATH_FINI_ICON)));
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
@@ -106,11 +122,11 @@ public class MainApp extends Application {
         welcomeSceneListener.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent userPressesAKey) {
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("view/FiniLayout.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH_FINI_LAYOUT));
                     main = (AnchorPane) loader.load();
 
                     Scene scene = new Scene(main);
-                    scene.getStylesheets().add(getClass().getResource("view/style.css").toExternalForm());
+                    scene.getStylesheets().add(getClass().getResource(PATH_STYLESHEET).toExternalForm());
 
                     primaryStage.setScene(scene); 
 
@@ -141,16 +157,16 @@ public class MainApp extends Application {
     }
 
     private void fadeOut(Node element) {
-        FadeTransition fadeOut = new FadeTransition(Duration.millis(500), element);
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(FADE_DURATION), element);
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
         fadeOut.play();
     }
 
     private void fadeIn(Node element) {
-        FadeTransition fadeIn = new FadeTransition(Duration.millis(500), element);
-        fadeIn.setFromValue(0.0);
-        fadeIn.setToValue(1.0);
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(FADE_DURATION), element);
+        fadeIn.setFromValue(OPACITY_ZERO);
+        fadeIn.setToValue(OPACITY_FULL);
         fadeIn.play();
     }
 
