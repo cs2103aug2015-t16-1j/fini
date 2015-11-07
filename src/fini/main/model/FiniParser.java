@@ -180,6 +180,7 @@ public class FiniParser {
     }
 
     public ArrayList<LocalDateTime> getDatetimes() {
+        assert datetimes != null;
         return datetimes;
     }
 

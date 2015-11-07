@@ -26,6 +26,19 @@ import javafx.collections.ObservableList;
  */
 public class Brain {
     /* ***********************************
+     * Constants
+     * ***********************************/
+    private static final String DEFAULT_PROJECT = "Inbox";
+    private static final String EMPTY_STRING = "";
+    private static final String ONE_SPACE = " ";
+    private static final String SEARCHING_STRING = "Searching...";
+    private static final String INVALID_FEEDBACK = "Invalid command. Please type help for assistance.";
+    private static final String ADD_EMPTY_PARAMETER = "Add CommandParameters is empty";
+    private static final String UPDATE_EMPTY_PARAMETER = "Update CommandParameters is empty";
+    private static final int START_INDEX = 0;
+    private static final int END_INDEX = 1;
+
+    /* ***********************************
      * Fields
      * ***********************************/
     // Singleton
@@ -61,7 +74,7 @@ public class Brain {
         taskAuxiliaryList.setAll(taskObservableList); 
 
         for (Task task : taskAuxiliaryList) {
-            if (!task.getProjectName().equals("Inbox") && !projectNameList.contains(task.getProjectName())) {
+            if (!task.getProjectName().equals(DEFAULT_PROJECT) && !projectNameList.contains(task.getProjectName())) {
                 projectNameList.add(task.getProjectName());
             }
         }
@@ -98,9 +111,9 @@ public class Brain {
         MainApp.finiLogger.info("Command type: " + commandType.toString());
         MainApp.finiLogger.info("Object index: " + objectIndex);
         MainApp.finiLogger.info("Parameters: " + commandParameters);
-                
-        
-        String display = "";
+
+
+        String display = EMPTY_STRING;
         switch (commandType) {
             case ADD:
                 display = addTask(commandParameters);
@@ -131,7 +144,7 @@ public class Brain {
                 display = displayTask(commandParameters);
                 break;
             case SEARCH:
-                display = "Searching...";
+                display = SEARCHING_STRING;
                 searchTask(commandParameters);
                 break;
             case EXIT:
@@ -152,7 +165,7 @@ public class Brain {
                 display = displayHelpPanel();
                 break;
             case INVALID:
-                display = "Invalid command. Please type help for assistance.";
+                display = INVALID_FEEDBACK;
                 break;
             default:
                 break;
@@ -165,7 +178,7 @@ public class Brain {
         projectNameList = FXCollections.observableArrayList();
 
         for (Task task : taskAuxiliaryList) {
-            if (!task.getProjectName().equals("Inbox") && !projectNameList.contains(task.getProjectName())) {
+            if (!task.getProjectName().equals(DEFAULT_PROJECT) && !projectNameList.contains(task.getProjectName())) {
                 projectNameList.add(task.getProjectName());
             }
         }
@@ -182,17 +195,17 @@ public class Brain {
      * ***********************************/
     private String addTask(String commandParameters) {
         if (commandParameters.isEmpty()) {
-            return "CommandParameters is empty";
+            return ADD_EMPTY_PARAMETER;
         }
 
         finiParser.parse(commandParameters);
 
         if (finiParser.getDatetimes() != null && finiParser.getDatetimes().size() == 2 &&
-                !finiParser.getDatetimes().get(0).isBefore(finiParser.getDatetimes().get(1))) {
+                !finiParser.getDatetimes().get(START_INDEX).isBefore(finiParser.getDatetimes().get(END_INDEX))) {
             return "Start date and time should be earlier than end date time";
         }
 
-        if (!finiParser.getProjectName().equals("Inbox") &&
+        if (!finiParser.getProjectName().equals(DEFAULT_PROJECT) &&
                 !projectNameList.contains(finiParser.getProjectName()) &&
                 projectNameList.size() == 5) {
             return "Maximum 5 projects at the same time";
@@ -214,7 +227,7 @@ public class Brain {
         Task taskToUpdate;
 
         if (commandParameters.isEmpty()) {
-            return "CommandParameters is empty";
+            return UPDATE_EMPTY_PARAMETER;
         }
 
         try {
@@ -232,11 +245,11 @@ public class Brain {
         finiParser.parse(commandParameters);
 
         if (finiParser.getDatetimes() != null && finiParser.getDatetimes().size() == 2 &&
-                !finiParser.getDatetimes().get(0).isBefore(finiParser.getDatetimes().get(1))) {
+                !finiParser.getDatetimes().get(START_INDEX).isBefore(finiParser.getDatetimes().get(END_INDEX))) {
             return "Start date and time should be earlier than end date time";
         }
 
-        if (!finiParser.getProjectName().equals("Inbox") &&
+        if (!finiParser.getProjectName().equals(DEFAULT_PROJECT) &&
                 !projectNameList.contains(finiParser.getProjectName()) &&
                 projectNameList.size() == 5) {
             return "Maximum 5 projects at the same time";
@@ -254,7 +267,7 @@ public class Brain {
 
         return "Update: " + objectIndex + taskToUpdate.getTitle();
     }
-    
+
     private String deleteTask(int objectIndex) {
         Task taskToDelete;
         try {
@@ -266,10 +279,10 @@ public class Brain {
         taskObservableList.remove(taskToDelete);
         taskMasterList.remove(taskToDelete);
         taskOrganiser.updateFile(taskMasterList);
-        return "Delete: " + objectIndex + " " + taskToDelete.getTitle();
+        return "Delete: " + objectIndex + ONE_SPACE + taskToDelete.getTitle();
     }
-    
-    // @author A0121828H
+
+    // @@author A0121828H
     private String clearAllTasks() {
         taskMasterList.clear();
         taskOrganiser.updateFile(taskMasterList);
@@ -298,11 +311,11 @@ public class Brain {
         taskOrganiser.updateFile(taskMasterList);
         return "Redo~do~do~do~do~";
     }
-    
+
     private String setUserPrefDirectory(String commandParameters) {
         return taskOrganiser.setUserPrefDirectory(commandParameters);
     }
-    
+
     private String displayTask(String commandParameters) {
         if (commandParameters.equals("completed")) {
             completeDisplayTrigger = true;
@@ -310,7 +323,7 @@ public class Brain {
             searchDisplayTrigger = false;
             allDisplayTrigger = false;
             return "display completed";
-        } else if(commandParameters.equals("") || commandParameters.equals("main")) {
+        } else if(commandParameters.equals(EMPTY_STRING) || commandParameters.equals("main")) {
             completeDisplayTrigger = false;
             projectDisplayTrigger = false;
             searchDisplayTrigger = false;
@@ -341,7 +354,7 @@ public class Brain {
             return "displayTask method";
         }
     }
-    
+
     private void searchTask(String commandParameters) {
         searchDisplayTrigger = true;
         ObservableList<Task> tempObservableList = FXCollections.observableArrayList();
@@ -353,7 +366,7 @@ public class Brain {
         }
         taskObservableList.setAll(tempObservableList);
     }
-    
+
     private String completeTask(int objectIndex) {
         Task taskToComplete;
         try {
@@ -435,7 +448,7 @@ public class Brain {
         assert taskObservableList != null;
         statusSaver.saveStatus(taskMasterList, taskObservableList);
     }
-    
+
     private void displayControl() {
         if (completeDisplayTrigger) {
             taskObservableList.setAll(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
@@ -452,7 +465,7 @@ public class Brain {
             displayController.updateMainDisplay(taskObservableList);
         }
     }
-    
+
     private void sortTaskMasterList() {
         assert taskMasterList != null;
         sorter = new Sorter(taskMasterList);
