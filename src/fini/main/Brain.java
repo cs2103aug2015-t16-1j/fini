@@ -19,7 +19,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- * A Half-damaged Brain
+ * An Almost-damaged Brain that controls everything!
  * @author gaieepo
  */
 public class Brain {
