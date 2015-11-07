@@ -111,7 +111,7 @@ public class StatusSaver {
     }
     
     /* ***********************************
-     * Utilization methods
+     * Utility methods
      * ***********************************/
     private ArrayList<Task> copyArrayList(ArrayList<Task> origin) {
         ArrayList<Task> duplicate = new ArrayList<Task>();

@@ -7,11 +7,17 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 /**
- * Task & TaskBuilder - using builder pattern
- * @author gaieepo
- *
+ * 
+ * Task class is the fundamental element of FINI. Users can create, manipulate and store the tasks.
+ * Since creating a task requires quite a lot of parameters for constructor which makes a lot of constructing work redundant,
+ * we choose to make use of builder design pattern to merge a TaskBuilder inside Task class.
+ * 
+ * @@author Wang Jie (gaieepo) A0127483B 
  */
 public class Task implements TaskInterface {
+    /* ***********************************
+     * Constants
+     * ***********************************/
     public static enum Type {
         DEFAULT, EVENT, DEADLINE
     }
@@ -20,11 +26,15 @@ public class Task implements TaskInterface {
         HIGH, MEDIUM, LOW, NORMAL
     }
 
-    // Required
+    /* ***********************************
+     * Required fields
+     * ***********************************/
     private String taskTitle;
     private boolean isRecurring;
 
-    // Optional
+    /* ***********************************
+     * Optional fields
+     * ***********************************/
     private String projectName;
     private Priority priority;
     private LocalDateTime taskStartDateTime = null;
@@ -35,11 +45,16 @@ public class Task implements TaskInterface {
     private boolean isCompleted = false;
     private Type taskType;
 
+    // ObjectID assign each Task instance a distinct ID
+    // RecurUniqueID assign same ID for different Tasks under same recurring task
     private String objectID = null;
     private String recurUniqueID = null;
 
     private static final String defaultProject = "Inbox";
 
+    /* ***********************************
+     * TaskBuilder
+     * ***********************************/
     public static class TaskBuilder {
         // Required
         private final String taskTitle;
@@ -82,11 +97,15 @@ public class Task implements TaskInterface {
             return this;
         }
 
+        // Return a Task through build()
         public Task build() {
             return new Task(this);
         }
     }
 
+    /* ***********************************
+     * Private constructor
+     * ***********************************/
     private Task(TaskBuilder taskBuilder) {
         // Required
         taskTitle = taskBuilder.taskTitle;
@@ -129,7 +148,9 @@ public class Task implements TaskInterface {
         }
     }
 
-    // Public Getters
+    /* ***********************************
+     * Public getters
+     * ***********************************/
     public String getTitle() {
         assert taskTitle != null;
         return taskTitle;
@@ -202,7 +223,9 @@ public class Task implements TaskInterface {
         return isRecurring;
     }
 
-    // Public Setters
+    /* ***********************************
+     * Public setters
+     * ***********************************/
     public void setIsRecurring(boolean isRecurring) {
         this.isRecurring = isRecurring;
     }
@@ -248,7 +271,9 @@ public class Task implements TaskInterface {
         objectID = UUID.randomUUID().toString();
     }
 
-    // Utility Methods
+    /* ***********************************
+     * Utility methods
+     * ***********************************/
     public boolean hasNext() {
         if (isRecurring) {
             if (recursUntil != null) {
@@ -270,6 +295,9 @@ public class Task implements TaskInterface {
         }
     }
 
+    /* ***********************************
+     * Copy related methods
+     * ***********************************/
     @Override
     public Task makeCopy() {
         Task taskObject = null;
@@ -282,7 +310,9 @@ public class Task implements TaskInterface {
         return taskObject;
     }
 
-    // DISPLAY related methods
+    /* ***********************************
+     * Display related methods
+     * ***********************************/
     public boolean isTaskDueToday() {
         return taskStartDateTime == null ? false : taskStartDateTime.toLocalDate().isEqual(LocalDate.now());
     }

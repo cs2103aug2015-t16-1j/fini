@@ -195,7 +195,7 @@ public class FiniParser {
     }
 
     /* ***********************************
-     * Utilization method
+     * Utility method
      * ***********************************/
     private String getSimpleCleanString(String input) {
         return input.trim().replaceAll("\\s+", " ");

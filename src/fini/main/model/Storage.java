@@ -13,11 +13,19 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 /**
- * Storage component - Nothing should be stored in Storage
- * @author gaieepo
- *
+ * Storage component (which is instantiated as taskOrganizer in Brain) takes charge in saving and retrieving of tasks
+ * It makes use of google json library - Gson
+ * to solidate tasks into readable text format.
+ * 
+ * A Java serialization library that can convert Java Objects into JSON and back
+ * https://github.com/google/gson
+ * 
+ * @@author Wang Jie (gaieepo) A0127483B 
  */
 public class Storage {
+    /* ***********************************
+     * Fields
+     * ***********************************/
     private static Storage taskOrganiser;
 
     private File saveFile;
@@ -31,14 +39,10 @@ public class Storage {
 
     private Gson gson;
 
-    public static Storage getInstance() {
-        if (taskOrganiser == null) {
-            taskOrganiser = new Storage();
-        }
-        return taskOrganiser;
-    }
-
-    public Storage() {
+    /* ***********************************
+     * Private constructor
+     * ***********************************/
+    private Storage() {
         gson = new Gson();
 
         saveFile = new File("save.txt");
@@ -52,7 +56,17 @@ public class Storage {
         userPrefFile = new File(userPrefFileName);
         createIfNotExists(userPrefFile);
     }
-
+    
+    public static Storage getInstance() {
+        if (taskOrganiser == null) {
+            taskOrganiser = new Storage();
+        }
+        return taskOrganiser;
+    }
+    
+    /* ***********************************
+     * Public methods
+     * ***********************************/
     public ArrayList<Task> readFile() {
         ArrayList<Task> tasks = new ArrayList<Task>();
         tasks = readTasks(userPrefFile);
@@ -64,7 +78,29 @@ public class Storage {
         }
         return tasks;
     }
+    
+    public String setUserPrefDirectory(String filePath) {
+        userPrefFileName = filePath;
+        File userFile = new File(userPrefFileName);
 
+        if (userFile.equals(userPrefFile)) {
+            return "Same file directory";
+        } else if (userFile.exists()) {
+            updateConfigFile(userPrefFileName);
+            userPrefFile = userFile;
+            return "The directory is set";
+        } else {
+            return "No such file";
+        }
+    }
+
+    public boolean updateFile(ArrayList<Task> tasks) {
+        return updateTasks(saveFile, tasks) && updateTasks(userPrefFile, tasks);
+    }
+    
+    /* ***********************************
+     * Private methods
+     * ***********************************/
     private ArrayList<Task> readTasks(File file) {
         String text = "";
         ArrayList<Task> tasks = new ArrayList<Task>();
@@ -84,10 +120,6 @@ public class Storage {
         return tasks;
     }
 
-    public boolean updateFile(ArrayList<Task> tasks) {
-        return updateTasks(saveFile, tasks) && updateTasks(userPrefFile, tasks);
-    }
-
     private boolean updateTasks(File file, ArrayList<Task> tasks) {
         try {
             writer = new PrintWriter(file, "UTF-8");
@@ -102,21 +134,6 @@ public class Storage {
         return true;
     }
 
-    public String setUserPrefDirectory(String filePath) {
-        userPrefFileName = filePath;
-        File userFile = new File(userPrefFileName);
-
-        if (userFile.equals(userPrefFile)) {
-            return "Same file directory";
-        } else if (userFile.exists()) {
-            updateConfigFile(userPrefFileName);
-            userPrefFile = userFile;
-            return "The directory is set";
-        } else {
-            return "No such file";
-        }
-    }
-
     private void updateConfigFile(String fileName) {
         try {
             writer = new PrintWriter(configFile, "UTF-8");
@@ -127,7 +144,9 @@ public class Storage {
         }
     }
 
-    // Initialization Methods
+    /* ***********************************
+     * Initialization methods
+     * ***********************************/
     private boolean initReader(File saveFile) {
         try {
             reader = new BufferedReader(new FileReader(saveFile));
@@ -145,7 +164,9 @@ public class Storage {
         }
     }
 
-    // Utility Methods
+    /* ***********************************
+     * Utility methods
+     * ***********************************/
     private void createIfNotExists(File file) {
         try {
             if (!file.exists()) {
