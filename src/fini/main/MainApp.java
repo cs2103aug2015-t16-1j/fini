@@ -48,7 +48,7 @@ public class MainApp extends Application {
 		primaryStage = stage;
 		welcomeButton = new Button();
 		try {
-			parent = FXMLLoader.load(getClass().getResource("view/Welcome3.fxml"));
+			parent = FXMLLoader.load(getClass().getResource("view/Welcome.fxml"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -69,7 +69,7 @@ public class MainApp extends Application {
 		welcomeSceneListener.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			public void handle(KeyEvent userPressesAKey) {
 				try {
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("view/FiniLayout2.fxml"));
+					FXMLLoader loader = new FXMLLoader(getClass().getResource("view/FiniLayout.fxml"));
 					main = (AnchorPane) loader.load();
 
 					Scene scene = new Scene(main);

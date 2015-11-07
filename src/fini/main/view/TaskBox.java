@@ -161,7 +161,7 @@ public class TaskBox extends HBox {
 			//taskBoxLoader.setController(this);
 			//taskBoxLoader.load();
 
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("TaskBox2.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("TaskBox.fxml"));
 			loader.setRoot(this);
 			loader.setController(this);
 			loader.load();

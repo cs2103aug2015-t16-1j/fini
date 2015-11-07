@@ -11,13 +11,13 @@
 
 <fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="550.0" styleClass="taskBox" stylesheets="@style.css" type="HBox" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
 	<children>
-		<Circle fx:id="priority" fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" translateY="7.0" HBox.hgrow="NEVER" />
-		<Label fx:id="index" maxWidth="30.0" prefHeight="30.0" text="Index">
+		<Circle fx:id="priority" fill="DODGERBLUE" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" translateX="-5.0" translateY="7.0" HBox.hgrow="NEVER" />
+		<Label fx:id="index" maxWidth="100.0" minWidth="35.0" prefHeight="30.0" text="Index" HBox.hgrow="ALWAYS">
 			<font>
 				<Font size="12.0" />
 			</font>
 		</Label>
-		<Label fx:id="title" prefHeight="46.0" prefWidth="294.0" text="Title" wrapText="true">
+		<Label fx:id="title" maxWidth="280.0" prefHeight="46.0" prefWidth="280.0" text="Title" wrapText="true">
 			<font>
 				<Font size="14.0" />
 			</font>
@@ -30,16 +30,21 @@
             <Image url="@../resources/images/recurring.png" />
          </image>
       </ImageView>
-		<Label fx:id="project" text="Project" translateY="3.0">
+		<Label fx:id="project" alignment="CENTER" maxWidth="80.0" prefWidth="80.0" text="Project" textAlignment="CENTER" translateY="5.0" HBox.hgrow="NEVER">
 			<font>
 				<Font size="10.0" />
 			</font>
 		</Label>
-		<Label fx:id="date" text="Date" translateY="3.0">
-			<font>
-				<Font size="12.0" />
-			</font>
-		</Label>
+      <VBox prefHeight="200.0" prefWidth="75.0">
+         <children>
+      		<Label fx:id="startDate" alignment="CENTER" prefHeight="15.0" prefWidth="73.0" text="SDate">
+      			<font>
+      				<Font size="12.0" />
+      			</font>
+      		</Label>
+            <Label fx:id="endDate" alignment="CENTER" prefHeight="17.0" prefWidth="74.0" text="EDate" textAlignment="CENTER" />
+         </children>
+      </VBox>
 		<VBox prefHeight="35.0" prefWidth="70.0">
 			<children>
 				<Label fx:id="startTime" alignment="CENTER" prefHeight="15.0" prefWidth="70.0" text="Start" textAlignment="CENTER">
