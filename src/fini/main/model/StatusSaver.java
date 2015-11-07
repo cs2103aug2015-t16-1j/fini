@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
+import fini.main.MainApp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -51,13 +52,22 @@ public class StatusSaver {
      * Public methods
      * ***********************************/
     public void saveStatus(ArrayList<Task> taskMasterList, ObservableList<Task> taskObservableList) {
+        MainApp.finiLogger.info("Undo stack size before save: " + undoMasterStack.size());
+        MainApp.finiLogger.info("Redo stack size before save: " + redoMasterStack.size());
+        
         undoMasterStack.push(copyArrayList(taskMasterList));
         undoObservableStack.push(copyObservableList(taskObservableList));
         redoMasterStack.clear();
         redoObservableStack.clear();
+        
+        MainApp.finiLogger.info("Undo stack size after save: " + undoMasterStack.size());
+        MainApp.finiLogger.info("Redo stack size after save: " + redoMasterStack.size());
     }
 
     public void retrieveLastStatus() {
+        MainApp.finiLogger.info("Undo stack size before retrieve undo: " + undoMasterStack.size());
+        MainApp.finiLogger.info("Redo stack size before retrieve undo: " + redoMasterStack.size());
+        
         try {
             redoMasterStack.push(copyArrayList(undoMasterStack.pop()));
             redoObservableStack.push(copyObservableList(undoObservableStack.pop()));
@@ -67,9 +77,15 @@ public class StatusSaver {
         } catch (EmptyStackException e) {
             e.printStackTrace();
         }
+        
+        MainApp.finiLogger.info("Undo stack size after retrieve undo: " + undoMasterStack.size());
+        MainApp.finiLogger.info("Redo stack size after retrieve undo: " + redoMasterStack.size());
     }
 
     public void retrieveRedoStatus() {
+        MainApp.finiLogger.info("Undo stack size before retrieve redo: " + undoMasterStack.size());
+        MainApp.finiLogger.info("Redo stack size before retrieve redo: " + redoMasterStack.size());
+        
         try {
             tempTaskMasterList = redoMasterStack.pop();
             tempTaskObservableList = redoObservableStack.pop();
@@ -79,6 +95,9 @@ public class StatusSaver {
         } catch (EmptyStackException e) {
             e.printStackTrace();
         }
+        
+        MainApp.finiLogger.info("Undo stack size after retrieve redo: " + undoMasterStack.size());
+        MainApp.finiLogger.info("Redo stack size after retrieve redo: " + redoMasterStack.size());
     }
 
     /* ***********************************

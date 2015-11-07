@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import fini.main.MainApp;
 import fini.main.model.Task;
 import fini.main.model.Task.Type;
 
@@ -17,6 +18,8 @@ import fini.main.model.Task.Type;
  * SortByDateTime
  * SortByOverdue
  * SortByIncomplete
+ * 
+ * Notice that the sequence matters to the result of the order of tasks.
  * 
  * @@author Wang Jie (gaieepo) A0127483B
  *
@@ -148,9 +151,11 @@ public class Sorter {
 
     public void sort() {
         assert listToSort != null;
+        MainApp.finiLogger.info("List before sort: " + listToSort);
         for (Comparator<Task> comparator : comparators) {
             Collections.sort(listToSort, comparator);
         }
+        MainApp.finiLogger.info("List after sort: " + listToSort);
     }
 
     public void addSortByIncomplete() {

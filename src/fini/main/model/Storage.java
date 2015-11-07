@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import fini.main.MainApp;
+
 /**
  * Storage component (which is instantiated as taskOrganizer in Brain) takes charge in saving and retrieving of tasks
  * It makes use of google json library - Gson
@@ -19,6 +21,12 @@ import com.google.gson.JsonSyntaxException;
  * 
  * A Java serialization library that can convert Java Objects into JSON and back
  * https://github.com/google/gson
+ * 
+ * There are total three files that Storage will hand on.
+ * save.txt -> Main save file, when the user preferred file is not found, it acts like a back up file
+ * config.txt -> Store the directory of user preferred file
+ * user preferred file (Fini_untitled.txt) -> user preferred saving file, Storage will access this file first
+ * Notice that user preferred file must be created before the path is set.
  * 
  * @@author Wang Jie (gaieepo) A0127483B 
  */
@@ -55,6 +63,8 @@ public class Storage {
         updateConfigFile(userPrefFileName);
         userPrefFile = new File(userPrefFileName);
         createIfNotExists(userPrefFile);
+        
+        MainApp.finiLogger.info("All file instantiated");
     }
     
     public static Storage getInstance() {
@@ -73,8 +83,13 @@ public class Storage {
         if (tasks == null || tasks.isEmpty()) {
             tasks = readTasks(saveFile);
             if (tasks == null || tasks.isEmpty()) {
+                MainApp.finiLogger.info("Back up cannot save you!");
                 tasks = new ArrayList<Task>();
+            } else if (!tasks.isEmpty()) {
+                MainApp.finiLogger.info("Main save file is damaged. Immediate back up plan is on!");
             }
+        } else {
+            MainApp.finiLogger.info("Successfully read file");
         }
         return tasks;
     }
@@ -171,6 +186,7 @@ public class Storage {
         try {
             if (!file.exists()) {
                 file.createNewFile();
+                MainApp.finiLogger.info(file.toString() + " is created");
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -14,6 +14,7 @@ import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.ParseLocation;
 import com.joestelmach.natty.Parser;
 
+import fini.main.MainApp;
 import fini.main.model.Task.Priority;
 
 /**
@@ -80,6 +81,10 @@ public class FiniParser {
             projectName = determineProjectName(splitStoredParameters);
             notParsed = determineDatetimes(cleanParameters);
             notParsed = eliminateRedundantWords(notParsed);
+            
+            MainApp.finiLogger.info("Clean parameters: " + cleanParameters);
+            MainApp.finiLogger.info("Not parsed words: " + notParsed);
+            
             return "FiniParser.parse SUCCESS";
         } catch (Exception e) {
             e.printStackTrace();

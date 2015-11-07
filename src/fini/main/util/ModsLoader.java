@@ -20,6 +20,7 @@ import org.jsoup.select.Elements;
 import com.joestelmach.natty.DateGroup;
 import com.joestelmach.natty.Parser;
 
+import fini.main.MainApp;
 import fini.main.model.Task;
 
 /**
@@ -61,6 +62,7 @@ public class ModsLoader {
                             .setDatetimes(lessonDateTimes)
                             .setInterval(Period.ofWeeks(1)).build());
                 }
+                MainApp.finiLogger.info("Lessons are loaded");
             }
         } catch (IOException e) {
             e.printStackTrace();
