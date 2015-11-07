@@ -1,2 +1,2 @@
-Nov 07, 2015 8:29:40 PM fini.main.MainApp intialiseLogger
+Nov 07, 2015 8:35:09 PM fini.main.MainApp intialiseLogger
 INFO: Fini Logger Intialised. All is well.
