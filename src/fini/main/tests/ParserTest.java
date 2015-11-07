@@ -80,12 +80,14 @@ public class ParserTest {
 	public void testRecur() {
 		String userInput = "math tuition tomorrow 2pm repeat";
 		parser.parse(userInput);
+		assertEquals(LocalDate.now().plusDays(1), parser.getDatetimes().get(0).toLocalDate());
 		assertEquals(false, parser.getIsRecurring());
 		assertEquals(null, parser.getInterval());
 		assertEquals(null, parser.getRecursUntil());
 		
 		userInput = "math tuition tomorrow 2pm repeat every week";
 		parser.parse(userInput);
+		assertEquals(LocalDate.now().plusDays(1), parser.getDatetimes().get(0).toLocalDate());
 		assertEquals(true, parser.getIsRecurring());
 		assertEquals(createDateTime(2015, 11, 8, 14, 00), parser.getDatetimes().get(0));
 		assertEquals(Period.ofWeeks(1), parser.getInterval());
@@ -93,41 +95,44 @@ public class ParserTest {
 		
 		userInput = "math tuition tomorrow 2pm repeat everyday";
 		parser.parse(userInput);
+		assertEquals(LocalDate.now().plusDays(1), parser.getDatetimes().get(0).toLocalDate());
 		assertEquals(true, parser.getIsRecurring());
 		assertEquals(Period.ofDays(1), parser.getInterval());
 		assertEquals(null, parser.getRecursUntil());
 		
 		userInput = "math tuition tomorrow 2pm repeat every day";
 		parser.parse(userInput);
+		assertEquals(LocalDate.now().plusDays(1), parser.getDatetimes().get(0).toLocalDate());
 		assertEquals(true, parser.getIsRecurring());
 		assertEquals(Period.ofDays(1), parser.getInterval());
 		assertEquals(null, parser.getRecursUntil());
 		
 		userInput = "math tuition tomorrow 2pm repeat every two weeks";
 		parser.parse(userInput);
+		assertEquals(LocalDate.now().plusDays(1), parser.getDatetimes().get(0).toLocalDate());
 		assertEquals(true, parser.getIsRecurring());
 		assertEquals(Period.ofWeeks(2), parser.getInterval());
 		assertEquals(null, parser.getRecursUntil());
 		
 		userInput = "math tuition tomorrow 2pm repeat every two week";
 		parser.parse(userInput);
+		assertEquals(LocalDate.now().plusDays(1), parser.getDatetimes().get(0).toLocalDate());
 		assertEquals(true, parser.getIsRecurring());
 		assertEquals(Period.ofDays(1), parser.getInterval());
 		assertEquals(null, parser.getRecursUntil());
 		
-//		TODO
-//		userInput = "math tuition repeat every week";
-//		parser.parse(userInput);
-//		assertEquals(false, parser.getIsRecurring());
-//		assertEquals(null, parser.getInterval());
-//		assertEquals(null, parser.getRecursUntil());
+		userInput = "math tuition repeat every week";
+		parser.parse(userInput);
+		assertEquals(0, parser.getDatetimes().size());
+		assertEquals(false, parser.getIsRecurring());
+		assertEquals(null, parser.getInterval());
+		assertEquals(null, parser.getRecursUntil());
 		
-//		TODO
-//		userInput = "math tuition repeat every week until dec";
-//		parser.parse(userInput);
-//		assertEquals(false, parser.getIsRecurring());
-//		assertEquals(null, parser.getInterval());
-//		assertEquals(null, parser.getRecursUntil().toLocalDate());
+		userInput = "math tuition repeat every week until dec";
+		parser.parse(userInput);
+		assertEquals(false, parser.getIsRecurring());
+		assertEquals(null, parser.getInterval());
+		assertEquals(null, parser.getRecursUntil());
 		
 		userInput = "math tuition tomorrow 2pm repeat every week until dec";
 		parser.parse(userInput);
@@ -153,7 +158,6 @@ public class ParserTest {
 		assertEquals(Period.ofDays(1), parser.getInterval());
 		assertEquals(createDate(2015, 12, 1), parser.getRecursUntil().toLocalDate());
 		
-//		System.out.println("HERE");
 		userInput = "math tuition tomorrow 2pm repeat until dec";
 		parser.parse(userInput);
 		assertEquals(true, parser.getIsRecurring());
@@ -179,6 +183,12 @@ public class ParserTest {
 		assertEquals(null, parser.getRecursUntil());
 		
 		userInput = "math tuition every week until dec";
+		parser.parse(userInput);
+		assertEquals(false, parser.getIsRecurring());
+		assertEquals(null, parser.getInterval());
+		assertEquals(null, parser.getRecursUntil());
+		
+		userInput = "math tuition every two weeks until dec";
 		parser.parse(userInput);
 		assertEquals(false, parser.getIsRecurring());
 		assertEquals(null, parser.getInterval());

@@ -27,6 +27,7 @@ public class FiniParser {
 	private Priority priority;
 	private String projectName;
 	private ArrayList<LocalDateTime> datetimes;
+	private boolean recurFlag;
 	private boolean isRecurring;
 	private LocalDateTime recursUntil;
 	private Period interval;
@@ -111,7 +112,11 @@ public class FiniParser {
 	private String determineDatetimes(String cleanParameters) {
 		if (cleanParameters.contains("repeat")) {
 			String[] splitParameters = cleanParameters.split("repeat");
-			notParsed = processFrontPart(getSimpleCleanString(splitParameters[0])) + processBackPart(getSimpleCleanString(splitParameters[1]));
+			if (splitParameters.length == 2) {
+				notParsed = processFrontPart(getSimpleCleanString(splitParameters[0])) + processBackPart(getSimpleCleanString(splitParameters[1]));
+			} else {
+				notParsed = processFrontPart(getSimpleCleanString(splitParameters[0]));
+			}
 		} else {
 			notParsed = processFrontPart(cleanParameters);
 		}
@@ -119,7 +124,11 @@ public class FiniParser {
 	}
 
 	private String processBackPart(String parameters) {
-		isRecurring = true;
+		if (recurFlag) {
+			isRecurring = true;
+		} else {
+			return parameters;
+		}
 		List<DateGroup> groups = parser.parse(parameters);
 		if (!parameters.startsWith("every")) {
 			interval = Period.ofDays(1);
@@ -128,19 +137,19 @@ public class FiniParser {
 		
 		String returnNotParsed = "";
 		if (groups.size() == 0) { // everyday/every week (no until)
-			System.out.println("A");
+//			System.out.println("A");
 			returnNotParsed = everyWeekNoUntil(parameters);
 		} else if (groups.size() == 1 && parameters.contains("until") && !groups.get(0).isRecurring()) {
-			System.out.println("B");
+//			System.out.println("B");
 			returnNotParsed = everyWeekUntil(parameters, groups.get(0));
 		} else if (groups.size() == 1 && !parameters.contains("until") && groups.get(0).isRecurring()) {
-			System.out.println("C");
+//			System.out.println("C");
 			returnNotParsed = everyTwoWeeksNoUntil(parameters);
 		} else if (groups.size() == 1 && parameters.contains("until") && groups.get(0).isRecurring()) {
-			System.out.println("D");
+//			System.out.println("D");
 			returnNotParsed = everyTwoWeeksUntil(parameters, groups.get(0));
 		} else { // default: everyday endlessly
-			System.out.println("E");
+//			System.out.println("E");
 			interval = Period.ofDays(1);
 		}
 		return returnNotParsed;
@@ -277,6 +286,7 @@ public class FiniParser {
 		List<DateGroup> groups = parser.parse(parameters);
 
 		if (groups.size() == 0) {
+			recurFlag = false;
 			return getSimpleCleanString(parameters);
 		} else {
 			DateGroup group = groups.get(0);
@@ -371,6 +381,7 @@ public class FiniParser {
 		priority = null;
 		projectName = "Inbox";
 		datetimes = new ArrayList<LocalDateTime>();
+		recurFlag = true;
 		isRecurring = false;
 		recursUntil = null;
 		interval = null;
