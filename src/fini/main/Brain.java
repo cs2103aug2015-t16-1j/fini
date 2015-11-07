@@ -22,7 +22,7 @@ import javafx.collections.ObservableList;
  * It handles all logic process regarding the manipulation of tasks and different display modes.
  * Brain class is the only class that has the access to parser and storage classes.
  * 
- * @author gaieepo A0127483B
+ * @@author Wang Jie (gaieepo) A0127483B
  */
 public class Brain {
     /* ***********************************
