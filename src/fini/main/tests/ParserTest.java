@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -77,7 +78,122 @@ public class ParserTest {
 
 	@Test
 	public void testRecur() {
-//		String userInput = "math tuition tomorrow 2pm";
+		String userInput = "math tuition tomorrow 2pm repeat";
+		parser.parse(userInput);
+		assertEquals(false, parser.getIsRecurring());
+		assertEquals(null, parser.getInterval());
+		assertEquals(null, parser.getRecursUntil());
+		
+		userInput = "math tuition tomorrow 2pm repeat every week";
+		parser.parse(userInput);
+		assertEquals(true, parser.getIsRecurring());
+		assertEquals(createDateTime(2015, 11, 8, 14, 00), parser.getDatetimes().get(0));
+		assertEquals(Period.ofWeeks(1), parser.getInterval());
+		assertEquals(null, parser.getRecursUntil());
+		
+		userInput = "math tuition tomorrow 2pm repeat everyday";
+		parser.parse(userInput);
+		assertEquals(true, parser.getIsRecurring());
+		assertEquals(Period.ofDays(1), parser.getInterval());
+		assertEquals(null, parser.getRecursUntil());
+		
+		userInput = "math tuition tomorrow 2pm repeat every day";
+		parser.parse(userInput);
+		assertEquals(true, parser.getIsRecurring());
+		assertEquals(Period.ofDays(1), parser.getInterval());
+		assertEquals(null, parser.getRecursUntil());
+		
+		userInput = "math tuition tomorrow 2pm repeat every two weeks";
+		parser.parse(userInput);
+		assertEquals(true, parser.getIsRecurring());
+		assertEquals(Period.ofWeeks(2), parser.getInterval());
+		assertEquals(null, parser.getRecursUntil());
+		
+		userInput = "math tuition tomorrow 2pm repeat every two week";
+		parser.parse(userInput);
+		assertEquals(true, parser.getIsRecurring());
+		assertEquals(Period.ofDays(1), parser.getInterval());
+		assertEquals(null, parser.getRecursUntil());
+		
+//		TODO
+//		userInput = "math tuition repeat every week";
+//		parser.parse(userInput);
+//		assertEquals(false, parser.getIsRecurring());
+//		assertEquals(null, parser.getInterval());
+//		assertEquals(null, parser.getRecursUntil());
+		
+//		TODO
+//		userInput = "math tuition repeat every week until dec";
+//		parser.parse(userInput);
+//		assertEquals(false, parser.getIsRecurring());
+//		assertEquals(null, parser.getInterval());
+//		assertEquals(null, parser.getRecursUntil().toLocalDate());
+		
+		userInput = "math tuition tomorrow 2pm repeat every week until dec";
+		parser.parse(userInput);
+		assertEquals(true, parser.getIsRecurring());
+		assertEquals(Period.ofWeeks(1), parser.getInterval());
+		assertEquals(createDate(2015, 12, 1), parser.getRecursUntil().toLocalDate());
+		
+		userInput = "math tuition tomorrow 2pm repeat every two weeks until dec";
+		parser.parse(userInput);
+		assertEquals(true, parser.getIsRecurring());
+		assertEquals(Period.ofWeeks(2), parser.getInterval());
+		assertEquals(createDate(2015, 12, 1), parser.getRecursUntil().toLocalDate());
+		
+		userInput = "math tuition tomorrow 2pm repeat everyday until dec";
+		parser.parse(userInput);
+		assertEquals(true, parser.getIsRecurring());
+		assertEquals(Period.ofDays(1), parser.getInterval());
+		assertEquals(createDate(2015, 12, 1), parser.getRecursUntil().toLocalDate());
+		
+		userInput = "math tuition tomorrow 2pm repeat every sun until dec";
+		parser.parse(userInput);
+		assertEquals(true, parser.getIsRecurring());
+		assertEquals(Period.ofDays(1), parser.getInterval());
+		assertEquals(createDate(2015, 12, 1), parser.getRecursUntil().toLocalDate());
+		
+//		System.out.println("HERE");
+		userInput = "math tuition tomorrow 2pm repeat until dec";
+		parser.parse(userInput);
+		assertEquals(true, parser.getIsRecurring());
+		assertEquals(Period.ofDays(1), parser.getInterval());
+		assertEquals(null, parser.getRecursUntil());
+		
+		userInput = "math tuition every two weeks until";
+		parser.parse(userInput);
+		assertEquals(false, parser.getIsRecurring());
+		assertEquals(null, parser.getInterval());
+		assertEquals(null, parser.getRecursUntil());
+		
+		userInput = "math tuition every week";
+		parser.parse(userInput);
+		assertEquals(false, parser.getIsRecurring());
+		assertEquals(null, parser.getInterval());
+		assertEquals(null, parser.getRecursUntil());
+
+		userInput = "math tuition every mon 2pm";
+		parser.parse(userInput);
+		assertEquals(false, parser.getIsRecurring());
+		assertEquals(null, parser.getInterval());
+		assertEquals(null, parser.getRecursUntil());
+		
+		userInput = "math tuition every week until dec";
+		parser.parse(userInput);
+		assertEquals(false, parser.getIsRecurring());
+		assertEquals(null, parser.getInterval());
+		assertEquals(null, parser.getRecursUntil());
+		
+		userInput = "math tuition every mon to fri 2pm";
+		parser.parse(userInput);
+		assertEquals(false, parser.getIsRecurring());
+		assertEquals(null, parser.getInterval());
+		assertEquals(null, parser.getRecursUntil());
+		
+		userInput = "math tuition repeat every 12th";
+		assertEquals(false, parser.getIsRecurring());
+		assertEquals(null, parser.getInterval());
+		assertEquals(null, parser.getRecursUntil());
 	}
 	
 	private LocalDate createDate(int year, int month, int day) {

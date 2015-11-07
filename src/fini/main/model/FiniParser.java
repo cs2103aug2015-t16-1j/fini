@@ -110,7 +110,6 @@ public class FiniParser {
 
 	private String determineDatetimes(String cleanParameters) {
 		if (cleanParameters.contains("repeat")) {
-			System.out.println("HERE1");
 			String[] splitParameters = cleanParameters.split("repeat");
 			notParsed = processFrontPart(getSimpleCleanString(splitParameters[0])) + processBackPart(getSimpleCleanString(splitParameters[1]));
 		} else {
@@ -120,29 +119,28 @@ public class FiniParser {
 	}
 
 	private String processBackPart(String parameters) {
-		System.out.println("HERE2");
 		isRecurring = true;
 		List<DateGroup> groups = parser.parse(parameters);
 		if (!parameters.startsWith("every")) {
+			interval = Period.ofDays(1);
 			return parameters;
 		}
+		
 		String returnNotParsed = "";
-
-		if (groups.size() != 0) {
-			System.out.println(groups.size() + "|" + parameters.contains("until") + "|" + groups.get(0).isRecurring());
-		} else {
-			System.out.println("ZERORORO");
-		}
-
 		if (groups.size() == 0) { // everyday/every week (no until)
+			System.out.println("A");
 			returnNotParsed = everyWeekNoUntil(parameters);
 		} else if (groups.size() == 1 && parameters.contains("until") && !groups.get(0).isRecurring()) {
+			System.out.println("B");
 			returnNotParsed = everyWeekUntil(parameters, groups.get(0));
 		} else if (groups.size() == 1 && !parameters.contains("until") && groups.get(0).isRecurring()) {
+			System.out.println("C");
 			returnNotParsed = everyTwoWeeksNoUntil(parameters);
 		} else if (groups.size() == 1 && parameters.contains("until") && groups.get(0).isRecurring()) {
+			System.out.println("D");
 			returnNotParsed = everyTwoWeeksUntil(parameters, groups.get(0));
 		} else { // default: everyday endlessly
+			System.out.println("E");
 			interval = Period.ofDays(1);
 		}
 		return returnNotParsed;
@@ -153,9 +151,10 @@ public class FiniParser {
 		String returnNotParsed = parameters;
 		String[] splitParameters = parameters.split(" ");
 		if (isValidNumbering(splitParameters[1]) && isIntervalUnits(splitParameters[2])) {
-			System.out.println("HERE4");
 			interval = determineIntervalUnits(splitParameters[1], splitParameters[2]);
 			returnNotParsed = returnNotParsed.replaceAll("every " + splitParameters[1] + " " + splitParameters[2], "");
+		} else {
+			interval = Period.ofDays(1);
 		}
 		return returnNotParsed;
 	}
@@ -166,6 +165,8 @@ public class FiniParser {
 		if (splitParameters[0].equals("every") && isValidNumbering(splitParameters[1]) && isIntervalUnits(splitParameters[2])) {
 			interval = determineIntervalUnits(splitParameters[1], splitParameters[2]);
 			returnNotParsed = returnNotParsed.replaceAll(splitParameters[0] + " " + splitParameters[1] + " " + splitParameters[2], "");
+		} else {
+			interval = Period.ofDays(1);
 		}
 		return returnNotParsed;
 	}
@@ -298,7 +299,6 @@ public class FiniParser {
 			return getSimpleCleanString(returnNotParsed);
 		}
 	}
-	////////////////////////////////////////////////
 
 	private String eliminateRedundantWords(String notParsed) {
 		String cleanString = "";
