@@ -271,24 +271,6 @@ public class Task implements TaskInterface {
 	}
 	
 	@Override
-	public String toString() {
-		return ">>>>>>>>>\n" + 
-			   taskTitle + "\n" + 
-			   isRecurring + "\n" + 
-			   priority.toString() + "\n" + 
-			   (taskStartDateTime == null ? "Null" : taskStartDateTime.toString()) + "\n" +
-			   (taskEndDateTime == null ? "Null" : taskEndDateTime.toString()) + "\n" +
-			   (recursUntil == null ? "Null" : recursUntil) + "\n" +
-			   (interval == null ? "Null" : interval.toString()) + "\n" +
-			   isCompleted + "\n" +
-			   taskType.toString() + "\n" +
-// TODO commented first to let test pass			   
-//			   objectID + "\n" +
-//			   (recurUniqueID == null ? "Null" : recurUniqueID.toString()) + "\n" +
-			   "<<<<<<<<<";
-	}
-	
-	@Override
 	public Task makeCopy() {
 		Task taskObject = null;
 		try {
@@ -298,12 +280,6 @@ public class Task implements TaskInterface {
 		}
 		taskObject.updateObjectID();
 		return taskObject;
-	}
-	
-	// Project Related Methods
-	// @author gaieepo
-	public void update(String projectName) {
-		this.projectName = projectName;
 	}
 	
 	// DISPLAY related methods

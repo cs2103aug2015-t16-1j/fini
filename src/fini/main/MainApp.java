@@ -26,106 +26,106 @@ import javafx.util.Duration;
  */
 
 public class MainApp extends Application {
-	
-	/* ***********************************
-	 * DEFINE VARIABLES
-	 * ***********************************/ 
-	
-	// Global Logger
-	public final static Logger finiLogger = Logger.getLogger(MainApp.class.getName());
 
-	@FXML
-	private Button welcomeButton;
-	
-	private RootController rootController;
-	private Brain brain;
-	private Stage primaryStage;
-	private static Scene scene;
-	private AnchorPane parent = null;
-	private AnchorPane main = null;
+    /* ***********************************
+     * DEFINE VARIABLES
+     * ***********************************/ 
 
-	/* ***********************************
-	 * METHODS
-	 * ***********************************/ 
-	public static void main(String[] args) {
-		launch(args);
-	}
+    // Global Logger
+    public final static Logger finiLogger = Logger.getLogger(MainApp.class.getName());
 
-	@Override
-	public void start(Stage stage) {		
-		primaryStage = stage;
-		welcomeButton = new Button();
-		try {
-			parent = FXMLLoader.load(getClass().getResource("view/Welcome.fxml"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		scene = new Scene(parent);
-		loadStylesheet();
-		setListenerForWelcomeScene(parent);
-		
-		setUpPrimaryStage();		
-		primaryStage.show();
-	}
+    @FXML
+    private Button welcomeButton;
 
-	private void loadStylesheet() {
-		scene.getStylesheets().add(getClass().getResource("view/style.css").toExternalForm());
-	}
+    private RootController rootController;
+    private Brain brain;
+    private Stage primaryStage;
+    private static Scene scene;
+    private AnchorPane parent = null;
+    private AnchorPane main = null;
 
-	private void setUpPrimaryStage() {
-		primaryStage.setTitle("Fini");
-		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/images/icon.png")));
-		primaryStage.setScene(scene);
-		primaryStage.setResizable(false);
-	}
+    /* ***********************************
+     * METHODS
+     * ***********************************/ 
+    public static void main(String[] args) {
+        launch(args);
+    }
 
-	private void setListenerForWelcomeScene(AnchorPane parent) {
-		final TextField welcomeSceneListener = new TextField();
-		welcomeSceneListener.setLayoutX(-200);
-		welcomeSceneListener.setLayoutY(-200);
-		welcomeSceneListener.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			public void handle(KeyEvent userPressesAKey) {
-				try {
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("view/FiniLayout.fxml"));
-					main = (AnchorPane) loader.load();
+    @Override
+    public void start(Stage stage) {		
+        primaryStage = stage;
+        welcomeButton = new Button();
+        try {
+            parent = FXMLLoader.load(getClass().getResource("view/Welcome.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        scene = new Scene(parent);
+        loadStylesheet();
+        setListenerForWelcomeScene(parent);
 
-					Scene scene = new Scene(main);
-					scene.getStylesheets().add(getClass().getResource("view/style.css").toExternalForm());
-					
-					primaryStage.setScene(scene); 
+        setUpPrimaryStage();		
+        primaryStage.show();
+    }
 
-					rootController = loader.getController();
+    private void loadStylesheet() {
+        scene.getStylesheets().add(getClass().getResource("view/style.css").toExternalForm());
+    }
 
-					primaryStage.show();
-					primaryStage.setResizable(false);
+    private void setUpPrimaryStage() {
+        primaryStage.setTitle("Fini");
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/images/icon.png")));
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
+    }
 
-					FadeTransition fadeIn = new FadeTransition(Duration.millis(1500), main);
-					FadeTransition fadeOut = new FadeTransition(Duration.millis(1500), parent);
+    private void setListenerForWelcomeScene(AnchorPane parent) {
+        final TextField welcomeSceneListener = new TextField();
+        welcomeSceneListener.setLayoutX(-200);
+        welcomeSceneListener.setLayoutY(-200);
+        welcomeSceneListener.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent userPressesAKey) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("view/FiniLayout.fxml"));
+                    main = (AnchorPane) loader.load();
 
-					fadeOut.setFromValue(1.0);
-					fadeOut.setToValue(0.0);
-					fadeOut.play();
+                    Scene scene = new Scene(main);
+                    scene.getStylesheets().add(getClass().getResource("view/style.css").toExternalForm());
 
-					fadeIn.setFromValue(0.0);
-					fadeIn.setToValue(1.0);
-					fadeIn.play();
+                    primaryStage.setScene(scene); 
 
-					initializeBrain();
+                    rootController = loader.getController();
 
-				} catch (IOException e) {
-					System.out.println("Unable to find or load FXML file");
-					e.printStackTrace();
-				}
-			}
-		});
+                    primaryStage.show();
+                    primaryStage.setResizable(false);
 
-		parent.getChildren().add(welcomeSceneListener);
-		welcomeSceneListener.requestFocus();
-	}
+                    FadeTransition fadeIn = new FadeTransition(Duration.millis(1500), main);
+                    FadeTransition fadeOut = new FadeTransition(Duration.millis(1500), parent);
 
-	private void initializeBrain() {
-		brain = Brain.getInstance();
-		brain.setRootController(this.rootController);
-		brain.initDisplay();
-	}
+                    fadeOut.setFromValue(1.0);
+                    fadeOut.setToValue(0.0);
+                    fadeOut.play();
+
+                    fadeIn.setFromValue(0.0);
+                    fadeIn.setToValue(1.0);
+                    fadeIn.play();
+
+                    initializeBrain();
+
+                } catch (IOException e) {
+                    System.out.println("Unable to find or load FXML file");
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        parent.getChildren().add(welcomeSceneListener);
+        welcomeSceneListener.requestFocus();
+    }
+
+    private void initializeBrain() {
+        brain = Brain.getInstance();
+        brain.setRootController(this.rootController);
+        brain.initDisplay();
+    }
 }
