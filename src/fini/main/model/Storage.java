@@ -28,7 +28,7 @@ import fini.main.MainApp;
  * user preferred file (Fini_untitled.txt) -> user preferred saving file, Storage will access this file first
  * Notice that user preferred file must be created before the path is set.
  * 
- * @@author Wang Jie (gaieepo) A0127483B 
+ * @@author A0127483B 
  */
 public class Storage {
     /* ***********************************

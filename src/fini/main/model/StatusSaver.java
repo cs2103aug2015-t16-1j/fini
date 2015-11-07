@@ -12,7 +12,7 @@ import javafx.collections.ObservableList;
  * This class handles the saving of past status of the application
  * Mainly for UNDO and REDO (possibly) functions
  * 
- * @@author Wang Jie (gaieepo) A0127483B
+ * @@author A0127483B
  */
 public class StatusSaver {
     /* ***********************************

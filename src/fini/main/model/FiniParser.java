@@ -26,7 +26,7 @@ import fini.main.model.Task.Priority;
  * Natty is a natural language date parser written in Java.
  * http://natty.joestelmach.com/
  * 
- * @@author Wang Jie (gaieepo) A0127483B
+ * @@author A0127483B
  */
 public class FiniParser {
     /* ***********************************

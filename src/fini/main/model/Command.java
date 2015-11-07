@@ -10,7 +10,7 @@ import java.util.Arrays;
  * 
  * <Command Key word><SPACE>(Optional: <Object index>)<SPACE><Command Parameters>
  * 
- * @@author Wang Jie (gaieepo) A0127483B
+ * @@author A0127483B
  */
 public class Command {
     public static enum CommandType {

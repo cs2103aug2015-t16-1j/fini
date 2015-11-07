@@ -12,7 +12,7 @@ import java.util.UUID;
  * Since creating a task requires quite a lot of parameters for constructor which makes a lot of constructing work redundant,
  * we choose to make use of builder design pattern to merge a TaskBuilder inside Task class.
  * 
- * @@author Wang Jie (gaieepo) A0127483B 
+ * @@author A0127483B 
  */
 public class Task implements TaskInterface {
     /* ***********************************

@@ -21,7 +21,7 @@ import fini.main.model.Task.Type;
  * 
  * Notice that the sequence matters to the result of the order of tasks.
  * 
- * @@author Wang Jie (gaieepo) A0127483B
+ * @@author A0127483B
  *
  */
 public class Sorter {

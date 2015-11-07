@@ -30,7 +30,7 @@ import fini.main.model.Task;
  * Java HTML Parser
  * http://jsoup.org/
  * 
- * @@author Wang Jie (gaieepo) A0127483B
+ * @@author A0127483B
  */
 public class ModsLoader {
     /* ***********************************
