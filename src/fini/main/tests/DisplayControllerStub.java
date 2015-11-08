@@ -4,4 +4,6 @@ public class DisplayControllerStub {
     public DisplayControllerStub() {
         
     }
+    
+    // Public methods
 }
