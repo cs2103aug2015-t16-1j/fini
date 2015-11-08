@@ -1,20 +1,66 @@
-Nov 08, 2015 10:57:21 PM fini.main.MainApp intialiseLogger
+Nov 09, 2015 1:12:01 AM fini.main.MainApp intialiseLogger
 INFO: Fini Logger Intialised. All is well.
-Nov 08, 2015 10:57:22 PM fini.main.model.Storage <init>
+Nov 09, 2015 1:12:02 AM fini.main.model.Storage <init>
 INFO: All file instantiated
-Nov 08, 2015 10:57:22 PM fini.main.model.Storage readFile
-INFO: Main save file is damaged. Immediate back up plan is on!
-Nov 08, 2015 10:57:22 PM fini.main.util.Sorter sort
-INFO: List before sort: [smth cool, class]
-Nov 08, 2015 10:57:22 PM fini.main.util.Sorter sort
-INFO: List after sort: [smth cool, class]
-Nov 08, 2015 10:57:22 PM fini.main.model.StatusSaver saveStatus
+Nov 09, 2015 1:12:02 AM fini.main.model.Storage readFile
+INFO: Successfully read file
+Nov 09, 2015 1:12:02 AM fini.main.util.Sorter sort
+INFO: List before sort: [sdsds]
+Nov 09, 2015 1:12:02 AM fini.main.util.Sorter sort
+INFO: List after sort: [sdsds]
+Nov 09, 2015 1:12:02 AM fini.main.model.StatusSaver saveStatus
 INFO: Undo stack size before save: 0
-Nov 08, 2015 10:57:22 PM fini.main.model.StatusSaver saveStatus
+Nov 09, 2015 1:12:02 AM fini.main.model.StatusSaver saveStatus
 INFO: Redo stack size before save: 0
-Nov 08, 2015 10:57:22 PM fini.main.model.StatusSaver saveStatus
+Nov 09, 2015 1:12:02 AM fini.main.model.StatusSaver saveStatus
 INFO: Undo stack size after save: 1
-Nov 08, 2015 10:57:22 PM fini.main.model.StatusSaver saveStatus
+Nov 09, 2015 1:12:02 AM fini.main.model.StatusSaver saveStatus
 INFO: Redo stack size after save: 0
-Nov 08, 2015 10:57:22 PM fini.main.view.DisplayController <init>
+Nov 09, 2015 1:12:02 AM fini.main.view.DisplayController <init>
 INFO: DisplayController has been initialised.
+Nov 09, 2015 1:12:18 AM fini.main.view.DisplayController executeCommand
+INFO: To be executed by Brain: search
+Nov 09, 2015 1:12:18 AM fini.main.Brain executeCommand
+INFO: User's input: search
+Nov 09, 2015 1:12:18 AM fini.main.Brain executeCommand
+INFO: Command type: SEARCH
+Nov 09, 2015 1:12:18 AM fini.main.Brain executeCommand
+INFO: Object index: -1
+Nov 09, 2015 1:12:18 AM fini.main.Brain executeCommand
+INFO: Parameters: 
+Nov 09, 2015 1:12:18 AM fini.main.model.FiniParser parse
+INFO: Clean parameters: 
+Nov 09, 2015 1:12:18 AM fini.main.model.FiniParser parse
+INFO: Not parsed words: 
+Nov 09, 2015 1:12:18 AM fini.main.util.Sorter sort
+INFO: List before sort: [sdsds]
+Nov 09, 2015 1:12:18 AM fini.main.util.Sorter sort
+INFO: List after sort: [sdsds]
+Nov 09, 2015 1:12:19 AM fini.main.view.DisplayController executeCommand
+INFO: To be executed by Brain: search
+Nov 09, 2015 1:12:19 AM fini.main.Brain executeCommand
+INFO: User's input: search
+Nov 09, 2015 1:12:19 AM fini.main.Brain executeCommand
+INFO: Command type: SEARCH
+Nov 09, 2015 1:12:19 AM fini.main.Brain executeCommand
+INFO: Object index: -1
+Nov 09, 2015 1:12:19 AM fini.main.Brain executeCommand
+INFO: Parameters: 
+Nov 09, 2015 1:12:19 AM fini.main.model.FiniParser parse
+INFO: Clean parameters: 
+Nov 09, 2015 1:12:19 AM fini.main.model.FiniParser parse
+INFO: Not parsed words: 
+Nov 09, 2015 1:12:19 AM fini.main.util.Sorter sort
+INFO: List before sort: [sdsds]
+Nov 09, 2015 1:12:19 AM fini.main.util.Sorter sort
+INFO: List after sort: [sdsds]
+Nov 09, 2015 1:12:22 AM fini.main.view.DisplayController executeCommand
+INFO: To be executed by Brain: exit
+Nov 09, 2015 1:12:22 AM fini.main.Brain executeCommand
+INFO: User's input: exit
+Nov 09, 2015 1:12:22 AM fini.main.Brain executeCommand
+INFO: Command type: EXIT
+Nov 09, 2015 1:12:22 AM fini.main.Brain executeCommand
+INFO: Object index: -1
+Nov 09, 2015 1:12:22 AM fini.main.Brain executeCommand
+INFO: Parameters: 
