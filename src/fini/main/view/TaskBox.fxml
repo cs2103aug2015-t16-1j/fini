@@ -27,7 +27,7 @@
             <Insets right="5.0" />
          </HBox.margin>
          <image>
-            <Image url="@../resources/images/recurring.png" />
+            <Image url="@../resources/images/Recurring%20Icon.png" />
          </image>
       </ImageView>
 		<Label fx:id="project" alignment="CENTER" maxWidth="80.0" prefWidth="80.0" text="Project" textAlignment="CENTER" translateY="5.0" HBox.hgrow="NEVER">
