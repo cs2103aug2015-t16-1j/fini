@@ -1,14 +1,12 @@
 package fini.main.tests;
 
-import fini.main.model.*;
-import fini.main.model.Command.CommandType;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
-import org.junit.After;
 import org.junit.Test;
+
+import fini.main.model.Command;
+import fini.main.model.Command.CommandType;
 
 public class CommandTest {
 	
@@ -24,8 +22,8 @@ public class CommandTest {
 	Command undoCommand;
 	Command redoCommand;
 	Command displayCommand;
-	int result;
 	
+	int result;
 	
 	@Before
 	public void initialize() {

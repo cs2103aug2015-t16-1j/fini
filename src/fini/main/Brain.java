@@ -41,9 +41,9 @@ public class Brain {
     private static final String UPDATE_MESSAGE = "Update: %1$s %2$s";
     private static final String DELETE_MESSAGE = "Delete: %1$s %2$s";
     private static final String CLEAR_MESSAGE = "All tasks have been cleared";
-    private static final String UNDO_LIMIT = "Cannot undo lah! You haven't done any changes yet.";
+    private static final String UNDO_LIMIT = "Unable to undo. You've not done any changes yet.";
     private static final String UNDO_MESSAGE = "Undo~do~do~do~do~";
-    private static final String REDO_LIMIT = "Cannot redo lah! You dun have anything to redo alrdy.";
+    private static final String REDO_LIMIT = "Unable to redo. There is nothing for me to redo.";
     private static final String REDO_MESSAGE = "Redo~do~do~do~do~";
     private static final String DISPLAY_MESSAGE = "display project: %1$s";
     private static final String UNKNOWN_DISPLAY = "Unknown displayTask method";
@@ -57,6 +57,7 @@ public class Brain {
     private static final String HELP_MESSAGE = "Check help panel for more info";
     private static final int START_INDEX = 0;
     private static final int END_INDEX = 1;
+    private static final int MAXIMUM_NUM_OF_PROJECTS = 5;
 
     /* ***********************************
      * Fields
@@ -81,7 +82,7 @@ public class Brain {
     private boolean allDisplayTrigger = false;
 
     /* ***********************************
-     * Private constructor
+     * Private Constructor
      * ***********************************/
     private Brain() {
         finiParser = FiniParser.getInstance();
@@ -131,7 +132,6 @@ public class Brain {
         MainApp.finiLogger.info("Command type: " + commandType.toString());
         MainApp.finiLogger.info("Object index: " + objectIndex);
         MainApp.finiLogger.info("Parameters: " + commandParameters);
-
 
         String display = EMPTY_STRING;
         switch (commandType) {
@@ -227,7 +227,7 @@ public class Brain {
 
         if (!finiParser.getProjectName().equals(DEFAULT_PROJECT) &&
                 !projectNameList.contains(finiParser.getProjectName()) &&
-                projectNameList.size() == 5) {
+                projectNameList.size() == MAXIMUM_NUM_OF_PROJECTS) {
             return EXCEEDS_PROJECT_LIMIT;
         }
 
@@ -271,7 +271,7 @@ public class Brain {
 
         if (!finiParser.getProjectName().equals(DEFAULT_PROJECT) &&
                 !projectNameList.contains(finiParser.getProjectName()) &&
-                projectNameList.size() == 5) {
+                projectNameList.size() == MAXIMUM_NUM_OF_PROJECTS) {
             return EXCEEDS_PROJECT_LIMIT;
         }
 
