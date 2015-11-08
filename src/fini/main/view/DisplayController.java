@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
  */
 
 import fini.main.Brain;
+import fini.main.MainApp;
 import fini.main.model.Task;
 import fini.main.model.Task.Priority;
 import fini.main.model.Task.Type;
@@ -35,13 +36,39 @@ public class DisplayController {
     /* ***********************************
      * DEFINE CONSTANTS
      * ***********************************/
-    
+
+    private static final String PATTERN_UPDATE_WITH_SPACE_AND_TASK_NUM = "update\\s+[0-9]+";
+
+    private static final String PATTERN_ALL_SPACES = "\\s+";
+
+    private static final String USER_INPUT_SEARCH = "search ";
+
+    private static final int NONE = 0;
+
+    // Formats for Date and Time
+    private static final String PATTERN_TIME_FORMAT = "HH:mm";
+    private static final String PATTERN_DATE_FORMAT = "d MMMM";
+
+    private static final double OPACITY_FULL = 1.0;
+    private static final double OPACITY_ZERO = 0.0;
+
+    private static final int DURATION_OF_FADE_IN_ANIMATION = 500;
+    private static final int DURATION_OF_FADE_OUT_ANIMATION = 500;
+
+    // Points awarded for the various priorities
+    private static final int TASK_COMPLETION_POINTS_DEFAULT_PRIORITY = 10;
+    private static final int TASK_COMPLETION_POINTS_LOW_PRIORITY = 10;
+    private static final int TASK_COMPLETION_POINTS_MEDIUM_PRIORITY = 20;
+    private static final int TASK_COMPLETION_POINTS_HIGH_PRIORITY = 30;
+
+    // Various Categories of tasks
     private static final String CATEGORY_COMPLETE = "Complete";
     private static final String CATEGORY_OTHER_TASKS = "Other tasks";
     private static final String CATEGORY_TOMORROW = "Tomorrow";
     private static final String CATEGORY_TODAY = "Today";
     private static final String CATEGORY_FLOATING = "Floating";
     private static final String CATEGORY_OVERDUE = "Overdue";
+
     private static final String PROJECT_INBOX = "Inbox";
 
     // Types of tasks
@@ -67,17 +94,27 @@ public class DisplayController {
     private static final String COMMAND_DELETE = "delete";
     private static final String COMMAND_ADD = "add";
     private static final String COMMAND_SEARCH = "search";
-    
+
     // Maximum number of boxes that can be displayed within the height of the stage
     private static final Integer MAX_DISPLAY_BOXES = 11;
-    
+
     // Shift amount for each PageUp
     private static final Integer SCROLL_INCREMENT = 1;
+
+    private static final int INTIAL_SCROLL_INDEX = 0;
 
     /* ***********************************
      * DEFINE VARIABLES
      * ***********************************/
-    
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(PATTERN_DATE_FORMAT);
+    private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(PATTERN_TIME_FORMAT);
+
+    private Integer scrollIndex = INTIAL_SCROLL_INDEX;
+
+    /* ***********************************
+     * FXML FIELDS
+     * ***********************************/
+
     @FXML
     private ListView<HBox> listView;
 
@@ -113,72 +150,113 @@ public class DisplayController {
 
     private Brain brain = Brain.getInstance();
 
-    private String userInput;
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d MMMM");
-    private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-
-    private Integer scrollIndex = 0;
-
     /* ***********************************
      * METHODS
      * ***********************************/ 
-    
+
     // Empty Constructor
     public DisplayController() {
-
+        MainApp.finiLogger.info("DisplayController has been initialised.");
     }
 
+    /*
+     * This method handles the various inputs of the user that is entered in the
+     * command box of Fini's GUI and acts as a keyboard listener. It then passes 
+     * the command to the Brain for it to be executed.
+     * 
+     * @param event This is a key event that is passed to the method whenever the
+     *              user presses any keyboard button.
+     */
     @FXML
     public void handleKeyPressEvent(KeyEvent event) throws Exception {
-        if (event.getCode() == KeyCode.ENTER) {
-            userInput = commandBox.getText();
+        String userInput = commandBox.getText();
+        if (isUserInputEnter(event)) {
             commandBox.clear();
             if(isHelpPanelVisible()) {
                 hideHelpPanel();
             }
             brain.executeCommand(userInput);
-        } else if (event.getCode() == KeyCode.SPACE) {
-            userInput = commandBox.getText();
-            if (userInput.toLowerCase().equals(COMMAND_SEARCH)) {
+        } else if (isUserInputSpace(event)) {
+            if (isUserInputSearch(userInput)) {
                 brain.executeCommand(userInput);
-            } else if (Pattern.matches("update\\s+[0-9]+", userInput.toLowerCase())) {
-                autoCompleteTaskDetails();
-            } else if (userInput.toLowerCase().startsWith(COMMAND_ADD))  {
-                displayToUser.setText(HELP_FOR_ADD_COMMAND);
-            } else if (userInput.toLowerCase().startsWith(COMMAND_DELETE)) {
-                displayToUser.setText(HELP_FOR_DELETE_COMMAND);
-            } else if (userInput.toLowerCase().startsWith(COMMAND_UPDATE)) {
-                displayToUser.setText(HELP_FOR_UPDATE_COMMAND);
-            } else if (userInput.toLowerCase().startsWith(COMMAND_COMPLETE)) {
-                displayToUser.setText(HELP_FOR_COMPLETE_COMMAND);
-            } else if (userInput.toLowerCase().startsWith(COMMAND_UNCOMPLETE)) {
-                displayToUser.setText(HELP_FOR_UNCOMPLETE_COMMAND);
-            } else if (userInput.toLowerCase().startsWith(COMMAND_MODS)) {
-                displayToUser.setText(HELP_FOR_MODS_COMMAND);
-            }
-        } else if (event.getCode().isDigitKey() || event.getCode().isLetterKey()){
-            userInput = commandBox.getText();
-            if (userInput.toLowerCase().startsWith("search ")) {
+            } else if (Pattern.matches(PATTERN_UPDATE_WITH_SPACE_AND_TASK_NUM, userInput.toLowerCase())) {
+                autoCompleteTaskDetails(userInput);
+            } else {
+                displayRelevantHelpToUser(userInput);
+            }      
+        } else if (isUserInputDigitKey(event) || isUserInputLetterKey(event)){
+            if (doesUserInputStartWithSearch(userInput)) {
                 brain.executeCommand(userInput + event.getCode().toString().toLowerCase());
             }
-        } else if (event.getCode() == KeyCode.BACK_SPACE) {
-            userInput = commandBox.getText();
-            if (userInput.toLowerCase().startsWith("search ")) {
+        } else if (isUserInputBackSpace(event)) {
+            if (doesUserInputStartWithSearch(userInput)) {
                 brain.executeCommand(userInput.substring(0, userInput.length() - 1));
             }
         }
 
-        if(event.getCode() == KeyCode.PAGE_DOWN) {
+        if(isUserInputPageDown(event)) {
             pageDown();
         }
 
-        if(event.getCode() == KeyCode.PAGE_UP) {
+        if(isUserInputPageUp(event)) {
             pageUp();
         }   
     }
 
-    private void autoCompleteTaskDetails() {
-        int updateIndex = Integer.parseInt(userInput.split("\\s+")[1]);
+    private boolean isUserInputSearch(String userInput) {
+        return userInput.toLowerCase().equals(COMMAND_SEARCH);
+    }
+
+    private boolean isUserInputSpace(KeyEvent event) {
+        return event.getCode() == KeyCode.SPACE;
+    }
+
+    private boolean isUserInputEnter(KeyEvent event) {
+        return event.getCode() == KeyCode.ENTER;
+    }
+
+    private void displayRelevantHelpToUser(String userInput) {
+        if (userInput.toLowerCase().startsWith(COMMAND_ADD))  {
+            displayToUser.setText(HELP_FOR_ADD_COMMAND);
+        } else if (userInput.toLowerCase().startsWith(COMMAND_DELETE)) {
+            displayToUser.setText(HELP_FOR_DELETE_COMMAND);
+        } else if (userInput.toLowerCase().startsWith(COMMAND_UPDATE)) {
+            displayToUser.setText(HELP_FOR_UPDATE_COMMAND);
+        } else if (userInput.toLowerCase().startsWith(COMMAND_COMPLETE)) {
+            displayToUser.setText(HELP_FOR_COMPLETE_COMMAND);
+        } else if (userInput.toLowerCase().startsWith(COMMAND_UNCOMPLETE)) {
+            displayToUser.setText(HELP_FOR_UNCOMPLETE_COMMAND);
+        } else if (userInput.toLowerCase().startsWith(COMMAND_MODS)) {
+            displayToUser.setText(HELP_FOR_MODS_COMMAND);
+        }
+    }
+
+    private boolean isUserInputLetterKey(KeyEvent event) {
+        return event.getCode().isLetterKey();
+    }
+
+    private boolean isUserInputDigitKey(KeyEvent event) {
+        return event.getCode().isDigitKey();
+    }
+
+    private boolean isUserInputBackSpace(KeyEvent event) {
+        return event.getCode() == KeyCode.BACK_SPACE;
+    }
+
+    private boolean isUserInputPageDown(KeyEvent event) {
+        return event.getCode() == KeyCode.PAGE_DOWN;
+    }
+
+    private boolean isUserInputPageUp(KeyEvent event) {
+        return event.getCode() == KeyCode.PAGE_UP;
+    }
+
+    private boolean doesUserInputStartWithSearch(String userInput) {
+        return userInput.toLowerCase().startsWith(USER_INPUT_SEARCH);
+    }
+
+    private void autoCompleteTaskDetails(String userInput) {
+        int updateIndex = Integer.parseInt(userInput.split(PATTERN_ALL_SPACES)[1]);
         if (updateIndex > 0) {
             ObservableList<Task> taskObservableList = brain.getTaskObservableList();
             if (updateIndex < taskObservableList.size() + 1) {
@@ -223,14 +301,14 @@ public class DisplayController {
         if ((currentNumOfBoxes > MAX_DISPLAY_BOXES) && (scrollIndex < excessBoxes)) {
             scrollIndex += SCROLL_INCREMENT;
         } else if (currentNumOfBoxes < MAX_DISPLAY_BOXES) {
-            scrollIndex = 0;
+            scrollIndex = NONE;
         }
         listView.scrollTo(scrollIndex);
         System.out.println(scrollIndex);
     }
 
     private boolean isHelpPanelVisible() {
-        return helpPanel.getOpacity() != 0.0;
+        return helpPanel.getOpacity() != OPACITY_ZERO;
     }
 
     // Update Display
@@ -250,9 +328,9 @@ public class DisplayController {
     }
 
     public void updateTasksOverviewPanel(ObservableList<Task> taskObservableList) {
-        Integer tasksInInbox = 0;
-        Integer tasksDueToday = 0;
-        Integer tasksDueThisWeek = 0;
+        Integer tasksInInbox = NONE;
+        Integer tasksDueToday = NONE;
+        Integer tasksDueThisWeek = NONE;
         Integer totalTasks = taskObservableList.size();
 
         for (Task task : taskObservableList) {
@@ -491,7 +569,7 @@ public class DisplayController {
             floatingCategory = new TaskCategory(CATEGORY_FLOATING);
             todayCategory = new TaskCategory(CATEGORY_TODAY);
             tomorrowCategory = new TaskCategory(CATEGORY_TOMORROW);
-            othersCategory = new TaskCategory("Other Tasks");
+            othersCategory = new TaskCategory(CATEGORY_OTHER_TASKS);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -564,23 +642,31 @@ public class DisplayController {
         return hbox;
     }
 
+    /*
+     * This method takes in a list of completed tasks and collates the total
+     * number of points the user has achieved and updates the display. Points 
+     * are awarded based on the priority of the task. High gives 30 points, 
+     * Medium gives 20 points and Low or Default priority gives 10 points.
+     * 
+     * @param completedTasks    A list of Tasks that are completed
+     */
     public void updateFiniPoints(List<Task> completedTasks) {
         Integer points = 0;
 
         for(Task task : completedTasks) {
             switch(task.getPriority()) {
                 case HIGH:
-                    points += 30;
+                    points += TASK_COMPLETION_POINTS_HIGH_PRIORITY;
                     break;
                 case MEDIUM:
                 case NORMAL:
-                    points += 20;
+                    points += TASK_COMPLETION_POINTS_MEDIUM_PRIORITY;
                     break;
                 case LOW:
-                    points += 10;
+                    points += TASK_COMPLETION_POINTS_LOW_PRIORITY;
                     break;
                 default:
-                    points += 10;
+                    points += TASK_COMPLETION_POINTS_DEFAULT_PRIORITY;
                     break;
             }
         }
@@ -589,23 +675,21 @@ public class DisplayController {
 
     private void updateFiniPointsWithFadeAnimation(Integer points) {
         fadeOut(finiPoints);
-
         finiPoints.setText(points.toString());
-
         fadeIn(finiPoints);
     }
 
     private void fadeOut(Node element) {
-        FadeTransition fadeOut = new FadeTransition(Duration.millis(500), element);
-        fadeOut.setFromValue(1.0);
-        fadeOut.setToValue(0.0);
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(DURATION_OF_FADE_OUT_ANIMATION), element);
+        fadeOut.setFromValue(OPACITY_FULL);
+        fadeOut.setToValue(OPACITY_ZERO);
         fadeOut.play();
     }
 
     private void fadeIn(Node element) {
-        FadeTransition fadeIn = new FadeTransition(Duration.millis(500), element);
-        fadeIn.setFromValue(0.0);
-        fadeIn.setToValue(1.0);
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(DURATION_OF_FADE_IN_ANIMATION), element);
+        fadeIn.setFromValue(OPACITY_ZERO);
+        fadeIn.setToValue(OPACITY_FULL);
         fadeIn.play();
     }
 

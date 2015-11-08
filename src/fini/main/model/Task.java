@@ -313,19 +313,36 @@ public class Task implements TaskInterface {
     /* ***********************************
      * Display related methods
      * ***********************************/
+    /* @@author A0121828H */
     public boolean isTaskDueToday() {
-        return taskStartDateTime == null ? false : taskStartDateTime.toLocalDate().isEqual(LocalDate.now());
+        return taskStartDateTime == null ? false : checkIfTaskIsDueToday();
+    }
+
+    private boolean checkIfTaskIsDueToday() {
+        return taskStartDateTime.toLocalDate().isEqual(LocalDate.now());
     }
 
     public boolean isTaskDueTomorrow() {
-        return taskStartDateTime == null ? false : taskStartDateTime.toLocalDate().isEqual(LocalDate.now().plusDays(1));
+        return taskStartDateTime == null ? false : checkIfTaskIsDueTomorrow();
+    }
+
+    private boolean checkIfTaskIsDueTomorrow() {
+        return taskStartDateTime.toLocalDate().isEqual(LocalDate.now().plusDays(1));
     }
 
     public boolean isTaskDueWithinSevenDays() {
-        return taskStartDateTime == null ? false : taskStartDateTime.toLocalDate().isBefore(LocalDate.now().plusDays(7));
+        return taskStartDateTime == null ? false : checkIfTaskIsDueWithinSevenDays();
+    }
+
+    private boolean checkIfTaskIsDueWithinSevenDays() {
+        return taskStartDateTime.toLocalDate().isBefore(LocalDate.now().plusDays(7));
     }
 
     public String getLabelForTaskOverviewPane() {
         return DEFAULT_PROJECT;
+    }
+    
+    public String toString() {
+        return taskTitle;
     }
 }
