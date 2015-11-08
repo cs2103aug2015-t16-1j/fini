@@ -3,6 +3,7 @@ package fini.main;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import fini.main.model.Command;
@@ -97,7 +98,7 @@ public class Brain {
 
         taskMasterList = taskOrganiser.readFile();
         sortTaskMasterList();
-        taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+        taskObservableList.setAll(getIncompleteTasks());
         taskAuxiliaryList.setAll(taskObservableList); 
 
         for (Task task : taskAuxiliaryList) {
@@ -108,21 +109,28 @@ public class Brain {
         statusSaver.saveStatus(taskMasterList, taskObservableList);
     }
 
-    // getInstance method of singleton pattern for Brain
+    /*
+     * This method is the getInstance method for the singleton pattern of
+     * Brain. It initialises a new Brain if Brain is null, else returns the
+     * current instance of the Brain.
+     */
     public static Brain getInstance() {
         if (brain == null) {
             brain = new Brain();
         }
         return brain;
     }
-
-    // Initialize first display when Fini is started - executed in MainApp 
+    
+    /*
+     * This method initialises the first display when FINI is launched
+     * This method is executed from the MainApp
+     */ 
     public void initDisplay() {
         displayController.setFocusToCommandBox();
         displayController.updateMainDisplay(taskAuxiliaryList);
         displayController.updateProjectsOverviewPanel(projectNameList);
         displayController.updateTasksOverviewPanel(taskAuxiliaryList);
-        displayController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
+        displayController.updateFiniPoints(getCompletedTasks());
     }
 
     /* ***********************************
@@ -200,7 +208,7 @@ public class Brain {
         displayControl();
 
         sortTaskMasterList();
-        taskAuxiliaryList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+        taskAuxiliaryList.setAll(getIncompleteTasks());
         projectNameList = FXCollections.observableArrayList();
 
         for (Task task : taskAuxiliaryList) {
@@ -213,7 +221,11 @@ public class Brain {
         displayController.updateTasksOverviewPanel(taskAuxiliaryList);
 
         displayController.updateDisplayToUser(display);
-        displayController.updateFiniPoints(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
+        displayController.updateFiniPoints(getCompletedTasks());
+    }
+
+    private List<Task> getCompletedTasks() {
+        return taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList());
     }
 
     /* ***********************************
@@ -473,7 +485,7 @@ public class Brain {
 
     private void displayControl() {
         if (completeDisplayTrigger) {
-            taskObservableList.setAll(taskMasterList.stream().filter(task -> task.isCompleted()).collect(Collectors.toList()));
+            taskObservableList.setAll(getCompletedTasks());
             displayController.updateCompletedDisplay(taskObservableList);
         } else if (searchDisplayTrigger) {
             displayController.updateSearchDisplay(taskObservableList);
@@ -483,9 +495,13 @@ public class Brain {
             displayController.updateProjectDisplay(taskObservableList);
         } else {
             sortTaskMasterList();
-            taskObservableList.setAll(taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList()));
+            taskObservableList.setAll(getIncompleteTasks());
             displayController.updateMainDisplay(taskObservableList);
         }
+    }
+
+    private List<Task> getIncompleteTasks() {
+        return taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList());
     }
 
     private void sortTaskMasterList() {
