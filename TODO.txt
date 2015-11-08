@@ -20,3 +20,6 @@ REFACTORING & COMMENTING
 1) Review each file and refactor and comment (comment only MAJOR methods)
 
 UG
+
+DG
+- CONTENT
