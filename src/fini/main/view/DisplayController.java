@@ -192,15 +192,18 @@ public class DisplayController {
         }
 
         if(isUserInputPageDown(event)) {
+            MainApp.finiLogger.info("Page Down");
             pageDown();
         }
 
         if(isUserInputPageUp(event)) {
+            MainApp.finiLogger.info("Page Up");
             pageUp();
         }   
     }
 
     private void executeCommand(String inputToExecute) {
+        MainApp.finiLogger.info("To be executed by Brain: " + inputToExecute);
         brain.executeCommand(inputToExecute);
     }
 
@@ -546,6 +549,8 @@ public class DisplayController {
             if(isOverdue) {
                 overdueBoxes.add(newTaskBox);
             } else {
+                assert isOverdue == false;
+                
                 if(isFloating) {
                     floatingBoxes.add(newTaskBox);
                 } else if(task.isTaskDueToday()) {
