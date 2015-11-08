@@ -48,7 +48,6 @@ public class FiniParser {
     private static FiniParser finiParser;
     private Parser parser;
 
-    private String storedParameters;
     private String cleanParameters;
     private Priority priority;
     private String projectName;
@@ -80,12 +79,11 @@ public class FiniParser {
     public String parse(String commandParameters) {
         try {
             initializeFields();
-            storedParameters = commandParameters;
-            cleanParameters = storedParameters; // init of clean
+            cleanParameters = getSimpleCleanString(commandParameters); // init of clean
 
-            String[] splitStoredParameters = storedParameters.split(ONE_SPACE);
-            priority = determinePriority(splitStoredParameters);
-            projectName = determineProjectName(splitStoredParameters);
+            String[] splitParameters = cleanParameters.split(ONE_SPACE);
+            determinePriority(splitParameters);
+            determineProjectName(splitParameters);
             notParsed = determineDatetimes(cleanParameters);
             notParsed = eliminateRedundantWords(notParsed);
             
@@ -99,14 +97,17 @@ public class FiniParser {
         }
     }
 
-    private Priority determinePriority(String[] splitStoredParameters) {
-        List<String> words = Arrays.asList(splitStoredParameters);
+    /* ***********************************
+     * Private method
+     * ***********************************/    
+    private void determinePriority(String[] splitParameters) {
+        List<String> words = Arrays.asList(splitParameters);
         for (String word : words) {
             if (word.toLowerCase().equals("priority")) {
                 if (words.indexOf(word) != words.size() - 1) {
-                    String priority = words.get(words.indexOf(word) + 1);
+                    String priorityString = words.get(words.indexOf(word) + 1);
                     Priority returnPriority;
-                    switch (priority.toLowerCase()) {
+                    switch (priorityString.toLowerCase()) {
                         case "high":
                             returnPriority = Priority.HIGH;
                             break;
@@ -122,9 +123,10 @@ public class FiniParser {
                     }
 
                     if (!returnPriority.equals(Priority.NORMAL)) {
-                        cleanParameters = cleanParameters.replaceAll(word + ONE_SPACE + priority, EMPTY_STRING);
+                        cleanParameters = cleanParameters.replaceAll(word + ONE_SPACE + priorityString, EMPTY_STRING);
                         cleanParameters = getSimpleCleanString(cleanParameters);
-                        return returnPriority;
+                        priority = returnPriority;
+                        break;
                     }
                 } else {
                     // "priority" keyword appears at the end
@@ -132,32 +134,46 @@ public class FiniParser {
                 }
             }
         }
-        return Priority.NORMAL;
     }
 
-    private String determineProjectName(String[] splitStoredParameters) {
-        List<String> words = Arrays.asList(splitStoredParameters);
+    private void determineProjectName(String[] splitParameters) {
+        List<String> words = Arrays.asList(splitParameters);
         for (String word : words) {
             if (word.toLowerCase().equals("project")) {
                 if (words.indexOf(word) != words.size() - 1) {
-                    String projectName = words.get(words.indexOf(word) + 1);
-                    cleanParameters = cleanParameters.replaceAll(word + ONE_SPACE + projectName, EMPTY_STRING);
+                    String projectString = words.get(words.indexOf(word) + 1);
+                    cleanParameters = cleanParameters.replaceAll(word + ONE_SPACE + projectString, EMPTY_STRING);
                     cleanParameters = getSimpleCleanString(cleanParameters);
-                    return projectName;
+                    projectName = projectString;
                 } else {
                     // "project" keyword appears at the end
                     break;
                 }
             }
         }
-        return DEFAULT_PROJECT;
     }
 
+    /**
+     * Extract date time information out of parameters.
+     * With the help of Natty's interpretation, our parser can evaluation various date time format.
+     * 
+     * Since we build a recur evaluator out of Natty and yet Natty is not able to handle recurring event correctly as we expected.
+     * This method split the parameters with keyword "repeat" and parse the segments before and after REPEAT accordingly.
+     * 
+     * Notice that the order of evaluation goes this way:
+     * recur starting datetime -> repeat keyword -> interval & recurs until
+     * If anything at higher order is not satisfied, the recurs condition is not valid.
+     * A null interval or default interval will be set to recur interval.
+     * An endless recur may be set for recursUntil.
+     * 
+     * @param cleanParameters
+     * @return cleaned notParsed string
+     */
     private String determineDatetimes(String cleanParameters) {
         if (cleanParameters.contains("repeat")) {
             String[] splitParameters = cleanParameters.split("repeat");
             if (splitParameters.length == 2) {
-                notParsed = processFrontPart(getSimpleCleanString(splitParameters[0])) + processBackPart(getSimpleCleanString(splitParameters[1]));
+                notParsed = processFrontPart(getSimpleCleanString(splitParameters[0])) + ONE_SPACE + processBackPart(getSimpleCleanString(splitParameters[1]));
             } else {
                 notParsed = processFrontPart(getSimpleCleanString(splitParameters[0]));
             }
@@ -170,10 +186,6 @@ public class FiniParser {
     /* ***********************************
      * Public getters
      * ***********************************/
-    public String getStoredParameters() {
-        return storedParameters;
-    }
-
     public String getCleanParameters() {
         return cleanParameters;
     }
@@ -214,6 +226,33 @@ public class FiniParser {
         return input.trim().replaceAll(ONE_OR_MORE_SPACE, ONE_SPACE);
     }
     
+    /**
+     * Extract recur interval and recur limit (recursUntil) out of parameters after REPEAT keyword
+     * 
+     * Possible situations (in example format):
+     * Single interval unit with no recurs until -> every week / everyday
+     * Single interval unit with recurs until -> every week until dec
+     * Multiple interval units with no recurs until -> every two months
+     * Multiple interval units with until -> every two weeks until dec
+     * 
+     * The reason we split so many situations is that, Natty although accept recurring datetime, it parses recur very differently.
+     * Sometimes it will go against our original purpose. The details of how it violate our purpose are omitted here.
+     * 
+     * P.S.
+     * A recurring task require at least two elements
+     * 1. Recur starting point
+     * 2. Recur interval
+     * (3. Recur limit)
+     * This is the main reason we require users to input STARTING TIME before REPEAT and followed by INTERVAL and RECURSUNTIL
+     * 
+     * As for interval unit, we regard 'day', 'week', 'month', 'year' as single unit which cannot be split down into smaller components,
+     * whereas 'two weeks', 'three months' are multiple interval units.
+     * Whichever interval format is goes, the interval is always a constant value.
+     * Intervals like 'every monday to friday' are not allowed in FINI.
+     * 
+     * @param parameters
+     * @return notParsed parameters after REPEAT keyword
+     */
     private String processBackPart(String parameters) {
         if (recurFlag) {
             isRecurring = true;
@@ -227,26 +266,22 @@ public class FiniParser {
         }
 
         String returnNotParsed = EMPTY_STRING;
-        if (groups.size() == 0) { // everyday/every week (no until)
-            //          System.out.println("A");
-            returnNotParsed = everyWeekNoUntil(parameters);
+        if (groups.size() == 0) {
+            returnNotParsed = singleIntervalUnitWithNoUntil(parameters);
         } else if (groups.size() == 1 && parameters.contains("until") && !groups.get(0).isRecurring()) {
-            //          System.out.println("B");
-            returnNotParsed = everyWeekUntil(parameters, groups.get(0));
+            returnNotParsed = singleIntervalUnitWithUntil(parameters, groups.get(0));
         } else if (groups.size() == 1 && !parameters.contains("until") && groups.get(0).isRecurring()) {
-            //          System.out.println("C");
-            returnNotParsed = everyTwoWeeksNoUntil(parameters);
+            returnNotParsed = multipleIntervalUnitsWithNoUntil(parameters);
         } else if (groups.size() == 1 && parameters.contains("until") && groups.get(0).isRecurring()) {
-            //          System.out.println("D");
-            returnNotParsed = everyTwoWeeksUntil(parameters, groups.get(0));
-        } else { // default: everyday endlessly
-            //          System.out.println("E");
+            returnNotParsed = multipleIntervalUnitsWithUntil(parameters, groups.get(0));
+        } else {
+         // default: everyday endlessly
             interval = Period.ofDays(1);
         }
         return returnNotParsed;
     }
 
-    private String everyTwoWeeksUntil(String parameters, DateGroup group) {
+    private String multipleIntervalUnitsWithUntil(String parameters, DateGroup group) {
         recursUntil = LocalDateTime.ofInstant(group.getRecursUntil().toInstant(), ZoneId.systemDefault());
         String returnNotParsed = parameters;
         String[] splitParameters = parameters.split(ONE_SPACE);
@@ -259,7 +294,7 @@ public class FiniParser {
         return returnNotParsed;
     }
 
-    private String everyTwoWeeksNoUntil(String parameters) {
+    private String multipleIntervalUnitsWithNoUntil(String parameters) {
         String returnNotParsed = parameters;
         String[] splitParameters = parameters.split(ONE_SPACE);
         if (splitParameters[0].equals("every") && isValidNumbering(splitParameters[1]) && isIntervalUnits(splitParameters[2])) {
@@ -271,7 +306,7 @@ public class FiniParser {
         return returnNotParsed;
     }
 
-    private String everyWeekUntil(String parameters, DateGroup group) {
+    private String singleIntervalUnitWithUntil(String parameters, DateGroup group) {
         String returnNotParsed = parameters;
         recursUntil = LocalDateTime.ofInstant(group.getDates().get(0).toInstant(), ZoneId.systemDefault());
         String[] splitParameters = parameters.split(ONE_SPACE);
@@ -288,7 +323,7 @@ public class FiniParser {
         return returnNotParsed;
     }
 
-    private String everyWeekNoUntil(String parameters) {
+    private String singleIntervalUnitWithNoUntil(String parameters) {
         String returnNotParsed = parameters;
         String[] splitParameters = parameters.split(ONE_SPACE);
         if (parameters.startsWith("everyday")) {
@@ -371,6 +406,14 @@ public class FiniParser {
         return word.equals("day") || word.equals("week") || word.equals("month") || word.equals("year");
     }
 
+    /**
+     * Extract starting datetime out of the front part if REPEAT exists, the entire string if REPEAT is absent.
+     * 
+     * If only date is given, it is very likely that the user is expecting a 2359 as a time.
+     * 
+     * @param parameters
+     * @return notParsed parameters before keyword REPEAT or notParsed parameters of the whole string
+     */
     private String processFrontPart(String parameters) {
         List<DateGroup> groups = parser.parse(parameters);
 
@@ -419,8 +462,8 @@ public class FiniParser {
      * ***********************************/
     private void initializeFields() {
         parser = new Parser();
-        storedParameters = EMPTY_STRING;
-        priority = null;
+        cleanParameters = EMPTY_STRING;
+        priority = Priority.NORMAL;
         projectName = DEFAULT_PROJECT;
         datetimes = new ArrayList<LocalDateTime>();
         recurFlag = true;

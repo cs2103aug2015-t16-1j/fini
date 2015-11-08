@@ -44,6 +44,16 @@ public class ParserTest {
         assertEquals(null, parser.getRecursUntil());
         assertEquals("gai", parser.getProjectName());
         assertEquals(Priority.HIGH, parser.getPriority());
+        
+        userInput = "eat lunch priority wtf";
+        parser.parse(userInput);
+        assertEquals(Priority.NORMAL, parser.getPriority());
+        assertEquals("eat lunch priority wtf", parser.getNotParsed());
+        
+        userInput = "eat lunch priority";
+        parser.parse(userInput);
+        assertEquals(Priority.NORMAL, parser.getPriority());
+        assertEquals("eat lunch priority", parser.getNotParsed());
 	}
 	
 	@Test
@@ -89,7 +99,7 @@ public class ParserTest {
 		parser.parse(userInput);
 		assertEquals(LocalDate.now().plusDays(1), parser.getDatetimes().get(0).toLocalDate());
 		assertEquals(true, parser.getIsRecurring());
-		assertEquals(createDateTime(2015, 11, 8, 14, 00), parser.getDatetimes().get(0));
+		assertEquals(createDateTime(2015, 11, 9, 14, 00), parser.getDatetimes().get(0));
 		assertEquals(Period.ofWeeks(1), parser.getInterval());
 		assertEquals(null, parser.getRecursUntil());
 		
