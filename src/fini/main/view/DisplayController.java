@@ -69,12 +69,14 @@ public class DisplayController {
     private static final String EMPTY_STRING = "";
 
     // List of help commands displayed to user
-    private static final String HELP_FOR_MODS_COMMAND = "mods <FILE_NAME>";
+    private static final String HELP_FOR_MODS_COMMAND = "mods <FILE_NAME.html>";
     private static final String HELP_FOR_UNCOMPLETE_COMMAND = "uncomplete <TASK_NUMBER>";
     private static final String HELP_FOR_COMPLETE_COMMAND = "complete <TASK_NUMBER>";
     private static final String HELP_FOR_UPDATE_COMMAND = "update <TASK_NUMBER>";
     private static final String HELP_FOR_DELETE_COMMAND = "delete <TASK_NUMBER>";
     private static final String HELP_FOR_ADD_COMMAND = "add <title> <startTime> <endTime>";
+    private static final String HELP_FOR_DISPLAY_COMMAND = "display all/main/completed";
+    private static final String HELP_FOR_STORAGE_COMMAND = "set <FILE_PATH>";
 
     // List of commands user enters
     private static final String COMMAND_MODS = "mods";
@@ -84,6 +86,8 @@ public class DisplayController {
     private static final String COMMAND_DELETE = "delete";
     private static final String COMMAND_ADD = "add";
     private static final String COMMAND_SEARCH = "search";
+    private static final String COMMAND_DISPLAY = "display";
+    private static final String COMMAND_STORAGE = "set";
 
     // Maximum number of boxes that can be displayed within the height of the stage
     private static final Integer MAX_DISPLAY_BOXES = 11;
@@ -232,7 +236,11 @@ public class DisplayController {
             displayToUser.setText(HELP_FOR_UNCOMPLETE_COMMAND);
         } else if (userInput.toLowerCase().startsWith(COMMAND_MODS)) {
             displayToUser.setText(HELP_FOR_MODS_COMMAND);
-        }
+        } else if (userInput.toLowerCase().startsWith(COMMAND_DISPLAY)) {
+            displayToUser.setText(HELP_FOR_DISPLAY_COMMAND);
+        } else if (userInput.toLowerCase().startsWith(COMMAND_STORAGE)) {
+            displayToUser.setText(HELP_FOR_STORAGE_COMMAND);
+        } 
     }
 
     private boolean isUserInputLetterKey(KeyEvent event) {
