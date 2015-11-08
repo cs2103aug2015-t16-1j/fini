@@ -36,15 +36,6 @@ public class DisplayController {
     /* ***********************************
      * DEFINE CONSTANTS
      * ***********************************/
-
-    private static final String PATTERN_UPDATE_WITH_SPACE_AND_TASK_NUM = "update\\s+[0-9]+";
-
-    private static final String PATTERN_ALL_SPACES = "\\s+";
-
-    private static final String USER_INPUT_SEARCH = "search ";
-
-    private static final int NONE = 0;
-
     // Formats for Date and Time
     private static final String PATTERN_TIME_FORMAT = "HH:mm";
     private static final String PATTERN_DATE_FORMAT = "d MMMM";
@@ -85,7 +76,6 @@ public class DisplayController {
     private static final String HELP_FOR_DELETE_COMMAND = "delete <TASK_NUMBER>";
     private static final String HELP_FOR_ADD_COMMAND = "add <title> <startTime> <endTime>";
 
-
     // List of commands user enters
     private static final String COMMAND_MODS = "mods";
     private static final String COMMAND_UNCOMPLETE = "uncomplete";
@@ -102,6 +92,14 @@ public class DisplayController {
     private static final Integer SCROLL_INCREMENT = 1;
 
     private static final int INTIAL_SCROLL_INDEX = 0;
+    
+    // Patterns in user input
+    private static final String PATTERN_UPDATE_WITH_SPACE_AND_TASK_NUM = "update\\s+[0-9]+";
+    private static final String PATTERN_ALL_SPACES = "\\s+";
+
+    private static final String USER_INPUT_SEARCH = "search ";
+
+    private static final int NONE = 0;
 
     /* ***********************************
      * DEFINE VARIABLES
@@ -154,7 +152,6 @@ public class DisplayController {
      * METHODS
      * ***********************************/ 
 
-    // Empty Constructor
     public DisplayController() {
         MainApp.finiLogger.info("DisplayController has been initialised.");
     }
@@ -175,10 +172,10 @@ public class DisplayController {
             if(isHelpPanelVisible()) {
                 hideHelpPanel();
             }
-            brain.executeCommand(userInput);
+            executeCommand(userInput);
         } else if (isUserInputSpace(event)) {
             if (isUserInputSearch(userInput)) {
-                brain.executeCommand(userInput);
+                executeCommand(userInput);
             } else if (Pattern.matches(PATTERN_UPDATE_WITH_SPACE_AND_TASK_NUM, userInput.toLowerCase())) {
                 autoCompleteTaskDetails(userInput);
             } else {
@@ -186,11 +183,11 @@ public class DisplayController {
             }      
         } else if (isUserInputDigitKey(event) || isUserInputLetterKey(event)){
             if (doesUserInputStartWithSearch(userInput)) {
-                brain.executeCommand(userInput + event.getCode().toString().toLowerCase());
+                executeCommand(userInput + event.getCode().toString().toLowerCase());
             }
         } else if (isUserInputBackSpace(event)) {
             if (doesUserInputStartWithSearch(userInput)) {
-                brain.executeCommand(userInput.substring(0, userInput.length() - 1));
+                executeCommand(userInput.substring(0, userInput.length() - 1));
             }
         }
 
@@ -201,6 +198,10 @@ public class DisplayController {
         if(isUserInputPageUp(event)) {
             pageUp();
         }   
+    }
+
+    private void executeCommand(String inputToExecute) {
+        brain.executeCommand(inputToExecute);
     }
 
     private boolean isUserInputSearch(String userInput) {
@@ -311,14 +312,10 @@ public class DisplayController {
         return helpPanel.getOpacity() != OPACITY_ZERO;
     }
 
-    // Update Display
     public void updateDisplayToUser(String display) {
         displayToUser.setText(display);
     }
 
-    // For Integration testing purposes
-    // Integration tests: testIntegrationDeleteTask
-    //////////////////////////////////
     public Label getDisplayToUser() {
         return displayToUser;
     }
@@ -600,7 +597,6 @@ public class DisplayController {
         displayBoxes.addAll(otherBoxes);
     }
 
-    // Add Display Component
     public HBox addHBox(int taskId, String typeOfTask, String taskTitle, String taskDate, String taskStartTime,
             String taskEndTime, String taskPriority, String taskProject, boolean isRecurringTask) {
         HBox hbox = new HBox();

@@ -35,16 +35,16 @@ public class Brain {
     private static final String ADD_EMPTY_PARAMETER = "Add CommandParameters is empty";
     private static final String UPDATE_EMPTY_PARAMETER = "Update CommandParameters is empty";
     private static final String START_EXCEEDS_END = "Start date and time should be earlier than end date time";
-    private static final String EXCEEDS_PROJECT_LIMIT = "Maximum 5 projects at the same time";
+    private static final String EXCEEDS_PROJECT_LIMIT = "Maximum of 5 projects at the same time!";
     private static final String TASK_NOT_FOUND = "Task not found";
     private static final String ADD_MESSAGE = "Added: %1$s";
     private static final String UPDATE_MESSAGE = "Update: %1$s %2$s";
     private static final String DELETE_MESSAGE = "Delete: %1$s %2$s";
     private static final String CLEAR_MESSAGE = "All tasks have been cleared";
     private static final String UNDO_LIMIT = "Unable to undo. You've not done any changes yet.";
-    private static final String UNDO_MESSAGE = "Undo~do~do~do~do~";
+    private static final String UNDO_MESSAGE = "Your action has been undone.";
     private static final String REDO_LIMIT = "Unable to redo. There is nothing for me to redo.";
-    private static final String REDO_MESSAGE = "Redo~do~do~do~do~";
+    private static final String REDO_MESSAGE = "Your action has been redone.";
     private static final String DISPLAY_MESSAGE = "display project: %1$s";
     private static final String UNKNOWN_DISPLAY = "Unknown displayTask method";
     private static final String DISPLAY_COMPLETED_MESSAGE = "display completed";
@@ -55,9 +55,15 @@ public class Brain {
     private static final String NO_MODS_FILE = "No nusmods file";
     private static final String MODS_LOADED = "NUSMODS loaded";
     private static final String HELP_MESSAGE = "Check help panel for more info";
+
     private static final int START_INDEX = 0;
     private static final int END_INDEX = 1;
+
     private static final int MAXIMUM_NUM_OF_PROJECTS = 5;
+
+    private static final String USER_INPUT_DISPLAY_ALL = "all";
+    private static final String USER_INPUT_DISPLAY_MAIN = "main";
+    private static final String USER_INPUT_DISPLAY_COMPLETED = "completed";
 
     /* ***********************************
      * Fields
@@ -337,19 +343,19 @@ public class Brain {
     }
 
     private String displayTask(String commandParameters) {
-        if (commandParameters.equals("completed")) {
+        if (commandParameters.equals(USER_INPUT_DISPLAY_COMPLETED)) {
             completeDisplayTrigger = true;
             projectDisplayTrigger = false;
             searchDisplayTrigger = false;
             allDisplayTrigger = false;
             return DISPLAY_COMPLETED_MESSAGE;
-        } else if(commandParameters.equals(EMPTY_STRING) || commandParameters.equals("main")) {
+        } else if(commandParameters.equals(EMPTY_STRING) || commandParameters.equals(USER_INPUT_DISPLAY_MAIN)) {
             completeDisplayTrigger = false;
             projectDisplayTrigger = false;
             searchDisplayTrigger = false;
             allDisplayTrigger = false;
             return DISPLAY_MAIN_MESSAGE;
-        } else if(commandParameters.equals("all")) {
+        } else if(commandParameters.equals(USER_INPUT_DISPLAY_ALL)) {
             completeDisplayTrigger = false;
             searchDisplayTrigger = false;
             projectDisplayTrigger = false;
@@ -498,7 +504,7 @@ public class Brain {
     }
 
     /* ***********************************
-     * Getter and setter
+     * Getter and setters
      * ***********************************/
     public ObservableList<Task> getTaskObservableList() {
         return taskObservableList;
