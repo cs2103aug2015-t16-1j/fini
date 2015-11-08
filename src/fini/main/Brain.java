@@ -72,12 +72,12 @@ public class Brain {
      * ***********************************/
     // Singleton
     private static Brain brain;
-    private DisplayController displayController;
+//    private DisplayController displayController;
     
     /**
      * DisplayControllerStub for test purpose
      */
-//    private DisplayControllerStub displayController;
+    private DisplayControllerStub displayController;
 
     private Storage taskOrganiser;
     private FiniParser finiParser;
@@ -533,18 +533,18 @@ public class Brain {
         return taskObservableList;
     }
 
-    public void setDisplayController(DisplayController displayController) {
-        this.displayController = displayController;
-    }
+//    public void setDisplayController(DisplayController displayController) {
+//        this.displayController = displayController;
+//    }
     
     /**
-     * setDisplayControllerStub for testing 
+     * setDisplayController for testing 
      */
-//    public void setDisplayControllerStub(DisplayControllerStub displayControllerStub) {
-//        this.displayController = displayControllerStub;
-//    }
-
-    public DisplayController getDisplayController() {
-        return displayController;
+    public void setDisplayController(DisplayControllerStub displayControllerStub) {
+        this.displayController = displayControllerStub;
     }
+
+//    public DisplayController getDisplayController() {
+//        return displayController;
+//    }
 }

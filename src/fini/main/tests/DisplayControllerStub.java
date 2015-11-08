@@ -6,6 +6,8 @@ import fini.main.model.Task;
 import javafx.collections.ObservableList;
 
 public class DisplayControllerStub {
+    private String testMessage;
+    
     public DisplayControllerStub() {
         
     }
@@ -39,11 +41,16 @@ public class DisplayControllerStub {
     }
     
     public void displayHelpPanel() {
+        testMessage = "displayHelpPanel";
     }
 
     public void hideHelpPanel() {
     }
 
     public void setFocusToCommandBox() {
+    }
+    
+    public String getTestMessage() {
+        return testMessage;
     }
 }
