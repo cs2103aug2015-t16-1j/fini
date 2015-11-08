@@ -12,6 +12,11 @@ import fini.main.model.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Since this test makes use of DisplayControllerStub, some methods in Brain need to be commented out.
+ * @author gaieepo
+ *
+ */
 public class BrainTest {
     Brain brain = Brain.getInstance();
     DisplayControllerStub displayController = new DisplayControllerStub();
