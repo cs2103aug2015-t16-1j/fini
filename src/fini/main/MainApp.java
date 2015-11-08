@@ -153,7 +153,7 @@ public class MainApp extends Application {
 
     private void initializeBrain() {
         brain = Brain.getInstance();
-        brain.setRootController(this.displayController);
+        brain.setDisplayController(this.displayController);
         brain.initDisplay();
     }
 }

@@ -38,7 +38,7 @@ public class IntegrationTest {
 	@Test
 	public void testIntegrationDeleteTask() {
 		testBrain.executeCommand("delete 5");
-		assertEquals("Task not found", testBrain.getRootController().getDisplayToUser().toString() );
+		assertEquals("Task not found", testBrain.getDisplayController().getDisplayToUser().toString() );
 	}
 
 }

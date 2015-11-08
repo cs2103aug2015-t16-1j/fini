@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import fini.main.model.Command;
 import fini.main.model.Command.CommandType;
+import fini.main.tests.DisplayControllerStub;
 import fini.main.model.FiniParser;
 import fini.main.model.StatusSaver;
 import fini.main.model.Storage;
@@ -72,6 +73,11 @@ public class Brain {
     // Singleton
     private static Brain brain;
     private DisplayController displayController;
+    
+    /**
+     * DisplayControllerStub for test purpose
+     */
+//    private DisplayControllerStub displayController;
 
     private Storage taskOrganiser;
     private FiniParser finiParser;
@@ -527,11 +533,18 @@ public class Brain {
         return taskObservableList;
     }
 
-    public void setRootController(DisplayController displayController) {
+    public void setDisplayController(DisplayController displayController) {
         this.displayController = displayController;
     }
+    
+    /**
+     * setDisplayControllerStub for testing 
+     */
+//    public void setDisplayControllerStub(DisplayControllerStub displayControllerStub) {
+//        this.displayController = displayControllerStub;
+//    }
 
-    public DisplayController getRootController() {
+    public DisplayController getDisplayController() {
         return displayController;
     }
 }
