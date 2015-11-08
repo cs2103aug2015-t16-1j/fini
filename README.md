@@ -6,10 +6,10 @@ With FINI, you will be able to organize your tasks and accomplish them efficient
 Please refer to License.txt in the main folder for using/adapting Fini.
 
 ## Team Members
-V.Harish
+V.Harish A0121828H
 
-Qiyun
+Qiyun A0130047W
 
-Wang Jie
+Wang Jie A0127483B
 
-Joel Jonas
+Joel Jonas A0121298E

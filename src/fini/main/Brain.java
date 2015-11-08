@@ -354,6 +354,7 @@ public class Brain {
         return taskOrganiser.setUserPrefDirectory(commandParameters);
     }
 
+    
     private String displayTask(String commandParameters) {
         if (commandParameters.equals(USER_INPUT_DISPLAY_COMPLETED)) {
             completeDisplayTrigger = true;
