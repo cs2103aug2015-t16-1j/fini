@@ -1,102 +1,186 @@
-Nov 08, 2015 1:23:02 AM fini.main.MainApp intialiseLogger
+Nov 08, 2015 1:08:12 PM fini.main.MainApp intialiseLogger
 INFO: Fini Logger Intialised. All is well.
-Nov 08, 2015 1:23:03 AM fini.main.util.Sorter sort
+Nov 08, 2015 1:08:13 PM fini.main.model.Storage <init>
+INFO: All file instantiated
+Nov 08, 2015 1:08:13 PM fini.main.model.Storage readFile
+INFO: Back up cannot save you!
+Nov 08, 2015 1:08:13 PM fini.main.util.Sorter sort
 INFO: List before sort: []
-Nov 08, 2015 1:23:03 AM fini.main.util.Sorter sort
+Nov 08, 2015 1:08:13 PM fini.main.util.Sorter sort
 INFO: List after sort: []
-Nov 08, 2015 1:23:03 AM fini.main.model.StatusSaver saveStatus
+Nov 08, 2015 1:08:13 PM fini.main.model.StatusSaver saveStatus
 INFO: Undo stack size before save: 0
-Nov 08, 2015 1:23:03 AM fini.main.model.StatusSaver saveStatus
+Nov 08, 2015 1:08:13 PM fini.main.model.StatusSaver saveStatus
 INFO: Redo stack size before save: 0
-Nov 08, 2015 1:23:03 AM fini.main.model.StatusSaver saveStatus
+Nov 08, 2015 1:08:13 PM fini.main.model.StatusSaver saveStatus
 INFO: Undo stack size after save: 1
-Nov 08, 2015 1:23:03 AM fini.main.model.StatusSaver saveStatus
+Nov 08, 2015 1:08:13 PM fini.main.model.StatusSaver saveStatus
 INFO: Redo stack size after save: 0
-Nov 08, 2015 1:23:08 AM fini.main.Brain executeCommand
-INFO: User's input: add gaieepo
-Nov 08, 2015 1:23:08 AM fini.main.Brain executeCommand
-INFO: Command type: ADD
-Nov 08, 2015 1:23:08 AM fini.main.Brain executeCommand
-INFO: Object index: -1
-Nov 08, 2015 1:23:08 AM fini.main.Brain executeCommand
-INFO: Parameters: gaieepo
-Nov 08, 2015 1:23:08 AM fini.main.model.FiniParser parse
-INFO: Clean parameters: gaieepo
-Nov 08, 2015 1:23:08 AM fini.main.model.FiniParser parse
-INFO: Not parsed words: gaieepo
-Nov 08, 2015 1:23:08 AM fini.main.model.StatusSaver saveStatus
-INFO: Undo stack size before save: 1
-Nov 08, 2015 1:23:08 AM fini.main.model.StatusSaver saveStatus
-INFO: Redo stack size before save: 0
-Nov 08, 2015 1:23:08 AM fini.main.model.StatusSaver saveStatus
-INFO: Undo stack size after save: 2
-Nov 08, 2015 1:23:08 AM fini.main.model.StatusSaver saveStatus
-INFO: Redo stack size after save: 0
-Nov 08, 2015 1:23:08 AM fini.main.util.Sorter sort
-INFO: List before sort: [fini.main.model.Task@7e7d1676]
-Nov 08, 2015 1:23:08 AM fini.main.util.Sorter sort
-INFO: List after sort: [fini.main.model.Task@7e7d1676]
-Nov 08, 2015 1:23:08 AM fini.main.util.Sorter sort
-INFO: List before sort: [fini.main.model.Task@7e7d1676]
-Nov 08, 2015 1:23:08 AM fini.main.util.Sorter sort
-INFO: List after sort: [fini.main.model.Task@7e7d1676]
-Nov 08, 2015 1:23:17 AM fini.main.Brain executeCommand
+Nov 08, 2015 1:08:17 PM fini.main.Brain executeCommand
 INFO: User's input: add gai
-Nov 08, 2015 1:23:17 AM fini.main.Brain executeCommand
+Nov 08, 2015 1:08:17 PM fini.main.Brain executeCommand
 INFO: Command type: ADD
-Nov 08, 2015 1:23:17 AM fini.main.Brain executeCommand
+Nov 08, 2015 1:08:17 PM fini.main.Brain executeCommand
 INFO: Object index: -1
-Nov 08, 2015 1:23:17 AM fini.main.Brain executeCommand
+Nov 08, 2015 1:08:17 PM fini.main.Brain executeCommand
 INFO: Parameters: gai
-Nov 08, 2015 1:23:17 AM fini.main.model.FiniParser parse
+Nov 08, 2015 1:08:17 PM fini.main.model.FiniParser parse
 INFO: Clean parameters: gai
-Nov 08, 2015 1:23:17 AM fini.main.model.FiniParser parse
+Nov 08, 2015 1:08:17 PM fini.main.model.FiniParser parse
 INFO: Not parsed words: gai
-Nov 08, 2015 1:23:17 AM fini.main.model.StatusSaver saveStatus
+Nov 08, 2015 1:08:17 PM fini.main.model.StatusSaver saveStatus
+INFO: Undo stack size before save: 1
+Nov 08, 2015 1:08:17 PM fini.main.model.StatusSaver saveStatus
+INFO: Redo stack size before save: 0
+Nov 08, 2015 1:08:17 PM fini.main.model.StatusSaver saveStatus
+INFO: Undo stack size after save: 2
+Nov 08, 2015 1:08:17 PM fini.main.model.StatusSaver saveStatus
+INFO: Redo stack size after save: 0
+Nov 08, 2015 1:08:17 PM fini.main.util.Sorter sort
+INFO: List before sort: [fini.main.model.Task@2c0fee71]
+Nov 08, 2015 1:08:17 PM fini.main.util.Sorter sort
+INFO: List after sort: [fini.main.model.Task@2c0fee71]
+Nov 08, 2015 1:08:17 PM fini.main.util.Sorter sort
+INFO: List before sort: [fini.main.model.Task@2c0fee71]
+Nov 08, 2015 1:08:17 PM fini.main.util.Sorter sort
+INFO: List after sort: [fini.main.model.Task@2c0fee71]
+Nov 08, 2015 1:08:27 PM fini.main.Brain executeCommand
+INFO: User's input: update 1 gai priority NORMAL project Gaibox 
+Nov 08, 2015 1:08:27 PM fini.main.Brain executeCommand
+INFO: Command type: UPDATE
+Nov 08, 2015 1:08:27 PM fini.main.Brain executeCommand
+INFO: Object index: 1
+Nov 08, 2015 1:08:27 PM fini.main.Brain executeCommand
+INFO: Parameters: gai priority NORMAL project Gaibox
+Nov 08, 2015 1:08:27 PM fini.main.model.FiniParser parse
+INFO: Clean parameters: gai priority NORMAL
+Nov 08, 2015 1:08:27 PM fini.main.model.FiniParser parse
+INFO: Not parsed words: gai priority NORMAL
+Nov 08, 2015 1:08:27 PM fini.main.model.StatusSaver saveStatus
 INFO: Undo stack size before save: 2
-Nov 08, 2015 1:23:17 AM fini.main.model.StatusSaver saveStatus
+Nov 08, 2015 1:08:27 PM fini.main.model.StatusSaver saveStatus
 INFO: Redo stack size before save: 0
-Nov 08, 2015 1:23:17 AM fini.main.model.StatusSaver saveStatus
+Nov 08, 2015 1:08:27 PM fini.main.model.StatusSaver saveStatus
 INFO: Undo stack size after save: 3
-Nov 08, 2015 1:23:17 AM fini.main.model.StatusSaver saveStatus
+Nov 08, 2015 1:08:27 PM fini.main.model.StatusSaver saveStatus
 INFO: Redo stack size after save: 0
-Nov 08, 2015 1:23:17 AM fini.main.util.Sorter sort
-INFO: List before sort: [fini.main.model.Task@7e7d1676, fini.main.model.Task@3888835b]
-Nov 08, 2015 1:23:17 AM fini.main.util.Sorter sort
-INFO: List after sort: [fini.main.model.Task@7e7d1676, fini.main.model.Task@3888835b]
-Nov 08, 2015 1:23:17 AM fini.main.util.Sorter sort
-INFO: List before sort: [fini.main.model.Task@7e7d1676, fini.main.model.Task@3888835b]
-Nov 08, 2015 1:23:17 AM fini.main.util.Sorter sort
-INFO: List after sort: [fini.main.model.Task@7e7d1676, fini.main.model.Task@3888835b]
-Nov 08, 2015 1:23:19 AM fini.main.Brain executeCommand
+Nov 08, 2015 1:08:27 PM fini.main.util.Sorter sort
+INFO: List before sort: [fini.main.model.Task@6f8850d0]
+Nov 08, 2015 1:08:27 PM fini.main.util.Sorter sort
+INFO: List after sort: [fini.main.model.Task@6f8850d0]
+Nov 08, 2015 1:08:27 PM fini.main.util.Sorter sort
+INFO: List before sort: [fini.main.model.Task@6f8850d0]
+Nov 08, 2015 1:08:27 PM fini.main.util.Sorter sort
+INFO: List after sort: [fini.main.model.Task@6f8850d0]
+Nov 08, 2015 1:08:29 PM fini.main.Brain executeCommand
 INFO: User's input: clear
-Nov 08, 2015 1:23:19 AM fini.main.Brain executeCommand
+Nov 08, 2015 1:08:29 PM fini.main.Brain executeCommand
 INFO: Command type: CLEAR
-Nov 08, 2015 1:23:19 AM fini.main.Brain executeCommand
+Nov 08, 2015 1:08:29 PM fini.main.Brain executeCommand
 INFO: Object index: -1
-Nov 08, 2015 1:23:19 AM fini.main.Brain executeCommand
+Nov 08, 2015 1:08:29 PM fini.main.Brain executeCommand
 INFO: Parameters: 
-Nov 08, 2015 1:23:19 AM fini.main.model.StatusSaver saveStatus
+Nov 08, 2015 1:08:29 PM fini.main.model.StatusSaver saveStatus
 INFO: Undo stack size before save: 3
-Nov 08, 2015 1:23:19 AM fini.main.model.StatusSaver saveStatus
+Nov 08, 2015 1:08:29 PM fini.main.model.StatusSaver saveStatus
 INFO: Redo stack size before save: 0
-Nov 08, 2015 1:23:19 AM fini.main.model.StatusSaver saveStatus
+Nov 08, 2015 1:08:29 PM fini.main.model.StatusSaver saveStatus
 INFO: Undo stack size after save: 4
-Nov 08, 2015 1:23:19 AM fini.main.model.StatusSaver saveStatus
+Nov 08, 2015 1:08:29 PM fini.main.model.StatusSaver saveStatus
 INFO: Redo stack size after save: 0
-Nov 08, 2015 1:23:19 AM fini.main.util.Sorter sort
+Nov 08, 2015 1:08:29 PM fini.main.util.Sorter sort
 INFO: List before sort: []
-Nov 08, 2015 1:23:19 AM fini.main.util.Sorter sort
+Nov 08, 2015 1:08:29 PM fini.main.util.Sorter sort
 INFO: List after sort: []
-Nov 08, 2015 1:23:19 AM fini.main.util.Sorter sort
+Nov 08, 2015 1:08:29 PM fini.main.util.Sorter sort
 INFO: List before sort: []
-Nov 08, 2015 1:23:19 AM fini.main.util.Sorter sort
+Nov 08, 2015 1:08:29 PM fini.main.util.Sorter sort
 INFO: List after sort: []
-Nov 08, 2015 1:23:20 AM fini.main.Brain executeCommand
-INFO: User's input: exit
-Nov 08, 2015 1:23:20 AM fini.main.Brain executeCommand
-INFO: Command type: EXIT
-Nov 08, 2015 1:23:20 AM fini.main.Brain executeCommand
+Nov 08, 2015 1:08:34 PM fini.main.Brain executeCommand
+INFO: User's input: add gai
+Nov 08, 2015 1:08:34 PM fini.main.Brain executeCommand
+INFO: Command type: ADD
+Nov 08, 2015 1:08:34 PM fini.main.Brain executeCommand
 INFO: Object index: -1
-Nov 08, 2015 1:23:20 AM fini.main.Brain executeCommand
+Nov 08, 2015 1:08:34 PM fini.main.Brain executeCommand
+INFO: Parameters: gai
+Nov 08, 2015 1:08:34 PM fini.main.model.FiniParser parse
+INFO: Clean parameters: gai
+Nov 08, 2015 1:08:34 PM fini.main.model.FiniParser parse
+INFO: Not parsed words: gai
+Nov 08, 2015 1:08:34 PM fini.main.model.StatusSaver saveStatus
+INFO: Undo stack size before save: 4
+Nov 08, 2015 1:08:34 PM fini.main.model.StatusSaver saveStatus
+INFO: Redo stack size before save: 0
+Nov 08, 2015 1:08:34 PM fini.main.model.StatusSaver saveStatus
+INFO: Undo stack size after save: 5
+Nov 08, 2015 1:08:34 PM fini.main.model.StatusSaver saveStatus
+INFO: Redo stack size after save: 0
+Nov 08, 2015 1:08:34 PM fini.main.util.Sorter sort
+INFO: List before sort: [fini.main.model.Task@3cd90a5a]
+Nov 08, 2015 1:08:34 PM fini.main.util.Sorter sort
+INFO: List after sort: [fini.main.model.Task@3cd90a5a]
+Nov 08, 2015 1:08:34 PM fini.main.util.Sorter sort
+INFO: List before sort: [fini.main.model.Task@3cd90a5a]
+Nov 08, 2015 1:08:34 PM fini.main.util.Sorter sort
+INFO: List after sort: [fini.main.model.Task@3cd90a5a]
+Nov 08, 2015 1:08:40 PM fini.main.Brain executeCommand
+INFO: User's input: update 1 gai priority NORMAL project Gaibox
+Nov 08, 2015 1:08:40 PM fini.main.Brain executeCommand
+INFO: Command type: UPDATE
+Nov 08, 2015 1:08:40 PM fini.main.Brain executeCommand
+INFO: Object index: 1
+Nov 08, 2015 1:08:40 PM fini.main.Brain executeCommand
+INFO: Parameters: gai priority NORMAL project Gaibox
+Nov 08, 2015 1:08:40 PM fini.main.model.FiniParser parse
+INFO: Clean parameters: gai priority NORMAL
+Nov 08, 2015 1:08:40 PM fini.main.model.FiniParser parse
+INFO: Not parsed words: gai priority NORMAL
+Nov 08, 2015 1:08:40 PM fini.main.model.StatusSaver saveStatus
+INFO: Undo stack size before save: 5
+Nov 08, 2015 1:08:40 PM fini.main.model.StatusSaver saveStatus
+INFO: Redo stack size before save: 0
+Nov 08, 2015 1:08:40 PM fini.main.model.StatusSaver saveStatus
+INFO: Undo stack size after save: 6
+Nov 08, 2015 1:08:40 PM fini.main.model.StatusSaver saveStatus
+INFO: Redo stack size after save: 0
+Nov 08, 2015 1:08:40 PM fini.main.util.Sorter sort
+INFO: List before sort: [fini.main.model.Task@6f895e49]
+Nov 08, 2015 1:08:40 PM fini.main.util.Sorter sort
+INFO: List after sort: [fini.main.model.Task@6f895e49]
+Nov 08, 2015 1:08:40 PM fini.main.util.Sorter sort
+INFO: List before sort: [fini.main.model.Task@6f895e49]
+Nov 08, 2015 1:08:40 PM fini.main.util.Sorter sort
+INFO: List after sort: [fini.main.model.Task@6f895e49]
+Nov 08, 2015 1:08:41 PM fini.main.Brain executeCommand
+INFO: User's input: clear
+Nov 08, 2015 1:08:41 PM fini.main.Brain executeCommand
+INFO: Command type: CLEAR
+Nov 08, 2015 1:08:41 PM fini.main.Brain executeCommand
+INFO: Object index: -1
+Nov 08, 2015 1:08:41 PM fini.main.Brain executeCommand
+INFO: Parameters: 
+Nov 08, 2015 1:08:41 PM fini.main.model.StatusSaver saveStatus
+INFO: Undo stack size before save: 6
+Nov 08, 2015 1:08:41 PM fini.main.model.StatusSaver saveStatus
+INFO: Redo stack size before save: 0
+Nov 08, 2015 1:08:41 PM fini.main.model.StatusSaver saveStatus
+INFO: Undo stack size after save: 7
+Nov 08, 2015 1:08:41 PM fini.main.model.StatusSaver saveStatus
+INFO: Redo stack size after save: 0
+Nov 08, 2015 1:08:41 PM fini.main.util.Sorter sort
+INFO: List before sort: []
+Nov 08, 2015 1:08:41 PM fini.main.util.Sorter sort
+INFO: List after sort: []
+Nov 08, 2015 1:08:41 PM fini.main.util.Sorter sort
+INFO: List before sort: []
+Nov 08, 2015 1:08:41 PM fini.main.util.Sorter sort
+INFO: List after sort: []
+Nov 08, 2015 1:08:42 PM fini.main.Brain executeCommand
+INFO: User's input: exit
+Nov 08, 2015 1:08:42 PM fini.main.Brain executeCommand
+INFO: Command type: EXIT
+Nov 08, 2015 1:08:42 PM fini.main.Brain executeCommand
+INFO: Object index: -1
+Nov 08, 2015 1:08:42 PM fini.main.Brain executeCommand
 INFO: Parameters: 

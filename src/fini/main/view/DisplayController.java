@@ -132,7 +132,6 @@ public class DisplayController {
     public void handleKeyPressEvent(KeyEvent event) throws Exception {
         if (event.getCode() == KeyCode.ENTER) {
             userInput = commandBox.getText();
-            System.out.println("RootController: " + userInput);
             commandBox.clear();
             if(isHelpPanelVisible()) {
                 hideHelpPanel();
@@ -203,6 +202,8 @@ public class DisplayController {
                                 task.getEndDateTime().toLocalTime().format(timeFormatter));
                         break;
                 }
+                commandBox.appendText(" ");
+                commandBox.appendText("priority " + task.getPriority() + " project " + task.getProjectName());
                 commandBox.end();
             }
         }
