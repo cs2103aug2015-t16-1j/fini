@@ -7,10 +7,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Period;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import fini.main.MainApp;
 import fini.main.model.FiniParser;
 import fini.main.model.Task.Priority;
 
@@ -32,7 +30,7 @@ public class ParserTest {
 	}
 
 	@Test
-    public void testAddFloatWithPriorityAndProject() {
+    public void testAddFloatingTaskWithPriorityAndProject() {
         String userInput = "eat project gai curry priority high chicken";
         
         assertEquals("Parse return message", "FiniParser.parse SUCCESS", parser.parse(userInput));

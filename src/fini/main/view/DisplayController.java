@@ -293,7 +293,11 @@ public class DisplayController {
             scrollIndex -= SCROLL_INCREMENT;
         } 
         listView.scrollTo(scrollIndex);
-        System.out.println(scrollIndex);
+        logCurrentScrollIndex();
+    }
+
+    private void logCurrentScrollIndex() {
+        MainApp.finiLogger.info("Current scroll index: " + scrollIndex);
     }
 
     private void pageDown() {
@@ -305,7 +309,7 @@ public class DisplayController {
             scrollIndex = NONE;
         }
         listView.scrollTo(scrollIndex);
-        System.out.println(scrollIndex);
+        logCurrentScrollIndex();
     }
 
     private boolean isHelpPanelVisible() {

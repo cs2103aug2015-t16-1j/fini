@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Test;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-
 import fini.main.model.FiniParser;
 import fini.main.model.Storage;
 import fini.main.model.Task;
@@ -67,6 +64,8 @@ public class StorageTest {
 				e.printStackTrace();
 			}
 		}
+		
+		// Directory tested is unique to different users
 		assertEquals("The directory is set", testStorage.setUserPrefDirectory("/home/gaieepo/Videos/test.txt"));
 		assertEquals("Same file directory", testStorage.setUserPrefDirectory("/home/gaieepo/Videos/test.txt"));
 		assertEquals("No such file", testStorage.setUserPrefDirectory("/home/gaieepo/Videos/tes?t.txt"));

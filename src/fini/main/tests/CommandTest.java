@@ -22,6 +22,8 @@ public class CommandTest {
 	Command undoCommand;
 	Command redoCommand;
 	Command displayCommand;
+	Command helpCommand;
+	Command setCommand;
 	
 	int result;
 	
@@ -36,6 +38,8 @@ public class CommandTest {
 		undoCommand = new Command("undo");
 		redoCommand = new Command("redo");
 		displayCommand = new Command("display");
+		helpCommand = new Command("help");
+		setCommand = new Command("set");
 	}
 	
 	static public String test(int value) {
@@ -88,6 +92,16 @@ public class CommandTest {
 	@Test
 	public void testDisplayCommand() {
 		assertEquals("DISPLAY", displayCommand.getCommandType().toString());
+	}
+	
+	@Test
+	public void testHelpCommand() {
+	    assertEquals("HELP", helpCommand.getCommandType().toString());
+	}
+	
+	@Test
+	public void testSetCommand() {
+	    assertEquals("SET", setCommand.getCommandType().toString());
 	}
 	
 	@Test
