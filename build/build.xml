@@ -161,6 +161,7 @@
 		<fx:application id="fxApplication"
 			name="Fini"
 			mainClass="fini.main.MainApp"
+			toolkit="fx"
 		/>
 	
 		<mkdir dir="build/classes/META-INF" />
@@ -182,6 +183,26 @@
 		</fx:jar>
 	
 	
+		<mkdir dir="deploy" />
+		<!-- Need to use ${basedir} because somehow the ant task is calculating the directory differently -->
+		<fx:deploy
+			embedJNLP="false"
+			extension="false"
+			width="820" height="600"
+			includeDT="false"
+			offlineAllowed="true"
+			outdir="${basedir}/deploy"
+			outfile="Fini" nativeBundles="all"
+			placeholderref="Fini"
+			placeholderid="Fini"
+			updatemode="background" >
+	
+			<fx:platform basedir="${java.home}"/>
+			<fx:info title="Fini" vendor="Fini"/>
+	
+			<fx:application refId="fxApplication"/>
+			<fx:resources refid="appRes"/>
+		</fx:deploy>
 	
 	
 	</target>

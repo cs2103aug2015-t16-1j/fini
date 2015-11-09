@@ -10,7 +10,7 @@ import java.util.Arrays;
  * 
  * <Command Key word><SPACE>(Optional: <Object index>)<SPACE><Command Parameters>
  * 
- * @@author A0127483B
+ * @@author A0130047W
  */
 public class Command {
     /* ***********************************

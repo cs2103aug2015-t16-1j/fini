@@ -34,7 +34,7 @@ public class MainApp extends Application {
     private static final double OPACITY_ZERO = 0.0;
 
     // Duration for Fade Animations
-    private static final int FADE_DURATION = 1000;
+    private static final int FADE_DURATION = 1500;
 
     // Path to relevant files
     private static final String PATH_FINI_LAYOUT = "view/FiniLayout.fxml";
@@ -72,7 +72,7 @@ public class MainApp extends Application {
 
         fadeOut(parent);
 
-        SequentialTransition seqTransition = new SequentialTransition (new PauseTransition(Duration.millis(1000)));
+        SequentialTransition seqTransition = new SequentialTransition (new PauseTransition(Duration.millis(1500)));
         seqTransition.setOnFinished(event ->  transitToMainScene(parent));
         seqTransition.play();
     }
@@ -115,7 +115,6 @@ public class MainApp extends Application {
     }
 
     private void transitToMainScene(AnchorPane parent) {
-
         try {  
             FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH_FINI_LAYOUT));
             main = (AnchorPane) loader.load();
@@ -136,7 +135,6 @@ public class MainApp extends Application {
             finiLogger.severe("Unable to find or load FXML file");
             exception.printStackTrace();
         }
-
     }
 
     private void fadeOut(Node element) {
@@ -155,7 +153,7 @@ public class MainApp extends Application {
 
     private void initializeBrain() {
         brain = Brain.getInstance();
-        brain.setRootController(this.displayController);
+        brain.setDisplayController(this.displayController);
         brain.initDisplay();
     }
 }
