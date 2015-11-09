@@ -15,7 +15,7 @@ import com.google.gson.JsonSyntaxException;
 import fini.main.MainApp;
 
 /**
- * Storage component (which is instantiated as taskOrganizer in Brain) takes charge in saving and retrieving of tasks
+ * Storage component (which is instantiated as taskOrganiser in Brain) takes charge in saving and retrieving of tasks
  * It makes use of google json library - Gson
  * to solidate tasks into readable text format.
  * 
@@ -76,7 +76,7 @@ public class Storage {
         userPrefFile = new File(userPrefFileName);
         createIfNotExists(userPrefFile);
         
-        MainApp.finiLogger.info("All file instantiated");
+        MainApp.finiLogger.info("All files instantiated");
     }
     
     public static Storage getInstance() {
