@@ -2,12 +2,11 @@
 //
 //import static org.junit.Assert.*;
 //
-//import java.util.ArrayList;
-//
 //import org.junit.Before;
 //import org.junit.Test;
 //
 //import fini.main.Brain;
+//import fini.main.model.FiniParser;
 //import fini.main.model.Task;
 //import javafx.collections.FXCollections;
 //import javafx.collections.ObservableList;
@@ -20,6 +19,7 @@
 //public class BrainTest {
 //    Brain brain = Brain.getInstance();
 //    DisplayControllerStub displayController = new DisplayControllerStub();
+//    FiniParser finiParser = FiniParser.getInstance();
 //    
 //    @Before
 //    public void initialize() {
@@ -29,7 +29,9 @@
 //    @Test
 //    public void testHelp() {
 //        brain.executeCommand("help");
-//        assertEquals("displayHelpPanel", displayController.getTestMessage());
+//        assertEquals(2, displayController.getTestMessages().size());
+//        assertEquals("displayHelpPanel", displayController.getTestMessages().get(0));
+//        assertEquals("updateMainDisplay", displayController.getTestMessages().get(1));
 //    }
 //    
 //    @Test
@@ -37,5 +39,15 @@
 //        brain.executeCommand("clear");
 //        ObservableList<Task> testList = FXCollections.observableArrayList();
 //        assertEquals(testList, brain.getTaskObservableList());
+//    }
+//    
+//    @Test
+//    public void testAdd() {
+//        brain.executeCommand("add gaieepo tomorrow 2pm");
+//        ObservableList<Task> testList = FXCollections.observableArrayList();
+//        assertEquals(1, displayController.getTestMessages().size());
+//        testList = displayController.getTestList();
+//        assertEquals(1, testList.size());
+//        assertEquals("gaieepo", testList.get(0).getTitle());
 //    }
 //}
