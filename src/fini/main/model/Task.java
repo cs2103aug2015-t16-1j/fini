@@ -147,7 +147,8 @@ public class Task implements TaskInterface {
                 break;
         }
     }
-
+    
+    // @@author A0130047W
     /* ***********************************
      * Public getters
      * ***********************************/
@@ -313,7 +314,6 @@ public class Task implements TaskInterface {
     /* ***********************************
      * Display related methods
      * ***********************************/
-    /* @@author A0121828H */
     public boolean isTaskDueToday() {
         return taskStartDateTime == null ? false : checkIfTaskIsDueToday();
     }

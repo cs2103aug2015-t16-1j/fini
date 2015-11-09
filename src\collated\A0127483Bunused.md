@@ -1,21 +1,6 @@
-//package fini.main.tests;
-//
-//import static org.junit.Assert.*;
-//
-//import org.junit.Before;
-//import org.junit.Test;
-//
-//import fini.main.Brain;
-//import fini.main.model.FiniParser;
-//import fini.main.model.Task;
-//import javafx.collections.FXCollections;
-//import javafx.collections.ObservableList;
-//
-///**
-// * Since this test makes use of DisplayControllerStub, some methods in Brain need to be commented out.
-// * Hence, this class has been commented out for the time being to prevent performance restrictions
-// * on the Brain.
-// * @@author A0127483B-unused
+# A0127483Bunused
+###### src/fini/main/tests/BrainTest.java
+``` java
 // *
 // */
 //public class BrainTest {
@@ -53,3 +38,4 @@
 //        assertEquals("gaieepo", testList.get(0).getTitle());
 //    }
 //}
+```

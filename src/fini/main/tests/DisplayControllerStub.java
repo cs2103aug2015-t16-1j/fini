@@ -1,3 +1,4 @@
+// @@author A0121298E
 package fini.main.tests;
 
 import java.util.ArrayList;
@@ -6,6 +7,10 @@ import java.util.List;
 import fini.main.model.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+/**
+ * A DisplayController Stub to facilitate testing.
+ */
 
 public class DisplayControllerStub {
     private ArrayList<String> testMessages = new ArrayList<String>();

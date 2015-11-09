@@ -17,6 +17,13 @@ import fini.main.model.FiniParser;
 import fini.main.model.Storage;
 import fini.main.model.Task;
 
+/*
+ * This class performs tests on the Storage class to test if the various write and
+ * read methods are working correctly.
+ * 
+ * @@author A0127483B 
+ */
+
 public class StorageTest {
 	File saveFile = new File("save.txt");
 	File configFile = new File("config.txt");

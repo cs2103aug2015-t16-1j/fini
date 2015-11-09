@@ -23,9 +23,10 @@ import javafx.collections.ObservableList;
  * This Brain class is the main logic component of FINI.
  * It handles all logic process regarding the manipulation of tasks and different display modes.
  * Brain class is the only class that has the access to parser and storage classes.
- * 
  * @@author A0127483B
  */
+
+//(Refactored) @@author A0130047W 
 public class Brain {
     /* ***********************************
      * Constants
@@ -66,18 +67,18 @@ public class Brain {
     private static final String USER_INPUT_DISPLAY_ALL = "all";
     private static final String USER_INPUT_DISPLAY_MAIN = "main";
     private static final String USER_INPUT_DISPLAY_COMPLETED = "completed";
-
+    // @@author A0127483B
     /* ***********************************
      * Fields
      * ***********************************/
     // Singleton
     private static Brain brain;
     private DisplayController displayController;
-    
+
     /**
      * DisplayControllerStub for test purpose
      */
-//    private DisplayControllerStub displayController;
+    //    private DisplayControllerStub displayController;
 
     private Storage taskOrganiser;
     private FiniParser finiParser;
@@ -126,7 +127,7 @@ public class Brain {
         }
         return brain;
     }
-    
+
     /*
      * This method initialises the first display when FINI is launched
      * This method is executed from the MainApp
@@ -142,6 +143,7 @@ public class Brain {
     /* ***********************************
      * Public execution method
      * ***********************************/
+    // @@author A0130047W
     public void executeCommand(String userInput) {
         Command newCommand = new Command(userInput);
         CommandType commandType = newCommand.getCommandType();
@@ -237,6 +239,7 @@ public class Brain {
     /* ***********************************
      * Logic methods
      * ***********************************/
+    // @@author A0127483B
     private String addTask(String commandParameters) {
         if (commandParameters.isEmpty()) {
             return ADD_EMPTY_PARAMETER;
@@ -326,7 +329,7 @@ public class Brain {
         return String.format(DELETE_MESSAGE, objectIndex, taskToDelete.getTitle());
     }
 
-    // @@author A0121828H
+    // @@author A0130047W
     private String clearAllTasks() {
         taskMasterList.clear();
         taskOrganiser.updateFile(taskMasterList);
@@ -360,7 +363,7 @@ public class Brain {
         return taskOrganiser.setUserPrefDirectory(commandParameters);
     }
 
-    
+
     private String displayTask(String commandParameters) {
         if (commandParameters.equals(USER_INPUT_DISPLAY_COMPLETED)) {
             completeDisplayTrigger = true;
@@ -400,7 +403,6 @@ public class Brain {
         }
     }
 
-    // @@author A0130047W
     private void searchTask(String commandParameters) {
         searchDisplayTrigger = true;
         ObservableList<Task> tempObservableList = FXCollections.observableArrayList();
@@ -477,7 +479,6 @@ public class Brain {
         return MODS_LOADED;
     }
 
-    // @@author A0121828H
     private String displayHelpPanel() {
         displayController.displayHelpPanel();
         return HELP_MESSAGE;
@@ -514,7 +515,6 @@ public class Brain {
         return taskMasterList.stream().filter(task -> !task.isCompleted()).collect(Collectors.toList());
     }
 
-    // @@author A0121298E
     private void sortTaskMasterList() {
         assert taskMasterList != null;
         sorter = new Sorter(taskMasterList);
@@ -522,7 +522,6 @@ public class Brain {
         taskMasterList = sorter.getSortedList();
     }
 
-    // @@author A0121298E
     private void sortTaskMasterListWithIncomplete() {
         assert taskMasterList != null;
         sorter = new Sorter(taskMasterList);
@@ -541,13 +540,16 @@ public class Brain {
     public void setDisplayController(DisplayController displayController) {
         this.displayController = displayController;
     }
-    
-    /**
+
+    /* This method is for testing purposes and is related to the BrainTest.java class
      * setDisplayController for testing 
+     * 
+     * @param displayControllerStub is a stub file that models the DisplayController
+     *        class for testing purposes.
      */
-//    public void setDisplayController(DisplayControllerStub displayControllerStub) {
-//        this.displayController = displayControllerStub;
-//    }
+    //    public void setDisplayController(DisplayControllerStub displayControllerStub) {
+    //        this.displayController = displayControllerStub;
+    //    }
 
     public DisplayController getDisplayController() {
         return displayController;

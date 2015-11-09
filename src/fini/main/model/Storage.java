@@ -1,3 +1,4 @@
+// @@author A0127483B 
 package fini.main.model;
 
 import java.io.BufferedReader;
@@ -27,8 +28,6 @@ import fini.main.MainApp;
  * config.txt -> Store the directory of user preferred file
  * user preferred file (Fini_untitled.txt) -> user preferred saving file, Storage will access this file first
  * Notice that user preferred file must be created before the path is set.
- * 
- * @@author A0127483B 
  */
 public class Storage {
     /* ***********************************

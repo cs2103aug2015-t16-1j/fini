@@ -14,6 +14,10 @@ import fini.main.model.Task.Priority;
 import fini.main.model.Task.Type;
 import org.junit.Test;
 
+/*
+ * @@author A0121298E
+ */
+
 public class TaskTest {
     // title: 0 to max words/numbers/symbols
     // isRecurring: true/false
@@ -42,26 +46,11 @@ public class TaskTest {
 
         assertFalse(testTask.isCompleted());
         assertEquals(Type.DEFAULT, testTask.getTaskType());
-
-        // TODO how to test objectID???
-        // assertEquals(null, testTask.getObjectID());
-        assertEquals(null, testTask.getRecurUniqueID());
+        
         assertFalse(testTask.hasRecurUniqueID());
         
-        String expectedResult = ">>>>>>>>>\n" + 
-                "happy" + "\n" + 
-                "false" + "\n" + 
-                "NORMAL" + "\n" + 
-                "Null" + "\n" +
-                "Null" + "\n" +
-                "Null" + "\n" +
-                "Null" + "\n" +
-                "false" + "\n" +
-                "DEFAULT" + "\n" +
-//                "objectID" + "\n" +  // TODO ID cannot test
-//                "Null" + "\n" +
-                "<<<<<<<<<";
-        assertEquals(expectedResult, testTask.toString());
+        String expectedTask = "happy";
+        assertEquals(expectedTask, testTask.toString());
     }
 
     @Test
@@ -238,29 +227,17 @@ public class TaskTest {
         // assertEquals(null, testTask.getRecurUniqueID());
 
         
-        String expectedResult = ">>>>>>>>>\n" + 
-                "i am a long long long long long long long name" + "\n" + 
-                "true" + "\n" + 
-                "NORMAL" + "\n" + 
-                "2015-12-10T09:56" + "\n" +
-                "2015-12-10T11:56" + "\n" +
-                "2016-05-05T11:56"+ "\n" +
-                interval.toString() + "\n" +
-                "false" + "\n" +
-                "EVENT" + "\n" +
-//                "objectID" + "\n" +
-//                "recurUniqueID" + "\n" +  // TODO cannot test IDs for toString
-                "<<<<<<<<<";
-        assertEquals(expectedResult, testTask.toString());
+        String expectedTask = "i am a long long long long long long long name";
+        assertEquals(expectedTask, testTask.toString());
     }
     
     @Test
-    public void testIsOverdueMethod() {
-        // TODO
-//        String taskTitle = "0";
-//        boolean isRecurring = false;
-//
-//        Task testTask = new Task.TaskBuilder(taskTitle, isRecurring).build();
+    public void testFloatingTasks() {
+        String taskTitle = "0";
+        boolean isRecurring = false;
+
+        Task testTask = new Task.TaskBuilder(taskTitle, isRecurring).build();
+        assertEquals(false, testTask.isOverdue());
     }
     
     @Test
@@ -291,14 +268,14 @@ public class TaskTest {
         assertEquals(testTaskOriginal.hasRecurUniqueID(), testTaskCopied.hasRecurUniqueID());
 
         // Check that when we change copied task, it doesnt affect original one
-        testTaskCopied.setTaskTitle("gggggg");
+        testTaskCopied.setTaskTitle("Sample Task");
         assertNotEquals(testTaskOriginal.getTitle(), testTaskCopied.getTitle());
-        assertEquals("gggggg", testTaskCopied.getTitle());
+        assertEquals("Sample Task", testTaskCopied.getTitle());
     }
     
     @Test
     public void testUpdateObjectIDMethod() {
-        String taskTitle = "L";
+        String taskTitle = "SimpleTaskTitle";
         boolean isRecurring = false;
 
         Task testTask = new Task.TaskBuilder(taskTitle, isRecurring).build();

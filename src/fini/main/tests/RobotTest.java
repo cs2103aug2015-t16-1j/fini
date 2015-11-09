@@ -5,6 +5,14 @@ import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
+/*
+ * This class employs the Java Robot to test the GUI is a pre-programmed way.
+ * Since this is pre-programmed onto fixed coordinates on a laptop, it may not 
+ * work as expected on another computer.
+ * 
+ * @@author A0121828H
+ */
+
 public class RobotTest
 {
 	Robot robot = new Robot();
@@ -46,33 +54,9 @@ public class RobotTest
 		
 		robot.delay(50);
 		type(KeyEvent.VK_ENTER);
-		
-//		robot.delay(500);
-//		leftClick();
-//
-//		robot.delay(500);
-//		type("Hello, world");
-//
-//		robot.mouseMove(40, 160);
-//		robot.delay(500);
-//
-//		leftClick();
-//		robot.delay(500);
-//		leftClick();
-//
-//		robot.delay(500);
-//		type("This is a test of the Java Robot class");
-//
-//		robot.delay(50);
-//		type(KeyEvent.VK_DOWN);
-//
-//		robot.delay(250);
-//		type("Four score and seven years ago, our fathers ...");
-//
-//		robot.delay(1000);
-//		System.exit(0);
 	}
-
+	
+	// @@author A0121828H-reused
 	private void leftClick()
 	{
 		robot.mousePress(InputEvent.BUTTON1_MASK);
@@ -80,14 +64,16 @@ public class RobotTest
 		robot.mouseRelease(InputEvent.BUTTON1_MASK);
 		robot.delay(200);
 	}
-	
+
+	// @@author A0121828H-reused
 	private void rightClick() {
 		robot.mousePress(InputEvent.BUTTON3_MASK);
 		robot.delay(200);
         robot.mouseRelease(InputEvent.BUTTON3_MASK);
         robot.delay(200);
 	}
-
+	
+	// @@author A0121828H-reused
 	private void type(int i)
 	{
 		robot.delay(40);
@@ -95,6 +81,7 @@ public class RobotTest
 		robot.keyRelease(i);
 	}
 
+	//@@author A0121828H-reused
 	private void type(String s)
 	{
 		byte[] bytes = s.getBytes();

@@ -1,6 +1,9 @@
+//@@author A0130047W
 package fini.main.model;
 
 import java.util.Arrays;
+
+import fini.main.MainApp;
 
 /**
  * This Command class determines the command type before the command is passed to parser.
@@ -10,8 +13,8 @@ import java.util.Arrays;
  * 
  * <Command Key word><SPACE>(Optional: <Object index>)<SPACE><Command Parameters>
  * 
- * @@author A0130047W
  */
+
 public class Command {
     /* ***********************************
      * Constants
@@ -19,7 +22,7 @@ public class Command {
     public static enum CommandType {
         ADD, UPDATE, DELETE, CLEAR, UNDO, REDO, SET, DISPLAY, SEARCH, EXIT, COMPLETE, UNCOMPLETE, MODS, HELP, INVALID
     };
-    
+
     private static final String ONE_OR_MORE_SPACE = "\\s+";
     private static final String EMPTY_SPACE = "";
     private static final int INVALID_INDEX = -1;
@@ -44,15 +47,21 @@ public class Command {
                 commandType == CommandType.UNCOMPLETE) {
             try {
                 objectIndex = Integer.parseInt(splitUserInput[1]);
-            } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            } catch (IndexOutOfBoundsException | IllegalArgumentException e) {
+                MainApp.finiLogger.severe("Index Out Of Bounds or Illegal Argument Found");
                 commandType = CommandType.INVALID;
             }
-            commandParameters = String.join(" ", Arrays.copyOfRange(splitUserInput, 2, splitUserInput.length));
+            try {
+                commandParameters = String.join(" ", Arrays.copyOfRange(splitUserInput, 2, splitUserInput.length));
+            } catch (IllegalArgumentException e) {
+                MainApp.finiLogger.severe("Index Out Of Bounds or Illegal Argument Found");
+                commandType = CommandType.INVALID;
+            }
         } else {
             commandParameters = String.join(" ", Arrays.copyOfRange(splitUserInput, 1, splitUserInput.length));
         }
     }
-    
+
     private CommandType determineCommandType(String userCommand) {
         switch (userCommand) {
             case "add":
@@ -87,7 +96,7 @@ public class Command {
                 return CommandType.INVALID;
         }
     }
-    
+
     /* ***********************************
      * Public getters
      * ***********************************/

@@ -17,7 +17,6 @@ import javafx.scene.shape.Circle;
  * @@author A0121828H
  */
 
-
 public class TaskBox extends HBox {
     private static final double OPACITY_ZERO = 0.0;
 

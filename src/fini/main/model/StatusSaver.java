@@ -1,3 +1,4 @@
+// @@author A0127483B
 package fini.main.model;
 
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import javafx.collections.ObservableList;
  * This class handles the saving of past status of the application
  * Mainly for UNDO and REDO (possibly) functions
  * 
- * @@author A0127483B
  */
 public class StatusSaver {
     /* ***********************************
@@ -132,6 +132,7 @@ public class StatusSaver {
     /* ***********************************
      * Utility methods
      * ***********************************/
+    //@@author A0121298E
     private ArrayList<Task> copyArrayList(ArrayList<Task> origin) {
         ArrayList<Task> duplicate = new ArrayList<Task>();
         for (Task task : origin) {
@@ -139,7 +140,8 @@ public class StatusSaver {
         }
         return duplicate;
     }
-
+    
+    //@@author A0121298E
     private ObservableList<Task> copyObservableList(ObservableList<Task> origin) {
         ArrayList<Task> duplicate = new ArrayList<Task>();
         for (Task task : origin) {

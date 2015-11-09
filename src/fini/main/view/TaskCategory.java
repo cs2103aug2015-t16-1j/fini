@@ -1,7 +1,3 @@
-/*
- * TaskCategory models each category of tasks in the main display.
- * @@author A0121828H
- */
 package fini.main.view;
 
 import java.io.IOException;
@@ -11,6 +7,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+
+/*
+ * TaskCategory models each category of tasks in the main display.
+ * @@author A0121298E
+ */
 
 public class TaskCategory extends HBox {
     @FXML

@@ -13,6 +13,13 @@ import fini.main.model.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/*
+ * This class tests if the StatusSaver class is functioning properly using a variety
+ * of methods.
+ * 
+ * @@author A0130047W
+ */
+
 public class StatusSaverTest {
     
         @Test

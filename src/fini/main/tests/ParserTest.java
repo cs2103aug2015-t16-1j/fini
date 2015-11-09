@@ -12,6 +12,11 @@ import org.junit.Test;
 import fini.main.model.FiniParser;
 import fini.main.model.Task.Priority;
 
+/*
+ * Testing Parser with various types of commands. The objective of this test class is
+ * to ensure that the correct output is obtained from FiniParser.
+ */
+// @@author A0121828H
 public class ParserTest {
 	private FiniParser parser = FiniParser.getInstance();
 
@@ -84,6 +89,7 @@ public class ParserTest {
         assertEquals(null, parser.getRecursUntil());
     }
 
+	// @@author A0130047W
 	@Test
 	public void testRecur() {
 		String userInput = "math tuition tomorrow 2pm repeat";

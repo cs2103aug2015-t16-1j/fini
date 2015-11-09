@@ -1,3 +1,4 @@
+// @@author A0121298E
 package fini.main.tests;
 
 import static org.junit.Assert.assertEquals;
@@ -8,11 +9,16 @@ import org.junit.Test;
 import fini.main.model.Command;
 import fini.main.model.Command.CommandType;
 
+/**
+ * This class serves to test if the various commands are working as intended.
+ * To test the commands, sample user commands are passed to the getCommandType method.
+ */
+
 public class CommandTest {
 	
 	private static final String PASS = new String("PASS");
 	private static final String FAIL = new String("FAIL");
-
+	
 	Command addCommand;
 	Command deleteCommand;
 	Command deleteInvalidCommand;
@@ -24,6 +30,10 @@ public class CommandTest {
 	Command displayCommand;
 	Command helpCommand;
 	Command setCommand;
+	Command modsCommand;
+	Command searchCommand;
+	Command completeCommand;
+	Command uncompleteCommand;
 	
 	int result;
 	
@@ -40,6 +50,10 @@ public class CommandTest {
 		displayCommand = new Command("display");
 		helpCommand = new Command("help");
 		setCommand = new Command("set");
+		modsCommand = new Command("mods test.html");
+		searchCommand = new Command("search");
+		completeCommand = new Command("complete 2");
+		uncompleteCommand = new Command("uncomplete 2");
 	}
 	
 	static public String test(int value) {
@@ -103,6 +117,21 @@ public class CommandTest {
 	public void testSetCommand() {
 	    assertEquals("SET", setCommand.getCommandType().toString());
 	}
+	
+	@Test
+    public void testModsCommand() {
+        assertEquals("MODS", modsCommand.getCommandType().toString());
+    }
+	
+	@Test
+    public void testCompleteCommand() {
+        assertEquals("COMPLETE", completeCommand.getCommandType().toString());
+    }
+	
+	@Test
+    public void testUncompleteCommand() {
+        assertEquals("UNCOMPLETE", uncompleteCommand.getCommandType().toString());
+    }
 	
 	@Test
 	public void testObjectIndex() {

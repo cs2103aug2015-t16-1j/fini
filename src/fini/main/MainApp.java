@@ -155,7 +155,8 @@ public class MainApp extends Application {
         fadeIn.setToValue(OPACITY_FULL);
         fadeIn.play();
     }
-
+    
+    // @@author A0121298E
     private void initializeBrain() {
         brain = Brain.getInstance();
         brain.setDisplayController(this.displayController);
