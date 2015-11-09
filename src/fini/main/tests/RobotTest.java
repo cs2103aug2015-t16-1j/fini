@@ -4,18 +4,17 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.util.PrimitiveIterator.OfDouble;
 
-public class JavaRobotExample
+public class RobotTest
 {
 	Robot robot = new Robot();
 
 	public static void main(String[] args) throws AWTException
 	{
-		new JavaRobotExample();
+		new RobotTest();
 	}
 
-	public JavaRobotExample() throws AWTException
+	public RobotTest() throws AWTException
 	{
 		robot.setAutoDelay(40);
 		robot.setAutoWaitForIdle(true);

@@ -20,7 +20,8 @@ import javafx.util.Duration;
 
 /*
  * This is the main class for FINI (the application). The two scenes, welcome scene and the main
- * scene are loaded here.
+ * scene are loaded here. The welcome scene is launched and slowly fades away to reveal the main
+ * display
  * 
  * @@author A0121828H
  */
@@ -73,7 +74,7 @@ public class MainApp extends Application {
         fadeOut(parent);
 
         SequentialTransition seqTransition = new SequentialTransition (new PauseTransition(Duration.millis(1500)));
-        seqTransition.setOnFinished(event ->  transitToMainScene(parent));
+        seqTransition.setOnFinished(event ->  transitToMainScene());
         seqTransition.play();
     }
 
@@ -113,8 +114,12 @@ public class MainApp extends Application {
         primaryStage.setResizable(false);
         primaryStage.show();
     }
-
-    private void transitToMainScene(AnchorPane parent) {
+    
+    /*
+     * This method transits Fini from the Welcome Scene to the main display
+     * of tasks. It loads the respective FXML and employs a fade transition.
+     */
+    private void transitToMainScene() {
         try {  
             FXMLLoader loader = new FXMLLoader(getClass().getResource(PATH_FINI_LAYOUT));
             main = (AnchorPane) loader.load();

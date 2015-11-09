@@ -43,6 +43,8 @@ public class Storage {
     private static final String SET_FAIL_MESSAGE = "No such file";
     private static final String EMPTY_STRING = "";
     
+    private static final String FILE_ENCODING_TYPE = "UTF-8";
+    
     /* ***********************************
      * Fields
      * ***********************************/
@@ -149,7 +151,7 @@ public class Storage {
 
     private boolean updateTasks(File file, ArrayList<Task> tasks) {
         try {
-            writer = new PrintWriter(file, "UTF-8");
+            writer = new PrintWriter(file, FILE_ENCODING_TYPE);
             for (Task task : tasks) {
                 writer.println(gson.toJson(task));
             }
@@ -163,7 +165,7 @@ public class Storage {
 
     private void updateConfigFile(String fileName) {
         try {
-            writer = new PrintWriter(configFile, "UTF-8");
+            writer = new PrintWriter(configFile, FILE_ENCODING_TYPE);
             writer.println(fileName);
             writer.close();
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
