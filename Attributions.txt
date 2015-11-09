@@ -16,9 +16,6 @@ Welcome BG: (Pixabay Images —> No Attribution required)
 https://pixabay.com/en/notebook-paper-page-empty-blank-731212/
 https://pixabay.com/en/typewriter-book-notebook-paper-801921/
 
-Fonts:
-https://www.google.com/fonts# - Open Sans, Handlee
-
 Dependencies
 https://github.com/google/gson
 http://natty.joestelmach.com/

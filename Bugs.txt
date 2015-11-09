@@ -1,4 +1,0 @@
-BUGS
-
-add CS2103
-15/3/2015 American DateTime
