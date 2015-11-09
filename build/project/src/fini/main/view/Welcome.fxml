@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="820.0" styleClass="welcomePane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fini.main.MainApp">
+   <children>
+      <ImageView fitHeight="600.0" fitWidth="820.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/images/Welcome%20Scene.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
