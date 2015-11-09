@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="Fini.jnlp">
+  <information>
+    <title>Fini</title>
+    <vendor>Fini</vendor>
+    <description>Fini</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="Fini.jar" size="7325286" download="eager" />
+    <jar href="libs/antlr-runtime-3.5.2.jar" size="167761" download="eager" />
+    <jar href="libs/backport-util-concurrent-3.1.jar" size="331716" download="eager" />
+    <jar href="libs/commons-codec-1.5.jar" size="73098" download="eager" />
+    <jar href="libs/commons-lang-2.6.jar" size="284220" download="eager" />
+    <jar href="libs/commons-logging-1.1.1.jar" size="60686" download="eager" />
+    <jar href="libs/gson-2.3.1.jar" size="210856" download="eager" />
+    <jar href="libs/ical4j-1.0.2.jar" size="972404" download="eager" />
+    <jar href="libs/jsoup-1.7.2.jar" size="293671" download="eager" />
+    <jar href="libs/junit.jar" size="314932" download="eager" />
+    <jar href="libs/natty-0.12.jar" size="621397" download="eager" />
+    <jar href="libs/org.hamcrest.core_1.3.0.v201303031735.jar" size="55198" download="eager" />
+    <jar href="libs/slf4j-api-1.7.10.jar" size="32119" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="820" height="600" main-class="fini.main.MainApp"  name="Fini" />
+  <update check="background"/>
+</jnlp>
