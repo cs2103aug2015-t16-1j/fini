@@ -192,7 +192,7 @@
 			includeDT="false"
 			offlineAllowed="true"
 			outdir="${basedir}/deploy"
-			outfile="Fini" nativeBundles="all"
+			outfile="Fini" nativeBundles="dmg"
 			placeholderref="Fini"
 			placeholderid="Fini"
 			updatemode="background" >

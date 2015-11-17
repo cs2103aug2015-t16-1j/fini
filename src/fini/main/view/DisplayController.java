@@ -96,7 +96,7 @@ public class DisplayController {
     private static final Integer SCROLL_INCREMENT = 1;
 
     private static final int INTIAL_SCROLL_INDEX = 0;
-    
+
     // Patterns in user input
     private static final String PATTERN_UPDATE_WITH_SPACE_AND_TASK_NUM = "update\\s+[0-9]+";
     private static final String PATTERN_ALL_SPACES = "\\s+";
@@ -205,7 +205,7 @@ public class DisplayController {
             pageUp();
         }   
     }
-    
+
     /*
      * This method passes the user's input to the Brain for
      * it to be executed.
@@ -229,7 +229,7 @@ public class DisplayController {
     private boolean isUserInputEnter(KeyEvent event) {
         return event.getCode() == KeyCode.ENTER;
     }
-    
+
     // @@author A0121298E
     private void displayRelevantHelpToUser(String userInput) {
         if (userInput.toLowerCase().startsWith(COMMAND_ADD))  {
@@ -274,7 +274,7 @@ public class DisplayController {
     private boolean doesUserInputStartWithSearch(String userInput) {
         return userInput.toLowerCase().startsWith(USER_INPUT_SEARCH);
     }
-    
+
     // @@author A0121828H
     private void autoCompleteTaskDetails(String userInput) {
         int updateIndex = Integer.parseInt(userInput.split(PATTERN_ALL_SPACES)[1]);
@@ -301,8 +301,25 @@ public class DisplayController {
                                 task.getEndDateTime().toLocalTime().format(timeFormatter));
                         break;
                 }
-                commandBox.appendText(" ");
-                commandBox.appendText("priority " + task.getPriority() + " project " + task.getProjectName());
+                if (task.getPriority() != Priority.NORMAL) {
+                    commandBox.appendText(" priority " + task.getPriority());
+                }
+                commandBox.appendText(" project " + task.getProjectName());
+                if (task.isRecurring()) {
+                    commandBox.appendText(" ");
+                    commandBox.appendText("repeat every ");
+                    if (task.getInterval().getYears() != 0) {
+                        commandBox.appendText(task.getInterval().getYears() + " years");
+                    } else if (task.getInterval().getMonths() != 0) {
+                        commandBox.appendText(task.getInterval().getMonths() + " months");
+                    } else if (task.getInterval().getDays() != 0) {
+                        commandBox.appendText(task.getInterval().getDays() + " days");
+                    }
+
+                    if (task.getRecursUntil() != null) {
+                        commandBox.appendText(" until " + task.getRecursUntil().toLocalDate().format(dateFormatter));
+                    }
+                }
                 commandBox.end();
             }
         }
@@ -464,16 +481,16 @@ public class DisplayController {
             if (!task.isCompleted() && task.isOverdue() && !overdueAdded) {
                 displayBoxes.add(new TaskCategory(CATEGORY_OVERDUE));
                 overdueAdded = true;
-            } else if (!task.isOverdue() && task.getTaskType() == Type.DEFAULT && !floatingAdded) {
+            } else if (!task.isCompleted() && !task.isOverdue() && task.getTaskType() == Type.DEFAULT && !floatingAdded) {
                 displayBoxes.add(new TaskCategory(CATEGORY_FLOATING));
                 floatingAdded = true;
-            } else if (task.getTaskType() != Type.DEFAULT && task.isTaskDueToday() && !todayAdded) {
+            } else if (!task.isCompleted() && !task.isOverdue() && task.getTaskType() != Type.DEFAULT && task.isTaskDueToday() && !todayAdded) {
                 displayBoxes.add(new TaskCategory(CATEGORY_TODAY));
                 todayAdded = true;
-            } else if (!task.isTaskDueToday() && task.isTaskDueTomorrow() && !tomorrowAdded) {
+            } else if (!task.isCompleted() && !task.isOverdue() && task.getTaskType() != Type.DEFAULT && !task.isTaskDueToday() && task.isTaskDueTomorrow() && !tomorrowAdded) {
                 displayBoxes.add(new TaskCategory(CATEGORY_TOMORROW));
                 tomorrowAdded = true;
-            } else if (!task.isTaskDueTomorrow() && !othersAdded) {
+            } else if (!task.isCompleted() && !task.isOverdue() && task.getTaskType() != Type.DEFAULT && !task.isTaskDueToday() && !task.isTaskDueTomorrow() && !othersAdded) {
                 displayBoxes.add(new TaskCategory(CATEGORY_OTHER_TASKS));
                 othersAdded = true;
             }
@@ -567,7 +584,7 @@ public class DisplayController {
                 overdueBoxes.add(newTaskBox);
             } else {
                 assert isOverdue == false;
-                
+
                 if(isFloating) {
                     floatingBoxes.add(newTaskBox);
                 } else if(task.isTaskDueToday()) {
@@ -672,7 +689,7 @@ public class DisplayController {
      * 
      * @param completedTasks    A list of Tasks that are completed
      */
-     // @@author A0121298E
+    // @@author A0121298E
     public void updateFiniPoints(List<Task> completedTasks) {
         Integer points = 0;
 

@@ -287,9 +287,12 @@ public class FiniParser {
         String[] splitParameters = parameters.split(ONE_SPACE);
         if (isValidNumbering(splitParameters[1]) && isIntervalUnits(splitParameters[2])) {
             interval = determineIntervalUnits(splitParameters[1], splitParameters[2]);
-            returnNotParsed = returnNotParsed.replaceAll("every " + splitParameters[1] + ONE_SPACE + splitParameters[2], EMPTY_STRING);
         } else {
             interval = Period.ofDays(1);
+        }
+        Map<String, List<ParseLocation>> parseMap = group.getParseLocations();
+        if (parseMap.containsKey("recurrence")) {
+            returnNotParsed = returnNotParsed.replaceAll(parseMap.get("recurrence").get(0) + EMPTY_STRING, EMPTY_STRING);
         }
         return returnNotParsed;
     }

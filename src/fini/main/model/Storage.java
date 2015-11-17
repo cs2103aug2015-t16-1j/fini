@@ -36,14 +36,14 @@ public class Storage {
     private static final String SAVE_FILE_NAME = "save.txt";
     private static final String CONFIG_FILE_NAME = "config.txt";
     private static final String DEFAULT_USER_PREF_NAME = "Fini_untitled.txt";
-    
+
     private static final String SAME_DIRECTORY_MESSAGE = "Same file directory";
     private static final String SET_SUCCESS_MESSAGE = "The directory is set";
     private static final String SET_FAIL_MESSAGE = "No such file";
     private static final String EMPTY_STRING = "";
-    
+
     private static final String FILE_ENCODING_TYPE = "UTF-8";
-    
+
     /* ***********************************
      * Fields
      * ***********************************/
@@ -76,17 +76,17 @@ public class Storage {
         updateConfigFile(userPrefFileName);
         userPrefFile = new File(userPrefFileName);
         createIfNotExists(userPrefFile);
-        
+
         MainApp.finiLogger.info("All files instantiated");
     }
-    
+
     public static Storage getInstance() {
         if (taskOrganiser == null) {
             taskOrganiser = new Storage();
         }
         return taskOrganiser;
     }
-    
+
     /* ***********************************
      * Public methods
      * ***********************************/
@@ -106,7 +106,7 @@ public class Storage {
         }
         return tasks;
     }
-    
+
     public String setUserPrefDirectory(String filePath) {
         userPrefFileName = filePath;
         File userFile = new File(userPrefFileName);
@@ -125,7 +125,7 @@ public class Storage {
     public boolean updateFile(ArrayList<Task> tasks) {
         return updateTasks(saveFile, tasks) && updateTasks(userPrefFile, tasks);
     }
-    
+
     /* ***********************************
      * Private methods
      * ***********************************/
@@ -190,6 +190,14 @@ public class Storage {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Test Method clear Singleton
+     * @param file
+     */
+    public static void clearStorage() {
+        taskOrganiser = null;
     }
 
     /* ***********************************

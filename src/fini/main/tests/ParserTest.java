@@ -103,7 +103,7 @@ public class ParserTest {
 		parser.parse(userInput);
 		assertEquals(LocalDate.now().plusDays(1), parser.getDatetimes().get(0).toLocalDate());
 		assertEquals(true, parser.getIsRecurring());
-		assertEquals(createDateTime(2015, 11, 10, 14, 00), parser.getDatetimes().get(0));
+		assertEquals(createDateTime(2015, 11, 13, 14, 00), parser.getDatetimes().get(0));
 		assertEquals(Period.ofWeeks(1), parser.getInterval());
 		assertEquals(null, parser.getRecursUntil());
 		

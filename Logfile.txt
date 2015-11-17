@@ -1,0 +1,26 @@
+Nov 12, 2015 4:26:29 PM fini.main.MainApp intialiseLogger
+INFO: Fini Logger Intialised. All is well.
+Nov 12, 2015 4:26:31 PM fini.main.model.Storage createIfNotExists
+INFO: save.txt is created
+Nov 12, 2015 4:26:31 PM fini.main.model.Storage createIfNotExists
+INFO: config.txt is created
+Nov 12, 2015 4:26:31 PM fini.main.model.Storage createIfNotExists
+INFO: Fini_untitled.txt is created
+Nov 12, 2015 4:26:31 PM fini.main.model.Storage <init>
+INFO: All files instantiated
+Nov 12, 2015 4:26:31 PM fini.main.model.Storage readFile
+INFO: Back up cannot save you!
+Nov 12, 2015 4:26:31 PM fini.main.util.Sorter sort
+INFO: List before sort: []
+Nov 12, 2015 4:26:31 PM fini.main.util.Sorter sort
+INFO: List after sort: []
+Nov 12, 2015 4:26:31 PM fini.main.model.StatusSaver saveStatus
+INFO: Undo stack size before save: 0
+Nov 12, 2015 4:26:31 PM fini.main.model.StatusSaver saveStatus
+INFO: Redo stack size before save: 0
+Nov 12, 2015 4:26:31 PM fini.main.model.StatusSaver saveStatus
+INFO: Undo stack size after save: 1
+Nov 12, 2015 4:26:31 PM fini.main.model.StatusSaver saveStatus
+INFO: Redo stack size after save: 0
+Nov 12, 2015 4:26:31 PM fini.main.view.DisplayController <init>
+INFO: DisplayController has been initialised.
